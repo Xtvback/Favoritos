@@ -3,96 +3,210 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Os Meus Favoritos</title>
+    <title>Portal de Favoritos</title>
     <style>
+        :root {
+            --bg: #0f172a;
+            --card-bg: #1e293b;
+            --accent: #38bdf8;
+            --text-main: #f1f5f9;
+            --text-dim: #94a3b8;
+        }
         body {
-            font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
-            background-color: #f4f7f6;
+            font-family: "Inter", "Segoe UI", sans-serif;
+            background-color: var(--bg);
+            color: var(--text-main);
             margin: 0;
             padding: 40px 20px;
             display: flex;
-            justify-content: center;
+            flex-direction: column;
+            align-items: center;
         }
-        .content {
-            max-width: 800px;
+        .container {
+            max-width: 1000px;
             width: 100%;
         }
-        h1 {
-            color: #2c3e50;
+        header {
             text-align: center;
+            margin-bottom: 50px;
+        }
+        h1 {
+            font-size: 2.5rem;
+            letter-spacing: -1px;
+            margin-bottom: 10px;
+        }
+        .search-container {
             margin-bottom: 40px;
+            width: 100%;
+            display: flex;
+            justify-content: center;
+        }
+        #searchBar {
+            width: 100%;
+            max-width: 500px;
+            padding: 15px 25px;
+            border-radius: 50px;
+            border: 2px solid #334155;
+            background: #1e293b;
+            color: white;
+            font-size: 1rem;
+            outline: none;
+            transition: border-color 0.3s;
+        }
+        #searchBar:focus {
+            border-color: var(--accent);
+        }
+        .section-title {
+            font-size: 1.5rem;
+            color: var(--accent);
+            margin: 40px 0 20px 0;
+            border-left: 4px solid var(--accent);
+            padding-left: 15px;
         }
         .grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-            gap: 20px;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 25px;
         }
         .card {
-            background: white;
-            border-radius: 12px;
-            padding: 24px;
-            box-shadow: 0 4px 6px rgba(0,0,0,0.05);
-            transition: transform 0.2s;
+            background: var(--card-bg);
+            border-radius: 16px;
+            padding: 25px;
+            transition: transform 0.3s, box-shadow 0.3s;
+            border: 1px solid #334155;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
         }
         .card:hover {
-            transform: translateY(-5px);
+            transform: translateY(-8px);
+            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+            border-color: var(--accent);
         }
-        .card h2 {
-            margin: 0 0 12px 0;
-            color: #3498db;
-            font-size: 1.4rem;
+        .card h3 {
+            margin: 0 0 10px 0;
+            font-size: 1.3rem;
         }
         .card p {
-            color: #7f8c8d;
+            color: var(--text-dim);
             font-size: 0.95rem;
-            line-height: 1.6;
+            line-height: 1.5;
             margin-bottom: 20px;
         }
-        .link-button {
-            display: inline-block;
-            background-color: #3498db;
-            color: white;
-            padding: 10px 20px;
-            border-radius: 6px;
+        .btn {
             text-decoration: none;
-            font-weight: 500;
+            color: var(--accent);
+            font-weight: 600;
+            font-size: 0.9rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            transition: color 0.3s;
         }
-        .link-button:hover {
-            background-color: #2980b9;
+        .btn:hover {
+            color: white;
+        }
+        footer {
+            margin-top: 80px;
+            text-align: center;
+            border-top: 1px solid #334155;
+            padding-top: 30px;
+            width: 100%;
+        }
+        .footer-text {
+            color: var(--text-dim);
+            font-size: 1rem;
+        }
+        .instagram-link {
+            color: var(--accent);
+            text-decoration: none;
+            font-weight: bold;
         }
     </style>
 </head>
 <body>
 
-<div class="content">
-    <h1>A Minha Seleção de Ferramentas</h1>
-    
-    <div class="grid">
-        <div class="card">
-            <h2>GitHub</h2>
-            <p>É uma plataforma onde podes guardar os teus projetos de programação com total segurança, permitindo também que outras pessoas colaborem contigo ou que mostres o teu trabalho ao mundo.</p>
-            <a href="https://github.com" class="link-button" target="_blank">Visitar</a>
+<div class="container">
+    <header>
+        <h1>Os Meus Favoritos</h1>
+        <div class="search-container">
+            <input type="text" id="searchBar" placeholder="Pesquisar ferramenta..." onkeyup="filterCards()">
+        </div>
+    </header>
+
+    <div id="favoritesList">
+        <div class="section-title">Desenvolvimento e Alojamento</div>
+        <div class="grid">
+            <div class="card" data-name="github">
+                <div>
+                    <h3>GitHub</h3>
+                    <p>Local seguro para guardar códigos de programação e colaborar em projetos tecnológicos de qualquer escala.</p>
+                </div>
+                <a href="https://github.com" class="btn" target="_blank">Abrir</a>
+            </div>
+            <div class="card" data-name="vercel">
+                <div>
+                    <h3>Vercel</h3>
+                    <p>Plataforma para colocar páginas e aplicações na rede de forma instantânea com foco em velocidade máxima.</p>
+                </div>
+                <a href="https://vercel.com" class="btn" target="_blank">Abrir</a>
+            </div>
+            <div class="card" data-name="replit">
+                <div>
+                    <h3>Replit</h3>
+                    <p>Ambiente de programação completo que funciona no navegador, ideal para criar e testar ideias rapidamente.</p>
+                </div>
+                <a href="https://replit.com" class="btn" target="_blank">Abrir</a>
+            </div>
+            <div class="card" data-name="firebase">
+                <div>
+                    <h3>Firebase</h3>
+                    <p>Conjunto de ferramentas da Google para gerir bases de dados e acessos de utilizadores em aplicações modernas.</p>
+                </div>
+                <a href="https://firebase.google.com" class="btn" target="_blank">Abrir</a>
+            </div>
         </div>
 
-        <div class="card">
-            <h2>Vercel</h2>
-            <p>Serve para colocares os teus sítios na rede de forma automática, bastando ligares o teu projeto para que ele fique visível para todos sem configurações difíceis.</p>
-            <a href="https://vercel.com" class="link-button" target="_blank">Visitar</a>
-        </div>
-
-        <div class="card">
-            <h2>Replit</h2>
-            <p>Permite que escrevas e executes código de várias linguagens diretamente no teu navegador, sem precisares de instalar programas complicados no teu computador.</p>
-            <a href="https://replit.com" class="link-button" target="_blank">Visitar</a>
-        </div>
-
-        <div class="card">
-            <h2>Firebase</h2>
-            <p>Oferece ferramentas prontas para criares bases de dados e sistemas de entrada para utilizadores, facilitando a parte técnica da gestão de dados nas tuas aplicações.</p>
-            <a href="https://firebase.google.com" class="link-button" target="_blank">Visitar</a>
+        <div class="section-title">Inteligência Artificial e Criatividade</div>
+        <div class="grid">
+            <div class="card" data-name="suno">
+                <div>
+                    <h3>Suno</h3>
+                    <p>Ferramenta capaz de criar músicas inteiras com melodia e voz a partir de descrições em texto.</p>
+                </div>
+                <a href="https://suno.com" class="btn" target="_blank">Abrir</a>
+            </div>
+            <div class="card" data-name="gemini storybook">
+                <div>
+                    <h3>Gemini Storybook</h3>
+                    <p>Espaço de experimentação onde podes explorar as capacidades narrativas e criativas da inteligência artificial da Google.</p>
+                </div>
+                <a href="https://notebooklm.google.com/" class="btn" target="_blank">Abrir</a>
+            </div>
         </div>
     </div>
+
+    <footer>
+        <p class="footer-text">Criado por <strong>André M. Fernandes</strong></p>
+        <p><a href="https://www.instagram.com/andre.f.m.fernandes/" class="instagram-link" target="_blank">Seguir no Instagram</a></p>
+    </footer>
 </div>
+
+<script>
+    function filterCards() {
+        let input = document.getElementById("searchBar").value.toLowerCase();
+        let cards = document.getElementsByClassName("card");
+        let titles = document.getElementsByClassName("section-title");
+
+        for (let i = 0; i < cards.length; i++) {
+            let name = cards[i].getAttribute("data-name");
+            if (name.includes(input)) {
+                cards[i].style.display = "flex";
+            } else {
+                cards[i].style.display = "none";
+            }
+        }
+    }
+</script>
 
 </body>
 </html>
