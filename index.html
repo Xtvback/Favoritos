@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Portal André M. Fernandes</title>
+    <title>Portal de Recursos Digitais</title>
     <style>
         :root {
             --fundo: #050505;
@@ -33,11 +33,39 @@
         }
         h1 {
             color: var(--destaque);
-            font-size: 3rem;
+            font-size: 3.2rem;
             font-weight: 900;
             letter-spacing: -2px;
             text-transform: uppercase;
-            margin-bottom: 10px;
+            margin-bottom: 5px;
+        }
+        .subtitle {
+            font-size: 1rem;
+            color: var(--texto);
+            margin-bottom: 30px;
+            letter-spacing: 1px;
+        }
+        .top-actions {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            margin-bottom: 40px;
+        }
+        .share-btn {
+            background: var(--destaque);
+            color: var(--fundo);
+            border: none;
+            padding: 12px 24px;
+            border-radius: 50px;
+            font-weight: 800;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            transition: transform 0.2s;
+        }
+        .share-btn:hover {
+            transform: scale(1.05);
         }
         .nota-informativa {
             background: rgba(59, 130, 246, 0.1);
@@ -127,12 +155,21 @@
 
 <div class="wrapper">
     <header>
-        <h1>André M. Fernandes</h1>
-        <div class="nota-informativa">
-            Clica nos títulos para expandir as categorias. O grupo de Destaques aparece sempre no topo.
+        <h1>Centro de Comando Digital</h1>
+        <div class="subtitle">Curadoria por André M. Fernandes</div>
+        
+        <div class="top-actions">
+            <button class="share-btn" onclick="partilharPagina()">
+                <span>Partilhar Página</span>
+            </button>
         </div>
+
+        <div class="nota-informativa">
+            Clica nos títulos das categorias para expandir. Os teus recursos mais usados surgem nos Destaques.
+        </div>
+        
         <div class="search-area">
-            <input type="text" id="searchBar" placeholder="Pesquisar em toda a biblioteca..." onkeyup="filter()">
+            <input type="text" id="searchBar" placeholder="Pesquisar por nome ou função..." onkeyup="filtrarConteudo()">
         </div>
     </header>
 
@@ -142,98 +179,98 @@
             <div class="grid" id="highlights-grid"></div>
         </div>
 
-        <div class="category" id="cat-ia-conversa">
-            <button class="group-header" onclick="toggleCategory('cat-ia-conversa')">IA: Conversa e Chat</button>
+        <div class="category" id="cat-ia-chat">
+            <button class="group-header" onclick="toggleCategory('cat-ia-chat')">Inteligência Artificial: Conversa</button>
             <div class="grid">
-                <div class="card" data-id="gemini" data-tags="google ai">
-                    <div class="card-header"><h3>Gemini</h3><span class="click-count">0</span></div>
-                    <span class="price-label mixed">Misto</span>
-                    <p>IA da Google integrada no ecossistema de produtividade.</p>
-                    <div class="details-text">Grátis para uso geral. Modelos avançados requerem subscrição.</div>
-                    <div class="actions"><a href="https://gemini.google.com" class="main-btn" onclick="track('gemini')" target="_blank">Entrar</a><button class="info-btn" onclick="toggleDetails(this)">Detalhes</button></div>
-                </div>
-                <div class="card" data-id="claude" data-tags="anthropic ai">
-                    <div class="card-header"><h3>Claude</h3><span class="click-count">0</span></div>
-                    <span class="price-label mixed">Misto</span>
-                    <p>Assistente com escrita natural e análise segura de dados.</p>
-                    <div class="details-text">Limite diário gratuito. Plano Pro para mais mensagens.</div>
-                    <div class="actions"><a href="https://claude.ai" class="main-btn" onclick="track('claude')" target="_blank">Entrar</a><button class="info-btn" onclick="toggleDetails(this)">Detalhes</button></div>
-                </div>
-                <div class="card" data-id="deepseek" data-tags="chat ai">
-                    <div class="card-header"><h3>DeepSeek</h3><span class="click-count">0</span></div>
-                    <span class="price-label free">Grátis</span>
-                    <p>IA avançada focada em lógica, matemática e código.</p>
-                    <div class="details-text">Portal de conversação gratuito para todos os utilizadores.</div>
-                    <div class="actions"><a href="https://chat.deepseek.com/" class="main-btn" onclick="track('deepseek')" target="_blank">Entrar</a><button class="info-btn" onclick="toggleDetails(this)">Detalhes</button></div>
-                </div>
-                <div class="card" data-id="grok" data-tags="x twitter ai">
-                    <div class="card-header"><h3>Grok</h3><span class="click-count">0</span></div>
-                    <span class="price-label paid">Pago</span>
-                    <p>IA conectada em tempo real aos eventos da rede social X.</p>
-                    <div class="details-text">Apenas disponível para utilizadores Premium da rede X.</div>
-                    <div class="actions"><a href="https://x.ai" class="main-btn" onclick="track('grok')" target="_blank">Entrar</a><button class="info-btn" onclick="toggleDetails(this)">Detalhes</button></div>
-                </div>
                 <div class="card" data-id="copilot" data-tags="microsoft ai">
                     <div class="card-header"><h3>Copilot</h3><span class="click-count">0</span></div>
                     <span class="price-label mixed">Misto</span>
-                    <p>Assistente da Microsoft para Windows e produtividade.</p>
-                    <div class="details-text">Grátis com conta Microsoft. Funções extras são pagas.</div>
-                    <div class="actions"><a href="https://m365.cloud.microsoft/chat?fromcode=cmmk9q81uwj&auth=1" class="main-btn" onclick="track('copilot')" target="_blank">Entrar</a><button class="info-btn" onclick="toggleDetails(this)">Detalhes</button></div>
+                    <p>Assistente da Microsoft para auxílio no Windows e produtividade.</p>
+                    <div class="details-text">Grátis para uso geral, funções avançadas requerem assinatura.</div>
+                    <div class="actions"><a href="https://m365.cloud.microsoft/chat?fromcode=cmmk9q81uwj&auth=1" class="main-btn" onclick="registarClique('copilot')" target="_blank">Aceder</a><button class="info-btn" onclick="toggleInfo(this)">Detalhes</button></div>
+                </div>
+                <div class="card" data-id="deepseek" data-tags="logica ai">
+                    <div class="card-header"><h3>DeepSeek</h3><span class="click-count">0</span></div>
+                    <span class="price-label free">Grátis</span>
+                    <p>IA avançada focada em raciocínio lógico e programação.</p>
+                    <div class="details-text">Acesso gratuito à área de conversação para todos os utilizadores.</div>
+                    <div class="actions"><a href="https://chat.deepseek.com/" class="main-btn" onclick="registarClique('deepseek')" target="_blank">Aceder</a><button class="info-btn" onclick="toggleInfo(this)">Detalhes</button></div>
+                </div>
+                <div class="card" data-id="gemini" data-tags="google ai">
+                    <div class="card-header"><h3>Gemini</h3><span class="click-count">0</span></div>
+                    <span class="price-label mixed">Misto</span>
+                    <p>IA da Google integrada para ajuda em tarefas quotidianas.</p>
+                    <div class="details-text">Grátis para todos, modelos Ultra integrados em planos pagos.</div>
+                    <div class="actions"><a href="https://gemini.google.com" class="main-btn" onclick="registarClique('gemini')" target="_blank">Aceder</a><button class="info-btn" onclick="toggleInfo(this)">Detalhes</button></div>
+                </div>
+                <div class="card" data-id="claude" data-tags="escrita ai">
+                    <div class="card-header"><h3>Claude</h3><span class="click-count">0</span></div>
+                    <span class="price-label mixed">Misto</span>
+                    <p>IA com foco em segurança e análise textual muito apurada.</p>
+                    <div class="details-text">Grátis com limites diários, plano Pro para uso intensivo.</div>
+                    <div class="actions"><a href="https://claude.ai" class="main-btn" onclick="registarClique('claude')" target="_blank">Aceder</a><button class="info-btn" onclick="toggleInfo(this)">Detalhes</button></div>
+                </div>
+                <div class="card" data-id="charai" data-tags="personagens ai">
+                    <div class="card-header"><h3>Character.ai</h3><span class="click-count">0</span></div>
+                    <span class="price-label mixed">Misto</span>
+                    <p>Interação criativa com personalidades e personagens virtuais.</p>
+                    <div class="details-text">Livre para conversar, plano pago para evitar filas de espera.</div>
+                    <div class="actions"><a href="https://character.ai/chat/eeUb6CxsEYsguYWHVTVvJhY5n1PcfxxY7va-HhJHPCM" class="main-btn" onclick="registarClique('charai')" target="_blank">Aceder</a><button class="info-btn" onclick="toggleInfo(this)">Detalhes</button></div>
+                </div>
+                <div class="card" data-id="grok" data-tags="x ai">
+                    <div class="card-header"><h3>Grok</h3><span class="click-count">0</span></div>
+                    <span class="price-label paid">Pago</span>
+                    <p>IA da rede X com acesso a informação em tempo real.</p>
+                    <div class="details-text">Apenas disponível para utilizadores com assinatura Premium no X.</div>
+                    <div class="actions"><a href="https://x.ai" class="main-btn" onclick="registarClique('grok')" target="_blank">Aceder</a><button class="info-btn" onclick="toggleInfo(this)">Detalhes</button></div>
                 </div>
                 <div class="card" data-id="venice" data-tags="privacidade ai">
                     <div class="card-header"><h3>Venice</h3><span class="click-count">0</span></div>
                     <span class="price-label mixed">Misto</span>
-                    <p>IA que prioriza a privacidade e a liberdade de expressão.</p>
-                    <div class="details-text">Versão grátis limitada disponível para exploração.</div>
-                    <div class="actions"><a href="https://venice.ai" class="main-btn" onclick="track('venice')" target="_blank">Entrar</a><button class="info-btn" onclick="toggleDetails(this)">Detalhes</button></div>
-                </div>
-                <div class="card" data-id="charai" data-tags="personagem ai">
-                    <div class="card-header"><h3>Character.ai</h3><span class="click-count">0</span></div>
-                    <span class="price-label mixed">Misto</span>
-                    <p>Conversas criativas com personagens e bots variados.</p>
-                    <div class="details-text">Livre para falar. Plano pago para evitar tempos de espera.</div>
-                    <div class="actions"><a href="https://character.ai/chat/eeUb6CxsEYsguYWHVTVvJhY5n1PcfxxY7va-HhJHPCM" class="main-btn" onclick="track('charai')" target="_blank">Entrar</a><button class="info-btn" onclick="toggleDetails(this)">Detalhes</button></div>
+                    <p>IA com foco absoluto na privacidade e liberdade de resposta.</p>
+                    <div class="details-text">Versão gratuita disponível com limitações de uso diário.</div>
+                    <div class="actions"><a href="https://venice.ai" class="main-btn" onclick="registarClique('venice')" target="_blank">Aceder</a><button class="info-btn" onclick="toggleInfo(this)">Detalhes</button></div>
                 </div>
             </div>
         </div>
 
-        <div class="category" id="cat-ia-criacao">
-            <button class="group-header" onclick="toggleCategory('cat-ia-criacao')">IA: Criação e Documentos</button>
+        <div class="category" id="cat-ia-prod">
+            <button class="group-header" onclick="toggleCategory('cat-ia-prod')">Inteligência Artificial: Criação</button>
             <div class="grid">
                 <div class="card" data-id="manus" data-tags="automaçao ai">
                     <div class="card-header"><h3>Manus</h3><span class="click-count">0</span></div>
                     <span class="price-label mixed">Misto</span>
-                    <p>Agentes inteligentes para realizar tarefas digitais complexas.</p>
-                    <div class="details-text">Baseado no uso de créditos por cada tarefa realizada.</div>
-                    <div class="actions"><a href="https://manus.ai" class="main-btn" onclick="track('manus')" target="_blank">Entrar</a><button class="info-btn" onclick="toggleDetails(this)">Detalhes</button></div>
+                    <p>Agentes inteligentes para execução de tarefas digitais.</p>
+                    <div class="details-text">Uso baseado em créditos por tarefas executadas.</div>
+                    <div class="actions"><a href="https://manus.ai" class="main-btn" onclick="registarClique('manus')" target="_blank">Aceder</a><button class="info-btn" onclick="toggleInfo(this)">Detalhes</button></div>
                 </div>
-                <div class="card" data-id="notebooklm" data-tags="google notas ai">
+                <div class="card" data-id="notebooklm" data-tags="documentos ai">
                     <div class="card-header"><h3>NotebookLM</h3><span class="click-count">0</span></div>
                     <span class="price-label free">Grátis</span>
-                    <p>Transforma os teus ficheiros num centro de saber inteligente.</p>
-                    <div class="details-text">Totalmente grátis para todos os utilizadores Google.</div>
-                    <div class="actions"><a href="https://notebooklm.google.com" class="main-btn" onclick="track('notebooklm')" target="_blank">Entrar</a><button class="info-btn" onclick="toggleDetails(this)">Detalhes</button></div>
+                    <p>Ferramenta para analisar e resumir os teus próprios ficheiros.</p>
+                    <div class="details-text">Totalmente gratuito para utilizadores com conta Google.</div>
+                    <div class="actions"><a href="https://notebooklm.google.com" class="main-btn" onclick="registarClique('notebooklm')" target="_blank">Aceder</a><button class="info-btn" onclick="toggleInfo(this)">Detalhes</button></div>
                 </div>
                 <div class="card" data-id="storybook" data-tags="narrativa ai">
                     <div class="card-header"><h3>Gemini Storybook</h3><span class="click-count">0</span></div>
                     <span class="price-label free">Grátis</span>
-                    <p>Espaço experimental para criar histórias e narrativas.</p>
-                    <div class="details-text">Funciona integrado nas ferramentas criativas da Google.</div>
-                    <div class="actions"><a href="https://notebooklm.google.com/" class="main-btn" onclick="track('storybook')" target="_blank">Entrar</a><button class="info-btn" onclick="toggleDetails(this)">Detalhes</button></div>
+                    <p>Espaço experimental para criação de histórias e narrativas.</p>
+                    <div class="details-text">Funciona como laboratório criativo dentro do ecossistema Google.</div>
+                    <div class="actions"><a href="https://notebooklm.google.com/" class="main-btn" onclick="registarClique('storybook')" target="_blank">Aceder</a><button class="info-btn" onclick="toggleInfo(this)">Detalhes</button></div>
                 </div>
                 <div class="card" data-id="chatpdf" data-tags="pdf ai">
                     <div class="card-header"><h3>ChatPDF</h3><span class="click-count">0</span></div>
                     <span class="price-label mixed">Misto</span>
-                    <p>Analisa e faz perguntas a qualquer documento digital.</p>
-                    <div class="details-text">Livre para ficheiros pequenos. Requer Plus para documentos longos.</div>
-                    <div class="actions"><a href="https://www.chatpdf.com" class="main-btn" onclick="track('chatpdf')" target="_blank">Entrar</a><button class="info-btn" onclick="toggleDetails(this)">Detalhes</button></div>
+                    <p>Conversa diretamente com documentos e extrai informação.</p>
+                    <div class="details-text">Grátis para ficheiros pequenos, plano Plus para uso massivo.</div>
+                    <div class="actions"><a href="https://www.chatpdf.com" class="main-btn" onclick="registarClique('chatpdf')" target="_blank">Aceder</a><button class="info-btn" onclick="toggleInfo(this)">Detalhes</button></div>
                 </div>
                 <div class="card" data-id="suno" data-tags="musica ai">
                     <div class="card-header"><h3>Suno</h3><span class="click-count">0</span></div>
                     <span class="price-label mixed">Misto</span>
                     <p>Geração de música e áudio a partir de simples texto.</p>
-                    <div class="details-text">Oferece créditos grátis diários para as tuas canções.</div>
-                    <div class="actions"><a href="https://suno.com" class="main-btn" onclick="track('suno')" target="_blank">Entrar</a><button class="info-btn" onclick="toggleDetails(this)">Detalhes</button></div>
+                    <div class="details-text">Oferece créditos gratuitos diários para criações musicais.</div>
+                    <div class="actions"><a href="https://suno.com" class="main-btn" onclick="registarClique('suno')" target="_blank">Aceder</a><button class="info-btn" onclick="toggleInfo(this)">Detalhes</button></div>
                 </div>
             </div>
         </div>
@@ -244,50 +281,50 @@
                 <div class="card" data-id="github" data-tags="codigo dev">
                     <div class="card-header"><h3>GitHub</h3><span class="click-count">0</span></div>
                     <span class="price-label free">Grátis</span>
-                    <p>Alojamento de código e colaboração tecnológica global.</p>
-                    <div class="details-text">Totalmente livre para repositórios públicos e privados.</div>
-                    <div class="actions"><a href="https://github.com" class="main-btn" onclick="track('github')" target="_blank">Entrar</a><button class="info-btn" onclick="toggleDetails(this)">Detalhes</button></div>
+                    <p>Alojamento de código e colaboração tecnológica mundial.</p>
+                    <div class="details-text">Grátis para repositórios públicos e privados individuais.</div>
+                    <div class="actions"><a href="https://github.com" class="main-btn" onclick="registarClique('github')" target="_blank">Aceder</a><button class="info-btn" onclick="toggleInfo(this)">Detalhes</button></div>
                 </div>
-                <div class="card" data-id="vercel" data-tags="alojamento dev">
+                <div class="card" data-id="vercel" data-tags="alojamento web">
                     <div class="card-header"><h3>Vercel</h3><span class="click-count">0</span></div>
                     <span class="price-label mixed">Misto</span>
                     <p>Publicação instantânea de sítios web na rede.</p>
-                    <div class="details-text">Excelente plano Hobby gratuito para projetos pessoais.</div>
-                    <div class="actions"><a href="https://vercel.com" class="main-btn" onclick="track('vercel')" target="_blank">Entrar</a><button class="info-btn" onclick="toggleDetails(this)">Detalhes</button></div>
+                    <div class="details-text">Plano Hobby gratuito ideal para projetos pessoais e portefólios.</div>
+                    <div class="actions"><a href="https://vercel.com" class="main-btn" onclick="registarClique('vercel')" target="_blank">Aceder</a><button class="info-btn" onclick="toggleInfo(this)">Detalhes</button></div>
                 </div>
                 <div class="card" data-id="replit" data-tags="codigo browser">
                     <div class="card-header"><h3>Replit</h3><span class="click-count">0</span></div>
                     <span class="price-label mixed">Misto</span>
-                    <p>Ambiente de programação completo no teu navegador.</p>
-                    <div class="details-text">Podes programar grátis com algumas limitações de poder.</div>
-                    <div class="actions"><a href="https://replit.com" class="main-btn" onclick="track('replit')" target="_blank">Entrar</a><button class="info-btn" onclick="toggleDetails(this)">Detalhes</button></div>
+                    <p>Ambiente de programação direto no teu navegador.</p>
+                    <div class="details-text">Podes programar grátis com recursos de máquina limitados.</div>
+                    <div class="actions"><a href="https://replit.com" class="main-btn" onclick="registarClique('replit')" target="_blank">Aceder</a><button class="info-btn" onclick="toggleInfo(this)">Detalhes</button></div>
                 </div>
-                <div class="card" data-id="firebase" data-tags="google base dados">
+                <div class="card" data-id="firebase" data-tags="google dados">
                     <div class="card-header"><h3>Firebase</h3><span class="click-count">0</span></div>
                     <span class="price-label mixed">Misto</span>
-                    <p>Ferramentas para base de dados e gestão de apps.</p>
+                    <p>Conjunto de ferramentas para bases de dados e apps.</p>
                     <div class="details-text">Plano Spark gratuito com limites de tráfego generosos.</div>
-                    <div class="actions"><a href="https://firebase.google.com" class="main-btn" onclick="track('firebase')" target="_blank">Entrar</a><button class="info-btn" onclick="toggleDetails(this)">Detalhes</button></div>
+                    <div class="actions"><a href="https://firebase.google.com" class="main-btn" onclick="registarClique('firebase')" target="_blank">Aceder</a><button class="info-btn" onclick="toggleInfo(this)">Detalhes</button></div>
                 </div>
             </div>
         </div>
 
-        <div class="category" id="cat-carreira">
-            <button class="group-header" onclick="toggleCategory('cat-carreira')">Carreira e Mercado de Trabalho</button>
+        <div class="category" id="cat-trabalho">
+            <button class="group-header" onclick="toggleCategory('cat-trabalho')">Carreira e Mercado de Trabalho</button>
             <div class="grid">
-                <div class="card" data-id="linkedin" data-tags="rede profissional">
+                <div class="card" data-id="linkedin" data-tags="trabalho profissional">
                     <div class="card-header"><h3>LinkedIn</h3><span class="click-count">0</span></div>
                     <span class="price-label free">Grátis</span>
-                    <p>Gestão de currículo e rede de contactos profissionais.</p>
-                    <div class="details-text">Uso geral grátis. Plano pago para visibilidade extra.</div>
-                    <div class="actions"><a href="https://www.linkedin.com" class="main-btn" onclick="track('linkedin')" target="_blank">Entrar</a><button class="info-btn" onclick="toggleDetails(this)">Detalhes</button></div>
+                    <p>Gestão de carreira e rede de contactos profissionais.</p>
+                    <div class="details-text">Uso base gratuito, planos pagos para recrutamento e vendas.</div>
+                    <div class="actions"><a href="https://www.linkedin.com" class="main-btn" onclick="registarClique('linkedin')" target="_blank">Aceder</a><button class="info-btn" onclick="toggleInfo(this)">Detalhes</button></div>
                 </div>
-                <div class="card" data-id="indeed" data-tags="vagas emprego">
+                <div class="card" data-id="indeed" data-tags="emprego vagas">
                     <div class="card-header"><h3>Indeed</h3><span class="click-count">0</span></div>
                     <span class="price-label free">Grátis</span>
-                    <p>Procura massiva de ofertas de trabalho e estágios.</p>
-                    <div class="details-text">Totalmente gratuito para envio de candidaturas.</div>
-                    <div class="actions"><a href="https://pt.indeed.com" class="main-btn" onclick="track('indeed')" target="_blank">Entrar</a><button class="info-btn" onclick="toggleDetails(this)">Detalhes</button></div>
+                    <p>Procura massiva de ofertas de trabalho e estágios em Portugal.</p>
+                    <div class="details-text">Totalmente gratuito para quem procura emprego.</div>
+                    <div class="actions"><a href="https://pt.indeed.com" class="main-btn" onclick="registarClique('indeed')" target="_blank">Aceder</a><button class="info-btn" onclick="toggleInfo(this)">Detalhes</button></div>
                 </div>
             </div>
         </div>
@@ -295,40 +332,40 @@
         <div class="category" id="cat-compras">
             <button class="group-header" onclick="toggleCategory('cat-compras')">Compras e Lojas Online</button>
             <div class="grid">
-                <div class="card" data-id="amazon" data-tags="compras global">
+                <div class="card" data-id="amazon" data-tags="loja global">
                     <div class="card-header"><h3>Amazon</h3><span class="click-count">0</span></div>
                     <span class="price-label paid">Pago</span>
-                    <p>A maior seleção de artigos com entrega rápida.</p>
-                    <div class="details-text">Compras individuais. Subscrição Prime para envios grátis.</div>
-                    <div class="actions"><a href="https://www.amazon.es" class="main-btn" onclick="track('amazon')" target="_blank">Entrar</a><button class="info-btn" onclick="toggleDetails(this)">Detalhes</button></div>
+                    <p>A maior seleção de artigos com entregas rápidas na península.</p>
+                    <div class="details-text">Compras individuais, subscrição Prime para envios grátis.</div>
+                    <div class="actions"><a href="https://www.amazon.es" class="main-btn" onclick="registarClique('amazon')" target="_blank">Aceder</a><button class="info-btn" onclick="toggleInfo(this)">Detalhes</button></div>
                 </div>
                 <div class="card" data-id="aliexpress" data-tags="china barato">
                     <div class="card-header"><h3>AliExpress</h3><span class="click-count">0</span></div>
                     <span class="price-label paid">Pago</span>
-                    <p>Milhares de produtos com preços de fábrica chinesa.</p>
-                    <div class="details-text">Pagas apenas o que compras. Portes podem variar.</div>
-                    <div class="actions"><a href="https://www.aliexpress.com" class="main-btn" onclick="track('aliexpress')" target="_blank">Entrar</a><button class="info-btn" onclick="toggleDetails(this)">Detalhes</button></div>
+                    <p>Artigos de todo o tipo com preços diretos da China.</p>
+                    <div class="details-text">Pagas apenas os artigos encomendados.</div>
+                    <div class="actions"><a href="https://www.aliexpress.com" class="main-btn" onclick="registarClique('aliexpress')" target="_blank">Aceder</a><button class="info-btn" onclick="toggleInfo(this)">Detalhes</button></div>
                 </div>
                 <div class="card" data-id="pcdiga" data-tags="hardware tecnologia">
                     <div class="card-header"><h3>PCDiga</h3><span class="click-count">0</span></div>
                     <span class="price-label paid">Pago</span>
-                    <p>Referência em informática e gadgets em Portugal.</p>
-                    <div class="details-text">Venda direta com assistência e garantias nacionais.</div>
-                    <div class="actions"><a href="https://www.pcdiga.com" class="main-btn" onclick="track('pcdiga')" target="_blank">Entrar</a><button class="info-btn" onclick="toggleDetails(this)">Detalhes</button></div>
+                    <p>Referência nacional para informática e componentes eletrónicos.</p>
+                    <div class="details-text">Venda direta com assistência e garantias em Portugal.</div>
+                    <div class="actions"><a href="https://www.pcdiga.com" class="main-btn" onclick="registarClique('pcdiga')" target="_blank">Aceder</a><button class="info-btn" onclick="toggleInfo(this)">Detalhes</button></div>
                 </div>
                 <div class="card" data-id="outletpc" data-tags="descontos pc">
                     <div class="card-header"><h3>Outlet PC</h3><span class="click-count">0</span></div>
                     <span class="price-label paid">Pago</span>
-                    <p>Tecnologia e componentes com preços de saldo.</p>
-                    <div class="details-text">Oportunidades únicas em novos e recondicionados.</div>
-                    <div class="actions"><a href="https://www.outlet-pc.es" class="main-btn" onclick="track('outletpc')" target="_blank">Entrar</a><button class="info-btn" onclick="toggleDetails(this)">Detalhes</button></div>
+                    <p>Hardware e eletrónica com preços de saldo e promoções.</p>
+                    <div class="details-text">Novos e recondicionados com preços reduzidos.</div>
+                    <div class="actions"><a href="https://www.outlet-pc.es" class="main-btn" onclick="registarClique('outletpc')" target="_blank">Aceder</a><button class="info-btn" onclick="toggleInfo(this)">Detalhes</button></div>
                 </div>
-                <div class="card" data-id="eneba" data-tags="jogos chaves">
+                <div class="card" data-id="eneba" data-tags="jogos gaming">
                     <div class="card-header"><h3>Eneba</h3><span class="click-count">0</span></div>
                     <span class="price-label paid">Pago</span>
-                    <p>Mercado de chaves digitais e cartões presente.</p>
-                    <div class="details-text">Preços reduzidos vindos de vários vendedores.</div>
-                    <div class="actions"><a href="https://www.eneba.com" class="main-btn" onclick="track('eneba')" target="_blank">Entrar</a><button class="info-btn" onclick="toggleDetails(this)">Detalhes</button></div>
+                    <p>Mercado de chaves digitais para jogos e software em saldo.</p>
+                    <div class="details-text">Mercado global com preços baixos para entretenimento digital.</div>
+                    <div class="actions"><a href="https://www.eneba.com" class="main-btn" onclick="registarClique('eneba')" target="_blank">Aceder</a><button class="info-btn" onclick="toggleInfo(this)">Detalhes</button></div>
                 </div>
             </div>
         </div>
@@ -339,78 +376,78 @@
                 <div class="card" data-id="workspace" data-tags="google docs">
                     <div class="card-header"><h3>Google Workspace</h3><span class="click-count">0</span></div>
                     <span class="price-label mixed">Misto</span>
-                    <p>Suíte completa para criação de documentos na nuvem.</p>
-                    <div class="details-text">Grátis para uso pessoal. Pago para equipas profissionais.</div>
-                    <div class="actions"><a href="https://workspace.google.com" class="main-btn" onclick="track('workspace')" target="_blank">Entrar</a><button class="info-btn" onclick="toggleDetails(this)">Detalhes</button></div>
+                    <p>Suíte completa para documentos e colaboração na nuvem.</p>
+                    <div class="details-text">Grátis para uso pessoal básico até 15GB.</div>
+                    <div class="actions"><a href="https://workspace.google.com" class="main-btn" onclick="registarClique('workspace')" target="_blank">Aceder</a><button class="info-btn" onclick="toggleInfo(this)">Detalhes</button></div>
                 </div>
-                <div class="card" data-id="gmail" data-tags="correio google">
+                <div class="card" data-id="gmail" data-tags="email google">
                     <div class="card-header"><h3>Gmail</h3><span class="click-count">0</span></div>
                     <span class="price-label free">Grátis</span>
-                    <p>Serviço principal de correio eletrónico da Google.</p>
+                    <p>O serviço de correio eletrónico principal da Google.</p>
                     <div class="details-text">Incluído sem custos em todas as contas Google.</div>
-                    <div class="actions"><a href="https://mail.google.com" class="main-btn" onclick="track('gmail')" target="_blank">Entrar</a><button class="info-btn" onclick="toggleDetails(this)">Detalhes</button></div>
+                    <div class="actions"><a href="https://mail.google.com" class="main-btn" onclick="registarClique('gmail')" target="_blank">Aceder</a><button class="info-btn" onclick="toggleInfo(this)">Detalhes</button></div>
                 </div>
                 <div class="card" data-id="outlook" data-tags="microsoft email">
                     <div class="card-header"><h3>Outlook</h3><span class="click-count">0</span></div>
                     <span class="price-label free">Grátis</span>
-                    <p>Gestão de email e calendário do universo Microsoft.</p>
+                    <p>Gestão de correio e calendários do sistema Microsoft.</p>
                     <div class="details-text">Versão web gratuita para utilizadores individuais.</div>
-                    <div class="actions"><a href="https://outlook.live.com" class="main-btn" onclick="track('outlook')" target="_blank">Entrar</a><button class="info-btn" onclick="toggleDetails(this)">Detalhes</button></div>
+                    <div class="actions"><a href="https://outlook.live.com" class="main-btn" onclick="registarClique('outlook')" target="_blank">Aceder</a><button class="info-btn" onclick="toggleInfo(this)">Detalhes</button></div>
                 </div>
-                <div class="card" data-id="keep" data-tags="notas rápidas">
+                <div class="card" data-id="keep" data-tags="notas rapidas">
                     <div class="card-header"><h3>Google Keep</h3><span class="click-count">0</span></div>
                     <span class="price-label free">Grátis</span>
-                    <p>Notas e listas rápidas acessíveis em todo o lado.</p>
-                    <div class="details-text">Totalmente gratuito para organização diária.</div>
-                    <div class="actions"><a href="https://keep.google.com" class="main-btn" onclick="track('keep')" target="_blank">Entrar</a><button class="info-btn" onclick="toggleDetails(this)">Detalhes</button></div>
+                    <p>Notas e listas rápidas sincronizadas em todos os aparelhos.</p>
+                    <div class="details-text">Totalmente gratuito para organização diária imediata.</div>
+                    <div class="actions"><a href="https://keep.google.com" class="main-btn" onclick="registarClique('keep')" target="_blank">Aceder</a><button class="info-btn" onclick="toggleInfo(this)">Detalhes</button></div>
                 </div>
-                <div class="card" data-id="calendar" data-tags="agenda google">
+                <div class="card" data-id="calendar" data-tags="agenda tempo">
                     <div class="card-header"><h3>Google Calendar</h3><span class="click-count">0</span></div>
                     <span class="price-label free">Grátis</span>
-                    <p>Agenda digital para planeamento de compromissos.</p>
-                    <div class="details-text">Grátis para gerir o teu tempo e reuniões.</div>
-                    <div class="actions"><a href="https://calendar.google.com" class="main-btn" onclick="track('calendar')" target="_blank">Entrar</a><button class="info-btn" onclick="toggleDetails(this)">Detalhes</button></div>
+                    <p>Agenda digital para organizar compromissos e reuniões.</p>
+                    <div class="details-text">Grátis para gerir o teu tempo de forma eficaz.</div>
+                    <div class="actions"><a href="https://calendar.google.com" class="main-btn" onclick="registarClique('calendar')" target="_blank">Aceder</a><button class="info-btn" onclick="toggleInfo(this)">Detalhes</button></div>
                 </div>
             </div>
         </div>
 
-        <div class="category" id="cat-conteudo">
-            <button class="group-header" onclick="toggleCategory('cat-conteudo')">Conteúdo, Leitura e Arte</button>
+        <div class="category" id="cat-arte">
+            <button class="group-header" onclick="toggleCategory('cat-arte')">Conteúdo, Leitura e Arte</button>
             <div class="grid">
-                <div class="card" data-id="lulu" data-tags="livros auto-publicaçao">
+                <div class="card" data-id="lulu" data-tags="livros autores">
                     <div class="card-header"><h3>Lulu.com</h3><span class="click-count">0</span></div>
                     <span class="price-label mixed">Misto</span>
-                    <p>Plataforma para publicar e vender os teus livros.</p>
-                    <div class="details-text">Criação grátis. Pagas apenas a impressão física.</div>
-                    <div class="actions"><a href="https://www.lulu.com" class="main-btn" onclick="track('lulu')" target="_blank">Entrar</a><button class="info-btn" onclick="toggleDetails(this)">Detalhes</button></div>
+                    <p>Plataforma para publicar e vender os teus próprios livros.</p>
+                    <div class="details-text">Publicação grátis, pagas apenas a impressão física.</div>
+                    <div class="actions"><a href="https://www.lulu.com" class="main-btn" onclick="registarClique('lulu')" target="_blank">Aceder</a><button class="info-btn" onclick="toggleInfo(this)">Detalhes</button></div>
                 </div>
                 <div class="card" data-id="substack" data-tags="newsletter artigos">
                     <div class="card-header"><h3>Substack</h3><span class="click-count">0</span></div>
                     <span class="price-label free">Grátis</span>
-                    <p>Lê newsletters de autores e jornalistas independentes.</p>
-                    <div class="details-text">Leitura gratuita na maioria dos conteúdos.</div>
-                    <div class="actions"><a href="https://substack.com" class="main-btn" onclick="track('substack')" target="_blank">Entrar</a><button class="info-btn" onclick="toggleDetails(this)">Detalhes</button></div>
+                    <p>Lê artigos e newsletters de autores independentes.</p>
+                    <div class="details-text">Leitura gratuita na maioria dos conteúdos publicados.</div>
+                    <div class="actions"><a href="https://substack.com" class="main-btn" onclick="registarClique('substack')" target="_blank">Aceder</a><button class="info-btn" onclick="toggleInfo(this)">Detalhes</button></div>
                 </div>
-                <div class="card" data-id="wattpad" data-tags="ler historias">
+                <div class="card" data-id="wattpad" data-tags="ficçao ler">
                     <div class="card-header"><h3>Wattpad</h3><span class="click-count">0</span></div>
                     <span class="price-label mixed">Misto</span>
-                    <p>Comunidade global para ler e publicar ficção.</p>
-                    <div class="details-text">Livre com anúncios. Plano Premium retira publicidade.</div>
-                    <div class="actions"><a href="https://www.wattpad.com" class="main-btn" onclick="track('wattpad')" target="_blank">Entrar</a><button class="info-btn" onclick="toggleDetails(this)">Detalhes</button></div>
+                    <p>Comunidade para ler e publicar histórias de ficção.</p>
+                    <div class="details-text">Livre com anúncios, plano Premium retira publicidade.</div>
+                    <div class="actions"><a href="https://www.wattpad.com" class="main-btn" onclick="registarClique('wattpad')" target="_blank">Aceder</a><button class="info-btn" onclick="toggleInfo(this)">Detalhes</button></div>
                 </div>
-                <div class="card" data-id="pinterest" data-tags="inspiraçao visual">
+                <div class="card" data-id="pinterest" data-tags="imagens ideias">
                     <div class="card-header"><h3>Pinterest</h3><span class="click-count">0</span></div>
                     <span class="price-label free">Grátis</span>
-                    <p>Exploração visual de ideias e referências estéticas.</p>
-                    <div class="details-text">Totalmente gratuito para guardar e criar painéis.</div>
-                    <div class="actions"><a href="https://www.pinterest.com" class="main-btn" onclick="track('pinterest')" target="_blank">Entrar</a><button class="info-btn" onclick="toggleDetails(this)">Detalhes</button></div>
+                    <p>Exploração visual de referências estéticas e ideias.</p>
+                    <div class="details-text">Totalmente gratuito para guardar painéis visuais.</div>
+                    <div class="actions"><a href="https://www.pinterest.com" class="main-btn" onclick="registarClique('pinterest')" target="_blank">Aceder</a><button class="info-btn" onclick="toggleInfo(this)">Detalhes</button></div>
                 </div>
-                <div class="card" data-id="deviantart" data-tags="arte digital">
+                <div class="card" data-id="deviantart" data-tags="ilustraçao arte">
                     <div class="card-header"><h3>DeviantArt</h3><span class="click-count">0</span></div>
                     <span class="price-label mixed">Misto</span>
-                    <p>Galeria massiva para artistas e ilustradores digitais.</p>
-                    <div class="details-text">Grátis para ver e publicar. Plano Core é pago.</div>
-                    <div class="actions"><a href="https://www.deviantart.com" class="main-btn" onclick="track('deviantart')" target="_blank">Entrar</a><button class="info-btn" onclick="toggleDetails(this)">Detalhes</button></div>
+                    <p>Galeria massiva para artistas digitais e ilustradores.</p>
+                    <div class="details-text">Grátis para ver e expor, plano Core é pago.</div>
+                    <div class="actions"><a href="https://www.deviantart.com" class="main-btn" onclick="registarClique('deviantart')" target="_blank">Aceder</a><button class="info-btn" onclick="toggleInfo(this)">Detalhes</button></div>
                 </div>
             </div>
         </div>
@@ -418,88 +455,88 @@
         <div class="category" id="cat-entertainment">
             <button class="group-header" onclick="toggleCategory('cat-entertainment')">Entretenimento e Media</button>
             <div class="grid">
-                <div class="card" data-id="youtube" data-tags="video streaming">
+                <div class="card" data-id="youtube" data-tags="videos tv">
                     <div class="card-header"><h3>YouTube</h3><span class="click-count">0</span></div>
                     <span class="price-label mixed">Misto</span>
-                    <p>Líder mundial em vídeo e transmissões ao vivo.</p>
-                    <div class="details-text">Livre com anúncios. Premium para remover publicidade.</div>
-                    <div class="actions"><a href="https://www.youtube.com" class="main-btn" onclick="track('youtube')" target="_blank">Entrar</a><button class="info-btn" onclick="toggleDetails(this)">Detalhes</button></div>
+                    <p>Líder mundial em vídeos e transmissões em direto.</p>
+                    <div class="details-text">Grátis com anúncios, Premium retira publicidade.</div>
+                    <div class="actions"><a href="https://www.youtube.com" class="main-btn" onclick="registarClique('youtube')" target="_blank">Aceder</a><button class="info-btn" onclick="toggleInfo(this)">Detalhes</button></div>
                 </div>
-                <div class="card" data-id="twitch" data-tags="live gaming">
+                <div class="card" data-id="twitch" data-tags="lives gaming">
                     <div class="card-header"><h3>Twitch.tv</h3><span class="click-count">0</span></div>
                     <span class="price-label mixed">Misto</span>
-                    <p>Plataforma focada em lives e interação em direto.</p>
-                    <div class="details-text">Assistir é grátis. Subscrever canais ajuda criadores.</div>
-                    <div class="actions"><a href="https://www.twitch.tv" class="main-btn" onclick="track('twitch')" target="_blank">Entrar</a><button class="info-btn" onclick="toggleDetails(this)">Detalhes</button></div>
+                    <p>Foco em diretos e interação em tempo real com criadores.</p>
+                    <div class="details-text">Assistir é grátis, apoiar com subs ajuda os canais.</div>
+                    <div class="actions"><a href="https://www.twitch.tv" class="main-btn" onclick="registarClique('twitch')" target="_blank">Aceder</a><button class="info-btn" onclick="toggleInfo(this)">Detalhes</button></div>
                 </div>
-                <div class="card" data-id="plex" data-tags="filmes pessoal">
+                <div class="card" data-id="plex" data-tags="filmes media">
                     <div class="card-header"><h3>Plex</h3><span class="click-count">0</span></div>
                     <span class="price-label mixed">Misto</span>
-                    <p>Gestão da tua própria biblioteca de filmes e séries.</p>
-                    <div class="details-text">Servidor grátis. Apps móveis têm custo único opcional.</div>
-                    <div class="actions"><a href="https://www.plex.tv" class="main-btn" onclick="track('plex')" target="_blank">Entrar</a><button class="info-btn" onclick="toggleDetails(this)">Detalhes</button></div>
+                    <p>Gere e assiste à tua biblioteca pessoal de media em casa.</p>
+                    <div class="details-text">Servidor base gratuito, apps móveis podem ter custo único.</div>
+                    <div class="actions"><a href="https://www.plex.tv" class="main-btn" onclick="registarClique('plex')" target="_blank">Aceder</a><button class="info-btn" onclick="toggleInfo(this)">Detalhes</button></div>
                 </div>
                 <div class="card" data-id="spotify" data-tags="musica audio">
                     <div class="card-header"><h3>Spotify</h3><span class="click-count">0</span></div>
                     <span class="price-label mixed">Misto</span>
-                    <p>Música e podcasts acessíveis em qualquer dispositivo.</p>
-                    <div class="details-text">Grátis com anúncios. Premium para ouvir offline.</div>
-                    <div class="actions"><a href="https://www.spotify.com" class="main-btn" onclick="track('spotify')" target="_blank">Entrar</a><button class="info-btn" onclick="toggleDetails(this)">Detalhes</button></div>
+                    <p>Música e podcasts acessíveis em qualquer lado.</p>
+                    <div class="details-text">Grátis com anúncios, Premium para ouvir sem rede.</div>
+                    <div class="actions"><a href="https://www.spotify.com" class="main-btn" onclick="registarClique('spotify')" target="_blank">Aceder</a><button class="info-btn" onclick="toggleInfo(this)">Detalhes</button></div>
                 </div>
-                <div class="card" data-id="ytmusic" data-tags="google audio">
+                <div class="card" data-id="ytmusic" data-tags="audio google">
                     <div class="card-header"><h3>YouTube Music</h3><span class="click-count">0</span></div>
                     <span class="price-label mixed">Misto</span>
-                    <p>O serviço musical baseado no catálogo do YouTube.</p>
-                    <div class="details-text">Livre com anúncios. Integrado no YouTube Premium.</div>
-                    <div class="actions"><a href="https://music.youtube.com" class="main-btn" onclick="track('ytmusic')" target="_blank">Entrar</a><button class="info-btn" onclick="toggleDetails(this)">Detalhes</button></div>
+                    <p>O serviço musical baseado em todo o catálogo do YouTube.</p>
+                    <div class="details-text">Livre com anúncios, incluído no YouTube Premium.</div>
+                    <div class="actions"><a href="https://music.youtube.com" class="main-btn" onclick="registarClique('ytmusic')" target="_blank">Aceder</a><button class="info-btn" onclick="toggleInfo(this)">Detalhes</button></div>
                 </div>
             </div>
         </div>
 
-        <div class="category" id="cat-utils">
-            <button class="group-header" onclick="toggleCategory('cat-utils')">Saber e Utilidades</button>
+        <div class="category" id="cat-saber">
+            <button class="group-header" onclick="toggleCategory('cat-saber')">Saber e Utilidades</button>
             <div class="grid">
                 <div class="card" data-id="wikipedia" data-tags="enciclopedia saber">
                     <div class="card-header"><h3>Wikipedia</h3><span class="click-count">0</span></div>
                     <span class="price-label free">Grátis</span>
-                    <p>Enciclopédia livre e global sobre todos os temas.</p>
+                    <p>Enciclopédia livre global sobre qualquer assunto.</p>
                     <div class="details-text">Totalmente gratuito e sem fins lucrativos.</div>
-                    <div class="actions"><a href="https://pt.wikipedia.org" class="main-btn" onclick="track('wiki')" target="_blank">Entrar</a><button class="info-btn" onclick="toggleDetails(this)">Detalhes</button></div>
+                    <div class="actions"><a href="https://pt.wikipedia.org" class="main-btn" onclick="registarClique('wiki')" target="_blank">Aceder</a><button class="info-btn" onclick="toggleInfo(this)">Detalhes</button></div>
                 </div>
-                <div class="card" data-id="imdb" data-tags="filmes ratings">
+                <div class="card" data-id="imdb" data-tags="filmes notas">
                     <div class="card-header"><h3>IMDb</h3><span class="click-count">0</span></div>
                     <span class="price-label free">Grátis</span>
-                    <p>A maior base de dados técnica sobre cinema e séries.</p>
-                    <div class="details-text">Acesso livre a críticas e classificações mundiais.</div>
-                    <div class="actions"><a href="https://www.imdb.com" class="main-btn" onclick="track('imdb')" target="_blank">Entrar</a><button class="info-btn" onclick="toggleDetails(this)">Detalhes</button></div>
+                    <p>Base de dados técnica sobre produções cinematográficas.</p>
+                    <div class="details-text">Acesso livre a críticas e classificações de cinema.</div>
+                    <div class="actions"><a href="https://www.imdb.com" class="main-btn" onclick="registarClique('imdb')" target="_blank">Aceder</a><button class="info-btn" onclick="toggleInfo(this)">Detalhes</button></div>
                 </div>
                 <div class="card" data-id="legendas" data-tags="legendas pt">
                     <div class="card-header"><h3>LegendasDivx</h3><span class="click-count">0</span></div>
                     <span class="price-label free">Grátis</span>
                     <p>Portal português para descarregar legendas de vídeos.</p>
-                    <div class="details-text">Livre para utilizadores registados na comunidade.</div>
-                    <div class="actions"><a href="https://www.legendasdivx.com" class="main-btn" onclick="track('legendas')" target="_blank">Entrar</a><button class="info-btn" onclick="toggleDetails(this)">Detalhes</button></div>
+                    <div class="details-text">Livre para membros registados na comunidade.</div>
+                    <div class="actions"><a href="https://www.legendasdivx.com" class="main-btn" onclick="registarClique('legendas')" target="_blank">Aceder</a><button class="info-btn" onclick="toggleInfo(this)">Detalhes</button></div>
                 </div>
                 <div class="card" data-id="duckduckgo" data-tags="pesquisa privada">
                     <div class="card-header"><h3>DuckDuckGo</h3><span class="click-count">0</span></div>
                     <span class="price-label free">Grátis</span>
-                    <p>Motor de busca focado na privacidade absoluta.</p>
-                    <div class="details-text">Não rastreia dados nem guarda o teu histórico.</div>
-                    <div class="actions"><a href="https://duckduckgo.com" class="main-btn" onclick="track('duck')" target="_blank">Entrar</a><button class="info-btn" onclick="toggleDetails(this)">Detalhes</button></div>
+                    <p>Motor de busca com foco absoluto na tua privacidade.</p>
+                    <div class="details-text">Não guarda histórico nem rastreia os teus dados.</div>
+                    <div class="actions"><a href="https://duckduckgo.com" class="main-btn" onclick="registarClique('duck')" target="_blank">Aceder</a><button class="info-btn" onclick="toggleInfo(this)">Detalhes</button></div>
                 </div>
-                <div class="card" data-id="speed" data-tags="teste rede">
+                <div class="card" data-id="speed" data-tags="velocidade rede">
                     <div class="card-header"><h3>Speedtest</h3><span class="click-count">0</span></div>
                     <span class="price-label free">Grátis</span>
-                    <p>Mede a velocidade real da tua ligação à internet.</p>
-                    <div class="details-text">Mede downloads e uploads instantaneamente.</div>
-                    <div class="actions"><a href="https://www.speedtest.net" class="main-btn" onclick="track('speed')" target="_blank">Entrar</a><button class="info-btn" onclick="toggleDetails(this)">Detalhes</button></div>
+                    <p>Analisa a velocidade real da tua ligação de rede.</p>
+                    <div class="details-text">Mede downloads e latência de forma imediata.</div>
+                    <div class="actions"><a href="https://www.speedtest.net" class="main-btn" onclick="registarClique('speed')" target="_blank">Aceder</a><button class="info-btn" onclick="toggleInfo(this)">Detalhes</button></div>
                 </div>
                 <div class="card" data-id="sharesub" data-tags="custos assinaturas">
                     <div class="card-header"><h3>Sharesub</h3><span class="click-count">0</span></div>
                     <span class="price-label paid">Pago</span>
-                    <p>Divide subscrições digitais para poupares dinheiro.</p>
-                    <div class="details-text">Plataforma segura para partilhar custos mensais.</div>
-                    <div class="actions"><a href="https://www.sharesub.com" class="main-btn" onclick="track('sharesub')" target="_blank">Entrar</a><button class="info-btn" onclick="toggleDetails(this)">Detalhes</button></div>
+                    <p>Divide subscrições digitais para reduzir custos mensais.</p>
+                    <div class="details-text">Plataforma segura para partilhar pagamentos de serviços.</div>
+                    <div class="actions"><a href="https://www.sharesub.com" class="main-btn" onclick="registarClique('sharesub')" target="_blank">Aceder</a><button class="info-btn" onclick="toggleInfo(this)">Detalhes</button></div>
                 </div>
             </div>
         </div>
@@ -507,50 +544,50 @@
     </div>
 
     <footer>
-        <p>Criado por <strong>André M. Fernandes</strong></p>
+        <p>Curadoria e Desenvolvimento por <strong>André M. Fernandes</strong></p>
         <a href="https://www.instagram.com/andre.f.m.fernandes/" class="insta-link" target="_blank">@andre.f.m.fernandes</a>
     </footer>
 </div>
 
 <script>
     window.onload = function() {
-        refreshAll()
+        atualizarTudo()
     }
 
-    function refreshAll() {
-        const cards = document.querySelectorAll(".category:not(#cat-destaques) .card")
-        cards.forEach(card => {
-            const id = card.getAttribute("data-id")
-            const saved = localStorage.getItem("cliques-" + id) || 0
-            card.querySelector(".click-count").innerText = "Cliques: " + saved
+    function atualizarTudo() {
+        const cartoes = document.querySelectorAll(".category:not(#cat-destaques) .card")
+        cartoes.forEach(c => {
+            const id = c.getAttribute("data-id")
+            const valor = localStorage.getItem("cliques-" + id) || 0
+            c.querySelector(".click-count").innerText = "Cliques: " + valor
         })
-        updateHighlights()
+        atualizarDestaques()
     }
 
-    function updateHighlights() {
-        const grid = document.getElementById("highlights-grid")
-        grid.innerHTML = ""
-        let items = []
-        const allCards = document.querySelectorAll(".category:not(#cat-destaques) .card")
+    function atualizarDestaques() {
+        const grelha = document.getElementById("highlights-grid")
+        grelha.innerHTML = ""
+        let itens = []
+        const todos = document.querySelectorAll(".category:not(#cat-destaques) .card")
         
-        allCards.forEach(card => {
-            const id = card.getAttribute("data-id")
-            const clicks = parseInt(localStorage.getItem("cliques-" + id) || 0)
-            if (clicks > 0) {
-                items.push({ id, clicks, html: card.outerHTML })
+        todos.forEach(c => {
+            const id = c.getAttribute("data-id")
+            const cliques = parseInt(localStorage.getItem("cliques-" + id) || 0)
+            if (cliques > 0) {
+                itens.push({ id, cliques, html: c.outerHTML })
             }
         })
 
-        items.sort((a, b) => b.clicks - a.clicks)
-        const top = items.slice(0, 4)
+        itens.sort((a, b) => b.cliques - a.cliques)
+        const topQuatro = itens.slice(0, 4)
 
-        if (top.length === 0) {
-            grid.innerHTML = "<p style='padding: 20px;'>Começa a utilizar as tuas ferramentas para que as mais usadas apareçam aqui.</p>"
+        if (topQuatro.length === 0) {
+            grelha.innerHTML = "<p style='padding: 20px;'>As tuas ferramentas favoritas aparecerão aqui conforme as utilizares.</p>"
             return
         }
 
-        top.forEach(item => {
-            grid.innerHTML += item.html
+        topQuatro.forEach(item => {
+            grelha.innerHTML += item.html
         })
     }
 
@@ -558,41 +595,53 @@
         document.getElementById(id).classList.toggle("active")
     }
 
-    function track(id) {
-        let current = parseInt(localStorage.getItem("cliques-" + id) || 0)
-        current++
-        localStorage.setItem("cliques-" + id, current)
-        refreshAll()
+    function registarClique(id) {
+        let atual = parseInt(localStorage.getItem("cliques-" + id) || 0)
+        atual++
+        localStorage.setItem("cliques-" + id, atual)
+        atualizarTudo()
     }
 
-    function toggleDetails(btn) {
-        const card = btn.closest(".card")
-        const text = card.querySelector(".details-text")
-        text.style.display = (text.style.display === "block") ? "none" : "block"
+    function toggleInfo(botao) {
+        const cartao = botao.closest(".card")
+        const texto = cartao.querySelector(".details-text")
+        texto.style.display = (texto.style.display === "block") ? "none" : "block"
     }
 
-    function filter() {
-        const q = document.getElementById("searchBar").value.toLowerCase()
-        const cats = document.querySelectorAll(".category:not(#cat-destaques)")
+    function partilharPagina() {
+        if (navigator.share) {
+            navigator.share({
+                title: "Centro de Comando Digital",
+                url: window.location.href
+            }).catch(() => {})
+        } else {
+            navigator.clipboard.writeText(window.location.href)
+            alert("Endereço copiado para a área de transferência.")
+        }
+    }
+
+    function filtrarConteudo() {
+        const busca = document.getElementById("searchBar").value.toLowerCase()
+        const seccoes = document.querySelectorAll(".category:not(#cat-destaques)")
         
-        cats.forEach(sec => {
-            const cards = sec.querySelectorAll(".card")
-            let hasVisible = false
-            cards.forEach(c => {
-                const text = c.getAttribute("data-tags") + c.querySelector("h3").innerText
-                if (text.toLowerCase().includes(q)) {
-                    c.style.display = "flex"
-                    hasVisible = true
+        seccoes.forEach(s => {
+            const itens = s.querySelectorAll(".card")
+            let visivel = false
+            itens.forEach(i => {
+                const info = i.getAttribute("data-tags") + i.querySelector("h3").innerText
+                if (info.toLowerCase().includes(busca)) {
+                    i.style.display = "flex"
+                    visivel = true
                 } else {
-                    c.style.display = "none"
+                    i.style.display = "none"
                 }
             })
-            if (q !== "") {
-                sec.style.display = hasVisible ? "block" : "none"
-                if (hasVisible) sec.classList.add("active")
+            if (busca !== "") {
+                s.style.display = visivel ? "block" : "none"
+                if (visivel) s.classList.add("active")
             } else {
-                sec.style.display = "block"
-                sec.classList.remove("active")
+                s.style.display = "block"
+                s.classList.remove("active")
             }
         })
     }
