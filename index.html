@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>André M. Fernandes | Portal de Acesso</title>
+    <title>Portal André M. Fernandes</title>
     <style>
         :root {
             --fundo: #050505;
@@ -11,7 +11,9 @@
             --destaque: #ffffff;
             --texto: #a1a1aa;
             --borda: #27272a;
-            --accent-blue: #3b82f6;
+            --azul: #3b82f6;
+            --verde: #22c55e;
+            --amarelo: #eab308;
         }
         body {
             font-family: "Inter", sans-serif;
@@ -19,7 +21,6 @@
             color: var(--texto);
             margin: 0;
             padding: 40px 20px;
-            line-height: 1.6;
         }
         .wrapper {
             max-width: 1200px;
@@ -34,14 +35,8 @@
             font-size: 3rem;
             font-weight: 900;
             letter-spacing: -2px;
-            margin-bottom: 10px;
             text-transform: uppercase;
-        }
-        .search-area {
-            position: sticky;
-            top: 20px;
-            z-index: 100;
-            margin: 40px 0;
+            margin-bottom: 10px;
         }
         #searchBar {
             width: 100%;
@@ -51,12 +46,11 @@
             border-radius: 12px;
             color: white;
             font-size: 1.2rem;
-            backdrop-filter: blur(10px);
             outline: none;
             transition: border 0.3s;
         }
         #searchBar:focus {
-            border-color: var(--accent-blue);
+            border-color: var(--azul);
         }
         .group-title {
             color: var(--destaque);
@@ -65,68 +59,94 @@
             margin: 50px 0 25px 0;
             border-bottom: 1px solid var(--borda);
             padding-bottom: 10px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
         }
         .grid {
             display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
             gap: 20px;
         }
         .card {
             background: var(--cartao);
             border: 1px solid var(--borda);
             border-radius: 12px;
-            padding: 25px;
-            transition: all 0.3s;
+            padding: 20px;
             position: relative;
-            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            transition: transform 0.2s;
         }
         .card:hover {
+            transform: translateY(-5px);
             border-color: #444;
-            transform: translateY(-4px);
-            background: #161616;
         }
-        .status-dot {
-            width: 8px;
-            height: 8px;
-            background: #22c55e;
-            border-radius: 50%;
+        .card-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 15px;
+        }
+        .click-badge {
+            font-size: 0.7rem;
+            background: #222;
+            padding: 4px 8px;
+            border-radius: 4px;
+            color: var(--azul);
+            font-weight: bold;
+        }
+        .price-tag {
+            font-size: 0.75rem;
+            font-weight: 700;
+            padding: 2px 8px;
+            border-radius: 4px;
+            margin-bottom: 10px;
             display: inline-block;
-            margin-right: 8px;
-            box-shadow: 0 0 10px #22c55e;
         }
-        h3 {
-            color: var(--destaque);
-            margin: 0 0 10px 0;
-            font-size: 1.2rem;
-        }
-        p {
-            font-size: 0.9rem;
-            margin-bottom: 20px;
-            height: 40px;
-            overflow: hidden;
-        }
-        .link {
-            color: var(--accent-blue);
-            text-decoration: none;
-            font-weight: 600;
+        .tag-gratis { background: rgba(34, 197, 94, 0.1); color: var(--verde); }
+        .tag-pago { background: rgba(239, 68, 68, 0.1); color: #ef4444; }
+        .tag-misto { background: rgba(234, 179, 8, 0.1); color: var(--amarelo); }
+        
+        h3 { color: var(--destaque); margin: 0; font-size: 1.2rem; }
+        p { font-size: 0.85rem; margin: 10px 0; min-height: 40px; }
+        
+        .details-box {
+            display: none;
             font-size: 0.8rem;
-            text-transform: uppercase;
-            letter-spacing: 1px;
+            background: #1a1a1a;
+            padding: 10px;
+            border-radius: 6px;
+            margin-bottom: 15px;
+            border: 1px dashed #333;
+        }
+        .actions {
+            display: flex;
+            gap: 15px;
+            margin-top: auto;
+        }
+        .btn-link {
+            color: var(--destaque);
+            text-decoration: none;
+            font-weight: bold;
+            font-size: 0.8rem;
+            background: var(--azul);
+            padding: 8px 16px;
+            border-radius: 6px;
+        }
+        .btn-details {
+            background: none;
+            border: 1px solid var(--borda);
+            color: var(--texto);
+            cursor: pointer;
+            padding: 8px 12px;
+            border-radius: 6px;
+            font-size: 0.8rem;
         }
         footer {
-            margin-top: 100px;
-            padding: 40px;
+            margin-top: 80px;
             text-align: center;
             border-top: 1px solid var(--borda);
+            padding: 40px;
         }
-        .insta {
-            color: var(--destaque);
-            text-decoration: none;
-            font-weight: 800;
-        }
+        .insta { color: var(--azul); text-decoration: none; font-weight: bold; }
     </style>
 </head>
 <body>
@@ -134,60 +154,81 @@
 <div class="wrapper">
     <header>
         <h1>André M. Fernandes</h1>
-        <div class="search-area">
-            <input type="text" id="searchBar" placeholder="Pesquisar em toda a biblioteca..." onkeyup="filter()">
-        </div>
+        <input type="text" id="searchBar" placeholder="O que pretendes procurar hoje?" onkeyup="filter()">
     </header>
 
     <div id="content">
         <div class="category">
             <div class="group-title">Conversação e IA</div>
             <div class="grid">
-                <div class="card" data-tags="gemini google chat ai">
-                    <h3><span class="status-dot"></span>Gemini</h3>
-                    <p>A inteligência artificial da Google integrada em todo o ecossistema para ajuda imediata.</p>
-                    <a href="https://gemini.google.com" class="link" target="_blank">Entrar</a>
+                <div class="card" data-id="gemini" data-tags="google chat ai">
+                    <div class="card-header">
+                        <h3>Gemini</h3>
+                        <span class="click-badge" id="click-gemini">Cliques: 0</span>
+                    </div>
+                    <span class="price-tag tag-gratis">Gratuito</span>
+                    <p>IA da Google integrada no ecossistema de produtividade.</p>
+                    <div class="details-box" id="details-gemini">Podes usar a versão normal gratuitamente. Existe uma versão paga com modelos mais avançados.</div>
+                    <div class="actions">
+                        <a href="https://gemini.google.com" class="btn-link" target="_blank" onclick="track('gemini')">Aceder</a>
+                        <button class="btn-details" onclick="toggle('gemini')">Detalhes</button>
+                    </div>
                 </div>
-                <div class="card" data-tags="claude anthropic escrita">
-                    <h3><span class="status-dot"></span>Claude</h3>
-                    <p>Especialista em escrita criativa e análise de dados com um tom muito humano.</p>
-                    <a href="https://claude.ai" class="link" target="_blank">Entrar</a>
-                </div>
-                <div class="card" data-tags="deepseek logica codigo">
-                    <h3><span class="status-dot"></span>DeepSeek</h3>
-                    <p>Focado em raciocínio matemático e programação de alto nível.</p>
-                    <a href="https://www.deepseek.com" class="link" target="_blank">Entrar</a>
-                </div>
-                <div class="card" data-tags="grok x twitter">
-                    <h3><span class="status-dot"></span>Grok</h3>
-                    <p>IA conectada em tempo real aos acontecimentos mundiais através do X.</p>
-                    <a href="https://x.ai" class="link" target="_blank">Entrar</a>
-                </div>
-                <div class="card" data-tags="venice privacidade livre">
-                    <h3><span class="status-dot"></span>Venice</h3>
-                    <p>Alternativa que prioriza a privacidade e a liberdade total de resposta.</p>
-                    <a href="https://venice.ai" class="link" target="_blank">Entrar</a>
-                </div>
-            </div>
-        </div>
 
-        <div class="category">
-            <div class="group-title">Produtividade com IA</div>
-            <div class="grid">
-                <div class="card" data-tags="manus agentes automaçao">
-                    <h3><span class="status-dot"></span>Manus</h3>
-                    <p>Agentes digitais que executam tarefas complexas de forma autónoma.</p>
-                    <a href="https://manus.ai" class="link" target="_blank">Entrar</a>
+                <div class="card" data-id="claude" data-tags="escrita ai">
+                    <div class="card-header">
+                        <h3>Claude</h3>
+                        <span class="click-badge" id="click-claude">Cliques: 0</span>
+                    </div>
+                    <span class="price-tag tag-misto">Modelo Misto</span>
+                    <p>Excelente para escrita e raciocínio mais humano.</p>
+                    <div class="details-box" id="details-claude">Oferece um número limitado de mensagens por dia na versão gratuita.</div>
+                    <div class="actions">
+                        <a href="https://claude.ai" class="btn-link" target="_blank" onclick="track('claude')">Aceder</a>
+                        <button class="btn-details" onclick="toggle('claude')">Detalhes</button>
+                    </div>
                 </div>
-                <div class="card" data-tags="notebooklm notas google">
-                    <h3><span class="status-dot"></span>NotebookLM</h3>
-                    <p>Transforma os teus documentos num guia de estudo ou pesquisa inteligente.</p>
-                    <a href="https://notebooklm.google.com" class="link" target="_blank">Entrar</a>
+                
+                <div class="card" data-id="grok" data-tags="x twitter">
+                    <div class="card-header">
+                        <h3>Grok</h3>
+                        <span class="click-badge" id="click-grok">Cliques: 0</span>
+                    </div>
+                    <span class="price-tag tag-pago">Pago</span>
+                    <p>IA ligada à rede social X em tempo real.</p>
+                    <div class="details-box" id="details-grok">Requer subscrição Premium no X para ser utilizado.</div>
+                    <div class="actions">
+                        <a href="https://x.ai" class="btn-link" target="_blank" onclick="track('grok')">Aceder</a>
+                        <button class="btn-details" onclick="toggle('grok')">Detalhes</button>
+                    </div>
                 </div>
-                <div class="card" data-tags="chatpdf documentos leitura">
-                    <h3><span class="status-dot"></span>ChatPDF</h3>
-                    <p>Analisa e faz perguntas a qualquer ficheiro em formato digital instantaneamente.</p>
-                    <a href="https://www.chatpdf.com" class="link" target="_blank">Entrar</a>
+
+                <div class="card" data-id="deepseek" data-tags="logica ai">
+                    <div class="card-header">
+                        <h3>DeepSeek</h3>
+                        <span class="click-badge" id="click-deepseek">Cliques: 0</span>
+                    </div>
+                    <span class="price-tag tag-gratis">Gratuito</span>
+                    <p>Especialista em matemática e código avançado.</p>
+                    <div class="details-box" id="details-deepseek">Acesso gratuito à maioria das funcionalidades através da plataforma oficial.</div>
+                    <div class="actions">
+                        <a href="https://www.deepseek.com" class="btn-link" target="_blank" onclick="track('deepseek')">Aceder</a>
+                        <button class="btn-details" onclick="toggle('deepseek')">Detalhes</button>
+                    </div>
+                </div>
+
+                <div class="card" data-id="venice" data-tags="privacidade ai">
+                    <div class="card-header">
+                        <h3>Venice</h3>
+                        <span class="click-badge" id="click-venice">Cliques: 0</span>
+                    </div>
+                    <span class="price-tag tag-misto">Modelo Misto</span>
+                    <p>IA sem censura e focada na privacidade total.</p>
+                    <div class="details-box" id="details-venice">Tem uma versão grátis com limites e uma versão paga para uso intensivo.</div>
+                    <div class="actions">
+                        <a href="https://venice.ai" class="btn-link" target="_blank" onclick="track('venice')">Aceder</a>
+                        <button class="btn-details" onclick="toggle('venice')">Detalhes</button>
+                    </div>
                 </div>
             </div>
         </div>
@@ -195,159 +236,112 @@
         <div class="category">
             <div class="group-title">Mercado de Trabalho</div>
             <div class="grid">
-                <div class="card" data-tags="linkedin rede contactos">
-                    <h3><span class="status-dot"></span>LinkedIn</h3>
-                    <p>Gestão de carreira e rede de contactos profissionais a nível mundial.</p>
-                    <a href="https://www.linkedin.com" class="link" target="_blank">Entrar</a>
+                <div class="card" data-id="linkedin" data-tags="trabalho rede">
+                    <div class="card-header">
+                        <h3>LinkedIn</h3>
+                        <span class="click-badge" id="click-linkedin">Cliques: 0</span>
+                    </div>
+                    <span class="price-tag tag-gratis">Gratuito</span>
+                    <p>Rede social para contactos e carreira profissional.</p>
+                    <div class="details-box" id="details-linkedin">Uso geral gratuito. O Premium ajuda a ver quem visitou o perfil e em candidaturas.</div>
+                    <div class="actions">
+                        <a href="https://www.linkedin.com" class="btn-link" target="_blank" onclick="track('linkedin')">Aceder</a>
+                        <button class="btn-details" onclick="toggle('linkedin')">Detalhes</button>
+                    </div>
                 </div>
-                <div class="card" data-tags="indeed vagas emprego">
-                    <h3><span class="status-dot"></span>Indeed</h3>
-                    <p>Motor de busca dedicado exclusivamente a ofertas de emprego e estágios.</p>
-                    <a href="https://pt.indeed.com" class="link" target="_blank">Entrar</a>
-                </div>
-            </div>
-        </div>
-
-        <div class="category">
-            <div class="group-title">E-Commerce e Lojas</div>
-            <div class="grid">
-                <div class="card" data-tags="amazon compras global">
-                    <h3><span class="status-dot"></span>Amazon</h3>
-                    <p>A maior seleção de produtos com entrega rápida e garantia de devolução.</p>
-                    <a href="https://www.amazon.es" class="link" target="_blank">Entrar</a>
-                </div>
-                <div class="card" data-tags="aliexpress china barato">
-                    <h3><span class="status-dot"></span>AliExpress</h3>
-                    <p>Variedade infinita de artigos vindos diretamente dos fabricantes.</p>
-                    <a href="https://www.aliexpress.com" class="link" target="_blank">Entrar</a>
-                </div>
-                <div class="card" data-tags="pcdiga tecnologia portugal">
-                    <h3><span class="status-dot"></span>PCDiga</h3>
-                    <p>Loja de referência nacional para informática e componentes de PC.</p>
-                    <a href="https://www.pcdiga.com" class="link" target="_blank">Entrar</a>
-                </div>
-                <div class="card" data-tags="outletpc descontos hardware">
-                    <h3><span class="status-dot"></span>Outlet PC</h3>
-                    <p>Oportunidades em material tecnológico com preços reduzidos.</p>
-                    <a href="https://www.outlet-pc.es" class="link" target="_blank">Entrar</a>
+                <div class="card" data-id="indeed" data-tags="emprego vagas">
+                    <div class="card-header">
+                        <h3>Indeed</h3>
+                        <span class="click-badge" id="click-indeed">Cliques: 0</span>
+                    </div>
+                    <span class="price-tag tag-gratis">Gratuito</span>
+                    <p>Procura de emprego e envio de candidaturas.</p>
+                    <div class="details-box" id="details-indeed">Totalmente grátis para candidatos procurarem e submeterem currículos.</div>
+                    <div class="actions">
+                        <a href="https://pt.indeed.com" class="btn-link" target="_blank" onclick="track('indeed')">Aceder</a>
+                        <button class="btn-details" onclick="toggle('indeed')">Detalhes</button>
+                    </div>
                 </div>
             </div>
         </div>
 
         <div class="category">
-            <div class="group-title">Jogos e Chaves Digitais</div>
+            <div class="group-title">Compras e Lojas Digitais</div>
             <div class="grid">
-                <div class="card" data-tags="eneba jogos chaves">
-                    <h3><span class="status-dot"></span>Eneba</h3>
-                    <p>Compra de chaves de jogos e cartões de oferta com grandes descontos.</p>
-                    <a href="https://www.eneba.com" class="link" target="_blank">Entrar</a>
+                <div class="card" data-id="amazon" data-tags="compras online">
+                    <div class="card-header">
+                        <h3>Amazon</h3>
+                        <span class="click-badge" id="click-amazon">Cliques: 0</span>
+                    </div>
+                    <span class="price-tag tag-pago">Pago</span>
+                    <p>Venda global de produtos com entrega rápida.</p>
+                    <div class="details-box" id="details-amazon">Pagas apenas o que compras. O serviço Prime tem anuidade paga.</div>
+                    <div class="actions">
+                        <a href="https://www.amazon.es" class="btn-link" target="_blank" onclick="track('amazon')">Aceder</a>
+                        <button class="btn-details" onclick="toggle('amazon')">Detalhes</button>
+                    </div>
+                </div>
+                <div class="card" data-id="pcdiga" data-tags="tecnologia hardware">
+                    <div class="card-header">
+                        <h3>PCDiga</h3>
+                        <span class="click-badge" id="click-pcdiga">Cliques: 0</span>
+                    </div>
+                    <span class="price-tag tag-pago">Pago</span>
+                    <p>Especialista nacional em informática e gadgets.</p>
+                    <div class="details-box" id="details-pcdiga">Loja física e online com preços competitivos para hardware.</div>
+                    <div class="actions">
+                        <a href="https://www.pcdiga.com" class="btn-link" target="_blank" onclick="track('pcdiga')">Aceder</a>
+                        <button class="btn-details" onclick="toggle('pcdiga')">Detalhes</button>
+                    </div>
+                </div>
+                <div class="card" data-id="eneba" data-tags="jogos chaves">
+                    <div class="card-header">
+                        <h3>Eneba</h3>
+                        <span class="click-badge" id="click-eneba">Cliques: 0</span>
+                    </div>
+                    <span class="price-tag tag-pago">Pago</span>
+                    <p>Mercado de chaves digitais para jogos e software.</p>
+                    <div class="details-box" id="details-eneba">Os preços variam consoante os vendedores do mercado.</div>
+                    <div class="actions">
+                        <a href="https://www.eneba.com" class="btn-link" target="_blank" onclick="track('eneba')">Aceder</a>
+                        <button class="btn-details" onclick="toggle('eneba')">Detalhes</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="category">
+            <div class="group-title">Entretenimento e Música</div>
+            <div class="grid">
+                <div class="card" data-id="youtube" data-tags="video entretenimento">
+                    <div class="card-header">
+                        <h3>YouTube</h3>
+                        <span class="click-badge" id="click-youtube">Cliques: 0</span>
+                    </div>
+                    <span class="price-tag tag-misto">Modelo Misto</span>
+                    <p>A maior plataforma de vídeos do mundo.</p>
+                    <div class="details-box" id="details-youtube">Grátis com anúncios. Existe a versão Premium para remover publicidade.</div>
+                    <div class="actions">
+                        <a href="https://www.youtube.com" class="btn-link" target="_blank" onclick="track('youtube')">Aceder</a>
+                        <button class="btn-details" onclick="toggle('youtube')">Detalhes</button>
+                    </div>
+                </div>
+                <div class="card" data-id="spotify" data-tags="musica streaming">
+                    <div class="card-header">
+                        <h3>Spotify</h3>
+                        <span class="click-badge" id="click-spotify">Cliques: 0</span>
+                    </div>
+                    <span class="price-tag tag-misto">Modelo Misto</span>
+                    <p>Música e podcasts em todo o lado.</p>
+                    <div class="details-box" id="details-spotify">Podes ouvir grátis com interrupções. O Premium permite ouvir sem rede.</div>
+                    <div class="actions">
+                        <a href="https://www.spotify.com" class="btn-link" target="_blank" onclick="track('spotify')">Aceder</a>
+                        <button class="btn-details" onclick="toggle('spotify')">Detalhes</button>
+                    </div>
                 </div>
             </div>
         </div>
 
-        <div class="category">
-            <div class="group-title">Gestão de Custos</div>
-            <div class="grid">
-                <div class="card" data-tags="sharesub assinaturas partilha">
-                    <h3><span class="status-dot"></span>Sharesub</h3>
-                    <p>Divide o valor das tuas subscrições mensais com outros utilizadores.</p>
-                    <a href="https://www.sharesub.com" class="link" target="_blank">Entrar</a>
-                </div>
-            </div>
-        </div>
-
-        <div class="category">
-            <div class="group-title">Ecossistema e Escritório</div>
-            <div class="grid">
-                <div class="card" data-tags="workspace google ferramentas">
-                    <h3><span class="status-dot"></span>Google Workspace</h3>
-                    <p>Conjunto completo para criação de documentos e colaboração online.</p>
-                    <a href="https://workspace.google.com" class="link" target="_blank">Entrar</a>
-                </div>
-                <div class="card" data-tags="gmail email correio">
-                    <h3><span class="status-dot"></span>Gmail</h3>
-                    <p>Serviço de correio eletrónico principal para toda a comunicação.</p>
-                    <a href="https://mail.google.com" class="link" target="_blank">Entrar</a>
-                </div>
-                <div class="card" data-tags="outlook microsoft email">
-                    <h3><span class="status-dot"></span>Outlook</h3>
-                    <p>Alternativa de gestão de email e calendário da Microsoft.</p>
-                    <a href="https://outlook.live.com" class="link" target="_blank">Entrar</a>
-                </div>
-                <div class="card" data-tags="keep notas listas">
-                    <h3><span class="status-dot"></span>Google Keep</h3>
-                    <p>Notas rápidas e lembretes acessíveis em todos os dispositivos.</p>
-                    <a href="https://keep.google.com" class="link" target="_blank">Entrar</a>
-                </div>
-                <div class="card" data-tags="calendar agenda tempo">
-                    <h3><span class="status-dot"></span>Google Calendar</h3>
-                    <p>Organização semanal e agendamento de reuniões importantes.</p>
-                    <a href="https://calendar.google.com" class="link" target="_blank">Entrar</a>
-                </div>
-            </div>
-        </div>
-
-        <div class="category">
-            <div class="group-title">Media e Streaming</div>
-            <div class="grid">
-                <div class="card" data-tags="youtube videos gratis">
-                    <h3><span class="status-dot"></span>YouTube</h3>
-                    <p>Plataforma principal de vídeo e aprendizagem visual.</p>
-                    <a href="https://www.youtube.com" class="link" target="_blank">Entrar</a>
-                </div>
-                <div class="card" data-tags="twitch live jogos">
-                    <h3><span class="status-dot"></span>Twitch</h3>
-                    <p>Transmissões ao vivo focadas em entretenimento e gaming.</p>
-                    <a href="https://www.twitch.tv" class="link" target="_blank">Entrar</a>
-                </div>
-                <div class="card" data-tags="plex filmes biblioteca">
-                    <h3><span class="status-dot"></span>Plex</h3>
-                    <p>Centralização de filmes e séries pessoais num único servidor.</p>
-                    <a href="https://www.plex.tv" class="link" target="_blank">Entrar</a>
-                </div>
-                <div class="card" data-tags="spotify musica audio">
-                    <h3><span class="status-dot"></span>Spotify</h3>
-                    <p>O maior catálogo de música e podcasts por subscrição.</p>
-                    <a href="https://www.spotify.com" class="link" target="_blank">Entrar</a>
-                </div>
-                <div class="card" data-tags="youtube music audio">
-                    <h3><span class="status-dot"></span>YouTube Music</h3>
-                    <p>Experiência musical integrada com o catálogo do YouTube.</p>
-                    <a href="https://music.youtube.com" class="link" target="_blank">Entrar</a>
-                </div>
-            </div>
-        </div>
-
-        <div class="category">
-            <div class="group-title">Conhecimento e Web</div>
-            <div class="grid">
-                <div class="card" data-tags="wikipedia saber info">
-                    <h3><span class="status-dot"></span>Wikipedia</h3>
-                    <p>Base de conhecimento global mantida pela comunidade.</p>
-                    <a href="https://pt.wikipedia.org" class="link" target="_blank">Entrar</a>
-                </div>
-                <div class="card" data-tags="imdb cinema filmes">
-                    <h3><span class="status-dot"></span>IMDb</h3>
-                    <p>Consulta de críticas e dados técnicos sobre cinema e TV.</p>
-                    <a href="https://www.imdb.com" class="link" target="_blank">Entrar</a>
-                </div>
-                <div class="card" data-tags="legendas legendasdivx">
-                    <h3><span class="status-dot"></span>LegendasDivx</h3>
-                    <p>O melhor portal para encontrar legendas em português.</p>
-                    <a href="https://www.legendasdivx.com" class="link" target="_blank">Entrar</a>
-                </div>
-                <div class="card" data-tags="duckduckgo pesquisa privada">
-                    <h3><span class="status-dot"></span>DuckDuckGo</h3>
-                    <p>Motor de busca que não rastreia a tua atividade na rede.</p>
-                    <a href="https://duckduckgo.com" class="link" target="_blank">Entrar</a>
-                </div>
-                <div class="card" data-tags="speedtest internet rede">
-                    <h3><span class="status-dot"></span>Speedtest</h3>
-                    <p>Verifica a velocidade da tua ligação em poucos segundos.</p>
-                    <a href="https://www.speedtest.net" class="link" target="_blank">Entrar</a>
-                </div>
-            </div>
-        </div>
     </div>
 
     <footer>
@@ -357,30 +351,46 @@
 </div>
 
 <script>
+    // Inicializar cliques no arranque
+    document.addEventListener("DOMContentLoaded", () => {
+        const cards = document.querySelectorAll(".card");
+        cards.forEach(card => {
+            const id = card.getAttribute("data-id");
+            const val = localStorage.getItem("click-" + id) || 0;
+            document.getElementById("click-" + id).innerText = "Cliques: " + val;
+        });
+    });
+
+    // Registar clique
+    function track(id) {
+        let val = parseInt(localStorage.getItem("click-" + id) || 0);
+        val++;
+        localStorage.setItem("click-" + id, val);
+        document.getElementById("click-" + id).innerText = "Cliques: " + val;
+    }
+
+    // Mostrar/Esconder detalhes
+    function toggle(id) {
+        const box = document.getElementById("details-" + id);
+        box.style.display = (box.style.display === "block") ? "none" : "block";
+    }
+
+    // Filtro de pesquisa
     function filter() {
         let val = document.getElementById("searchBar").value.toLowerCase(),
-            cards = document.getElementsByClassName("card"),
-            cats = document.getElementsByClassName("category")
+            cards = document.querySelectorAll(".card"),
+            cats = document.querySelectorAll(".category");
 
-        for (let i = 0; i < cards.length; i++) {
-            let tags = cards[i].getAttribute("data-tags"),
-                title = cards[i].querySelector("h3").innerText.toLowerCase()
-            
-            if (tags.includes(val) || title.includes(val)) {
-                cards[i].style.display = "block"
-            } else {
-                cards[i].style.display = "none"
-            }
-        }
+        cards.forEach(card => {
+            let tags = card.getAttribute("data-tags"),
+                title = card.querySelector("h3").innerText.toLowerCase();
+            card.style.display = (tags.includes(val) || title.includes(val)) ? "flex" : "none";
+        });
 
-        for (let j = 0; j < cats.length; j++) {
-            let visible = cats[j].querySelectorAll(".card[style='display: block;']")
-            if (visible.length === 0 && val !== "") {
-                cats[j].style.display = "none"
-            } else {
-                cats[j].style.display = "block"
-            }
-        }
+        cats.forEach(cat => {
+            let visible = cat.querySelectorAll(".card[style='display: flex;']");
+            cat.style.display = (visible.length === 0 && val !== "") ? "none" : "block";
+        });
     }
 </script>
 
