@@ -1,13 +1,98 @@
 <!DOCTYPE html>
 <html lang="pt">
 <head>
-<meta charset="UTF-8">
-<title>Os Meus Favoritos</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Os Meus Favoritos</title>
+    <style>
+        body {
+            font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #f4f7f6;
+            margin: 0;
+            padding: 40px 20px;
+            display: flex;
+            justify-content: center;
+        }
+        .content {
+            max-width: 800px;
+            width: 100%;
+        }
+        h1 {
+            color: #2c3e50;
+            text-align: center;
+            margin-bottom: 40px;
+        }
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 20px;
+        }
+        .card {
+            background: white;
+            border-radius: 12px;
+            padding: 24px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+            transition: transform 0.2s;
+        }
+        .card:hover {
+            transform: translateY(-5px);
+        }
+        .card h2 {
+            margin: 0 0 12px 0;
+            color: #3498db;
+            font-size: 1.4rem;
+        }
+        .card p {
+            color: #7f8c8d;
+            font-size: 0.95rem;
+            line-height: 1.6;
+            margin-bottom: 20px;
+        }
+        .link-button {
+            display: inline-block;
+            background-color: #3498db;
+            color: white;
+            padding: 10px 20px;
+            border-radius: 6px;
+            text-decoration: none;
+            font-weight: 500;
+        }
+        .link-button:hover {
+            background-color: #2980b9;
+        }
+    </style>
 </head>
 <body>
-<h1>Lista de Favoritos</h1>
-<ul>
-<li><a href="https://www.google.com">Google</a></li>
-</ul>
+
+<div class="content">
+    <h1>A Minha Seleção de Ferramentas</h1>
+    
+    <div class="grid">
+        <div class="card">
+            <h2>GitHub</h2>
+            <p>É uma plataforma onde podes guardar os teus projetos de programação com total segurança, permitindo também que outras pessoas colaborem contigo ou que mostres o teu trabalho ao mundo.</p>
+            <a href="https://github.com" class="link-button" target="_blank">Visitar</a>
+        </div>
+
+        <div class="card">
+            <h2>Vercel</h2>
+            <p>Serve para colocares os teus sítios na rede de forma automática, bastando ligares o teu projeto para que ele fique visível para todos sem configurações difíceis.</p>
+            <a href="https://vercel.com" class="link-button" target="_blank">Visitar</a>
+        </div>
+
+        <div class="card">
+            <h2>Replit</h2>
+            <p>Permite que escrevas e executes código de várias linguagens diretamente no teu navegador, sem precisares de instalar programas complicados no teu computador.</p>
+            <a href="https://replit.com" class="link-button" target="_blank">Visitar</a>
+        </div>
+
+        <div class="card">
+            <h2>Firebase</h2>
+            <p>Oferece ferramentas prontas para criares bases de dados e sistemas de entrada para utilizadores, facilitando a parte técnica da gestão de dados nas tuas aplicações.</p>
+            <a href="https://firebase.google.com" class="link-button" target="_blank">Visitar</a>
+        </div>
+    </div>
+</div>
+
 </body>
 </html>
