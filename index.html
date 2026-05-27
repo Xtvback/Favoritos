@@ -853,6 +853,7 @@ function nmInit() {
   nmRenderTree();
   nmRenderFolder();
   nmUpdateNavBtns();
+  nmUpdateBreadcrumb();
 
   // Teclado no painel de ícones
   document.getElementById('np-main').addEventListener('keydown', e => {
@@ -988,8 +989,16 @@ function nmRenderFolder(filterQuery='') {
 }
 
 function nmSelectIcon(id) {
+  // Update selection class without rebuilding the whole grid (preserve dblclick target)
+  document.querySelectorAll('.np-icon.sel-icon').forEach(el => el.classList.remove('sel-icon'));
+  const el = document.querySelector(`.np-icon[data-id="${id}"]`);
+  if (el) el.classList.add('sel-icon');
   nm.selectedId = id;
-  nmRenderFolder();
+  // Update status bar
+  const selItem = nm.notes.find(n => n.id === id);
+  const total = nm.notes.filter(n => n.parent === (nm.currentFolderId||null)).length;
+  document.getElementById('np-sbar-left').textContent =
+    selItem ? `1 item selecionado: "${selItem.name}"` : `${total} item(ns)`;
   document.getElementById('np-main').focus();
 }
 
@@ -1243,12 +1252,13 @@ function npCtxOpen(e, id) {
 function ctxNpAct(act) {
   document.getElementById('np-ctx-menu').style.display = 'none';
   const id = npCtxTargetId; npCtxTargetId = null;
+  // Create actions work even with no target (desktop context → use current folder)
+  if (act === 'newnote')   { nmCreateNote(id || undefined);   return; }
+  if (act === 'newfolder') { nmCreateFolder(id || undefined); return; }
   if (!id) return;
-  if (act === 'open')      nmOpenItem(id);
-  if (act === 'rename')    nmStartIconRename(id);
-  if (act === 'delete')    nmDelete(id);
-  if (act === 'newnote')   nmCreateNote(id);
-  if (act === 'newfolder') nmCreateFolder(id);
+  if (act === 'open')   nmOpenItem(id);
+  if (act === 'rename') nmStartIconRename(id);
+  if (act === 'delete') nmDelete(id);
 }
 
 /* Context menu no espaço vazio do painel */
