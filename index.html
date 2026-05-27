@@ -193,56 +193,131 @@
       flex-shrink:0; display:flex; gap:16px;
     }
 
-    /* ─── BLOCO DE NOTAS (multi-nota) ─── */
-    #win-notepad { width:780px; height:540px; top:70px; left:120px; }
-    .np-layout { flex:1; display:flex; overflow:hidden; }
+    /* ─── BLOCO DE NOTAS / EXPLORADOR ─── */
+    #win-np { width:920px; height:620px; top:60px; left:80px; }
 
-    .np-sidebar {
-      width:220px; flex-shrink:0; background:var(--bg-sidebar);
-      border-right:1px solid var(--border); display:flex; flex-direction:column;
+    /* Barra de navegação */
+    .np-toolbar {
+      background:var(--bg-sidebar); border-bottom:1px solid var(--border);
+      padding:5px 8px; display:flex; align-items:center; gap:6px; flex-shrink:0;
     }
-    .np-sb-toolbar {
-      padding:6px 8px; display:flex; gap:4px; border-bottom:1px solid var(--border);
+    .np-nav-btn {
+      width:28px; height:28px; border:1px solid var(--border); border-radius:5px;
+      background:var(--bg-window); cursor:pointer; font-size:.9rem; display:flex;
+      align-items:center; justify-content:center; transition:background .1s; flex-shrink:0;
     }
-    .np-sb-btn {
-      flex:1; padding:5px 0; border:1px solid var(--border); border-radius:5px;
-      background:var(--bg-window); font-size:.73rem; cursor:pointer; color:var(--text);
-      display:flex; align-items:center; justify-content:center; gap:4px;
+    .np-nav-btn:hover { background:var(--bg-active); border-color:var(--accent); }
+    .np-nav-btn:disabled { opacity:.35; cursor:default; }
+    .np-nav-btn:disabled:hover { background:var(--bg-window); border-color:var(--border); }
+    .np-addr {
+      flex:1; background:var(--bg-window); border:1px solid var(--border); border-radius:5px;
+      padding:4px 10px; font-size:.8rem; display:flex; align-items:center; gap:0; overflow:hidden;
+      cursor:default; min-width:0;
+    }
+    .np-crumb {
+      color:var(--accent); cursor:pointer; white-space:nowrap; padding:0 2px;
+      font-weight:500; border-radius:3px;
+    }
+    .np-crumb:hover { background:var(--bg-active); }
+    .np-crumb-sep { color:var(--text-muted); padding:0 2px; font-size:.75rem; }
+    .np-search {
+      width:160px; flex-shrink:0; background:var(--bg-window); border:1px solid var(--border);
+      border-radius:5px; padding:4px 10px; font-size:.78rem; outline:none; font-family:inherit;
+    }
+    .np-search:focus { border-color:var(--accent); }
+    .np-new-btn {
+      padding:4px 12px; background:var(--accent); color:#fff; border:none; border-radius:5px;
+      font-size:.78rem; cursor:pointer; white-space:nowrap; font-family:inherit;
       transition:background .12s;
     }
-    .np-sb-btn:hover { background:var(--bg-active); border-color:var(--accent); color:var(--accent); }
-    .np-tree { flex:1; overflow-y:auto; padding:4px 0; }
+    .np-new-btn:hover { background:#006cbd; }
 
+    /* Layout principal */
+    .np-body { flex:1; display:flex; overflow:hidden; }
+
+    /* Árvore lateral */
+    .np-sidebar {
+      width:200px; flex-shrink:0; background:var(--bg-sidebar);
+      border-right:1px solid var(--border); overflow-y:auto; padding:6px 0;
+    }
+    .np-tree-root-lbl {
+      font-size:.72rem; font-weight:600; color:var(--text-muted);
+      padding:4px 12px 2px; text-transform:uppercase; letter-spacing:.05em;
+    }
     .np-tree-item {
-      display:flex; align-items:center; gap:6px; padding:4px 6px 4px 10px;
-      cursor:pointer; font-size:.8rem; color:var(--text); border-radius:4px;
+      display:flex; align-items:center; gap:5px; padding:4px 8px 4px 8px;
+      cursor:pointer; font-size:.79rem; color:var(--text); border-radius:4px;
       margin:1px 4px; transition:background .08s; -webkit-user-select:none; user-select:none;
     }
-    .np-tree-item:hover { background:var(--bg-hover); }
-    .np-tree-item.selected { background:rgba(0,120,212,.15); outline:1px solid rgba(0,120,212,.35); }
-    .np-tree-item.active { background:var(--bg-active); color:var(--accent); font-weight:500; }
-    .np-tree-item.active.selected { background:rgba(0,120,212,.22); outline:1px solid rgba(0,120,212,.5); }
-    .np-tree-item .npi { font-size:1rem; flex-shrink:0; }
-    .np-tree-item .npn { flex:1; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
+    .np-tree-item:hover  { background:var(--bg-hover); }
+    .np-tree-item.sel-tree { background:rgba(0,120,212,.15); color:var(--accent); font-weight:600; }
     .np-arr-btn {
-      width:16px; height:16px; flex-shrink:0; display:flex; align-items:center;
-      justify-content:center; font-size:.55rem; color:var(--text-muted);
-      border-radius:3px; transition:transform .15s, background .1s;
+      width:14px; height:14px; flex-shrink:0; display:flex; align-items:center;
+      justify-content:center; font-size:.5rem; color:var(--text-muted);
+      border-radius:2px; transition:transform .15s;
     }
     .np-arr-btn:hover { background:rgba(0,0,0,.1); }
     .np-tree-item.open > .np-arr-btn { transform:rotate(90deg); }
     .np-inline-input {
-      flex:1; border:1px solid var(--accent); border-radius:3px; padding:1px 5px;
-      font-size:.8rem; font-family:inherit; outline:none; background:#fff;
-      min-width:0; color:var(--text);
+      flex:1; border:1px solid var(--accent); border-radius:3px; padding:1px 4px;
+      font-size:.79rem; font-family:inherit; outline:none; background:#fff; min-width:0;
     }
 
-    .np-editor { flex:1; display:flex; flex-direction:column; }
-    #notepad-area {
-      flex:1; padding:12px 14px; border:none; outline:none; resize:none;
-      font-family:'Cascadia Code','Courier New',monospace; font-size:.88rem;
-      color:var(--text); background:#fff; line-height:1.6;
+    /* Painel principal direito */
+    .np-main { flex:1; display:flex; flex-direction:column; overflow:hidden; background:#fff; }
+
+    /* Vista de ícones (pasta) */
+    #np-folder-view { flex:1; overflow-y:auto; padding:10px; }
+    .np-icon-grid {
+      display:flex; flex-wrap:wrap; gap:4px; align-content:flex-start;
     }
+    .np-icon {
+      width:88px; display:flex; flex-direction:column; align-items:center;
+      padding:8px 4px 6px; border-radius:5px; cursor:pointer;
+      transition:background .08s; -webkit-user-select:none; user-select:none;
+      border:1px solid transparent;
+    }
+    .np-icon:hover { background:rgba(0,120,212,.08); border-color:rgba(0,120,212,.2); }
+    .np-icon.sel-icon {
+      background:rgba(0,120,212,.15); border-color:rgba(0,120,212,.45);
+    }
+    .np-icon.sel-icon:focus-within, .np-icon:focus { outline:none; }
+    .ni-img { font-size:2.8rem; line-height:1; margin-bottom:5px; }
+    .ni-name {
+      font-size:.72rem; text-align:center; line-height:1.3; color:var(--text);
+      word-break:break-word; max-width:80px; max-height:2.6em; overflow:hidden;
+      display:-webkit-box; -webkit-line-clamp:2; -webkit-box-orient:vertical;
+    }
+    .np-icon.sel-icon .ni-name { color:var(--accent); }
+    .np-empty {
+      width:100%; padding:60px 20px; text-align:center; color:var(--text-muted);
+      font-size:.88rem; display:flex; flex-direction:column; align-items:center; gap:10px;
+    }
+    .np-empty-ico { font-size:3rem; opacity:.25; }
+
+    /* Vista de editor */
+    #np-editor-view { flex:1; display:none; flex-direction:column; }
+    .np-editor-bar {
+      display:flex; align-items:center; gap:8px; padding:5px 10px;
+      background:var(--bg-sidebar); border-bottom:1px solid var(--border); flex-shrink:0;
+    }
+    .np-editor-bar button {
+      padding:4px 10px; border:1px solid var(--border); border-radius:5px;
+      background:var(--bg-window); font-size:.78rem; cursor:pointer; font-family:inherit;
+      transition:background .1s;
+    }
+    .np-editor-bar button:hover { background:var(--bg-active); border-color:var(--accent); color:var(--accent); }
+    .np-editor-bar .np-fname { flex:1; font-size:.85rem; font-weight:500; color:var(--text); }
+    #notepad-area {
+      flex:1; padding:14px 16px; border:none; outline:none; resize:none;
+      font-family:'Cascadia Code','Courier New',monospace; font-size:.88rem;
+      color:var(--text); background:#fff; line-height:1.65;
+    }
+
+    /* Barra de estado */
+    #np-sbar { display:flex; gap:14px; }
+    #np-sbar .sep { color:var(--border); }
+
 
     /* ─── RECICLAGEM ─── */
     #win-recyclebin { width:600px; height:440px; top:90px; left:160px; }
@@ -386,11 +461,11 @@
     </div>
   </div>
 
-  <!-- ════ JANELA: BLOCO DE NOTAS ════ -->
+  <!-- ════ JANELA: BLOCO DE NOTAS / EXPLORADOR ════ -->
   <div class="win" id="win-np">
     <div class="win-tbar" id="tbar-np">
       <span class="wi">📝</span>
-      <span class="wt" id="np-title">Bloco de Notas</span>
+      <span class="wt" id="np-title">Documentos</span>
       <div class="win-ctrls">
         <div class="wbtn" onclick="minWin('np')" title="Minimizar">─</div>
         <div class="wbtn" onclick="maxWin('np')" title="Maximizar">□</div>
@@ -402,28 +477,45 @@
       <div class="wmi" onclick="npMenuAct('editar')">Editar</div>
       <div class="wmi" onclick="npMenuAct('ver')">Ver</div>
     </div>
-    <div class="win-body">
-      <div class="np-layout">
-        <!-- Sidebar de notas -->
-        <div class="np-sidebar">
-          <div class="np-sb-toolbar">
-            <button class="np-sb-btn" onclick="nmCreateNote()" title="Nova nota">📄 Nota</button>
-            <button class="np-sb-btn" onclick="nmCreateFolder()" title="Nova pasta">📁 Pasta</button>
-          </div>
-          <div class="np-tree" id="np-tree" tabindex="0"></div>
+    <!-- Barra de navegação -->
+    <div class="np-toolbar">
+      <button class="np-nav-btn" id="np-btn-back"    onclick="nmBack()"    title="Anterior (Alt+←)">‹</button>
+      <button class="np-nav-btn" id="np-btn-fwd"     onclick="nmFwd()"     title="Seguinte">›</button>
+      <button class="np-nav-btn" id="np-btn-up"      onclick="nmUp()"      title="Pasta acima">↑</button>
+      <div class="np-addr" id="np-addr">📁</div>
+      <input  class="np-search" id="np-search" placeholder="🔍 Pesquisar..." oninput="nmSearch(this.value)">
+      <button class="np-new-btn" onclick="nmShowNewMenu(event)">＋ Novo ▾</button>
+    </div>
+    <!-- Corpo -->
+    <div class="np-body">
+      <!-- Árvore lateral (pastas) -->
+      <div class="np-sidebar">
+        <div class="np-tree-root-lbl">Documentos</div>
+        <div id="np-tree" tabindex="0"></div>
+      </div>
+      <!-- Painel principal -->
+      <div class="np-main" id="np-main"
+           oncontextmenu="nmDesktopCtx(event)"
+           ondragover="event.preventDefault()"
+           ondrop="nmDropItem(event)">
+        <!-- Vista de ícones -->
+        <div id="np-folder-view">
+          <div class="np-icon-grid" id="np-icon-grid"></div>
         </div>
-        <!-- Editor -->
-        <div class="np-editor">
-          <textarea id="notepad-area" spellcheck="false" placeholder="Seleciona ou cria uma nota..." oninput="nmUpdateContent()" onclick="npCursorInfo()" onkeyup="npCursorInfo()"></textarea>
+        <!-- Vista de editor -->
+        <div id="np-editor-view">
+          <div class="np-editor-bar">
+            <button onclick="nmCloseEditor()">‹ Voltar</button>
+            <span class="np-fname" id="np-fname">Nota</span>
+            <button onclick="nmSaveCurrentNote()">💾 Guardar</button>
+          </div>
+          <textarea id="notepad-area" spellcheck="false"
+                    oninput="nmUpdateContent()" onclick="npCursorInfo()" onkeyup="npCursorInfo()"></textarea>
         </div>
       </div>
     </div>
-    <div class="win-sbar">
-      <span id="np-pos">Linha 1, Col 1</span>
-      <span>|</span>
-      <span id="np-chars">0 caracteres</span>
-      <span>|</span>
-      <span id="np-notename" style="font-style:italic;color:#999">Nenhuma nota selecionada</span>
+    <div class="win-sbar" id="np-sbar">
+      <span id="np-sbar-left">0 itens</span>
     </div>
   </div>
 
@@ -515,10 +607,19 @@
 
 <!-- MENU CONTEXTO NOTA/PASTA -->
 <div id="np-ctx-menu">
+  <div class="cxi" id="ctx-open"   onclick="ctxNpAct('open')">📂 Abrir</div>
   <div class="cxi" id="ctx-rename" onclick="ctxNpAct('rename')">✏️ Renomear</div>
-  <div class="cxi" id="ctx-newchild" onclick="ctxNpAct('newnote')">📄 Nova nota aqui</div>
+  <div class="cx-sep"></div>
+  <div class="cxi" id="ctx-newchild-note"   onclick="ctxNpAct('newnote')">📄 Nova nota aqui</div>
+  <div class="cxi" id="ctx-newchild-folder" onclick="ctxNpAct('newfolder')">📁 Nova pasta aqui</div>
   <div class="cx-sep"></div>
   <div class="cxi danger" id="ctx-delete" onclick="ctxNpAct('delete')">🗑️ Eliminar</div>
+</div>
+
+<!-- MENU "NOVO" (botão da toolbar) -->
+<div id="np-new-menu" style="position:fixed;background:rgba(250,250,250,.97);backdrop-filter:blur(12px);border:1px solid rgba(0,0,0,.1);border-radius:8px;box-shadow:0 4px 16px rgba(0,0,0,.18);z-index:9001;display:none;min-width:170px;padding:4px;">
+  <div class="cxi" onclick="nmNewMenuAct('note')">📄 Novo documento de texto</div>
+  <div class="cxi" onclick="nmNewMenuAct('folder')">📁 Nova pasta</div>
 </div>
 
 <!-- NOTIFICAÇÃO -->
@@ -725,199 +826,317 @@ Object.keys(WINS).forEach(id => {
 });
 
 /* ═══════════════════════════════════════════════════
-   BLOCO DE NOTAS — GESTOR DE NOTAS
+   BLOCO DE NOTAS / EXPLORADOR DE FICHEIROS
 ═══════════════════════════════════════════════════ */
-let nm = { notes:[], activeId:null, selectedId:null, expandedFolders:{} };
+let nm = {
+  notes: [],
+  currentFolderId: null,   // pasta aberta no painel direito (null = raiz)
+  selectedId: null,        // item selecionado no painel direito
+  activeNoteId: null,      // nota aberta no editor
+  expandedFolders: {},
+  history: [null],         // historial de navegação (IDs de pasta)
+  histPos: 0,
+};
 let npCtxTargetId = null;
-let _npRenaming = false; // guard against double-render during inline rename
+let _npRenaming = false;
 
+/* ── Init ── */
 function nmInit() {
-  const saved = localStorage.getItem('nm-notes');
-  nm.notes = saved ? JSON.parse(saved) : [];
+  nm.notes = JSON.parse(localStorage.getItem('nm-notes') || '[]');
   nm.expandedFolders = JSON.parse(localStorage.getItem('nm-expanded') || '{}');
   if (nm.notes.length === 0) {
-    const n = nmMakeNote('Bem-vindo', null);
-    n.content = 'Olá! Este é o teu Bloco de Notas.\n\nPodes criar novas notas e pastas na barra lateral.\nClica com o botão direito num item para ver as opções.\n\nAtalhos:\n  Ctrl+S — Guardar\n  Ctrl+N — Nova nota\n  F2     — Renomear item selecionado\n  Delete — Eliminar item selecionado';
-    nm.notes = [n];
+    const welcome = nmMakeNote('Bem-vindo');
+    welcome.content = 'Olá!\n\nEste é o explorador de documentos.\n\n• Duplo clique numa pasta para a abrir\n• Duplo clique numa nota para a editar\n• Botão direito para criar, renomear ou eliminar\n• F2 para renomear o item selecionado\n• Delete para eliminar\n• Ctrl+S para guardar';
+    nm.notes = [welcome];
   }
   nmSave();
   nmRenderTree();
-  const first = nm.notes.find(n => n.type === 'note');
-  if (first) nmSelectNote(first.id);
+  nmRenderFolder();
+  nmUpdateNavBtns();
 
-  // Keyboard shortcuts on tree
+  // Teclado no painel de ícones
+  document.getElementById('np-main').addEventListener('keydown', e => {
+    if (nm.selectedId) {
+      if (e.key === 'F2')       { e.preventDefault(); nmStartIconRename(nm.selectedId); }
+      if (e.key === 'Delete')   { e.preventDefault(); nmDelete(nm.selectedId); }
+      if (e.key === 'Enter')    { e.preventDefault(); nmOpenItem(nm.selectedId); }
+    }
+    if (e.key === 'Backspace' && !document.getElementById('np-editor-view').style.display.includes('flex')) {
+      e.preventDefault(); nmUp();
+    }
+  });
+  // Teclado na árvore
   document.getElementById('np-tree').addEventListener('keydown', e => {
-    if (!nm.selectedId) return;
-    if (e.key === 'F2')     { e.preventDefault(); nmStartInlineRename(nm.selectedId); }
-    if (e.key === 'Delete') { e.preventDefault(); nmDelete(nm.selectedId); }
+    if (nm.selectedId) {
+      if (e.key === 'F2')     { e.preventDefault(); nmStartTreeRename(nm.selectedId); }
+      if (e.key === 'Delete') { e.preventDefault(); nmDelete(nm.selectedId); }
+    }
   });
 }
 
 function nmMakeNote(name='Sem título', parent=null) {
-  return { id:'n'+Date.now()+Math.random().toString(36).slice(2,7), name, content:'', type:'note', parent, created:Date.now(), modified:Date.now() };
+  return { id:'n'+Date.now()+Math.random().toString(36).slice(2,7), name, content:'', type:'note', parent:parent||null, created:Date.now(), modified:Date.now() };
 }
 function nmMakeFolder(name='Nova Pasta', parent=null) {
-  return { id:'f'+Date.now()+Math.random().toString(36).slice(2,7), name, content:null, type:'folder', parent, created:Date.now() };
+  return { id:'f'+Date.now()+Math.random().toString(36).slice(2,7), name, content:null, type:'folder', parent:parent||null, created:Date.now() };
 }
 function nmSave() {
   localStorage.setItem('nm-notes', JSON.stringify(nm.notes));
   localStorage.setItem('nm-expanded', JSON.stringify(nm.expandedFolders));
 }
 
-function nmRenderTree() {
-  if (_npRenaming) return; // don't clobber inline input while renaming
-  document.getElementById('np-tree').innerHTML = nmBuildTree(null, 0);
-}
-
-function nmBuildTree(parentId, depth) {
-  const items = nm.notes.filter(n => n.parent === (parentId||null));
-  items.sort((a,b) => {
-    if(a.type!==b.type) return a.type==='folder'?-1:1;
-    return a.name.localeCompare(b.name,'pt');
-  });
-  return items.map(item => {
-    const isActive   = item.id === nm.activeId;
-    const isSelected = item.id === nm.selectedId;
-    const classes    = ['np-tree-item', isActive?'active':'', isSelected?'selected':'', item.type==='folder'&&nm.expandedFolders[item.id]?'open':''].filter(Boolean).join(' ');
-    const indent     = depth * 14;
-
-    if (item.type === 'folder') {
-      return `
-        <div class="${classes}" data-id="${item.id}" style="padding-left:${indent}px"
-             onclick="nmClickFolder(event,'${item.id}')"
-             ondblclick="nmStartInlineRename('${item.id}')"
-             oncontextmenu="npCtxOpen(event,'${item.id}')">
-          <span class="np-arr-btn" onclick="nmToggleFolder(event,'${item.id}')">▶</span>
-          <span class="npi">📁</span>
-          <span class="npn">${esc(item.name)}</span>
-        </div>
-        ${nm.expandedFolders[item.id] ? nmBuildTree(item.id, depth+1) : ''}
-      `;
-    } else {
-      return `
-        <div class="${classes}" data-id="${item.id}" style="padding-left:${16+indent}px"
-             onclick="nmClickNote('${item.id}')"
-             ondblclick="nmStartInlineRename('${item.id}')"
-             oncontextmenu="npCtxOpen(event,'${item.id}')">
-          <span class="npi">📄</span>
-          <span class="npn">${esc(item.name)}</span>
-        </div>
-      `;
-    }
-  }).join('');
-}
-
-/* Click handlers */
-function nmClickFolder(e, id) {
-  nm.selectedId = id;
+/* ── Navegação ── */
+function nmNavigate(folderId) {
+  // truncate forward history
+  nm.history = nm.history.slice(0, nm.histPos + 1);
+  nm.history.push(folderId);
+  nm.histPos = nm.history.length - 1;
+  nm.currentFolderId = folderId;
+  nm.selectedId = null;
+  nmRenderFolder();
   nmRenderTree();
-  document.getElementById('np-tree').focus();
+  nmUpdateBreadcrumb();
+  nmUpdateNavBtns();
+  nmCloseEditor(false);
 }
 
-function nmToggleFolder(e, id) {
-  e.stopPropagation(); // don't bubble to nmClickFolder
-  nm.expandedFolders[id] = !nm.expandedFolders[id];
+function nmBack() {
+  if (nm.histPos <= 0) return;
+  nm.histPos--;
+  nm.currentFolderId = nm.history[nm.histPos];
+  nm.selectedId = null;
+  nmRenderFolder(); nmRenderTree(); nmUpdateBreadcrumb(); nmUpdateNavBtns();
+  nmCloseEditor(false);
+}
+function nmFwd() {
+  if (nm.histPos >= nm.history.length - 1) return;
+  nm.histPos++;
+  nm.currentFolderId = nm.history[nm.histPos];
+  nm.selectedId = null;
+  nmRenderFolder(); nmRenderTree(); nmUpdateBreadcrumb(); nmUpdateNavBtns();
+  nmCloseEditor(false);
+}
+function nmUp() {
+  if (!nm.currentFolderId) return;
+  const folder = nm.notes.find(n => n.id === nm.currentFolderId);
+  nmNavigate(folder?.parent || null);
+}
+
+function nmUpdateNavBtns() {
+  document.getElementById('np-btn-back').disabled = nm.histPos <= 0;
+  document.getElementById('np-btn-fwd').disabled  = nm.histPos >= nm.history.length - 1;
+  document.getElementById('np-btn-up').disabled   = !nm.currentFolderId;
+}
+
+function nmUpdateBreadcrumb() {
+  const addr = document.getElementById('np-addr');
+  // Build path from root to current
+  const path = [];
+  let id = nm.currentFolderId;
+  while (id) {
+    const f = nm.notes.find(n => n.id === id);
+    if (!f) break;
+    path.unshift({ id: f.id, name: f.name });
+    id = f.parent;
+  }
+  let html = `<span class="np-crumb" onclick="nmNavigate(null)">📁 Documentos</span>`;
+  path.forEach(p => {
+    html += `<span class="np-crumb-sep">›</span><span class="np-crumb" onclick="nmNavigate('${p.id}')">${esc(p.name)}</span>`;
+  });
+  addr.innerHTML = html;
+
+  // Title bar
+  const last = path[path.length - 1];
+  document.getElementById('np-title').textContent = (last ? last.name : 'Documentos');
+}
+
+/* ── Painel de ícones ── */
+function nmRenderFolder(filterQuery='') {
+  const grid = document.getElementById('np-icon-grid');
+  let items = nm.notes.filter(n => n.parent === (nm.currentFolderId || null));
+  // folders first, then notes, both alphabetical
+  items.sort((a,b) => {
+    if (a.type !== b.type) return a.type === 'folder' ? -1 : 1;
+    return a.name.localeCompare(b.name, 'pt');
+  });
+  if (filterQuery) {
+    items = items.filter(i => i.name.toLowerCase().includes(filterQuery.toLowerCase()));
+  }
+
+  if (items.length === 0) {
+    grid.innerHTML = `<div class="np-empty"><div class="np-empty-ico">${filterQuery ? '🔍' : '📂'}</div>${filterQuery ? 'Nenhum resultado.' : 'Esta pasta está vazia.<br>Clica com o botão direito para criar um item.'}</div>`;
+  } else {
+    grid.innerHTML = items.map(item => `
+      <div class="np-icon${item.id === nm.selectedId ? ' sel-icon' : ''}"
+           data-id="${item.id}"
+           draggable="true"
+           onclick="nmSelectIcon('${item.id}')"
+           ondblclick="nmOpenItem('${item.id}')"
+           oncontextmenu="npCtxOpen(event,'${item.id}')"
+           ondragstart="nmDragStart(event,'${item.id}')">
+        <div class="ni-img">${item.type === 'folder' ? '📁' : '📄'}</div>
+        <div class="ni-name">${esc(item.name)}</div>
+      </div>
+    `).join('');
+  }
+
+  // Status bar
+  const total = nm.notes.filter(n => n.parent === (nm.currentFolderId||null)).length;
+  const selItem = nm.notes.find(n => n.id === nm.selectedId);
+  document.getElementById('np-sbar-left').textContent =
+    selItem ? `1 item selecionado: "${selItem.name}"` : `${total} item(ns)`;
+}
+
+function nmSelectIcon(id) {
   nm.selectedId = id;
-  nmSave(); nmRenderTree();
-  document.getElementById('np-tree').focus();
+  nmRenderFolder();
+  document.getElementById('np-main').focus();
 }
 
-function nmClickNote(id) {
-  nm.selectedId = id;
-  nmSelectNote(id);
+function nmOpenItem(id) {
+  const item = nm.notes.find(n => n.id === id);
+  if (!item) return;
+  if (item.type === 'folder') {
+    nm.expandedFolders[item.id] = true;
+    nmNavigate(item.id);
+  } else {
+    nmOpenNote(item.id);
+  }
 }
 
-function nmSelectNote(id) {
+/* ── Editor ── */
+function nmOpenNote(id) {
   const note = nm.notes.find(n => n.id === id);
   if (!note || note.type !== 'note') return;
-  nm.activeId   = id;
-  nm.selectedId = id;
+  nm.activeNoteId = id;
   document.getElementById('notepad-area').value = note.content || '';
-  document.getElementById('np-title').textContent = note.name + ' — Bloco de Notas';
-  document.getElementById('np-notename').textContent = note.name;
-  npCursorInfo();
-  nmRenderTree();
+  document.getElementById('np-fname').textContent = note.name;
+  document.getElementById('np-folder-view').style.display = 'none';
+  document.getElementById('np-editor-view').style.display = 'flex';
+  document.getElementById('np-editor-view').style.flexDirection = 'column';
   document.getElementById('notepad-area').focus();
+  npCursorInfo();
+  document.getElementById('np-title').textContent = note.name + ' — Bloco de Notas';
+}
+
+function nmCloseEditor(navigate=true) {
+  nm.activeNoteId = null;
+  document.getElementById('np-editor-view').style.display = 'none';
+  document.getElementById('np-folder-view').style.display = '';
+  if (navigate) {
+    nmUpdateBreadcrumb();
+    nmRenderFolder();
+  }
+}
+
+function nmSaveCurrentNote() {
+  nmUpdateContent();
+  showNotif('💾', 'Nota guardada.');
 }
 
 function nmUpdateContent() {
-  if (!nm.activeId) return;
-  const note = nm.notes.find(n => n.id === nm.activeId);
+  if (!nm.activeNoteId) return;
+  const note = nm.notes.find(n => n.id === nm.activeNoteId);
   if (note) { note.content = document.getElementById('notepad-area').value; note.modified = Date.now(); nmSave(); }
   npCursorInfo();
 }
 
 /* ── Criar items ── */
-function nmCreateNote(parentId=null) {
-  const note = nmMakeNote('Sem título', parentId);
+function nmCreateNote(parentId) {
+  const pid = (parentId !== undefined ? parentId : nm.currentFolderId) || null;
+  const note = nmMakeNote('Sem título', pid);
   nm.notes.push(note);
-  if (parentId) nm.expandedFolders[parentId] = true;
   nm.selectedId = note.id;
-  nm.activeId   = note.id;
-  document.getElementById('notepad-area').value = '';
-  document.getElementById('np-title').textContent = 'Sem título — Bloco de Notas';
-  document.getElementById('np-notename').textContent = 'Sem título';
-  nmSave(); nmRenderTree();
-  requestAnimationFrame(() => nmStartInlineRename(note.id));
+  nmSave();
+  if (pid !== nm.currentFolderId) { nmNavigate(pid); }
+  else nmRenderFolder();
+  nmRenderTree();
+  requestAnimationFrame(() => nmStartIconRename(note.id));
 }
 
-function nmCreateFolder(parentId=null) {
-  const folder = nmMakeFolder('Nova Pasta', parentId);
+function nmCreateFolder(parentId) {
+  const pid = (parentId !== undefined ? parentId : nm.currentFolderId) || null;
+  const folder = nmMakeFolder('Nova Pasta', pid);
   nm.notes.push(folder);
-  if (parentId) nm.expandedFolders[parentId] = true;
-  nm.expandedFolders[folder.id] = true;
+  nm.expandedFolders[folder.id] = false;
   nm.selectedId = folder.id;
-  nmSave(); nmRenderTree();
-  requestAnimationFrame(() => nmStartInlineRename(folder.id));
+  nmSave();
+  if (pid !== nm.currentFolderId) { nmNavigate(pid); }
+  else nmRenderFolder();
+  nmRenderTree();
+  requestAnimationFrame(() => nmStartIconRename(folder.id));
 }
 
-/* ── Rename inline (comportamento Windows Explorer) ── */
-function nmStartInlineRename(id) {
+/* ── Rename inline no painel de ícones ── */
+function nmStartIconRename(id) {
   const item = nm.notes.find(n => n.id === id);
   if (!item) return;
-
   nm.selectedId = id;
-  nmRenderTree(); // render first so the DOM element exists
+  nmRenderFolder();
 
-  const itemEl = document.querySelector(`.np-tree-item[data-id="${id}"]`);
-  if (!itemEl) return;
-  const nameEl = itemEl.querySelector('.npn');
+  const iconEl = document.querySelector(`.np-icon[data-id="${id}"]`);
+  if (!iconEl) return;
+  const nameEl = iconEl.querySelector('.ni-name');
   if (!nameEl) return;
 
   _npRenaming = true;
   const oldName = item.name;
 
   const input = document.createElement('input');
-  input.type  = 'text';
+  input.type = 'text';
   input.value = oldName;
-  input.className = 'np-inline-input';
+  input.style.cssText = 'width:76px;border:1px solid var(--accent);border-radius:3px;padding:1px 3px;font-size:.72rem;text-align:center;outline:none;font-family:inherit;background:#fff;margin-top:2px;';
   nameEl.replaceWith(input);
-  input.focus();
-  input.select();
-  itemEl.scrollIntoView({ block:'nearest' });
+  input.focus(); input.select();
+  iconEl.scrollIntoView({ block: 'nearest' });
 
-  let committed = false;
-
+  let done = false;
   function commit() {
-    if (committed) return; committed = true;
-    const newName = input.value.trim() || oldName;
-    item.name = newName;
-    _npRenaming = false;
-    nmSave(); nmRenderTree();
-    if (id === nm.activeId) {
-      document.getElementById('np-title').textContent = newName + ' — Bloco de Notas';
-      document.getElementById('np-notename').textContent = newName;
-    }
+    if (done) return; done = true;
+    const v = input.value.trim() || oldName;
+    item.name = v; _npRenaming = false;
+    nmSave(); nmRenderFolder(); nmRenderTree();
+    if (id === nm.activeNoteId) document.getElementById('np-fname').textContent = v;
   }
-
   function cancel() {
-    if (committed) return; committed = true;
-    item.name = oldName;
-    _npRenaming = false;
-    nmRenderTree();
+    if (done) return; done = true;
+    item.name = oldName; _npRenaming = false;
+    nmRenderFolder();
   }
+  input.addEventListener('blur', commit);
+  input.addEventListener('keydown', e => {
+    e.stopPropagation();
+    if (e.key === 'Enter')  { e.preventDefault(); input.blur(); }
+    if (e.key === 'Escape') { input.removeEventListener('blur', commit); cancel(); }
+  });
+}
 
-  input.addEventListener('blur',   commit);
+/* ── Rename inline na árvore ── */
+function nmStartTreeRename(id) {
+  const item = nm.notes.find(n => n.id === id);
+  if (!item || item.type !== 'folder') { nmStartIconRename(id); return; }
+  const itemEl = document.querySelector(`#np-tree .np-tree-item[data-id="${id}"]`);
+  if (!itemEl) return;
+  const nameEl = itemEl.querySelector('.npn');
+  if (!nameEl) return;
+  _npRenaming = true;
+  const oldName = item.name;
+  const input = document.createElement('input');
+  input.type = 'text'; input.value = oldName; input.className = 'np-inline-input';
+  nameEl.replaceWith(input);
+  input.focus(); input.select();
+  let done = false;
+  function commit() {
+    if (done) return; done = true;
+    const v = input.value.trim() || oldName;
+    item.name = v; _npRenaming = false;
+    nmSave(); nmRenderTree(); nmUpdateBreadcrumb();
+  }
+  function cancel() {
+    if (done) return; done = true;
+    item.name = oldName; _npRenaming = false; nmRenderTree();
+  }
+  input.addEventListener('blur', commit);
   input.addEventListener('keydown', e => {
     e.stopPropagation();
     if (e.key === 'Enter')  { e.preventDefault(); input.blur(); }
@@ -931,49 +1150,151 @@ function nmDelete(id) {
   if (!item) return;
   showDlg('🗑️', 'Eliminar', `Eliminar <strong>"${esc(item.name)}"</strong>?${item.type==='folder'?'<br><small style="color:#888">O conteúdo da pasta também será eliminado.</small>':''}`, [
     {label:'Eliminar', cls:'danger', action: () => {
+      if (item.type === 'folder') {
+        // collect names of all descendants for recycle bin
+        function collectNames(fid) {
+          nm.notes.filter(n => n.parent === fid).forEach(c => { rbAddItem(c.name, c.type); collectNames(c.id); });
+        }
+        collectNames(id);
+      }
       rbAddItem(item.name, item.type);
       nmDeleteRec(id);
-      if (!nm.notes.find(n=>n.id===nm.activeId)) {
-        nm.activeId = null;
-        document.getElementById('notepad-area').value = '';
-        document.getElementById('np-title').textContent = 'Bloco de Notas';
-        document.getElementById('np-notename').textContent = 'Nenhuma nota selecionada';
-      }
+      if (nm.activeNoteId && !nm.notes.find(n => n.id === nm.activeNoteId)) nmCloseEditor(false);
       nm.selectedId = null;
-      nmSave(); nmRenderTree();
-      showNotif('🗑️ Eliminado', `"${item.name}" movido para a Reciclagem.`);
+      nmSave(); nmRenderFolder(); nmRenderTree();
+      showNotif('🗑️', `"${item.name}" movido para a Reciclagem.`);
     }},
     {label:'Cancelar'}
   ]);
 }
-
 function nmDeleteRec(id) {
   nm.notes.filter(n => n.parent === id).forEach(c => nmDeleteRec(c.id));
   nm.notes = nm.notes.filter(n => n.id !== id);
 }
 
-/* ── Context menu ── */
+/* ── Árvore lateral (apenas pastas) ── */
+function nmRenderTree() {
+  if (_npRenaming) return;
+  document.getElementById('np-tree').innerHTML = nmBuildTree(null, 0);
+}
+function nmBuildTree(parentId, depth) {
+  const folders = nm.notes.filter(n => n.type==='folder' && n.parent===(parentId||null));
+  folders.sort((a,b) => a.name.localeCompare(b.name,'pt'));
+  return folders.map(f => {
+    const isCurrent = f.id === nm.currentFolderId;
+    const isOpen    = nm.expandedFolders[f.id];
+    const indent    = depth * 14;
+    return `
+      <div class="np-tree-item${isCurrent?' sel-tree':''}${isOpen?' open':''}" data-id="${f.id}" style="padding-left:${6+indent}px"
+           onclick="nmTreeClickFolder('${f.id}')"
+           oncontextmenu="npCtxOpen(event,'${f.id}')">
+        <span class="np-arr-btn" onclick="nmTreeToggle(event,'${f.id}')">▶</span>
+        <span style="font-size:.95rem">📁</span>
+        <span class="npn">${esc(f.name)}</span>
+      </div>
+      ${isOpen ? nmBuildTree(f.id, depth+1) : ''}
+    `;
+  }).join('');
+}
+function nmTreeClickFolder(id) {
+  nm.expandedFolders[id] = true;
+  nmNavigate(id);
+}
+function nmTreeToggle(e, id) {
+  e.stopPropagation();
+  nm.expandedFolders[id] = !nm.expandedFolders[id];
+  nmSave(); nmRenderTree();
+}
+
+/* ── Pesquisa ── */
+function nmSearch(q) { nmRenderFolder(q); }
+
+/* ── Drag & drop entre pastas ── */
+let _dragId = null;
+function nmDragStart(e, id) { _dragId = id; e.dataTransfer.effectAllowed = 'move'; }
+function nmDropItem(e) {
+  e.preventDefault();
+  if (!_dragId || _dragId === nm.currentFolderId) return;
+  const item = nm.notes.find(n => n.id === _dragId);
+  if (!item) return;
+  item.parent = nm.currentFolderId || null;
+  _dragId = null;
+  nmSave(); nmRenderFolder(); nmRenderTree();
+  showNotif('📁', `"${item.name}" movido.`);
+}
+
+/* ── Menus de contexto ── */
 function npCtxOpen(e, id) {
   e.preventDefault(); e.stopPropagation();
   npCtxTargetId = id;
   nm.selectedId = id;
-  nmRenderTree();
+  nmRenderFolder();
   const item = nm.notes.find(n => n.id === id);
-  document.getElementById('ctx-newchild').style.display = item?.type==='folder' ? 'block' : 'none';
+  const isFolder = item?.type === 'folder';
+  document.getElementById('ctx-open').textContent = isFolder ? '📂 Abrir pasta' : '📄 Abrir nota';
+  document.getElementById('ctx-newchild-note').style.display   = isFolder ? 'block' : 'none';
+  document.getElementById('ctx-newchild-folder').style.display = isFolder ? 'block' : 'none';
   const m = document.getElementById('np-ctx-menu');
-  m.style.left = Math.min(e.clientX, window.innerWidth-200) + 'px';
-  m.style.top  = Math.min(e.clientY, window.innerHeight-150) + 'px';
+  m.style.left = Math.min(e.clientX, window.innerWidth-220)+'px';
+  m.style.top  = Math.min(e.clientY, window.innerHeight-180)+'px';
   m.style.display = 'block';
 }
 
 function ctxNpAct(act) {
   document.getElementById('np-ctx-menu').style.display = 'none';
-  if (!npCtxTargetId) return;
-  const item = nm.notes.find(n => n.id === npCtxTargetId);
-  if (act === 'rename') nmStartInlineRename(npCtxTargetId); // inline, just like Windows
-  if (act === 'delete') nmDelete(npCtxTargetId);
-  if (act === 'newnote' && item?.type === 'folder') nmCreateNote(npCtxTargetId);
+  const id = npCtxTargetId; npCtxTargetId = null;
+  if (!id) return;
+  if (act === 'open')      nmOpenItem(id);
+  if (act === 'rename')    nmStartIconRename(id);
+  if (act === 'delete')    nmDelete(id);
+  if (act === 'newnote')   nmCreateNote(id);
+  if (act === 'newfolder') nmCreateFolder(id);
+}
+
+/* Context menu no espaço vazio do painel */
+function nmDesktopCtx(e) {
+  if (e.target.closest('.np-icon')) return; // handled by npCtxOpen
+  e.preventDefault();
   npCtxTargetId = null;
+  nm.selectedId = null;
+  // Reuse np-ctx-menu but show only "new" options
+  document.getElementById('ctx-open').style.display   = 'none';
+  document.getElementById('ctx-rename').style.display = 'none';
+  document.getElementById('ctx-delete').style.display = 'none';
+  document.getElementById('ctx-newchild-note').textContent   = '📄 Novo documento de texto';
+  document.getElementById('ctx-newchild-folder').textContent = '📁 Nova pasta';
+  document.getElementById('ctx-newchild-note').style.display   = 'block';
+  document.getElementById('ctx-newchild-folder').style.display = 'block';
+  const m = document.getElementById('np-ctx-menu');
+  m.style.left = Math.min(e.clientX, window.innerWidth-220)+'px';
+  m.style.top  = Math.min(e.clientY, window.innerHeight-120)+'px';
+  m.style.display = 'block';
+}
+
+/* Re-open context menu after desktop ctx */
+document.addEventListener('click', () => {
+  // Restore ctx-menu items visibility for next open
+  ['ctx-open','ctx-rename','ctx-delete','ctx-newchild-note','ctx-newchild-folder'].forEach(id => {
+    const el = document.getElementById(id);
+    if (el) el.style.display = '';
+  });
+  document.getElementById('ctx-newchild-note').textContent   = '📄 Nova nota aqui';
+  document.getElementById('ctx-newchild-folder').textContent = '📁 Nova pasta aqui';
+});
+
+/* Botão "+ Novo" da toolbar */
+function nmShowNewMenu(e) {
+  e.stopPropagation();
+  const m = document.getElementById('np-new-menu');
+  const r = e.target.getBoundingClientRect();
+  m.style.left = r.left + 'px';
+  m.style.top  = (r.bottom + 4) + 'px';
+  m.style.display = 'block';
+}
+function nmNewMenuAct(type) {
+  document.getElementById('np-new-menu').style.display = 'none';
+  if (type === 'note')   nmCreateNote();
+  if (type === 'folder') nmCreateFolder();
 }
 
 /* Notepad utils */
@@ -983,21 +1304,21 @@ function npCursorInfo() {
   const before = val.substring(0, pos);
   const line = before.split('\n').length;
   const col  = pos - before.lastIndexOf('\n');
-  document.getElementById('np-pos').textContent = `Linha ${line}, Col ${col}`;
-  document.getElementById('np-chars').textContent = `${val.length} caracteres`;
+  const sb = document.getElementById('np-sbar-left');
+  if (sb) sb.textContent = `Linha ${line}, Col ${col} | ${val.length} caract.`;
 }
 
 function npMenuAct(m) {
   if (m === 'ficheiro') {
     const btns = [
-      {label:'💾 Guardar (Ctrl+S)', action: () => { nmUpdateContent(); showNotif('💾','Nota guardada.'); }},
-      {label:'📄 Nova Nota', action: nmCreateNote},
-      {label:'📁 Nova Pasta', action: nmCreateFolder},
+      {label:'💾 Guardar (Ctrl+S)', action: nmSaveCurrentNote},
+      {label:'📄 Novo documento de texto', action: () => nmCreateNote()},
+      {label:'📁 Nova pasta', action: () => nmCreateFolder()},
     ];
     showDlg('📝','Ficheiro','',btns,null,true);
   }
   if (m === 'ver') {
-    showDlg('📋','Notas guardadas',
+    showDlg('📋','Documentos',
       `<strong>${nm.notes.filter(n=>n.type==='note').length}</strong> nota(s) | <strong>${nm.notes.filter(n=>n.type==='folder').length}</strong> pasta(s)`,
       [{label:'OK'}]);
   }
@@ -1016,15 +1337,10 @@ function npMenuAct(m) {
 
 document.addEventListener('keydown', e => {
   const ta = document.getElementById('notepad-area');
-  const npOpen = document.getElementById('win-np').style.display !== 'none';
   if (document.activeElement === ta) {
-    if (e.ctrlKey && e.key==='s') { e.preventDefault(); nmUpdateContent(); showNotif('💾','Nota guardada.'); }
+    if (e.ctrlKey && e.key==='s') { e.preventDefault(); nmSaveCurrentNote(); }
     if (e.ctrlKey && e.key==='n') { e.preventDefault(); nmCreateNote(); }
     if (e.key==='Tab') { e.preventDefault(); const s=ta.selectionStart; ta.value=ta.value.substring(0,s)+'    '+ta.value.substring(ta.selectionEnd); ta.selectionStart=ta.selectionEnd=s+4; }
-  }
-  // F2 from anywhere inside the notepad window
-  if (e.key === 'F2' && npOpen && nm.selectedId && document.activeElement !== ta) {
-    e.preventDefault(); nmStartInlineRename(nm.selectedId);
   }
 });
 
@@ -1309,7 +1625,13 @@ document.addEventListener('click', e => {
   if(!e.target.closest('#start-btn') && !e.target.closest('#start-menu')) closeStart();
   if(!e.target.closest('.dicon')) document.querySelectorAll('.dicon').forEach(i=>i.classList.remove('sel'));
   document.getElementById('ctx-menu').style.display='none';
-  if(!e.target.closest('[oncontextmenu]')) document.getElementById('np-ctx-menu').style.display='none';
+  document.getElementById('np-new-menu').style.display='none';
+  if(!e.target.closest('[oncontextmenu]') && !e.target.closest('.np-icon')) document.getElementById('np-ctx-menu').style.display='none';
+  // Deselect icon when clicking empty space in folder view
+  if(e.target.closest('#np-folder-view') && !e.target.closest('.np-icon')) {
+    nm.selectedId = null;
+    nmRenderFolder();
+  }
 });
 
 document.getElementById('desktop').addEventListener('contextmenu', e => {
