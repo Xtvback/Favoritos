@@ -1,658 +1,1279 @@
 <!DOCTYPE html>
 <html lang="pt">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Portal de Recursos Digitais</title>
-    <style>
-        :root {
-            --fundo: #050505;
-            --cartao: #111111;
-            --destaque: #ffffff;
-            --texto: #a1a1aa;
-            --borda: #27272a;
-            --azul: #3b82f6;
-            --verde: #22c55e;
-            --amarelo: #eab308;
-            --vermelho: #ef4444;
-        }
-        body {
-            font-family: "Inter", sans-serif;
-            background-color: var(--fundo);
-            color: var(--texto);
-            margin: 0;
-            padding: 40px 20px;
-        }
-        .wrapper {
-            max-width: 1400px;
-            margin: 0 auto;
-        }
-        header {
-            text-align: center;
-            margin-bottom: 40px;
-        }
-        h1 {
-            color: var(--destaque);
-            font-size: 3.2rem;
-            font-weight: 900;
-            letter-spacing: -2px;
-            text-transform: uppercase;
-            margin-bottom: 5px;
-        }
-        .subtitle {
-            font-size: 1rem;
-            color: var(--texto);
-            margin-bottom: 30px;
-            letter-spacing: 1px;
-        }
-        .top-actions {
-            display: flex;
-            justify-content: center;
-            gap: 15px;
-            margin-bottom: 40px;
-        }
-        .share-btn {
-            background: var(--destaque);
-            color: var(--fundo);
-            border: none;
-            padding: 12px 24px;
-            border-radius: 50px;
-            font-weight: 800;
-            cursor: pointer;
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            transition: transform 0.2s;
-        }
-        .share-btn:hover {
-            transform: scale(1.05);
-        }
-        .nota-informativa {
-            background: rgba(59, 130, 246, 0.1);
-            color: var(--azul);
-            padding: 15px;
-            border-radius: 8px;
-            text-align: center;
-            margin-bottom: 30px;
-            font-weight: 600;
-            border: 1px solid rgba(59, 130, 246, 0.2);
-        }
-        .search-area {
-            position: sticky;
-            top: 20px;
-            z-index: 1000;
-            margin-bottom: 50px;
-        }
-        #searchBar {
-            width: 100%;
-            background: rgba(17, 17, 17, 0.95);
-            border: 1px solid var(--borda);
-            padding: 20px;
-            border-radius: 12px;
-            color: white;
-            font-size: 1.2rem;
-            backdrop-filter: blur(10px);
-            outline: none;
-        }
-        .category {
-            margin-bottom: 15px;
-            border: 1px solid var(--borda);
-            border-radius: 12px;
-            overflow: hidden;
-        }
-        .group-header {
-            background: var(--cartao);
-            color: var(--destaque);
-            width: 100%;
-            padding: 20px 25px;
-            font-size: 1.3rem;
-            font-weight: 800;
-            text-align: left;
-            border: none;
-            cursor: pointer;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-        .group-header:hover { background: #1a1a1a; }
-        .group-header::after { content: "+"; color: var(--azul); font-size: 1.5rem; }
-        .category.active .group-header::after { content: "-"; }
-        .grid {
-            display: none;
-            padding: 25px;
-            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-            gap: 20px;
-            background: #080808;
-        }
-        .category.active .grid { display: grid; }
-        .card {
-            background: var(--cartao);
-            border: 1px solid var(--borda);
-            border-radius: 12px;
-            padding: 20px;
-            display: flex;
-            flex-direction: column;
-            transition: border 0.3s;
-        }
-        .card:hover { border-color: var(--azul); }
-        .card-header { display: flex; justify-content: space-between; margin-bottom: 10px; }
-        .click-count { font-size: 0.7rem; color: var(--azul); font-weight: bold; background: #1e293b; padding: 2px 8px; border-radius: 4px; }
-        .price-label { font-size: 0.7rem; font-weight: 800; text-transform: uppercase; padding: 2px 8px; border-radius: 4px; width: fit-content; margin-bottom: 12px; }
-        .free { background: rgba(34, 197, 94, 0.1); color: var(--verde); }
-        .paid { background: rgba(239, 68, 68, 0.1); color: var(--vermelho); }
-        .mixed { background: rgba(234, 179, 8, 0.1); color: var(--amarelo); }
-        h3 { color: var(--destaque); margin: 0; font-size: 1.2rem; }
-        p { font-size: 0.85rem; line-height: 1.4; margin: 10px 0; min-height: 45px; }
-        .details-text { display: none; background: #000; padding: 10px; border-radius: 6px; font-size: 0.8rem; margin-bottom: 15px; border: 1px dashed #333; }
-        .actions { display: flex; gap: 10px; margin-top: auto; }
-        .main-btn { flex: 1; background: var(--azul); color: white; text-decoration: none; text-align: center; padding: 10px; border-radius: 6px; font-weight: bold; font-size: 0.85rem; }
-        .info-btn { background: none; border: 1px solid var(--borda); color: var(--texto); padding: 10px; border-radius: 6px; cursor: pointer; font-size: 0.8rem; }
-        footer { margin-top: 100px; text-align: center; border-top: 1px solid var(--borda); padding: 50px; }
-        .insta-link { color: var(--azul); text-decoration: none; font-weight: bold; }
-    </style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>DesktopWeb — André M. Fernandes</title>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body { font-family: 'Segoe UI', Tahoma, sans-serif; overflow: hidden; height: 100vh; width: 100vw; }
+
+    /* =========================================================
+       ECRÃ DE BLOQUEIO
+    ========================================================= */
+    #lock-screen {
+      position: fixed; inset: 0; z-index: 9999;
+      background: radial-gradient(ellipse at 50% 100%, #0d1b2e 0%, #0a1220 60%, #060d18 100%);
+      display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 20px;
+      color: white;
+    }
+    #lock-screen .lock-time {
+      font-size: 6rem; font-weight: 100; letter-spacing: -4px; text-shadow: 0 0 40px rgba(100,160,255,0.4);
+    }
+    #lock-screen .lock-date { font-size: 1.2rem; color: rgba(255,255,255,0.6); margin-bottom: 10px; }
+    #lock-screen .lock-divider { width: 1px; height: 60px; background: rgba(255,255,255,0.2); margin: 5px 0; }
+    #lock-screen .lock-user { font-size: 4rem; }
+    #lock-screen .lock-username { font-size: 1.4rem; font-weight: 300; margin-bottom: 5px; }
+    #lock-form { display: flex; flex-direction: column; align-items: center; gap: 12px; }
+    #code-input {
+      background: rgba(255,255,255,0.1); border: 1px solid rgba(255,255,255,0.25);
+      backdrop-filter: blur(10px); color: white; padding: 12px 20px; border-radius: 6px;
+      font-size: 1.3rem; text-align: center; outline: none; width: 240px;
+      letter-spacing: 0.5em; transition: border 0.2s, background 0.2s;
+    }
+    #code-input::placeholder { letter-spacing: 0.1em; color: rgba(255,255,255,0.4); font-size: 0.9rem; }
+    #code-input:focus { border-color: rgba(100,160,255,0.7); background: rgba(255,255,255,0.15); }
+    #login-btn {
+      background: linear-gradient(to bottom, #4a90e8, #2a70c8); border: 1px solid rgba(255,255,255,0.3);
+      color: white; padding: 10px 32px; border-radius: 5px; cursor: pointer; font-size: 0.95rem;
+      letter-spacing: 0.5px; transition: filter 0.2s; box-shadow: 0 2px 8px rgba(0,0,0,0.4);
+    }
+    #login-btn:hover { filter: brightness(1.15); }
+    #login-btn:active { filter: brightness(0.9); }
+    #lock-error { color: #ff7b7b; font-size: 0.85rem; min-height: 18px; }
+    .shake { animation: shake 0.4s ease; }
+    @keyframes shake { 0%,100%{transform:translateX(0)} 25%{transform:translateX(-10px)} 75%{transform:translateX(10px)} }
+    .lock-hint { color: rgba(255,255,255,0.3); font-size: 0.75rem; }
+
+    /* =========================================================
+       AMBIENTE DE TRABALHO
+    ========================================================= */
+    #desktop {
+      position: fixed; inset: 0; display: none;
+      background:
+        radial-gradient(ellipse 120% 60% at 60% -10%, rgba(255,255,255,0.35) 0%, transparent 60%),
+        linear-gradient(to bottom,
+          #4a9fd4 0%, #6db8e8 25%, #95cfee 38%,
+          #3d9e5f 38%, #4aad6b 45%, #2e8b57 60%, #236b45 80%, #1a5535 100%);
+    }
+    #desktop-icons {
+      position: absolute; top: 12px; left: 12px;
+      display: flex; flex-direction: column; gap: 8px; z-index: 10;
+    }
+    .dsk-icon {
+      display: flex; flex-direction: column; align-items: center; gap: 4px;
+      padding: 6px; border-radius: 4px; cursor: pointer; width: 78px;
+      transition: background 0.1s;
+    }
+    .dsk-icon:hover { background: rgba(255,255,255,0.2); }
+    .dsk-icon.sel { background: rgba(49,106,197,0.45); outline: 1px dotted rgba(255,255,255,0.7); }
+    .dsk-icon .dsk-img { font-size: 2.8rem; filter: drop-shadow(1px 2px 4px rgba(0,0,0,0.6)); }
+    .dsk-icon .dsk-lbl {
+      color: white; font-size: 0.72rem; text-align: center; line-height: 1.3;
+      text-shadow: 1px 1px 3px #000, 0 0 6px #000; word-break: break-word;
+    }
+
+    /* =========================================================
+       BARRA DE TAREFAS
+    ========================================================= */
+    #taskbar {
+      position: absolute; bottom: 0; left: 0; right: 0; height: 42px;
+      background: linear-gradient(to bottom, #245cac 0%, #1e54a0 4%, #2060b0 10%, #1a54a4 45%, #1050a0 50%, #0e4a99 51%, #1050a0 100%);
+      display: flex; align-items: center; z-index: 1000;
+      border-top: 2px solid #3a7bca; box-shadow: 0 -2px 6px rgba(0,0,0,0.5);
+    }
+    #start-btn {
+      height: 38px; padding: 0 14px 0 8px; margin: 2px 4px;
+      background: linear-gradient(to bottom, #60c060 0%, #3da03d 40%, #389838 50%, #3da03d 100%);
+      border: none; border-radius: 0 14px 14px 0; color: white; font-weight: bold;
+      font-size: 0.92rem; cursor: pointer; display: flex; align-items: center; gap: 6px;
+      box-shadow: inset 0 1px 0 rgba(255,255,255,0.5), 2px 0 6px rgba(0,0,0,0.4);
+      font-family: 'Segoe UI', Tahoma, sans-serif; letter-spacing: 0.3px;
+    }
+    #start-btn:hover { filter: brightness(1.1); }
+    #start-btn:active { filter: brightness(0.9); }
+    #taskbar-wins { flex: 1; display: flex; align-items: center; gap: 3px; padding: 0 5px; overflow: hidden; }
+    .tbtn {
+      height: 30px; padding: 0 10px; min-width: 110px; max-width: 160px;
+      background: linear-gradient(to bottom, #4a8ed4 0%, #3278bc 50%, #2a6aac 100%);
+      border: 1px solid #1a4a8a; border-radius: 3px; color: white;
+      font-size: 0.75rem; cursor: pointer; white-space: nowrap; overflow: hidden;
+      text-overflow: ellipsis; display: flex; align-items: center; gap: 5px;
+      font-family: 'Segoe UI', Tahoma, sans-serif;
+    }
+    .tbtn:hover { filter: brightness(1.1); }
+    .tbtn.active {
+      background: linear-gradient(to bottom, #28569a 0%, #1c4288 50%, #28569a 100%);
+      border-color: #0a2a6a; box-shadow: inset 1px 1px 4px rgba(0,0,0,0.5);
+    }
+    #sys-tray {
+      display: flex; align-items: center; gap: 8px; padding: 0 12px; height: 100%;
+      background: linear-gradient(to bottom, #1050a0 0%, #0c42a0 50%, #0840a0 100%);
+      border-left: 1px solid #3a7bca; font-size: 0.78rem; color: white;
+    }
+    #clock { text-align: center; line-height: 1.5; }
+
+    /* =========================================================
+       MENU INICIAR
+    ========================================================= */
+    #start-menu {
+      position: absolute; bottom: 42px; left: 0; width: 330px;
+      background: white; z-index: 2000; display: none;
+      border-radius: 8px 8px 0 0; overflow: hidden;
+      box-shadow: 4px -4px 20px rgba(0,0,0,0.6);
+    }
+    #start-menu.open { display: block; }
+    .sm-head {
+      background: linear-gradient(to right, #1d5ba3 0%, #3a8ee8 100%);
+      padding: 12px 16px; display: flex; align-items: center; gap: 12px;
+    }
+    .sm-head .sm-av { font-size: 2.8rem; }
+    .sm-head .sm-name { color: white; font-size: 1rem; font-weight: bold; }
+    .sm-body { display: flex; height: 280px; }
+    .sm-left { flex: 1; background: white; border-right: 1px solid #c8d8e8; padding: 8px 0; overflow-y: auto; }
+    .sm-right { flex: 1; background: #d6e8f8; padding: 8px 0; overflow-y: auto; }
+    .sm-item {
+      display: flex; align-items: center; gap: 10px; padding: 8px 14px;
+      cursor: pointer; font-size: 0.83rem; color: #222;
+    }
+    .sm-item:hover { background: #316ac5; color: white; }
+    .sm-item .si { font-size: 1.5rem; }
+    .sm-sep { border-top: 1px solid #c8d8e8; margin: 4px 0; }
+    .sm-foot {
+      background: linear-gradient(to bottom, #1d5ba3, #1450a0);
+      padding: 6px 12px; display: flex; justify-content: flex-end; gap: 8px;
+    }
+    .sm-fBtn {
+      background: rgba(255,255,255,0.15); border: 1px solid rgba(255,255,255,0.35);
+      color: white; padding: 5px 14px; border-radius: 3px; cursor: pointer;
+      font-size: 0.8rem; display: flex; align-items: center; gap: 5px;
+      font-family: 'Segoe UI', Tahoma, sans-serif;
+    }
+    .sm-fBtn:hover { background: rgba(255,255,255,0.28); }
+
+    /* =========================================================
+       JANELAS
+    ========================================================= */
+    .win {
+      position: absolute; background: #ece9d8; z-index: 100;
+      border: 2px solid #0054e3; border-radius: 8px 8px 3px 3px;
+      box-shadow: 3px 3px 12px rgba(0,0,0,0.55); display: none;
+      flex-direction: column; overflow: hidden;
+    }
+    .win.open { display: flex; }
+    .win.focused { z-index: 500; border-color: #0040c0; }
+    .win-tbar {
+      background: linear-gradient(to right, #0a246a 0%, #3668b8 80%, #1a4898 100%);
+      color: white; padding: 5px 6px; display: flex; align-items: center;
+      gap: 7px; cursor: move; flex-shrink: 0; user-select: none;
+      border-bottom: 1px solid #0030a0;
+    }
+    .win-tbar .wico { font-size: 0.95rem; }
+    .win-tbar .wtitle { flex: 1; font-size: 0.82rem; font-weight: bold; }
+    .win-ctrls { display: flex; gap: 2px; }
+    .wbtn {
+      width: 22px; height: 20px; border-radius: 3px; border: 1px solid rgba(0,0,0,0.4);
+      cursor: pointer; font-size: 0.68rem; display: flex; align-items: center;
+      justify-content: center; font-weight: bold; transition: filter 0.1s;
+    }
+    .wbtn.wmin { background: linear-gradient(to bottom, #f9d870, #d4a800); color: #5a3a00; }
+    .wbtn.wmax { background: linear-gradient(to bottom, #a8dc78, #52a835); color: #1a4a10; }
+    .wbtn.wcls { background: linear-gradient(to bottom, #f87070, #dc0000); color: white; }
+    .wbtn:hover { filter: brightness(1.2); }
+    .wbtn:active { filter: brightness(0.8); }
+    .win-mbar {
+      background: #ece9d8; padding: 2px 4px; display: flex;
+      border-bottom: 1px solid #bbb; font-size: 0.8rem; flex-shrink: 0;
+    }
+    .wmi {
+      padding: 3px 8px; cursor: pointer; border-radius: 2px; color: #000;
+      position: relative;
+    }
+    .wmi:hover { background: #316ac5; color: white; }
+    .win-body { flex: 1; overflow: auto; position: relative; display: flex; flex-direction: column; }
+    .win-sbar {
+      background: #ece9d8; padding: 3px 8px; border-top: 1px solid #bbb;
+      font-size: 0.73rem; color: #555; flex-shrink: 0; display: flex; gap: 15px;
+    }
+    .sbar-divider { border-left: 1px solid #aaa; }
+
+    /* =========================================================
+       BLOCO DE NOTAS
+    ========================================================= */
+    #win-notepad { width: 620px; top: 80px; left: 160px; min-width: 350px; min-height: 280px; }
+    #notepad-area {
+      flex: 1; width: 100%; padding: 4px 6px; border: none; outline: none; resize: none;
+      font-family: 'Courier New', Courier, monospace; font-size: 0.88rem;
+      background: white; color: #111; line-height: 1.5;
+    }
+    .np-wrap #notepad-area { white-space: pre-wrap; word-wrap: break-word; }
+
+    /* =========================================================
+       RECICLAGEM
+    ========================================================= */
+    #win-recyclebin { width: 580px; height: 420px; top: 90px; left: 180px; }
+    .rb-toolbar {
+      background: #ece9d8; padding: 4px 8px; display: flex; gap: 6px;
+      align-items: center; border-bottom: 1px solid #bbb; flex-shrink: 0;
+    }
+    .rb-tbtn {
+      padding: 3px 10px; background: linear-gradient(to bottom, #f5f5f5, #ddd);
+      border: 1px solid #aaa; border-radius: 3px; cursor: pointer; font-size: 0.78rem;
+      display: flex; align-items: center; gap: 5px;
+    }
+    .rb-tbtn:hover { background: linear-gradient(to bottom, #dce8ff, #b8ccf0); }
+    .rb-tbtn:disabled { opacity: 0.5; cursor: default; }
+    .rb-addr {
+      flex: 1; background: white; border: 2px inset #aaa; padding: 3px 8px;
+      font-size: 0.78rem; color: #333; display: flex; align-items: center; gap: 6px;
+    }
+    .rb-body { flex: 1; background: white; overflow-y: auto; }
+    .rb-item {
+      display: flex; align-items: center; gap: 10px; padding: 5px 12px;
+      border-bottom: 1px solid #eee; font-size: 0.82rem; cursor: default;
+    }
+    .rb-item:hover { background: #dde8fc; }
+    .rb-item .ri-ico { font-size: 1.3rem; }
+    .rb-item .ri-info { flex: 1; }
+    .rb-item .ri-name { font-weight: 500; color: #111; }
+    .rb-item .ri-date { color: #777; font-size: 0.74rem; }
+    .rb-item .ri-del {
+      padding: 2px 8px; font-size: 0.72rem; background: #f5f5f5;
+      border: 1px solid #ccc; border-radius: 2px; cursor: pointer; color: #555;
+    }
+    .rb-item .ri-del:hover { background: #ffe0e0; border-color: #d00; color: #d00; }
+    .rb-empty { padding: 50px 20px; text-align: center; color: #888; }
+    .rb-empty .rb-ei { font-size: 4rem; opacity: 0.3; }
+    .rb-empty p { margin-top: 10px; font-size: 0.9rem; }
+
+    /* =========================================================
+       MEU COMPUTADOR (Portal de Favoritos)
+    ========================================================= */
+    #win-portal { width: min(95vw, 980px); height: min(90vh, 680px); top: 40px; left: 50px; }
+    #portal-inner { flex: 1; overflow-y: auto; background: white; padding: 20px; }
+
+    /* =========================================================
+       MENU DE CONTEXTO (botão direito)
+    ========================================================= */
+    #ctx-menu {
+      position: fixed; background: white; border: 1px solid #9a9a9a;
+      border-radius: 4px; box-shadow: 4px 4px 10px rgba(0,0,0,0.35);
+      z-index: 9000; display: none; min-width: 190px; padding: 3px 0;
+    }
+    .ctx-i {
+      padding: 6px 20px; font-size: 0.82rem; cursor: pointer; color: #111;
+      display: flex; align-items: center; gap: 8px;
+    }
+    .ctx-i:hover { background: #316ac5; color: white; }
+    .ctx-i.ctx-disabled { color: #aaa; cursor: default; }
+    .ctx-i.ctx-disabled:hover { background: none; color: #aaa; }
+    .ctx-sep { border-top: 1px solid #d0d0d0; margin: 3px 0; }
+
+    /* =========================================================
+       NOTIFICAÇÃO
+    ========================================================= */
+    #notif {
+      position: fixed; bottom: 52px; right: 10px; z-index: 9998;
+      background: white; border: 1px solid #aaa; padding: 10px 14px;
+      border-radius: 5px; box-shadow: 3px 3px 10px rgba(0,0,0,0.3);
+      font-size: 0.8rem; display: none; max-width: 260px;
+      animation: slideUp 0.2s ease;
+    }
+    @keyframes slideUp { from{opacity:0;transform:translateY(10px)} to{opacity:1;transform:translateY(0)} }
+    #notif .n-title { font-weight: bold; margin-bottom: 4px; font-size: 0.82rem; }
+
+    /* =========================================================
+       DIÁLOGOS
+    ========================================================= */
+    .dialog-overlay {
+      position: fixed; inset: 0; background: rgba(0,0,0,0.3); z-index: 8000;
+      display: flex; align-items: center; justify-content: center;
+    }
+    .dialog-box {
+      background: #ece9d8; border: 2px solid #0054e3; border-radius: 8px 8px 3px 3px;
+      box-shadow: 3px 3px 12px rgba(0,0,0,0.5); min-width: 300px; max-width: 420px;
+    }
+    .dialog-tbar {
+      background: linear-gradient(to right, #0a246a, #3668b8);
+      color: white; padding: 5px 8px; font-size: 0.83rem; font-weight: bold;
+      border-radius: 6px 6px 0 0; display: flex; align-items: center; gap: 6px;
+    }
+    .dialog-body { padding: 20px 18px; font-size: 0.85rem; color: #111; display: flex; gap: 14px; align-items: flex-start; }
+    .dialog-icon { font-size: 2.5rem; flex-shrink: 0; }
+    .dialog-text { line-height: 1.5; }
+    .dialog-btns { display: flex; justify-content: center; gap: 8px; padding: 10px 18px 16px; }
+    .dialog-btn {
+      padding: 6px 22px; background: linear-gradient(to bottom, #f5f5f5, #ddd);
+      border: 1px solid #888; border-radius: 3px; cursor: pointer; font-size: 0.82rem;
+      font-family: 'Segoe UI', Tahoma, sans-serif;
+    }
+    .dialog-btn:hover { background: linear-gradient(to bottom, #dce8ff, #b8ccf0); }
+    .dialog-btn.primary { background: linear-gradient(to bottom, #4a8ed4, #2870bc); color: white; border-color: #1050a0; }
+    .dialog-btn.primary:hover { filter: brightness(1.1); }
+
+    /* =========================================================
+       ANIMAÇÕES ABERTURA DE JANELA
+    ========================================================= */
+    @keyframes winOpen { from{opacity:0;transform:scale(0.88)} to{opacity:1;transform:scale(1)} }
+    .win.open { animation: winOpen 0.15s ease; }
+
+    /* Responsivo */
+    @media (max-width: 600px) {
+      #lock-screen .lock-time { font-size: 3.5rem; }
+      #win-notepad { width: 98vw; left: 1vw; }
+      #win-recyclebin { width: 98vw; left: 1vw; }
+      #win-portal { width: 98vw; left: 1vw; }
+    }
+  </style>
 </head>
 <body>
 
-<div class="wrapper">
-    <header>
-        <h1>Centro de Comando Digital</h1>
-        <div class="subtitle">Curadoria por André M. Fernandes</div>
-        
-        <div class="top-actions">
-            <button class="share-btn" onclick="partilharPagina()">
-                <span>Partilhar Página</span>
-            </button>
-        </div>
-
-        <div class="nota-informativa">
-            Clica nos títulos das categorias para expandir. Os teus recursos mais usados surgem nos Destaques.
-        </div>
-        
-        <div class="search-area">
-            <input type="text" id="searchBar" placeholder="Pesquisar por nome ou função..." onkeyup="filtrarConteudo()">
-        </div>
-    </header>
-
-    <div id="main-content">
-        <div class="category active" id="cat-destaques">
-            <button class="group-header" onclick="toggleCategory('cat-destaques')">Favoritos em Destaque</button>
-            <div class="grid" id="highlights-grid"></div>
-        </div>
-
-        <div class="category" id="cat-ia-chat">
-            <button class="group-header" onclick="toggleCategory('cat-ia-chat')">Inteligência Artificial: Conversa</button>
-            <div class="grid">
-                <div class="card" data-id="copilot" data-tags="microsoft ai">
-                    <div class="card-header"><h3>Copilot</h3><span class="click-count">0</span></div>
-                    <span class="price-label mixed">Misto</span>
-                    <p>Assistente da Microsoft para auxílio no Windows e produtividade.</p>
-                    <div class="details-text">Grátis para uso geral, funções avançadas requerem assinatura.</div>
-                    <div class="actions"><a href="https://m365.cloud.microsoft/chat?fromcode=cmmk9q81uwj&auth=1" class="main-btn" onclick="registarClique('copilot')" target="_blank">Aceder</a><button class="info-btn" onclick="toggleInfo(this)">Detalhes</button></div>
-                </div>
-                <div class="card" data-id="deepseek" data-tags="logica ai">
-                    <div class="card-header"><h3>DeepSeek</h3><span class="click-count">0</span></div>
-                    <span class="price-label free">Grátis</span>
-                    <p>IA avançada focada em raciocínio lógico e programação.</p>
-                    <div class="details-text">Acesso gratuito à área de conversação para todos os utilizadores.</div>
-                    <div class="actions"><a href="https://chat.deepseek.com/" class="main-btn" onclick="registarClique('deepseek')" target="_blank">Aceder</a><button class="info-btn" onclick="toggleInfo(this)">Detalhes</button></div>
-                </div>
-                <div class="card" data-id="gemini" data-tags="google ai">
-                    <div class="card-header"><h3>Gemini</h3><span class="click-count">0</span></div>
-                    <span class="price-label mixed">Misto</span>
-                    <p>IA da Google integrada para ajuda em tarefas quotidianas.</p>
-                    <div class="details-text">Grátis para todos, modelos Ultra integrados em planos pagos.</div>
-                    <div class="actions"><a href="https://gemini.google.com" class="main-btn" onclick="registarClique('gemini')" target="_blank">Aceder</a><button class="info-btn" onclick="toggleInfo(this)">Detalhes</button></div>
-                </div>
-                <div class="card" data-id="claude" data-tags="escrita ai">
-                    <div class="card-header"><h3>Claude</h3><span class="click-count">0</span></div>
-                    <span class="price-label mixed">Misto</span>
-                    <p>IA com foco em segurança e análise textual muito apurada.</p>
-                    <div class="details-text">Grátis com limites diários, plano Pro para uso intensivo.</div>
-                    <div class="actions"><a href="https://claude.ai" class="main-btn" onclick="registarClique('claude')" target="_blank">Aceder</a><button class="info-btn" onclick="toggleInfo(this)">Detalhes</button></div>
-                </div>
-                <div class="card" data-id="charai" data-tags="personagens ai">
-                    <div class="card-header"><h3>Character.ai</h3><span class="click-count">0</span></div>
-                    <span class="price-label mixed">Misto</span>
-                    <p>Interação criativa com personalidades e personagens virtuais.</p>
-                    <div class="details-text">Livre para conversar, plano pago para evitar filas de espera.</div>
-                    <div class="actions"><a href="https://character.ai/chat/eeUb6CxsEYsguYWHVTVvJhY5n1PcfxxY7va-HhJHPCM" class="main-btn" onclick="registarClique('charai')" target="_blank">Aceder</a><button class="info-btn" onclick="toggleInfo(this)">Detalhes</button></div>
-                </div>
-                <div class="card" data-id="grok" data-tags="x ai">
-                    <div class="card-header"><h3>Grok</h3><span class="click-count">0</span></div>
-                    <span class="price-label paid">Pago</span>
-                    <p>IA da rede X com acesso a informação em tempo real.</p>
-                    <div class="details-text">Apenas disponível para utilizadores com assinatura Premium no X.</div>
-                    <div class="actions"><a href="https://x.ai" class="main-btn" onclick="registarClique('grok')" target="_blank">Aceder</a><button class="info-btn" onclick="toggleInfo(this)">Detalhes</button></div>
-                </div>
-                <div class="card" data-id="venice" data-tags="privacidade ai">
-                    <div class="card-header"><h3>Venice</h3><span class="click-count">0</span></div>
-                    <span class="price-label mixed">Misto</span>
-                    <p>IA com foco absoluto na privacidade e liberdade de resposta.</p>
-                    <div class="details-text">Versão gratuita disponível com limitações de uso diário.</div>
-                    <div class="actions"><a href="https://venice.ai" class="main-btn" onclick="registarClique('venice')" target="_blank">Aceder</a><button class="info-btn" onclick="toggleInfo(this)">Detalhes</button></div>
-                </div>
-            </div>
-        </div>
-
-        <div class="category" id="cat-ia-prod">
-            <button class="group-header" onclick="toggleCategory('cat-ia-prod')">Inteligência Artificial: Criação</button>
-            <div class="grid">
-                <div class="card" data-id="manus" data-tags="automaçao ai">
-                    <div class="card-header"><h3>Manus</h3><span class="click-count">0</span></div>
-                    <span class="price-label mixed">Misto</span>
-                    <p>Agentes inteligentes para execução de tarefas digitais.</p>
-                    <div class="details-text">Uso baseado em créditos por tarefas executadas.</div>
-                    <div class="actions"><a href="https://manus.ai" class="main-btn" onclick="registarClique('manus')" target="_blank">Aceder</a><button class="info-btn" onclick="toggleInfo(this)">Detalhes</button></div>
-                </div>
-                <div class="card" data-id="notebooklm" data-tags="documentos ai">
-                    <div class="card-header"><h3>NotebookLM</h3><span class="click-count">0</span></div>
-                    <span class="price-label free">Grátis</span>
-                    <p>Ferramenta para analisar e resumir os teus próprios ficheiros.</p>
-                    <div class="details-text">Totalmente gratuito para utilizadores com conta Google.</div>
-                    <div class="actions"><a href="https://notebooklm.google.com" class="main-btn" onclick="registarClique('notebooklm')" target="_blank">Aceder</a><button class="info-btn" onclick="toggleInfo(this)">Detalhes</button></div>
-                </div>
-                <div class="card" data-id="storybook" data-tags="narrativa ai">
-                    <div class="card-header"><h3>Gemini Storybook</h3><span class="click-count">0</span></div>
-                    <span class="price-label free">Grátis</span>
-                    <p>Espaço experimental para criação de histórias e narrativas.</p>
-                    <div class="details-text">Funciona como laboratório criativo dentro do ecossistema Google.</div>
-                    <div class="actions"><a href="https://notebooklm.google.com/" class="main-btn" onclick="registarClique('storybook')" target="_blank">Aceder</a><button class="info-btn" onclick="toggleInfo(this)">Detalhes</button></div>
-                </div>
-                <div class="card" data-id="chatpdf" data-tags="pdf ai">
-                    <div class="card-header"><h3>ChatPDF</h3><span class="click-count">0</span></div>
-                    <span class="price-label mixed">Misto</span>
-                    <p>Conversa diretamente com documentos e extrai informação.</p>
-                    <div class="details-text">Grátis para ficheiros pequenos, plano Plus para uso massivo.</div>
-                    <div class="actions"><a href="https://www.chatpdf.com" class="main-btn" onclick="registarClique('chatpdf')" target="_blank">Aceder</a><button class="info-btn" onclick="toggleInfo(this)">Detalhes</button></div>
-                </div>
-                <div class="card" data-id="suno" data-tags="musica ai">
-                    <div class="card-header"><h3>Suno</h3><span class="click-count">0</span></div>
-                    <span class="price-label mixed">Misto</span>
-                    <p>Geração de música e áudio a partir de simples texto.</p>
-                    <div class="details-text">Oferece créditos gratuitos diários para criações musicais.</div>
-                    <div class="actions"><a href="https://suno.com" class="main-btn" onclick="registarClique('suno')" target="_blank">Aceder</a><button class="info-btn" onclick="toggleInfo(this)">Detalhes</button></div>
-                </div>
-            </div>
-        </div>
-
-        <div class="category" id="cat-dev">
-            <button class="group-header" onclick="toggleCategory('cat-dev')">Desenvolvimento e Alojamento</button>
-            <div class="grid">
-                <div class="card" data-id="github" data-tags="codigo dev">
-                    <div class="card-header"><h3>GitHub</h3><span class="click-count">0</span></div>
-                    <span class="price-label free">Grátis</span>
-                    <p>Alojamento de código e colaboração tecnológica mundial.</p>
-                    <div class="details-text">Grátis para repositórios públicos e privados individuais.</div>
-                    <div class="actions"><a href="https://github.com" class="main-btn" onclick="registarClique('github')" target="_blank">Aceder</a><button class="info-btn" onclick="toggleInfo(this)">Detalhes</button></div>
-                </div>
-                <div class="card" data-id="vercel" data-tags="alojamento web">
-                    <div class="card-header"><h3>Vercel</h3><span class="click-count">0</span></div>
-                    <span class="price-label mixed">Misto</span>
-                    <p>Publicação instantânea de sítios web na rede.</p>
-                    <div class="details-text">Plano Hobby gratuito ideal para projetos pessoais e portefólios.</div>
-                    <div class="actions"><a href="https://vercel.com" class="main-btn" onclick="registarClique('vercel')" target="_blank">Aceder</a><button class="info-btn" onclick="toggleInfo(this)">Detalhes</button></div>
-                </div>
-                <div class="card" data-id="replit" data-tags="codigo browser">
-                    <div class="card-header"><h3>Replit</h3><span class="click-count">0</span></div>
-                    <span class="price-label mixed">Misto</span>
-                    <p>Ambiente de programação direto no teu navegador.</p>
-                    <div class="details-text">Podes programar grátis com recursos de máquina limitados.</div>
-                    <div class="actions"><a href="https://replit.com" class="main-btn" onclick="registarClique('replit')" target="_blank">Aceder</a><button class="info-btn" onclick="toggleInfo(this)">Detalhes</button></div>
-                </div>
-                <div class="card" data-id="firebase" data-tags="google dados">
-                    <div class="card-header"><h3>Firebase</h3><span class="click-count">0</span></div>
-                    <span class="price-label mixed">Misto</span>
-                    <p>Conjunto de ferramentas para bases de dados e apps.</p>
-                    <div class="details-text">Plano Spark gratuito com limites de tráfego generosos.</div>
-                    <div class="actions"><a href="https://firebase.google.com" class="main-btn" onclick="registarClique('firebase')" target="_blank">Aceder</a><button class="info-btn" onclick="toggleInfo(this)">Detalhes</button></div>
-                </div>
-            </div>
-        </div>
-
-        <div class="category" id="cat-trabalho">
-            <button class="group-header" onclick="toggleCategory('cat-trabalho')">Carreira e Mercado de Trabalho</button>
-            <div class="grid">
-                <div class="card" data-id="linkedin" data-tags="trabalho profissional">
-                    <div class="card-header"><h3>LinkedIn</h3><span class="click-count">0</span></div>
-                    <span class="price-label free">Grátis</span>
-                    <p>Gestão de carreira e rede de contactos profissionais.</p>
-                    <div class="details-text">Uso base gratuito, planos pagos para recrutamento e vendas.</div>
-                    <div class="actions"><a href="https://www.linkedin.com" class="main-btn" onclick="registarClique('linkedin')" target="_blank">Aceder</a><button class="info-btn" onclick="toggleInfo(this)">Detalhes</button></div>
-                </div>
-                <div class="card" data-id="indeed" data-tags="emprego vagas">
-                    <div class="card-header"><h3>Indeed</h3><span class="click-count">0</span></div>
-                    <span class="price-label free">Grátis</span>
-                    <p>Procura massiva de ofertas de trabalho e estágios em Portugal.</p>
-                    <div class="details-text">Totalmente gratuito para quem procura emprego.</div>
-                    <div class="actions"><a href="https://pt.indeed.com" class="main-btn" onclick="registarClique('indeed')" target="_blank">Aceder</a><button class="info-btn" onclick="toggleInfo(this)">Detalhes</button></div>
-                </div>
-            </div>
-        </div>
-
-        <div class="category" id="cat-compras">
-            <button class="group-header" onclick="toggleCategory('cat-compras')">Compras e Lojas Online</button>
-            <div class="grid">
-                <div class="card" data-id="amazon" data-tags="loja global">
-                    <div class="card-header"><h3>Amazon</h3><span class="click-count">0</span></div>
-                    <span class="price-label paid">Pago</span>
-                    <p>A maior seleção de artigos com entregas rápidas na península.</p>
-                    <div class="details-text">Compras individuais, subscrição Prime para envios grátis.</div>
-                    <div class="actions"><a href="https://www.amazon.es" class="main-btn" onclick="registarClique('amazon')" target="_blank">Aceder</a><button class="info-btn" onclick="toggleInfo(this)">Detalhes</button></div>
-                </div>
-                <div class="card" data-id="aliexpress" data-tags="china barato">
-                    <div class="card-header"><h3>AliExpress</h3><span class="click-count">0</span></div>
-                    <span class="price-label paid">Pago</span>
-                    <p>Artigos de todo o tipo com preços diretos da China.</p>
-                    <div class="details-text">Pagas apenas os artigos encomendados.</div>
-                    <div class="actions"><a href="https://www.aliexpress.com" class="main-btn" onclick="registarClique('aliexpress')" target="_blank">Aceder</a><button class="info-btn" onclick="toggleInfo(this)">Detalhes</button></div>
-                </div>
-                <div class="card" data-id="pcdiga" data-tags="hardware tecnologia">
-                    <div class="card-header"><h3>PCDiga</h3><span class="click-count">0</span></div>
-                    <span class="price-label paid">Pago</span>
-                    <p>Referência nacional para informática e componentes eletrónicos.</p>
-                    <div class="details-text">Venda direta com assistência e garantias em Portugal.</div>
-                    <div class="actions"><a href="https://www.pcdiga.com" class="main-btn" onclick="registarClique('pcdiga')" target="_blank">Aceder</a><button class="info-btn" onclick="toggleInfo(this)">Detalhes</button></div>
-                </div>
-                <div class="card" data-id="outletpc" data-tags="descontos pc">
-                    <div class="card-header"><h3>Outlet PC</h3><span class="click-count">0</span></div>
-                    <span class="price-label paid">Pago</span>
-                    <p>Hardware e eletrónica com preços de saldo e promoções.</p>
-                    <div class="details-text">Novos e recondicionados com preços reduzidos.</div>
-                    <div class="actions"><a href="https://www.outlet-pc.es" class="main-btn" onclick="registarClique('outletpc')" target="_blank">Aceder</a><button class="info-btn" onclick="toggleInfo(this)">Detalhes</button></div>
-                </div>
-                <div class="card" data-id="eneba" data-tags="jogos gaming">
-                    <div class="card-header"><h3>Eneba</h3><span class="click-count">0</span></div>
-                    <span class="price-label paid">Pago</span>
-                    <p>Mercado de chaves digitais para jogos e software em saldo.</p>
-                    <div class="details-text">Mercado global com preços baixos para entretenimento digital.</div>
-                    <div class="actions"><a href="https://www.eneba.com" class="main-btn" onclick="registarClique('eneba')" target="_blank">Aceder</a><button class="info-btn" onclick="toggleInfo(this)">Detalhes</button></div>
-                </div>
-            </div>
-        </div>
-
-        <div class="category" id="cat-office">
-            <button class="group-header" onclick="toggleCategory('cat-office')">Escritório e Produtividade</button>
-            <div class="grid">
-                <div class="card" data-id="workspace" data-tags="google docs">
-                    <div class="card-header"><h3>Google Workspace</h3><span class="click-count">0</span></div>
-                    <span class="price-label mixed">Misto</span>
-                    <p>Suíte completa para documentos e colaboração na nuvem.</p>
-                    <div class="details-text">Grátis para uso pessoal básico até 15GB.</div>
-                    <div class="actions"><a href="https://workspace.google.com" class="main-btn" onclick="registarClique('workspace')" target="_blank">Aceder</a><button class="info-btn" onclick="toggleInfo(this)">Detalhes</button></div>
-                </div>
-                <div class="card" data-id="gmail" data-tags="email google">
-                    <div class="card-header"><h3>Gmail</h3><span class="click-count">0</span></div>
-                    <span class="price-label free">Grátis</span>
-                    <p>O serviço de correio eletrónico principal da Google.</p>
-                    <div class="details-text">Incluído sem custos em todas as contas Google.</div>
-                    <div class="actions"><a href="https://mail.google.com" class="main-btn" onclick="registarClique('gmail')" target="_blank">Aceder</a><button class="info-btn" onclick="toggleInfo(this)">Detalhes</button></div>
-                </div>
-                <div class="card" data-id="outlook" data-tags="microsoft email">
-                    <div class="card-header"><h3>Outlook</h3><span class="click-count">0</span></div>
-                    <span class="price-label free">Grátis</span>
-                    <p>Gestão de correio e calendários do sistema Microsoft.</p>
-                    <div class="details-text">Versão web gratuita para utilizadores individuais.</div>
-                    <div class="actions"><a href="https://outlook.live.com" class="main-btn" onclick="registarClique('outlook')" target="_blank">Aceder</a><button class="info-btn" onclick="toggleInfo(this)">Detalhes</button></div>
-                </div>
-                <div class="card" data-id="keep" data-tags="notas rapidas">
-                    <div class="card-header"><h3>Google Keep</h3><span class="click-count">0</span></div>
-                    <span class="price-label free">Grátis</span>
-                    <p>Notas e listas rápidas sincronizadas em todos os aparelhos.</p>
-                    <div class="details-text">Totalmente gratuito para organização diária imediata.</div>
-                    <div class="actions"><a href="https://keep.google.com" class="main-btn" onclick="registarClique('keep')" target="_blank">Aceder</a><button class="info-btn" onclick="toggleInfo(this)">Detalhes</button></div>
-                </div>
-                <div class="card" data-id="calendar" data-tags="agenda tempo">
-                    <div class="card-header"><h3>Google Calendar</h3><span class="click-count">0</span></div>
-                    <span class="price-label free">Grátis</span>
-                    <p>Agenda digital para organizar compromissos e reuniões.</p>
-                    <div class="details-text">Grátis para gerir o teu tempo de forma eficaz.</div>
-                    <div class="actions"><a href="https://calendar.google.com" class="main-btn" onclick="registarClique('calendar')" target="_blank">Aceder</a><button class="info-btn" onclick="toggleInfo(this)">Detalhes</button></div>
-                </div>
-            </div>
-        </div>
-
-        <div class="category" id="cat-arte">
-            <button class="group-header" onclick="toggleCategory('cat-arte')">Conteúdo, Leitura e Arte</button>
-            <div class="grid">
-                <div class="card" data-id="lulu" data-tags="livros autores">
-                    <div class="card-header"><h3>Lulu.com</h3><span class="click-count">0</span></div>
-                    <span class="price-label mixed">Misto</span>
-                    <p>Plataforma para publicar e vender os teus próprios livros.</p>
-                    <div class="details-text">Publicação grátis, pagas apenas a impressão física.</div>
-                    <div class="actions"><a href="https://www.lulu.com" class="main-btn" onclick="registarClique('lulu')" target="_blank">Aceder</a><button class="info-btn" onclick="toggleInfo(this)">Detalhes</button></div>
-                </div>
-                <div class="card" data-id="substack" data-tags="newsletter artigos">
-                    <div class="card-header"><h3>Substack</h3><span class="click-count">0</span></div>
-                    <span class="price-label free">Grátis</span>
-                    <p>Lê artigos e newsletters de autores independentes.</p>
-                    <div class="details-text">Leitura gratuita na maioria dos conteúdos publicados.</div>
-                    <div class="actions"><a href="https://substack.com" class="main-btn" onclick="registarClique('substack')" target="_blank">Aceder</a><button class="info-btn" onclick="toggleInfo(this)">Detalhes</button></div>
-                </div>
-                <div class="card" data-id="wattpad" data-tags="ficçao ler">
-                    <div class="card-header"><h3>Wattpad</h3><span class="click-count">0</span></div>
-                    <span class="price-label mixed">Misto</span>
-                    <p>Comunidade para ler e publicar histórias de ficção.</p>
-                    <div class="details-text">Livre com anúncios, plano Premium retira publicidade.</div>
-                    <div class="actions"><a href="https://www.wattpad.com" class="main-btn" onclick="registarClique('wattpad')" target="_blank">Aceder</a><button class="info-btn" onclick="toggleInfo(this)">Detalhes</button></div>
-                </div>
-                <div class="card" data-id="pinterest" data-tags="imagens ideias">
-                    <div class="card-header"><h3>Pinterest</h3><span class="click-count">0</span></div>
-                    <span class="price-label free">Grátis</span>
-                    <p>Exploração visual de referências estéticas e ideias.</p>
-                    <div class="details-text">Totalmente gratuito para guardar painéis visuais.</div>
-                    <div class="actions"><a href="https://www.pinterest.com" class="main-btn" onclick="registarClique('pinterest')" target="_blank">Aceder</a><button class="info-btn" onclick="toggleInfo(this)">Detalhes</button></div>
-                </div>
-                <div class="card" data-id="deviantart" data-tags="ilustraçao arte">
-                    <div class="card-header"><h3>DeviantArt</h3><span class="click-count">0</span></div>
-                    <span class="price-label mixed">Misto</span>
-                    <p>Galeria massiva para artistas digitais e ilustradores.</p>
-                    <div class="details-text">Grátis para ver e expor, plano Core é pago.</div>
-                    <div class="actions"><a href="https://www.deviantart.com" class="main-btn" onclick="registarClique('deviantart')" target="_blank">Aceder</a><button class="info-btn" onclick="toggleInfo(this)">Detalhes</button></div>
-                </div>
-            </div>
-        </div>
-
-        <div class="category" id="cat-entertainment">
-            <button class="group-header" onclick="toggleCategory('cat-entertainment')">Entretenimento e Media</button>
-            <div class="grid">
-                <div class="card" data-id="horizon" data-tags="meta vr casting oculus transmissao">
-                    <div class="card-header"><h3>Horizon Transmissão</h3><span class="click-count">0</span></div>
-                    <span class="price-label free">Grátis</span>
-                    <p>Visualização da tua experiência de realidade virtual no navegador.</p>
-                    <div class="details-text">Permite partilhar a visão do teu equipamento Meta com outras pessoas na rede.</div>
-                    <div class="actions"><a href="https://horizon.meta.com/casting" class="main-btn" onclick="registarClique('horizon')" target="_blank">Aceder</a><button class="info-btn" onclick="toggleInfo(this)">Detalhes</button></div>
-                </div>
-                <div class="card" data-id="youtube" data-tags="videos tv">
-                    <div class="card-header"><h3>YouTube</h3><span class="click-count">0</span></div>
-                    <span class="price-label mixed">Misto</span>
-                    <p>Líder mundial em vídeos e transmissões em direto.</p>
-                    <div class="details-text">Grátis com anúncios, Premium retira publicidade.</div>
-                    <div class="actions"><a href="https://www.youtube.com" class="main-btn" onclick="registarClique('youtube')" target="_blank">Aceder</a><button class="info-btn" onclick="toggleInfo(this)">Detalhes</button></div>
-                </div>
-                <div class="card" data-id="twitch" data-tags="lives gaming">
-                    <div class="card-header"><h3>Twitch.tv</h3><span class="click-count">0</span></div>
-                    <span class="price-label mixed">Misto</span>
-                    <p>Foco em diretos e interação em tempo real com criadores.</p>
-                    <div class="details-text">Assistir é grátis, apoiar com subs ajuda os canais.</div>
-                    <div class="actions"><a href="https://www.twitch.tv" class="main-btn" onclick="registarClique('twitch')" target="_blank">Aceder</a><button class="info-btn" onclick="toggleInfo(this)">Detalhes</button></div>
-                </div>
-                <div class="card" data-id="plex" data-tags="filmes media">
-                    <div class="card-header"><h3>Plex</h3><span class="click-count">0</span></div>
-                    <span class="price-label mixed">Misto</span>
-                    <p>Gere e assiste à tua biblioteca pessoal de media em casa.</p>
-                    <div class="details-text">Servidor base gratuito, apps móveis podem ter custo único.</div>
-                    <div class="actions"><a href="https://www.plex.tv" class="main-btn" onclick="registarClique('plex')" target="_blank">Aceder</a><button class="info-btn" onclick="toggleInfo(this)">Detalhes</button></div>
-                </div>
-                <div class="card" data-id="spotify" data-tags="musica audio">
-                    <div class="card-header"><h3>Spotify</h3><span class="click-count">0</span></div>
-                    <span class="price-label mixed">Misto</span>
-                    <p>Música e podcasts acessíveis em qualquer lado.</p>
-                    <div class="details-text">Grátis com anúncios, Premium para ouvir sem rede.</div>
-                    <div class="actions"><a href="https://www.spotify.com" class="main-btn" onclick="registarClique('spotify')" target="_blank">Aceder</a><button class="info-btn" onclick="toggleInfo(this)">Detalhes</button></div>
-                </div>
-                <div class="card" data-id="ytmusic" data-tags="audio google">
-                    <div class="card-header"><h3>YouTube Music</h3><span class="click-count">0</span></div>
-                    <span class="price-label mixed">Misto</span>
-                    <p>O serviço musical baseado em todo o catálogo do YouTube.</p>
-                    <div class="details-text">Livre com anúncios, incluído no YouTube Premium.</div>
-                    <div class="actions"><a href="https://music.youtube.com" class="main-btn" onclick="registarClique('ytmusic')" target="_blank">Aceder</a><button class="info-btn" onclick="toggleInfo(this)">Detalhes</button></div>
-                </div>
-            </div>
-        </div>
-
-        <div class="category" id="cat-saber">
-            <button class="group-header" onclick="toggleCategory('cat-saber')">Saber e Utilidades</button>
-            <div class="grid">
-                <div class="card" data-id="wikipedia" data-tags="enciclopedia saber">
-                    <div class="card-header"><h3>Wikipedia</h3><span class="click-count">0</span></div>
-                    <span class="price-label free">Grátis</span>
-                    <p>Enciclopédia livre global sobre qualquer assunto.</p>
-                    <div class="details-text">Totalmente gratuito e sem fins lucrativos.</div>
-                    <div class="actions"><a href="https://pt.wikipedia.org" class="main-btn" onclick="registarClique('wiki')" target="_blank">Aceder</a><button class="info-btn" onclick="toggleInfo(this)">Detalhes</button></div>
-                </div>
-                <div class="card" data-id="imdb" data-tags="filmes notas">
-                    <div class="card-header"><h3>IMDb</h3><span class="click-count">0</span></div>
-                    <span class="price-label free">Grátis</span>
-                    <p>Base de dados técnica sobre produções cinematográficas.</p>
-                    <div class="details-text">Acesso livre a críticas e classificações de cinema.</div>
-                    <div class="actions"><a href="https://www.imdb.com" class="main-btn" onclick="registarClique('imdb')" target="_blank">Aceder</a><button class="info-btn" onclick="toggleInfo(this)">Detalhes</button></div>
-                </div>
-                <div class="card" data-id="legendas" data-tags="legendas pt">
-                    <div class="card-header"><h3>LegendasDivx</h3><span class="click-count">0</span></div>
-                    <span class="price-label free">Grátis</span>
-                    <p>Portal português para descarregar legendas de vídeos.</p>
-                    <div class="details-text">Livre para membros registados na comunidade.</div>
-                    <div class="actions"><a href="https://www.legendasdivx.com" class="main-btn" onclick="registarClique('legendas')" target="_blank">Aceder</a><button class="info-btn" onclick="toggleInfo(this)">Detalhes</button></div>
-                </div>
-                <div class="card" data-id="duckduckgo" data-tags="pesquisa privada">
-                    <div class="card-header"><h3>DuckDuckGo</h3><span class="click-count">0</span></div>
-                    <span class="price-label free">Grátis</span>
-                    <p>Motor de busca com foco absoluto na tua privacidade.</p>
-                    <div class="details-text">Não guarda histórico nem rastreia os teus dados.</div>
-                    <div class="actions"><a href="https://duckduckgo.com" class="main-btn" onclick="registarClique('duck')" target="_blank">Aceder</a><button class="info-btn" onclick="toggleInfo(this)">Detalhes</button></div>
-                </div>
-                <div class="card" data-id="speed" data-tags="velocidade rede">
-                    <div class="card-header"><h3>Speedtest</h3><span class="click-count">0</span></div>
-                    <span class="price-label free">Grátis</span>
-                    <p>Analisa a velocidade real da tua ligação de rede.</p>
-                    <div class="details-text">Mede downloads e latência de forma imediata.</div>
-                    <div class="actions"><a href="https://www.speedtest.net" class="main-btn" onclick="registarClique('speed')" target="_blank">Aceder</a><button class="info-btn" onclick="toggleInfo(this)">Detalhes</button></div>
-                </div>
-                <div class="card" data-id="sharesub" data-tags="custos assinaturas">
-                    <div class="card-header"><h3>Sharesub</h3><span class="click-count">0</span></div>
-                    <span class="price-label paid">Pago</span>
-                    <p>Divide subscrições digitais para reduzir custos mensais.</p>
-                    <div class="details-text">Plataforma segura para partilhar pagamentos de serviços.</div>
-                    <div class="actions"><a href="https://www.sharesub.com" class="main-btn" onclick="registarClique('sharesub')" target="_blank">Aceder</a><button class="info-btn" onclick="toggleInfo(this)">Detalhes</button></div>
-                </div>
-            </div>
-        </div>
-
-    </div>
-
-    <footer>
-        <p>Curadoria e Desenvolvimento por <strong>André M. Fernandes</strong></p>
-        <a href="https://www.instagram.com/andre.f.m.fernandes/" class="insta-link" target="_blank">@andre.f.m.fernandes</a>
-    </footer>
+<!-- ===================== ECRÃ DE BLOQUEIO ===================== -->
+<div id="lock-screen">
+  <div class="lock-time" id="lock-time">00:00</div>
+  <div class="lock-date" id="lock-date"></div>
+  <div class="lock-divider"></div>
+  <div class="lock-user">👤</div>
+  <div class="lock-username">André M. Fernandes</div>
+  <div id="lock-form">
+    <input type="password" id="code-input" placeholder="Introduza o código" autocomplete="off" maxlength="20">
+    <button id="login-btn" onclick="doLogin()">➜ Entrar</button>
+    <span id="lock-error"></span>
+    <span class="lock-hint">Dica: utilize o código de acesso</span>
+  </div>
 </div>
 
+<!-- ===================== AMBIENTE DE TRABALHO ===================== -->
+<div id="desktop">
+
+  <!-- Ícones do ambiente de trabalho -->
+  <div id="desktop-icons">
+    <div class="dsk-icon" id="ico-notepad" ondblclick="openWin('notepad')" onclick="selIcon('ico-notepad')" title="Bloco de Notas">
+      <div class="dsk-img">📝</div>
+      <div class="dsk-lbl">Bloco de Notas</div>
+    </div>
+    <div class="dsk-icon" id="ico-recycle" ondblclick="openWin('recyclebin')" onclick="selIcon('ico-recycle')" title="Reciclagem">
+      <div class="dsk-img" id="recycle-icon-img">🗑️</div>
+      <div class="dsk-lbl">Reciclagem</div>
+    </div>
+    <div class="dsk-icon" id="ico-portal" ondblclick="openWin('portal')" onclick="selIcon('ico-portal')" title="Favoritos">
+      <div class="dsk-img">⭐</div>
+      <div class="dsk-lbl">Favoritos</div>
+    </div>
+    <div class="dsk-icon" id="ico-computer" ondblclick="showAbout()" onclick="selIcon('ico-computer')" title="O Meu Computador">
+      <div class="dsk-img">💻</div>
+      <div class="dsk-lbl">O Meu Computador</div>
+    </div>
+  </div>
+
+  <!-- ====== JANELA: BLOCO DE NOTAS ====== -->
+  <div class="win" id="win-notepad">
+    <div class="win-tbar" id="tbar-notepad">
+      <span class="wico">📝</span>
+      <span class="wtitle" id="notepad-title">Sem título — Bloco de Notas</span>
+      <div class="win-ctrls">
+        <div class="wbtn wmin" onclick="minimizeWin('notepad')" title="Minimizar">_</div>
+        <div class="wbtn wmax" onclick="maximizeWin('notepad')" title="Maximizar">□</div>
+        <div class="wbtn wcls" onclick="closeWin('notepad')" title="Fechar">✕</div>
+      </div>
+    </div>
+    <div class="win-mbar">
+      <div class="wmi" onclick="npMenu('ficheiro')">Ficheiro</div>
+      <div class="wmi" onclick="npMenu('editar')">Editar</div>
+      <div class="wmi" onclick="npToggleWrap()">Formato</div>
+      <div class="wmi" onclick="npMenu('ajuda')">Ajuda</div>
+    </div>
+    <div class="win-body">
+      <textarea id="notepad-area" spellcheck="false" placeholder="Escreve aqui..." oninput="npUpdate()"></textarea>
+    </div>
+    <div class="win-sbar">
+      <span id="np-line">Linha 1, Col 1</span>
+      <span class="sbar-divider"></span>
+      <span id="np-chars">0 caracteres</span>
+      <span class="sbar-divider"></span>
+      <span id="np-wrap-status">Quebra de linha: Ativa</span>
+    </div>
+  </div>
+
+  <!-- ====== JANELA: RECICLAGEM ====== -->
+  <div class="win" id="win-recyclebin">
+    <div class="win-tbar" id="tbar-recyclebin">
+      <span class="wico" id="rb-title-ico">🗑️</span>
+      <span class="wtitle">Reciclagem</span>
+      <div class="win-ctrls">
+        <div class="wbtn wmin" onclick="minimizeWin('recyclebin')" title="Minimizar">_</div>
+        <div class="wbtn wmax" onclick="maximizeWin('recyclebin')" title="Maximizar">□</div>
+        <div class="wbtn wcls" onclick="closeWin('recyclebin')" title="Fechar">✕</div>
+      </div>
+    </div>
+    <div class="win-mbar">
+      <div class="wmi">Ficheiro</div>
+      <div class="wmi">Editar</div>
+      <div class="wmi">Ver</div>
+      <div class="wmi">Ferramentas</div>
+      <div class="wmi">Ajuda</div>
+    </div>
+    <div class="rb-toolbar">
+      <button class="rb-tbtn" id="rb-empty-btn" onclick="emptyRecycleBin()">🗑️ Esvaziar Reciclagem</button>
+      <button class="rb-tbtn" onclick="rbRestoreAll()">♻️ Restaurar todos</button>
+      <div class="rb-addr"><span>📁</span><span>Reciclagem</span></div>
+    </div>
+    <div class="rb-body" id="rb-body">
+      <div class="rb-empty"><div class="rb-ei">🗑️</div><p>A Reciclagem está vazia.</p></div>
+    </div>
+    <div class="win-sbar" id="rb-sbar">
+      <span id="rb-count">0 itens</span>
+    </div>
+  </div>
+
+  <!-- ====== JANELA: FAVORITOS (Portal) ====== -->
+  <div class="win" id="win-portal">
+    <div class="win-tbar" id="tbar-portal">
+      <span class="wico">⭐</span>
+      <span class="wtitle">Favoritos — Centro de Comando Digital</span>
+      <div class="win-ctrls">
+        <div class="wbtn wmin" onclick="minimizeWin('portal')" title="Minimizar">_</div>
+        <div class="wbtn wmax" onclick="maximizeWin('portal')" title="Maximizar">□</div>
+        <div class="wbtn wcls" onclick="closeWin('portal')" title="Fechar">✕</div>
+      </div>
+    </div>
+    <div class="win-body">
+      <div id="portal-inner">
+        <!-- Portal content is injected here -->
+      </div>
+    </div>
+    <div class="win-sbar">
+      <span>Centro de Comando Digital — André M. Fernandes</span>
+    </div>
+  </div>
+
+  <!-- ====== BARRA DE TAREFAS ====== -->
+  <div id="taskbar">
+    <button id="start-btn" onclick="toggleStartMenu()">
+      <span>🪟</span><span>Iniciar</span>
+    </button>
+    <div id="taskbar-wins"></div>
+    <div id="sys-tray">
+      <span>🔊</span>
+      <span>🌐</span>
+      <div id="clock"></div>
+    </div>
+  </div>
+
+  <!-- ====== MENU INICIAR ====== -->
+  <div id="start-menu">
+    <div class="sm-head">
+      <div class="sm-av">👤</div>
+      <div class="sm-name">André M. Fernandes</div>
+    </div>
+    <div class="sm-body">
+      <div class="sm-left">
+        <div class="sm-item" ondblclick="openWin('notepad');closeStartMenu()">
+          <span class="si">📝</span><span>Bloco de Notas</span>
+        </div>
+        <div class="sm-item" ondblclick="openWin('recyclebin');closeStartMenu()">
+          <span class="si">🗑️</span><span>Reciclagem</span>
+        </div>
+        <div class="sm-item" ondblclick="openWin('portal');closeStartMenu()">
+          <span class="si">⭐</span><span>Favoritos</span>
+        </div>
+        <div class="sm-sep"></div>
+        <div class="sm-item" onclick="openWin('notepad');closeStartMenu()">
+          <span class="si">📝</span><span><strong>Bloco de Notas</strong></span>
+        </div>
+        <div class="sm-item" onclick="openWin('recyclebin');closeStartMenu()">
+          <span class="si">🗑️</span><span><strong>Reciclagem</strong></span>
+        </div>
+        <div class="sm-item" onclick="openWin('portal');closeStartMenu()">
+          <span class="si">⭐</span><span><strong>Favoritos</strong></span>
+        </div>
+      </div>
+      <div class="sm-right">
+        <div class="sm-item" onclick="showAbout();closeStartMenu()">
+          <span class="si">💻</span><span>O Meu Computador</span>
+        </div>
+        <div class="sm-sep"></div>
+        <div class="sm-item" onclick="closeStartMenu()">
+          <span class="si">🔍</span><span>Pesquisar</span>
+        </div>
+        <div class="sm-item" onclick="closeStartMenu()">
+          <span class="si">❓</span><span>Ajuda e Suporte</span>
+        </div>
+        <div class="sm-sep"></div>
+        <div class="sm-item" onclick="closeStartMenu()">
+          <span class="si">⚙️</span><span>Painel de Controlo</span>
+        </div>
+        <div class="sm-item" onclick="closeStartMenu()">
+          <span class="si">🖨️</span><span>Impressoras</span>
+        </div>
+      </div>
+    </div>
+    <div class="sm-foot">
+      <button class="sm-fBtn" onclick="lockScreen()">🔒 Bloquear</button>
+      <button class="sm-fBtn" onclick="shutdown()">⏻ Desligar</button>
+    </div>
+  </div>
+
+</div><!-- /desktop -->
+
+<!-- MENU DE CONTEXTO -->
+<div id="ctx-menu">
+  <div class="ctx-i" onclick="ctxAction('arrange')">🔲 Organizar ícones</div>
+  <div class="ctx-i" onclick="ctxAction('refresh')">🔄 Atualizar</div>
+  <div class="ctx-sep"></div>
+  <div class="ctx-i" onclick="ctxAction('notepad')">📝 Novo documento de texto</div>
+  <div class="ctx-i" onclick="ctxAction('recycle')">🗑️ Abrir Reciclagem</div>
+  <div class="ctx-sep"></div>
+  <div class="ctx-i" onclick="ctxAction('about')">ℹ️ Propriedades do ecrã</div>
+</div>
+
+<!-- NOTIFICAÇÃO -->
+<div id="notif">
+  <div class="n-title" id="notif-title"></div>
+  <div id="notif-body"></div>
+</div>
+
+<!-- PORTAL CONTENT TEMPLATE (invisible) -->
+<template id="portal-tpl">
+  <style>
+    .p-search { width:100%; padding:10px; margin-bottom:16px; border:1px solid #ddd; border-radius:6px; font-size:0.9rem; }
+    .p-cat { margin-bottom:10px; border:1px solid #ddd; border-radius:8px; overflow:hidden; }
+    .p-hdr { background:#f5f5f5; padding:12px 16px; font-size:1rem; font-weight:700; cursor:pointer; border:none; width:100%; text-align:left; display:flex; justify-content:space-between; }
+    .p-hdr:hover{background:#e8e8e8}
+    .p-hdr::after{content:"+"; color:#3b82f6;}
+    .p-cat.popen .p-hdr::after{content:"-";}
+    .p-grid { display:none; padding:12px; grid-template-columns:repeat(auto-fill,minmax(240px,1fr)); gap:12px; background:#fafafa; }
+    .p-cat.popen .p-grid{display:grid;}
+    .p-card { background:white; border:1px solid #e5e7eb; border-radius:8px; padding:14px; display:flex; flex-direction:column; }
+    .p-card:hover{border-color:#3b82f6;}
+    .p-card h3{font-size:1rem;margin-bottom:4px;}
+    .p-card p{font-size:0.8rem;color:#666;margin-bottom:10px;flex:1;}
+    .p-tag{display:inline-block;padding:2px 7px;border-radius:4px;font-size:0.7rem;font-weight:700;margin-bottom:8px;}
+    .free{background:#dcfce7;color:#16a34a;} .paid{background:#fee2e2;color:#dc2626;} .mixed{background:#fef9c3;color:#ca8a04;}
+    .p-link{background:#3b82f6;color:white;text-decoration:none;text-align:center;padding:8px;border-radius:5px;font-size:0.82rem;font-weight:600;}
+    .p-link:hover{background:#2563eb;}
+  </style>
+  <input type="text" class="p-search" placeholder="Pesquisar..." oninput="pSearch(this)">
+  <div id="p-cats"></div>
+</template>
+
 <script>
-    window.onload = function() {
-        atualizarTudo()
+/* =============================================
+   DADOS: CÓDIGO DE ACESSO
+============================================= */
+const ACCESS_CODE = '1234';
+
+/* =============================================
+   ECRÃ DE BLOQUEIO
+============================================= */
+function updateLockClock() {
+  const now = new Date();
+  document.getElementById('lock-time').textContent =
+    now.toLocaleTimeString('pt-PT', {hour:'2-digit', minute:'2-digit'});
+  document.getElementById('lock-date').textContent =
+    now.toLocaleDateString('pt-PT', {weekday:'long', day:'numeric', month:'long', year:'numeric'});
+}
+updateLockClock();
+setInterval(updateLockClock, 1000);
+
+document.getElementById('code-input').addEventListener('keydown', e => {
+  if (e.key === 'Enter') doLogin();
+});
+
+function doLogin() {
+  const val = document.getElementById('code-input').value;
+  const err = document.getElementById('lock-error');
+  const form = document.getElementById('lock-form');
+  if (val === ACCESS_CODE) {
+    document.getElementById('lock-screen').style.transition = 'opacity 0.6s';
+    document.getElementById('lock-screen').style.opacity = '0';
+    setTimeout(() => {
+      document.getElementById('lock-screen').style.display = 'none';
+      document.getElementById('desktop').style.display = 'block';
+      initDesktop();
+    }, 600);
+  } else {
+    err.textContent = 'Código incorreto. Tenta novamente.';
+    form.classList.add('shake');
+    setTimeout(() => form.classList.remove('shake'), 400);
+    document.getElementById('code-input').value = '';
+    document.getElementById('code-input').focus();
+  }
+}
+
+function lockScreen() {
+  document.getElementById('desktop').style.display = 'none';
+  const ls = document.getElementById('lock-screen');
+  ls.style.opacity = '0';
+  ls.style.display = 'flex';
+  setTimeout(() => { ls.style.transition = 'opacity 0.4s'; ls.style.opacity = '1'; }, 10);
+  document.getElementById('code-input').value = '';
+  document.getElementById('lock-error').textContent = '';
+  closeStartMenu();
+}
+
+function shutdown() {
+  showDialog('⏻', 'Desligar o computador', 'Tem a certeza que deseja bloquear a sessão?', [{label:'Sim', cls:'primary', action: lockScreen}, {label:'Cancelar'}]);
+  closeStartMenu();
+}
+
+/* =============================================
+   AMBIENTE DE TRABALHO
+============================================= */
+function initDesktop() {
+  startClock();
+  loadNotepad();
+  initRecycleBin();
+  buildPortal();
+  // Recycle bin icon update
+  updateRecycleIcon();
+}
+
+function selIcon(id) {
+  document.querySelectorAll('.dsk-icon').forEach(i => i.classList.remove('sel'));
+  document.getElementById(id).classList.add('sel');
+}
+
+document.addEventListener('click', e => {
+  if (!e.target.closest('.dsk-icon')) {
+    document.querySelectorAll('.dsk-icon').forEach(i => i.classList.remove('sel'));
+  }
+  if (!e.target.closest('#start-btn') && !e.target.closest('#start-menu')) {
+    closeStartMenu();
+  }
+  hideCtxMenu();
+});
+
+document.getElementById('desktop').addEventListener('contextmenu', e => {
+  if (e.target.closest('.win') || e.target.closest('#taskbar')) return;
+  e.preventDefault();
+  showCtxMenu(e.clientX, e.clientY);
+});
+
+/* =============================================
+   RELÓGIO
+============================================= */
+function startClock() {
+  function tick() {
+    const now = new Date();
+    const h = now.toLocaleTimeString('pt-PT', {hour:'2-digit', minute:'2-digit'});
+    const d = now.toLocaleDateString('pt-PT', {day:'2-digit', month:'2-digit', year:'numeric'});
+    document.getElementById('clock').innerHTML = `${h}<br>${d}`;
+  }
+  tick();
+  setInterval(tick, 1000);
+}
+
+/* =============================================
+   MENU INICIAR
+============================================= */
+function toggleStartMenu() {
+  document.getElementById('start-menu').classList.toggle('open');
+}
+function closeStartMenu() {
+  document.getElementById('start-menu').classList.remove('open');
+}
+
+/* =============================================
+   GESTÃO DE JANELAS
+============================================= */
+const winConfig = {
+  notepad:    { el: 'win-notepad',    taskLabel: '📝 Bloco de Notas' },
+  recyclebin: { el: 'win-recyclebin', taskLabel: '🗑️ Reciclagem' },
+  portal:     { el: 'win-portal',     taskLabel: '⭐ Favoritos' },
+};
+const winState = {};
+let topZ = 500;
+
+function openWin(id) {
+  const cfg = winConfig[id];
+  if (!cfg) return;
+  const el = document.getElementById(cfg.el);
+  el.classList.add('open');
+  el.classList.remove('minimized');
+  el.style.display = 'flex';
+  if (!winState[id]) {
+    winState[id] = { minimized: false, maximized: false, prevPos: null };
+    centerWindow(el);
+  }
+  winState[id].minimized = false;
+  focusWin(id);
+  updateTaskbar();
+}
+
+function closeWin(id) {
+  const el = document.getElementById(winConfig[id].el);
+  el.classList.remove('open');
+  el.style.display = 'none';
+  delete winState[id];
+  updateTaskbar();
+}
+
+function minimizeWin(id) {
+  const el = document.getElementById(winConfig[id].el);
+  el.style.display = 'none';
+  winState[id].minimized = true;
+  updateTaskbar();
+}
+
+function maximizeWin(id) {
+  const el = document.getElementById(winConfig[id].el);
+  const st = winState[id];
+  if (!st) return;
+  if (!st.maximized) {
+    st.prevPos = { w: el.style.width, h: el.style.height, t: el.style.top, l: el.style.left };
+    el.style.width = '100vw'; el.style.height = 'calc(100vh - 42px)';
+    el.style.top = '0'; el.style.left = '0'; el.style.borderRadius = '0';
+    st.maximized = true;
+  } else {
+    if (st.prevPos) {
+      el.style.width = st.prevPos.w; el.style.height = st.prevPos.h;
+      el.style.top = st.prevPos.t; el.style.left = st.prevPos.l;
     }
+    el.style.borderRadius = '8px 8px 3px 3px';
+    st.maximized = false;
+  }
+  focusWin(id);
+}
 
-    function atualizarTudo() {
-        const cartoes = document.querySelectorAll(".category:not(#cat-destaques) .card")
-        cartoes.forEach(c => {
-            const id = c.getAttribute("data-id")
-            const valor = localStorage.getItem("cliques-" + id) || 0
-            c.querySelector(".click-count").innerText = "Cliques: " + valor
-        })
-        atualizarDestaques()
-    }
+function focusWin(id) {
+  Object.keys(winConfig).forEach(k => {
+    document.getElementById(winConfig[k].el).classList.remove('focused');
+  });
+  const el = document.getElementById(winConfig[id].el);
+  el.classList.add('focused');
+  el.style.zIndex = ++topZ;
+  updateTaskbarActive(id);
+}
 
-    function atualizarDestaques() {
-        const grelha = document.getElementById("highlights-grid")
-        grelha.innerHTML = ""
-        let itens = []
-        const todos = document.querySelectorAll(".category:not(#cat-destaques) .card")
-        
-        todos.forEach(c => {
-            const id = c.getAttribute("data-id")
-            const cliques = parseInt(localStorage.getItem("cliques-" + id) || 0)
-            if (cliques > 0) {
-                itens.push({ id, cliques, html: c.outerHTML })
-            }
-        })
+function centerWindow(el) {
+  const dw = window.innerWidth, dh = window.innerHeight - 42;
+  const ew = el.offsetWidth || 600, eh = el.offsetHeight || 400;
+  el.style.left = Math.max(0, (dw - ew) / 2) + 'px';
+  el.style.top = Math.max(0, (dh - eh) / 2) + 'px';
+}
 
-        itens.sort((a, b) => b.cliques - a.cliques)
-        const topQuatro = itens.slice(0, 4)
+function updateTaskbar() {
+  const bar = document.getElementById('taskbar-wins');
+  bar.innerHTML = '';
+  Object.keys(winState).forEach(id => {
+    const st = winState[id];
+    const cfg = winConfig[id];
+    const btn = document.createElement('div');
+    btn.className = 'tbtn' + (st.minimized ? '' : ' active');
+    btn.textContent = cfg.taskLabel;
+    btn.title = cfg.taskLabel;
+    btn.onclick = () => {
+      if (st.minimized) {
+        const el = document.getElementById(cfg.el);
+        el.style.display = 'flex';
+        st.minimized = false;
+        focusWin(id);
+        updateTaskbar();
+      } else {
+        minimizeWin(id);
+      }
+    };
+    bar.appendChild(btn);
+  });
+}
 
-        if (topQuatro.length === 0) {
-            grelha.innerHTML = "<p style='padding: 20px;'>As tuas ferramentas favoritas aparecerão aqui conforme as utilizares.</p>"
-            return
-        }
+function updateTaskbarActive(activeId) {
+  document.querySelectorAll('.tbtn').forEach((btn, i) => {
+    const id = Object.keys(winState)[i];
+    btn.classList.toggle('active', id === activeId && !winState[id]?.minimized);
+  });
+}
 
-        topQuatro.forEach(item => {
-            grelha.innerHTML += item.html
-        })
-    }
+/* ===== ARRASTAR JANELAS ===== */
+(function() {
+  let dragging = null, ox = 0, oy = 0;
+  document.querySelectorAll('.win-tbar').forEach(tbar => {
+    tbar.addEventListener('mousedown', e => {
+      if (e.target.closest('.win-ctrls') || e.target.closest('.wbtn')) return;
+      dragging = tbar.closest('.win');
+      const id = Object.keys(winConfig).find(k => 'win-' + k === dragging.id || winConfig[k].el === dragging.id);
+      if (id) focusWin(id);
+      ox = e.clientX - dragging.offsetLeft;
+      oy = e.clientY - dragging.offsetTop;
+      e.preventDefault();
+    });
+  });
+  document.addEventListener('mousemove', e => {
+    if (!dragging) return;
+    const x = Math.max(0, Math.min(window.innerWidth - dragging.offsetWidth, e.clientX - ox));
+    const y = Math.max(0, Math.min(window.innerHeight - 42 - dragging.offsetHeight, e.clientY - oy));
+    dragging.style.left = x + 'px';
+    dragging.style.top = y + 'px';
+  });
+  document.addEventListener('mouseup', () => { dragging = null; });
+})();
 
-    function toggleCategory(id) {
-        document.getElementById(id).classList.toggle("active")
-    }
+/* Clicar na janela para focar */
+Object.keys(winConfig).forEach(id => {
+  document.getElementById(winConfig[id].el).addEventListener('mousedown', () => focusWin(id));
+});
 
-    function registarClique(id) {
-        let atual = parseInt(localStorage.getItem("cliques-" + id) || 0)
-        atual++
-        localStorage.setItem("cliques-" + id, atual)
-        atualizarTudo()
-    }
+/* =============================================
+   BLOCO DE NOTAS
+============================================= */
+let npModified = false;
+let npCurrentFile = null;
+const npWrapMode = { on: true };
 
-    function toggleInfo(botao) {
-        const cartao = botao.closest(".card")
-        const texto = cartao.querySelector(".details-text")
-        texto.style.display = (texto.style.display === "block") ? "none" : "block"
-    }
+function loadNotepad() {
+  const saved = localStorage.getItem('np-content');
+  if (saved !== null) {
+    document.getElementById('notepad-area').value = saved;
+    npUpdate();
+  }
+}
 
-    function partilharPagina() {
-        if (navigator.share) {
-            navigator.share({
-                title: "Centro de Comando Digital",
-                url: window.location.href
-            }).catch(() => {})
-        } else {
-            navigator.clipboard.writeText(window.location.href)
-            alert("Endereço copiado para a área de transferência.")
-        }
-    }
+function npUpdate() {
+  const ta = document.getElementById('notepad-area');
+  localStorage.setItem('np-content', ta.value);
+  const chars = ta.value.length;
+  const lines = ta.value.split('\n').length;
+  const pos = ta.selectionStart;
+  const beforeCursor = ta.value.substring(0, pos);
+  const curLine = beforeCursor.split('\n').length;
+  const curCol = pos - beforeCursor.lastIndexOf('\n');
+  document.getElementById('np-chars').textContent = chars + ' caracteres';
+  document.getElementById('np-line').textContent = `Linha ${curLine}, Col ${curCol}`;
+}
 
-    function filtrarConteudo() {
-        const busca = document.getElementById("searchBar").value.toLowerCase()
-        const seccoes = document.querySelectorAll(".category:not(#cat-destaques)")
-        
-        seccoes.forEach(s => {
-            const itens = s.querySelectorAll(".card")
-            let visivel = false
-            itens.forEach(i => {
-                const info = i.getAttribute("data-tags") + i.querySelector("h3").innerText
-                if (info.toLowerCase().includes(busca)) {
-                    i.style.display = "flex"
-                    visivel = true
-                } else {
-                    i.style.display = "none"
-                }
-            })
-            if (busca !== "") {
-                s.style.display = visivel ? "block" : "none"
-                if (visivel) s.classList.add("active")
-            } else {
-                s.style.display = "block"
-                s.classList.remove("active")
-            }
-        })
-    }
+function npToggleWrap() {
+  npWrapMode.on = !npWrapMode.on;
+  const el = document.getElementById('win-notepad');
+  if (npWrapMode.on) {
+    el.classList.add('np-wrap');
+    document.getElementById('np-wrap-status').textContent = 'Quebra de linha: Ativa';
+  } else {
+    el.classList.remove('np-wrap');
+    document.getElementById('np-wrap-status').textContent = 'Quebra de linha: Inativa';
+  }
+}
+
+function npMenu(action) {
+  const ta = document.getElementById('notepad-area');
+  switch(action) {
+    case 'ficheiro':
+      showDialog('📝', 'Ficheiro', `
+        <div style="display:flex;flex-direction:column;gap:8px;">
+          <button class="dialog-btn" onclick="npNew();closeDialog()">📄 Novo (Ctrl+N)</button>
+          <button class="dialog-btn primary" onclick="npSave();closeDialog()">💾 Guardar (Ctrl+S)</button>
+          <button class="dialog-btn" onclick="npPrint();closeDialog()">🖨️ Imprimir</button>
+        </div>
+      `, [], true);
+      break;
+    case 'editar':
+      showDialog('✂️', 'Editar', `
+        <div style="display:flex;flex-direction:column;gap:8px;">
+          <button class="dialog-btn" onclick="document.getElementById('notepad-area').focus();document.execCommand('selectAll');closeDialog()">🔲 Selecionar Tudo</button>
+          <button class="dialog-btn" onclick="npClear();closeDialog()">🗑️ Limpar tudo</button>
+          <button class="dialog-btn" onclick="npInsertDate();closeDialog()">📅 Inserir data/hora</button>
+        </div>
+      `, [], true);
+      break;
+    case 'ajuda':
+      showDialog('❓', 'Ajuda — Bloco de Notas', '<b>Atalhos:</b><br><br>Ctrl+S — Guardar<br>Ctrl+N — Novo<br>Ctrl+A — Selecionar tudo<br><br>Guarda automaticamente no browser.', [{label:'OK'}]);
+      break;
+  }
+}
+
+function npNew() {
+  if (document.getElementById('notepad-area').value.trim()) {
+    showDialog('📝', 'Bloco de Notas', 'Deseja guardar as alterações?', [
+      {label:'Guardar', cls:'primary', action: () => { npSave(); npClear(); }},
+      {label:'Não guardar', action: npClear},
+      {label:'Cancelar'}
+    ]);
+  }
+}
+
+function npSave() {
+  const content = document.getElementById('notepad-area').value;
+  localStorage.setItem('np-content', content);
+  showNotif('💾 Bloco de Notas', 'Documento guardado.');
+}
+
+function npClear() {
+  document.getElementById('notepad-area').value = '';
+  localStorage.removeItem('np-content');
+  npUpdate();
+}
+
+function npInsertDate() {
+  const ta = document.getElementById('notepad-area');
+  const now = new Date().toLocaleString('pt-PT');
+  const pos = ta.selectionStart;
+  ta.value = ta.value.substring(0, pos) + now + ta.value.substring(pos);
+  npUpdate();
+}
+
+function npPrint() {
+  const content = document.getElementById('notepad-area').value;
+  const w = window.open('', '_blank');
+  w.document.write(`<pre style="font-family:monospace;font-size:12pt;white-space:pre-wrap;">${content}</pre>`);
+  w.print(); w.close();
+}
+
+document.getElementById('notepad-area').addEventListener('keydown', e => {
+  if (e.ctrlKey && e.key === 's') { e.preventDefault(); npSave(); }
+  if (e.ctrlKey && e.key === 'n') { e.preventDefault(); npNew(); }
+  if (e.key === 'Tab') {
+    e.preventDefault();
+    const ta = e.target;
+    const s = ta.selectionStart;
+    ta.value = ta.value.substring(0, s) + '    ' + ta.value.substring(ta.selectionEnd);
+    ta.selectionStart = ta.selectionEnd = s + 4;
+  }
+});
+
+document.getElementById('notepad-area').addEventListener('click', npUpdate);
+document.getElementById('notepad-area').addEventListener('keyup', npUpdate);
+
+/* =============================================
+   RECICLAGEM
+============================================= */
+let recycleItems = [];
+
+function initRecycleBin() {
+  const saved = localStorage.getItem('recycle-items');
+  if (saved) recycleItems = JSON.parse(saved);
+  renderRecycleBin();
+}
+
+function addToRecycleBin(name, type = 'document') {
+  recycleItems.push({
+    id: Date.now(),
+    name,
+    type,
+    icon: type === 'document' ? '📄' : type === 'folder' ? '📁' : '🖼️',
+    deleted: new Date().toLocaleString('pt-PT')
+  });
+  saveRecycleBin();
+  renderRecycleBin();
+  updateRecycleIcon();
+}
+
+function saveRecycleBin() {
+  localStorage.setItem('recycle-items', JSON.stringify(recycleItems));
+}
+
+function renderRecycleBin() {
+  const body = document.getElementById('rb-body');
+  const countEl = document.getElementById('rb-count');
+  if (recycleItems.length === 0) {
+    body.innerHTML = '<div class="rb-empty"><div class="rb-ei">🗑️</div><p>A Reciclagem está vazia.<br>Os itens eliminados aparecem aqui.</p></div>';
+    countEl.textContent = '0 itens';
+    document.getElementById('rb-empty-btn').disabled = true;
+  } else {
+    body.innerHTML = recycleItems.map(item => `
+      <div class="rb-item">
+        <span class="ri-ico">${item.icon}</span>
+        <div class="ri-info">
+          <div class="ri-name">${item.name}</div>
+          <div class="ri-date">Eliminado: ${item.deleted}</div>
+        </div>
+        <button class="ri-del" onclick="rbRestore(${item.id})" title="Restaurar">↩</button>
+        <button class="ri-del" onclick="rbDelete(${item.id})" title="Eliminar permanentemente">✕</button>
+      </div>
+    `).join('');
+    countEl.textContent = recycleItems.length + ' item(ns)';
+    document.getElementById('rb-empty-btn').disabled = false;
+  }
+  updateRecycleIcon();
+}
+
+function rbRestore(id) {
+  recycleItems = recycleItems.filter(i => i.id !== id);
+  saveRecycleBin();
+  renderRecycleBin();
+  showNotif('♻️ Reciclagem', 'Item restaurado.');
+}
+
+function rbDelete(id) {
+  recycleItems = recycleItems.filter(i => i.id !== id);
+  saveRecycleBin();
+  renderRecycleBin();
+}
+
+function rbRestoreAll() {
+  if (recycleItems.length === 0) return;
+  showDialog('♻️', 'Restaurar todos', 'Deseja restaurar todos os itens da reciclagem?', [
+    {label:'Restaurar', cls:'primary', action: () => {
+      recycleItems = [];
+      saveRecycleBin();
+      renderRecycleBin();
+      showNotif('♻️ Reciclagem', 'Todos os itens restaurados.');
+    }},
+    {label:'Cancelar'}
+  ]);
+}
+
+function emptyRecycleBin() {
+  if (recycleItems.length === 0) { showNotif('🗑️ Reciclagem', 'A reciclagem já está vazia.'); return; }
+  showDialog('⚠️', 'Esvaziar Reciclagem', `Tem a certeza que deseja eliminar permanentemente ${recycleItems.length} item(ns)?`, [
+    {label:'Esvaziar', cls:'primary', action: () => {
+      recycleItems = [];
+      saveRecycleBin();
+      renderRecycleBin();
+      showNotif('🗑️ Reciclagem', 'Reciclagem esvaziada.');
+    }},
+    {label:'Cancelar'}
+  ]);
+}
+
+function updateRecycleIcon() {
+  document.getElementById('recycle-icon-img').textContent = recycleItems.length > 0 ? '🗑️' : '🗑️';
+  document.getElementById('rb-title-ico').textContent = recycleItems.length > 0 ? '🗑️' : '🗑️';
+}
+
+/* =============================================
+   PORTAL DE FAVORITOS (conteúdo)
+============================================= */
+const portalData = [
+  {
+    id:'ia-chat', label:'🤖 Inteligência Artificial: Conversa', items:[
+      {id:'copilot',    name:'Copilot',       tag:'mixed', price:'Misto',  desc:'Assistente da Microsoft para auxílio no Windows e produtividade.', url:'https://m365.cloud.microsoft/chat'},
+      {id:'deepseek',   name:'DeepSeek',      tag:'free',  price:'Grátis', desc:'IA avançada focada em raciocínio lógico e programação.', url:'https://chat.deepseek.com/'},
+      {id:'gemini',     name:'Gemini',        tag:'mixed', price:'Misto',  desc:'IA da Google integrada para ajuda em tarefas quotidianas.', url:'https://gemini.google.com'},
+      {id:'claude',     name:'Claude',        tag:'mixed', price:'Misto',  desc:'IA com foco em segurança e análise textual muito apurada.', url:'https://claude.ai'},
+      {id:'charai',     name:'Character.ai',  tag:'mixed', price:'Misto',  desc:'Interação criativa com personalidades e personagens virtuais.', url:'https://character.ai'},
+      {id:'grok',       name:'Grok',          tag:'paid',  price:'Pago',   desc:'IA da rede X com acesso a informação em tempo real.', url:'https://x.ai'},
+      {id:'venice',     name:'Venice',        tag:'mixed', price:'Misto',  desc:'IA com foco absoluto na privacidade e liberdade de resposta.', url:'https://venice.ai'},
+    ]
+  },
+  {
+    id:'ia-prod', label:'⚡ IA: Criação e Produtividade', items:[
+      {id:'manus',      name:'Manus',         tag:'mixed', price:'Misto',  desc:'Agentes inteligentes para execução de tarefas digitais.', url:'https://manus.ai'},
+      {id:'notebooklm', name:'NotebookLM',    tag:'free',  price:'Grátis', desc:'Ferramenta para analisar e resumir os teus próprios ficheiros.', url:'https://notebooklm.google.com'},
+      {id:'chatpdf',    name:'ChatPDF',       tag:'mixed', price:'Misto',  desc:'Conversa diretamente com documentos e extrai informação.', url:'https://www.chatpdf.com'},
+      {id:'suno',       name:'Suno',          tag:'mixed', price:'Misto',  desc:'Geração de música e áudio a partir de simples texto.', url:'https://suno.com'},
+    ]
+  },
+  {
+    id:'dev', label:'💻 Desenvolvimento e Alojamento', items:[
+      {id:'github',  name:'GitHub',  tag:'free',  price:'Grátis', desc:'Alojamento de código e colaboração tecnológica mundial.', url:'https://github.com'},
+      {id:'vercel',  name:'Vercel',  tag:'mixed', price:'Misto',  desc:'Publicação instantânea de sítios web na rede.', url:'https://vercel.com'},
+      {id:'replit',  name:'Replit',  tag:'mixed', price:'Misto',  desc:'Ambiente de programação direto no teu navegador.', url:'https://replit.com'},
+      {id:'firebase',name:'Firebase',tag:'mixed', price:'Misto',  desc:'Conjunto de ferramentas para bases de dados e apps.', url:'https://firebase.google.com'},
+    ]
+  },
+  {
+    id:'office', label:'📋 Escritório e Produtividade', items:[
+      {id:'workspace', name:'Google Workspace', tag:'mixed', price:'Misto',  desc:'Suíte completa para documentos e colaboração na nuvem.', url:'https://workspace.google.com'},
+      {id:'gmail',     name:'Gmail',            tag:'free',  price:'Grátis', desc:'O serviço de correio eletrónico principal da Google.', url:'https://mail.google.com'},
+      {id:'outlook',   name:'Outlook',          tag:'free',  price:'Grátis', desc:'Gestão de correio e calendários do sistema Microsoft.', url:'https://outlook.live.com'},
+      {id:'keep',      name:'Google Keep',      tag:'free',  price:'Grátis', desc:'Notas e listas rápidas sincronizadas em todos os aparelhos.', url:'https://keep.google.com'},
+      {id:'calendar',  name:'Google Calendar',  tag:'free',  price:'Grátis', desc:'Agenda digital para organizar compromissos e reuniões.', url:'https://calendar.google.com'},
+    ]
+  },
+  {
+    id:'compras', label:'🛒 Compras e Lojas Online', items:[
+      {id:'amazon',    name:'Amazon',    tag:'paid', price:'Pago', desc:'A maior seleção de artigos com entregas rápidas na península.', url:'https://www.amazon.es'},
+      {id:'aliexpress',name:'AliExpress',tag:'paid', price:'Pago', desc:'Artigos de todo o tipo com preços diretos da China.', url:'https://www.aliexpress.com'},
+      {id:'pcdiga',    name:'PCDiga',    tag:'paid', price:'Pago', desc:'Referência nacional para informática e componentes eletrónicos.', url:'https://www.pcdiga.com'},
+      {id:'eneba',     name:'Eneba',     tag:'paid', price:'Pago', desc:'Mercado de chaves digitais para jogos e software em saldo.', url:'https://www.eneba.com'},
+    ]
+  },
+  {
+    id:'entertainment', label:'🎬 Entretenimento e Media', items:[
+      {id:'youtube',  name:'YouTube',       tag:'mixed', price:'Misto',  desc:'Líder mundial em vídeos e transmissões em direto.', url:'https://www.youtube.com'},
+      {id:'twitch',   name:'Twitch.tv',     tag:'mixed', price:'Misto',  desc:'Foco em diretos e interação em tempo real com criadores.', url:'https://www.twitch.tv'},
+      {id:'plex',     name:'Plex',          tag:'mixed', price:'Misto',  desc:'Gere e assiste à tua biblioteca pessoal de media.', url:'https://www.plex.tv'},
+      {id:'spotify',  name:'Spotify',       tag:'mixed', price:'Misto',  desc:'Música e podcasts acessíveis em qualquer lado.', url:'https://www.spotify.com'},
+      {id:'ytmusic',  name:'YouTube Music', tag:'mixed', price:'Misto',  desc:'O serviço musical baseado em todo o catálogo do YouTube.', url:'https://music.youtube.com'},
+      {id:'horizon',  name:'Meta Horizon',  tag:'free',  price:'Grátis', desc:'Visualização da tua experiência de realidade virtual.', url:'https://horizon.meta.com/casting'},
+    ]
+  },
+  {
+    id:'saber', label:'📚 Saber e Utilidades', items:[
+      {id:'wikipedia', name:'Wikipedia',    tag:'free',  price:'Grátis', desc:'Enciclopédia livre global sobre qualquer assunto.', url:'https://pt.wikipedia.org'},
+      {id:'imdb',      name:'IMDb',         tag:'free',  price:'Grátis', desc:'Base de dados técnica sobre produções cinematográficas.', url:'https://www.imdb.com'},
+      {id:'legendas',  name:'LegendasDivx', tag:'free',  price:'Grátis', desc:'Portal português para descarregar legendas de vídeos.', url:'https://www.legendasdivx.com'},
+      {id:'duckduckgo',name:'DuckDuckGo',   tag:'free',  price:'Grátis', desc:'Motor de busca com foco absoluto na tua privacidade.', url:'https://duckduckgo.com'},
+      {id:'speed',     name:'Speedtest',    tag:'free',  price:'Grátis', desc:'Analisa a velocidade real da tua ligação de rede.', url:'https://www.speedtest.net'},
+      {id:'sharesub',  name:'Sharesub',     tag:'paid',  price:'Pago',   desc:'Divide subscrições digitais para reduzir custos mensais.', url:'https://www.sharesub.com'},
+    ]
+  },
+  {
+    id:'arte', label:'🎨 Conteúdo, Leitura e Arte', items:[
+      {id:'lulu',      name:'Lulu.com',   tag:'mixed', price:'Misto',  desc:'Plataforma para publicar e vender os teus próprios livros.', url:'https://www.lulu.com'},
+      {id:'substack',  name:'Substack',   tag:'free',  price:'Grátis', desc:'Lê artigos e newsletters de autores independentes.', url:'https://substack.com'},
+      {id:'wattpad',   name:'Wattpad',    tag:'mixed', price:'Misto',  desc:'Comunidade para ler e publicar histórias de ficção.', url:'https://www.wattpad.com'},
+      {id:'pinterest', name:'Pinterest',  tag:'free',  price:'Grátis', desc:'Exploração visual de referências estéticas e ideias.', url:'https://www.pinterest.com'},
+      {id:'deviantart',name:'DeviantArt', tag:'mixed', price:'Misto',  desc:'Galeria massiva para artistas digitais e ilustradores.', url:'https://www.deviantart.com'},
+    ]
+  },
+  {
+    id:'trabalho', label:'💼 Carreira e Mercado de Trabalho', items:[
+      {id:'linkedin', name:'LinkedIn', tag:'free', price:'Grátis', desc:'Gestão de carreira e rede de contactos profissionais.', url:'https://www.linkedin.com'},
+      {id:'indeed',   name:'Indeed',   tag:'free', price:'Grátis', desc:'Procura massiva de ofertas de trabalho em Portugal.', url:'https://pt.indeed.com'},
+    ]
+  }
+];
+
+function buildPortal() {
+  const inner = document.getElementById('portal-inner');
+  inner.innerHTML = `
+    <div style="margin-bottom:14px;">
+      <input id="p-search" type="text" style="width:100%;padding:9px 12px;border:1px solid #ddd;border-radius:6px;font-size:0.88rem;font-family:inherit;" placeholder="🔍 Pesquisar recurso..." oninput="pSearch(this.value)">
+    </div>
+    <div id="p-cats"></div>
+    <div style="margin-top:20px;padding-top:14px;border-top:1px solid #eee;font-size:0.75rem;color:#aaa;text-align:center;">
+      Curadoria e Desenvolvimento por <strong>André M. Fernandes</strong>
+    </div>
+  `;
+  renderPortal(portalData);
+}
+
+function renderPortal(data) {
+  const cats = document.getElementById('p-cats');
+  cats.innerHTML = '';
+  data.forEach(cat => {
+    const div = document.createElement('div');
+    div.className = 'p-cat-block';
+    div.style.cssText = 'margin-bottom:10px;border:1px solid #e5e7eb;border-radius:8px;overflow:hidden;';
+    div.innerHTML = `
+      <div class="p-chdr" style="background:#f9fafb;padding:10px 14px;font-size:0.92rem;font-weight:700;cursor:pointer;display:flex;justify-content:space-between;align-items:center;" onclick="this.parentElement.classList.toggle('popen')">
+        <span>${cat.label}</span><span class="p-arr" style="color:#6b7280;">▶</span>
+      </div>
+      <div class="p-cgrid" style="display:none;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:10px;padding:12px;background:#fff;">
+        ${cat.items.map(item => `
+          <div style="background:white;border:1px solid #e5e7eb;border-radius:8px;padding:12px;display:flex;flex-direction:column;transition:border 0.2s;" onmouseenter="this.style.borderColor='#3b82f6'" onmouseleave="this.style.borderColor='#e5e7eb'">
+            <span style="display:inline-block;padding:2px 7px;border-radius:4px;font-size:0.69rem;font-weight:700;margin-bottom:6px;${item.tag==='free'?'background:#dcfce7;color:#16a34a':item.tag==='paid'?'background:#fee2e2;color:#dc2626':'background:#fef9c3;color:#ca8a04'}">${item.price}</span>
+            <strong style="font-size:0.92rem;margin-bottom:4px;">${item.name}</strong>
+            <p style="font-size:0.78rem;color:#6b7280;margin-bottom:10px;flex:1;line-height:1.4;">${item.desc}</p>
+            <a href="${item.url}" target="_blank" style="background:#3b82f6;color:white;text-decoration:none;text-align:center;padding:7px;border-radius:5px;font-size:0.8rem;font-weight:600;">Aceder ↗</a>
+          </div>
+        `).join('')}
+      </div>
+    `;
+    div.querySelector('.p-chdr').addEventListener('click', function() {
+      const grid = div.querySelector('.p-cgrid');
+      const arr = div.querySelector('.p-arr');
+      const isOpen = grid.style.display === 'grid';
+      grid.style.display = isOpen ? 'none' : 'grid';
+      arr.textContent = isOpen ? '▶' : '▼';
+    });
+    cats.appendChild(div);
+  });
+}
+
+function pSearch(query) {
+  const q = query.toLowerCase();
+  if (!q) { renderPortal(portalData); return; }
+  const filtered = portalData.map(cat => ({
+    ...cat,
+    items: cat.items.filter(i => i.name.toLowerCase().includes(q) || i.desc.toLowerCase().includes(q) || i.price.toLowerCase().includes(q))
+  })).filter(cat => cat.items.length > 0);
+  renderPortal(filtered);
+  // Auto-expand on search
+  document.querySelectorAll('#p-cats .p-cgrid').forEach(g => {
+    g.style.display = 'grid';
+    const arr = g.parentElement.querySelector('.p-arr');
+    if (arr) arr.textContent = '▼';
+  });
+}
+
+/* =============================================
+   MENU DE CONTEXTO
+============================================= */
+function showCtxMenu(x, y) {
+  const m = document.getElementById('ctx-menu');
+  m.style.left = Math.min(x, window.innerWidth - 200) + 'px';
+  m.style.top = Math.min(y, window.innerHeight - 200) + 'px';
+  m.style.display = 'block';
+}
+function hideCtxMenu() {
+  document.getElementById('ctx-menu').style.display = 'none';
+}
+function ctxAction(act) {
+  hideCtxMenu();
+  switch(act) {
+    case 'notepad':  openWin('notepad'); addToRecycleBin('Novo Documento de Texto.txt'); break;
+    case 'recycle':  openWin('recyclebin'); break;
+    case 'refresh':  showNotif('🔄 Ambiente de Trabalho', 'Atualizado.'); break;
+    case 'arrange':  showNotif('🔲 Ícones', 'Ícones organizados.'); break;
+    case 'about':    showAbout(); break;
+  }
+}
+
+/* =============================================
+   SOBRE / O MEU COMPUTADOR
+============================================= */
+function showAbout() {
+  showDialog('💻', 'O Meu Computador', `
+    <div style="font-size:0.82rem;line-height:1.8;">
+      <strong>DesktopWeb v1.0</strong><br>
+      Ambiente de trabalho web por<br>
+      <strong>André M. Fernandes</strong><br><br>
+      <strong>Sistema:</strong> WebOS / HTML5<br>
+      <strong>Browser:</strong> ${navigator.userAgent.split(') ')[0].split('(')[1] || 'Desconhecido'}<br>
+      <strong>Resolução:</strong> ${window.screen.width}×${window.screen.height}<br>
+      <strong>Janela:</strong> ${window.innerWidth}×${window.innerHeight}
+    </div>
+  `, [{label:'OK'}]);
+}
+
+/* =============================================
+   DIÁLOGOS
+============================================= */
+let dialogCloseCallback = null;
+
+function showDialog(icon, title, bodyHtml, buttons = [{label:'OK'}], rawHtml = false) {
+  closeDialog();
+  const overlay = document.createElement('div');
+  overlay.className = 'dialog-overlay';
+  overlay.id = 'dialog-overlay';
+
+  let btnsHtml = buttons.map(b =>
+    `<button class="dialog-btn ${b.cls||''}" onclick="dialogAction(${buttons.indexOf(b)})">${b.label}</button>`
+  ).join('');
+
+  overlay.innerHTML = `
+    <div class="dialog-box">
+      <div class="dialog-tbar"><span>${icon}</span><span>${title}</span></div>
+      <div class="dialog-body" style="${rawHtml?'display:block;':''}">${rawHtml ? bodyHtml : `<span class="dialog-icon">${icon}</span><span class="dialog-text">${bodyHtml}</span>`}</div>
+      <div class="dialog-btns">${btnsHtml}</div>
+    </div>
+  `;
+  document.body.appendChild(overlay);
+  window._dialogButtons = buttons;
+}
+
+function dialogAction(idx) {
+  const btn = window._dialogButtons[idx];
+  closeDialog();
+  if (btn && btn.action) btn.action();
+}
+
+function closeDialog() {
+  const d = document.getElementById('dialog-overlay');
+  if (d) d.remove();
+}
+
+/* =============================================
+   NOTIFICAÇÕES
+============================================= */
+let notifTimer = null;
+function showNotif(title, body) {
+  const el = document.getElementById('notif');
+  document.getElementById('notif-title').textContent = title;
+  document.getElementById('notif-body').textContent = body;
+  el.style.display = 'block';
+  clearTimeout(notifTimer);
+  notifTimer = setTimeout(() => { el.style.display = 'none'; }, 3000);
+}
+
+/* =============================================
+   INICIALIZAÇÃO
+============================================= */
+document.addEventListener('DOMContentLoaded', () => {
+  updateLockClock();
+});
 </script>
-
 </body>
 </html>
