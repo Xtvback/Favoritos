@@ -5,1274 +5,1245 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>DesktopWeb — André M. Fernandes</title>
   <style>
-    * { margin: 0; padding: 0; box-sizing: border-box; }
-    body { font-family: 'Segoe UI', Tahoma, sans-serif; overflow: hidden; height: 100vh; width: 100vw; }
+    :root {
+      --accent: #0078d4;
+      --accent-light: #60cdff;
+      --bg-window: #ffffff;
+      --bg-tbar: #f3f3f3;
+      --bg-sidebar: #f9f9f9;
+      --bg-hover: rgba(0,0,0,0.05);
+      --bg-active: rgba(0,120,212,0.12);
+      --border: rgba(0,0,0,0.1);
+      --shadow: 0 8px 32px rgba(0,0,0,0.22);
+      --text: #1a1a1a;
+      --text-muted: #666;
+      --radius: 8px;
+      --taskbar-h: 48px;
+    }
+    * { margin:0; padding:0; box-sizing:border-box; }
+    body { font-family:'Segoe UI',system-ui,sans-serif; overflow:hidden; height:100vh; width:100vw; }
 
-    /* =========================================================
-       ECRÃ DE BLOQUEIO
-    ========================================================= */
-    #lock-screen {
-      position: fixed; inset: 0; z-index: 9999;
-      background: radial-gradient(ellipse at 50% 100%, #0d1b2e 0%, #0a1220 60%, #060d18 100%);
-      display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 20px;
-      color: white;
-    }
-    #lock-screen .lock-time {
-      font-size: 6rem; font-weight: 100; letter-spacing: -4px; text-shadow: 0 0 40px rgba(100,160,255,0.4);
-    }
-    #lock-screen .lock-date { font-size: 1.2rem; color: rgba(255,255,255,0.6); margin-bottom: 10px; }
-    #lock-screen .lock-divider { width: 1px; height: 60px; background: rgba(255,255,255,0.2); margin: 5px 0; }
-    #lock-screen .lock-user { font-size: 4rem; }
-    #lock-screen .lock-username { font-size: 1.4rem; font-weight: 300; margin-bottom: 5px; }
-    #lock-form { display: flex; flex-direction: column; align-items: center; gap: 12px; }
-    #code-input {
-      background: rgba(255,255,255,0.1); border: 1px solid rgba(255,255,255,0.25);
-      backdrop-filter: blur(10px); color: white; padding: 12px 20px; border-radius: 6px;
-      font-size: 1.3rem; text-align: center; outline: none; width: 240px;
-      letter-spacing: 0.5em; transition: border 0.2s, background 0.2s;
-    }
-    #code-input::placeholder { letter-spacing: 0.1em; color: rgba(255,255,255,0.4); font-size: 0.9rem; }
-    #code-input:focus { border-color: rgba(100,160,255,0.7); background: rgba(255,255,255,0.15); }
-    #login-btn {
-      background: linear-gradient(to bottom, #4a90e8, #2a70c8); border: 1px solid rgba(255,255,255,0.3);
-      color: white; padding: 10px 32px; border-radius: 5px; cursor: pointer; font-size: 0.95rem;
-      letter-spacing: 0.5px; transition: filter 0.2s; box-shadow: 0 2px 8px rgba(0,0,0,0.4);
-    }
-    #login-btn:hover { filter: brightness(1.15); }
-    #login-btn:active { filter: brightness(0.9); }
-    #lock-error { color: #ff7b7b; font-size: 0.85rem; min-height: 18px; }
-    .shake { animation: shake 0.4s ease; }
-    @keyframes shake { 0%,100%{transform:translateX(0)} 25%{transform:translateX(-10px)} 75%{transform:translateX(10px)} }
-    .lock-hint { color: rgba(255,255,255,0.3); font-size: 0.75rem; }
-
-    /* =========================================================
-       AMBIENTE DE TRABALHO
-    ========================================================= */
-    #desktop {
-      position: fixed; inset: 0; display: none;
+    /* ─── ECRÃ DE BLOQUEIO ─── */
+    #lock {
+      position:fixed; inset:0; z-index:9999; display:flex; flex-direction:column;
+      align-items:center; justify-content:center; gap:16px;
       background:
-        radial-gradient(ellipse 120% 60% at 60% -10%, rgba(255,255,255,0.35) 0%, transparent 60%),
-        linear-gradient(to bottom,
-          #4a9fd4 0%, #6db8e8 25%, #95cfee 38%,
-          #3d9e5f 38%, #4aad6b 45%, #2e8b57 60%, #236b45 80%, #1a5535 100%);
+        radial-gradient(ellipse 70% 80% at 5% 95%, rgba(123,47,247,.85) 0%, transparent 55%),
+        radial-gradient(ellipse 60% 60% at 95% 5%,  rgba(255,107,157,.8) 0%, transparent 50%),
+        radial-gradient(ellipse 80% 80% at 50% 50%, rgba(0,80,200,.6) 0%, transparent 70%),
+        #050510;
     }
-    #desktop-icons {
-      position: absolute; top: 12px; left: 12px;
-      display: flex; flex-direction: column; gap: 8px; z-index: 10;
+    #lock .lt { font-size:5.5rem; font-weight:200; color:#fff; letter-spacing:-4px; text-shadow:0 0 60px rgba(200,150,255,.5); }
+    #lock .ld { font-size:1.1rem; color:rgba(255,255,255,.6); text-transform:capitalize; }
+    #lock .lu { font-size:3.5rem; margin-top:8px; }
+    #lock .ln { font-size:1.2rem; color:#fff; font-weight:300; }
+    #lock-form { display:flex; flex-direction:column; align-items:center; gap:10px; margin-top:6px; }
+    #code-input {
+      width:240px; padding:11px 18px; border-radius:6px; border:1px solid rgba(255,255,255,.25);
+      background:rgba(255,255,255,.1); backdrop-filter:blur(12px); color:#fff;
+      font-size:1.2rem; text-align:center; letter-spacing:.5em; outline:none;
+      transition:border .2s, background .2s;
     }
-    .dsk-icon {
-      display: flex; flex-direction: column; align-items: center; gap: 4px;
-      padding: 6px; border-radius: 4px; cursor: pointer; width: 78px;
-      transition: background 0.1s;
+    #code-input::placeholder { letter-spacing:.05em; color:rgba(255,255,255,.4); font-size:.85rem; }
+    #code-input:focus { border-color:rgba(96,205,255,.7); background:rgba(255,255,255,.15); }
+    #login-btn {
+      width:240px; padding:10px; border-radius:6px; border:none;
+      background:rgba(0,120,212,.85); color:#fff; font-size:.9rem; cursor:pointer;
+      letter-spacing:.3px; transition:filter .2s; backdrop-filter:blur(8px);
     }
-    .dsk-icon:hover { background: rgba(255,255,255,0.2); }
-    .dsk-icon.sel { background: rgba(49,106,197,0.45); outline: 1px dotted rgba(255,255,255,0.7); }
-    .dsk-icon .dsk-img { font-size: 2.8rem; filter: drop-shadow(1px 2px 4px rgba(0,0,0,0.6)); }
-    .dsk-icon .dsk-lbl {
-      color: white; font-size: 0.72rem; text-align: center; line-height: 1.3;
-      text-shadow: 1px 1px 3px #000, 0 0 6px #000; word-break: break-word;
-    }
+    #login-btn:hover { filter:brightness(1.15); }
+    #lock-err { color:#ff8080; font-size:.82rem; min-height:16px; }
+    #lock-hint { color:rgba(255,255,255,.25); font-size:.72rem; }
+    .shake { animation:shake .38s ease; }
+    @keyframes shake { 0%,100%{transform:translateX(0)} 25%{transform:translateX(-8px)} 75%{transform:translateX(8px)} }
 
-    /* =========================================================
-       BARRA DE TAREFAS
-    ========================================================= */
+    /* ─── AMBIENTE DE TRABALHO ─── */
+    #desktop {
+      position:fixed; inset:0; display:none;
+      background:
+        radial-gradient(ellipse 70% 80% at 5% 95%,  rgba(123,47,247,.75) 0%, transparent 55%),
+        radial-gradient(ellipse 60% 60% at 95% 5%,  rgba(255,107,157,.7) 0%, transparent 50%),
+        radial-gradient(ellipse 80% 80% at 55% 50%, rgba(0,80,200,.5)  0%, transparent 70%),
+        radial-gradient(ellipse 40% 40% at 80% 80%, rgba(0,180,180,.4) 0%, transparent 50%),
+        #060616;
+    }
+    #dsk-icons { position:absolute; top:12px; left:12px; display:flex; flex-direction:column; gap:4px; z-index:10; }
+    .dicon {
+      display:flex; flex-direction:column; align-items:center; gap:4px;
+      padding:8px 6px; border-radius:6px; cursor:pointer; width:80px;
+      transition:background .1s; -webkit-user-select:none; user-select:none;
+    }
+    .dicon:hover { background:rgba(255,255,255,.15); }
+    .dicon.sel { background:rgba(0,120,212,.35); outline:1px dashed rgba(255,255,255,.6); }
+    .dicon .di { font-size:2.6rem; filter:drop-shadow(0 2px 6px rgba(0,0,0,.7)); }
+    .dicon .dl { color:#fff; font-size:.7rem; text-align:center; line-height:1.3;
+      text-shadow:0 1px 4px #000, 0 0 8px #000; word-break:break-word; }
+
+    /* ─── BARRA DE TAREFAS ─── */
     #taskbar {
-      position: absolute; bottom: 0; left: 0; right: 0; height: 42px;
-      background: linear-gradient(to bottom, #245cac 0%, #1e54a0 4%, #2060b0 10%, #1a54a4 45%, #1050a0 50%, #0e4a99 51%, #1050a0 100%);
-      display: flex; align-items: center; z-index: 1000;
-      border-top: 2px solid #3a7bca; box-shadow: 0 -2px 6px rgba(0,0,0,0.5);
+      position:absolute; bottom:0; left:0; right:0; height:var(--taskbar-h);
+      background:rgba(20,20,30,.88); backdrop-filter:blur(24px) saturate(180%);
+      border-top:1px solid rgba(255,255,255,.08); z-index:1000;
+      display:flex; align-items:center;
+    }
+    #tb-center {
+      position:absolute; left:50%; transform:translateX(-50%);
+      display:flex; align-items:center; gap:4px;
     }
     #start-btn {
-      height: 38px; padding: 0 14px 0 8px; margin: 2px 4px;
-      background: linear-gradient(to bottom, #60c060 0%, #3da03d 40%, #389838 50%, #3da03d 100%);
-      border: none; border-radius: 0 14px 14px 0; color: white; font-weight: bold;
-      font-size: 0.92rem; cursor: pointer; display: flex; align-items: center; gap: 6px;
-      box-shadow: inset 0 1px 0 rgba(255,255,255,0.5), 2px 0 6px rgba(0,0,0,0.4);
-      font-family: 'Segoe UI', Tahoma, sans-serif; letter-spacing: 0.3px;
+      width:40px; height:40px; border:none; background:transparent;
+      color:#fff; font-size:1.35rem; cursor:pointer; border-radius:6px;
+      display:flex; align-items:center; justify-content:center; transition:background .15s;
     }
-    #start-btn:hover { filter: brightness(1.1); }
-    #start-btn:active { filter: brightness(0.9); }
-    #taskbar-wins { flex: 1; display: flex; align-items: center; gap: 3px; padding: 0 5px; overflow: hidden; }
+    #start-btn:hover { background:rgba(255,255,255,.1); }
+    #start-btn:active { background:rgba(255,255,255,.06); }
     .tbtn {
-      height: 30px; padding: 0 10px; min-width: 110px; max-width: 160px;
-      background: linear-gradient(to bottom, #4a8ed4 0%, #3278bc 50%, #2a6aac 100%);
-      border: 1px solid #1a4a8a; border-radius: 3px; color: white;
-      font-size: 0.75rem; cursor: pointer; white-space: nowrap; overflow: hidden;
-      text-overflow: ellipsis; display: flex; align-items: center; gap: 5px;
-      font-family: 'Segoe UI', Tahoma, sans-serif;
+      height:40px; padding:0 12px; min-width:120px; max-width:160px;
+      background:rgba(255,255,255,.06); border:1px solid rgba(255,255,255,.06);
+      border-radius:6px; color:#fff; font-size:.76rem; cursor:pointer;
+      white-space:nowrap; overflow:hidden; text-overflow:ellipsis;
+      display:flex; align-items:center; gap:7px; transition:background .15s;
+      font-family:inherit;
     }
-    .tbtn:hover { filter: brightness(1.1); }
-    .tbtn.active {
-      background: linear-gradient(to bottom, #28569a 0%, #1c4288 50%, #28569a 100%);
-      border-color: #0a2a6a; box-shadow: inset 1px 1px 4px rgba(0,0,0,0.5);
-    }
+    .tbtn:hover { background:rgba(255,255,255,.12); }
+    .tbtn.active { background:rgba(0,120,212,.3); border-color:rgba(0,120,212,.5); }
     #sys-tray {
-      display: flex; align-items: center; gap: 8px; padding: 0 12px; height: 100%;
-      background: linear-gradient(to bottom, #1050a0 0%, #0c42a0 50%, #0840a0 100%);
-      border-left: 1px solid #3a7bca; font-size: 0.78rem; color: white;
+      position:absolute; right:0; height:100%; padding:0 14px;
+      display:flex; align-items:center; gap:10px; cursor:default;
     }
-    #clock { text-align: center; line-height: 1.5; }
+    #sys-tray:hover { background:rgba(255,255,255,.06); }
+    #clock { text-align:right; color:rgba(255,255,255,.9); font-size:.72rem; line-height:1.6; }
 
-    /* =========================================================
-       MENU INICIAR
-    ========================================================= */
+    /* ─── MENU INICIAR ─── */
     #start-menu {
-      position: absolute; bottom: 42px; left: 0; width: 330px;
-      background: white; z-index: 2000; display: none;
-      border-radius: 8px 8px 0 0; overflow: hidden;
-      box-shadow: 4px -4px 20px rgba(0,0,0,0.6);
+      position:absolute; bottom:var(--taskbar-h); left:50%; transform:translateX(-50%);
+      width:640px; background:rgba(32,32,44,.92); backdrop-filter:blur(28px) saturate(200%);
+      border:1px solid rgba(255,255,255,.1); border-radius:12px 12px 0 0;
+      box-shadow:0 -8px 32px rgba(0,0,0,.5); z-index:2000; display:none; overflow:hidden;
     }
-    #start-menu.open { display: block; }
-    .sm-head {
-      background: linear-gradient(to right, #1d5ba3 0%, #3a8ee8 100%);
-      padding: 12px 16px; display: flex; align-items: center; gap: 12px;
+    #start-menu.open { display:block; }
+    .sm-search {
+      padding:20px 24px 12px; display:flex; align-items:center;
+      background:rgba(255,255,255,.04); border-bottom:1px solid rgba(255,255,255,.07);
     }
-    .sm-head .sm-av { font-size: 2.8rem; }
-    .sm-head .sm-name { color: white; font-size: 1rem; font-weight: bold; }
-    .sm-body { display: flex; height: 280px; }
-    .sm-left { flex: 1; background: white; border-right: 1px solid #c8d8e8; padding: 8px 0; overflow-y: auto; }
-    .sm-right { flex: 1; background: #d6e8f8; padding: 8px 0; overflow-y: auto; }
-    .sm-item {
-      display: flex; align-items: center; gap: 10px; padding: 8px 14px;
-      cursor: pointer; font-size: 0.83rem; color: #222;
+    .sm-search input {
+      flex:1; background:rgba(255,255,255,.08); border:1px solid rgba(255,255,255,.12);
+      border-radius:6px; padding:8px 14px; color:#fff; font-size:.85rem; outline:none;
+      font-family:inherit;
     }
-    .sm-item:hover { background: #316ac5; color: white; }
-    .sm-item .si { font-size: 1.5rem; }
-    .sm-sep { border-top: 1px solid #c8d8e8; margin: 4px 0; }
+    .sm-search input::placeholder { color:rgba(255,255,255,.4); }
+    .sm-pinned { padding:16px 24px; }
+    .sm-pinned-title { color:rgba(255,255,255,.6); font-size:.75rem; margin-bottom:10px; text-transform:uppercase; letter-spacing:.05em; }
+    .sm-apps { display:grid; grid-template-columns:repeat(6,1fr); gap:4px; }
+    .sm-app {
+      display:flex; flex-direction:column; align-items:center; gap:5px;
+      padding:10px 4px; border-radius:6px; cursor:pointer; color:#fff;
+      font-size:.72rem; text-align:center;
+    }
+    .sm-app:hover { background:rgba(255,255,255,.1); }
+    .sm-app .sa-i { font-size:1.8rem; }
     .sm-foot {
-      background: linear-gradient(to bottom, #1d5ba3, #1450a0);
-      padding: 6px 12px; display: flex; justify-content: flex-end; gap: 8px;
+      padding:12px 24px; border-top:1px solid rgba(255,255,255,.07);
+      display:flex; justify-content:space-between; align-items:center;
     }
-    .sm-fBtn {
-      background: rgba(255,255,255,0.15); border: 1px solid rgba(255,255,255,0.35);
-      color: white; padding: 5px 14px; border-radius: 3px; cursor: pointer;
-      font-size: 0.8rem; display: flex; align-items: center; gap: 5px;
-      font-family: 'Segoe UI', Tahoma, sans-serif;
+    .sm-user { display:flex; align-items:center; gap:10px; color:#fff; font-size:.85rem; }
+    .sm-powers { display:flex; gap:4px; }
+    .sm-pwr {
+      width:36px; height:36px; border:none; background:transparent; color:rgba(255,255,255,.8);
+      font-size:1.1rem; cursor:pointer; border-radius:6px; transition:background .15s;
     }
-    .sm-fBtn:hover { background: rgba(255,255,255,0.28); }
+    .sm-pwr:hover { background:rgba(255,255,255,.1); }
 
-    /* =========================================================
-       JANELAS
-    ========================================================= */
+    /* ─── JANELAS ─── */
     .win {
-      position: absolute; background: #ece9d8; z-index: 100;
-      border: 2px solid #0054e3; border-radius: 8px 8px 3px 3px;
-      box-shadow: 3px 3px 12px rgba(0,0,0,0.55); display: none;
-      flex-direction: column; overflow: hidden;
+      position:absolute; background:var(--bg-window);
+      border:1px solid rgba(0,0,0,.12); border-radius:var(--radius);
+      box-shadow:var(--shadow); display:none; flex-direction:column;
+      overflow:hidden; min-width:300px; min-height:200px;
     }
-    .win.open { display: flex; }
-    .win.focused { z-index: 500; border-color: #0040c0; }
+    .win.open { display:flex; animation:winOpen .18s cubic-bezier(.16,1,.3,1); }
+    .win.focused { box-shadow:0 12px 40px rgba(0,0,0,.3); z-index:500; }
+    @keyframes winOpen { from{opacity:0;transform:scale(.94) translateY(8px)} to{opacity:1;transform:scale(1) translateY(0)} }
+
     .win-tbar {
-      background: linear-gradient(to right, #0a246a 0%, #3668b8 80%, #1a4898 100%);
-      color: white; padding: 5px 6px; display: flex; align-items: center;
-      gap: 7px; cursor: move; flex-shrink: 0; user-select: none;
-      border-bottom: 1px solid #0030a0;
+      background:var(--bg-tbar); height:32px; display:flex; align-items:center;
+      padding:0 0 0 12px; gap:8px; cursor:move; flex-shrink:0;
+      border-bottom:1px solid var(--border); -webkit-user-select:none; user-select:none;
     }
-    .win-tbar .wico { font-size: 0.95rem; }
-    .win-tbar .wtitle { flex: 1; font-size: 0.82rem; font-weight: bold; }
-    .win-ctrls { display: flex; gap: 2px; }
+    .win-tbar .wi { font-size:.9rem; }
+    .win-tbar .wt { flex:1; font-size:.8rem; color:var(--text); font-weight:400; }
+    .win-ctrls { display:flex; height:100%; margin-left:auto; }
     .wbtn {
-      width: 22px; height: 20px; border-radius: 3px; border: 1px solid rgba(0,0,0,0.4);
-      cursor: pointer; font-size: 0.68rem; display: flex; align-items: center;
-      justify-content: center; font-weight: bold; transition: filter 0.1s;
+      width:46px; height:100%; border:none; background:transparent; cursor:pointer;
+      font-size:.65rem; color:var(--text); display:flex; align-items:center;
+      justify-content:center; transition:background .12s; flex-shrink:0;
     }
-    .wbtn.wmin { background: linear-gradient(to bottom, #f9d870, #d4a800); color: #5a3a00; }
-    .wbtn.wmax { background: linear-gradient(to bottom, #a8dc78, #52a835); color: #1a4a10; }
-    .wbtn.wcls { background: linear-gradient(to bottom, #f87070, #dc0000); color: white; }
-    .wbtn:hover { filter: brightness(1.2); }
-    .wbtn:active { filter: brightness(0.8); }
+    .wbtn:hover { background:rgba(0,0,0,.07); }
+    .wbtn.wcls:hover { background:#c42b1c; color:#fff; }
     .win-mbar {
-      background: #ece9d8; padding: 2px 4px; display: flex;
-      border-bottom: 1px solid #bbb; font-size: 0.8rem; flex-shrink: 0;
+      background:var(--bg-window); padding:2px 6px; display:flex; gap:2px;
+      border-bottom:1px solid var(--border); font-size:.8rem; flex-shrink:0;
     }
-    .wmi {
-      padding: 3px 8px; cursor: pointer; border-radius: 2px; color: #000;
-      position: relative;
-    }
-    .wmi:hover { background: #316ac5; color: white; }
-    .win-body { flex: 1; overflow: auto; position: relative; display: flex; flex-direction: column; }
+    .wmi { padding:3px 8px; border-radius:4px; cursor:pointer; color:var(--text); }
+    .wmi:hover { background:var(--accent); color:#fff; }
+    .win-body { flex:1; overflow:auto; display:flex; flex-direction:column; }
     .win-sbar {
-      background: #ece9d8; padding: 3px 8px; border-top: 1px solid #bbb;
-      font-size: 0.73rem; color: #555; flex-shrink: 0; display: flex; gap: 15px;
+      background:var(--bg-sidebar); border-top:1px solid var(--border);
+      padding:3px 10px; font-size:.72rem; color:var(--text-muted);
+      flex-shrink:0; display:flex; gap:16px;
     }
-    .sbar-divider { border-left: 1px solid #aaa; }
 
-    /* =========================================================
-       BLOCO DE NOTAS
-    ========================================================= */
-    #win-notepad { width: 620px; top: 80px; left: 160px; min-width: 350px; min-height: 280px; }
+    /* ─── BLOCO DE NOTAS (multi-nota) ─── */
+    #win-notepad { width:780px; height:540px; top:70px; left:120px; }
+    .np-layout { flex:1; display:flex; overflow:hidden; }
+
+    .np-sidebar {
+      width:220px; flex-shrink:0; background:var(--bg-sidebar);
+      border-right:1px solid var(--border); display:flex; flex-direction:column;
+    }
+    .np-sb-toolbar {
+      padding:6px 8px; display:flex; gap:4px; border-bottom:1px solid var(--border);
+    }
+    .np-sb-btn {
+      flex:1; padding:5px 0; border:1px solid var(--border); border-radius:5px;
+      background:var(--bg-window); font-size:.73rem; cursor:pointer; color:var(--text);
+      display:flex; align-items:center; justify-content:center; gap:4px;
+      transition:background .12s;
+    }
+    .np-sb-btn:hover { background:var(--bg-active); border-color:var(--accent); color:var(--accent); }
+    .np-tree { flex:1; overflow-y:auto; padding:4px 0; }
+
+    .np-tree-item {
+      display:flex; align-items:center; gap:6px; padding:5px 10px;
+      cursor:pointer; font-size:.8rem; color:var(--text); border-radius:4px;
+      margin:1px 4px; transition:background .1s; -webkit-user-select:none; user-select:none;
+    }
+    .np-tree-item:hover { background:var(--bg-hover); }
+    .np-tree-item.active { background:var(--bg-active); color:var(--accent); font-weight:500; }
+    .np-tree-item .npi { font-size:1rem; flex-shrink:0; }
+    .np-tree-item .npn { flex:1; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
+    .np-tree-item .np-arr { font-size:.6rem; color:var(--text-muted); transition:transform .15s; }
+    .np-tree-item.open .np-arr { transform:rotate(90deg); }
+
+    .np-editor { flex:1; display:flex; flex-direction:column; }
     #notepad-area {
-      flex: 1; width: 100%; padding: 4px 6px; border: none; outline: none; resize: none;
-      font-family: 'Courier New', Courier, monospace; font-size: 0.88rem;
-      background: white; color: #111; line-height: 1.5;
+      flex:1; padding:12px 14px; border:none; outline:none; resize:none;
+      font-family:'Cascadia Code','Courier New',monospace; font-size:.88rem;
+      color:var(--text); background:#fff; line-height:1.6;
     }
-    .np-wrap #notepad-area { white-space: pre-wrap; word-wrap: break-word; }
 
-    /* =========================================================
-       RECICLAGEM
-    ========================================================= */
-    #win-recyclebin { width: 580px; height: 420px; top: 90px; left: 180px; }
+    /* ─── RECICLAGEM ─── */
+    #win-recyclebin { width:600px; height:440px; top:90px; left:160px; }
     .rb-toolbar {
-      background: #ece9d8; padding: 4px 8px; display: flex; gap: 6px;
-      align-items: center; border-bottom: 1px solid #bbb; flex-shrink: 0;
+      background:var(--bg-sidebar); padding:5px 10px; display:flex; gap:6px;
+      align-items:center; border-bottom:1px solid var(--border); flex-shrink:0;
     }
-    .rb-tbtn {
-      padding: 3px 10px; background: linear-gradient(to bottom, #f5f5f5, #ddd);
-      border: 1px solid #aaa; border-radius: 3px; cursor: pointer; font-size: 0.78rem;
-      display: flex; align-items: center; gap: 5px;
+    .rb-btn {
+      padding:4px 12px; border:1px solid var(--border); border-radius:5px;
+      background:var(--bg-window); font-size:.78rem; cursor:pointer; color:var(--text);
+      display:flex; align-items:center; gap:5px; transition:background .12s;
     }
-    .rb-tbtn:hover { background: linear-gradient(to bottom, #dce8ff, #b8ccf0); }
-    .rb-tbtn:disabled { opacity: 0.5; cursor: default; }
-    .rb-addr {
-      flex: 1; background: white; border: 2px inset #aaa; padding: 3px 8px;
-      font-size: 0.78rem; color: #333; display: flex; align-items: center; gap: 6px;
-    }
-    .rb-body { flex: 1; background: white; overflow-y: auto; }
+    .rb-btn:hover { background:var(--bg-active); border-color:var(--accent); color:var(--accent); }
+    .rb-btn:disabled { opacity:.4; cursor:default; }
+    .rb-btn:disabled:hover { background:var(--bg-window); color:var(--text); border-color:var(--border); }
+    .rb-body { flex:1; overflow-y:auto; background:#fff; }
     .rb-item {
-      display: flex; align-items: center; gap: 10px; padding: 5px 12px;
-      border-bottom: 1px solid #eee; font-size: 0.82rem; cursor: default;
+      display:flex; align-items:center; gap:10px; padding:8px 14px;
+      border-bottom:1px solid #f0f0f0; font-size:.82rem;
     }
-    .rb-item:hover { background: #dde8fc; }
-    .rb-item .ri-ico { font-size: 1.3rem; }
-    .rb-item .ri-info { flex: 1; }
-    .rb-item .ri-name { font-weight: 500; color: #111; }
-    .rb-item .ri-date { color: #777; font-size: 0.74rem; }
-    .rb-item .ri-del {
-      padding: 2px 8px; font-size: 0.72rem; background: #f5f5f5;
-      border: 1px solid #ccc; border-radius: 2px; cursor: pointer; color: #555;
+    .rb-item:hover { background:#f5f5f5; }
+    .rb-item .ri-ico { font-size:1.2rem; }
+    .rb-item .ri-info { flex:1; }
+    .rb-item .ri-name { font-weight:500; color:var(--text); }
+    .rb-item .ri-date { color:var(--text-muted); font-size:.73rem; margin-top:1px; }
+    .ri-act { display:flex; gap:4px; }
+    .ri-act button {
+      padding:3px 8px; border:1px solid var(--border); border-radius:4px;
+      background:var(--bg-window); font-size:.72rem; cursor:pointer; color:var(--text);
+      transition:background .1s;
     }
-    .rb-item .ri-del:hover { background: #ffe0e0; border-color: #d00; color: #d00; }
-    .rb-empty { padding: 50px 20px; text-align: center; color: #888; }
-    .rb-empty .rb-ei { font-size: 4rem; opacity: 0.3; }
-    .rb-empty p { margin-top: 10px; font-size: 0.9rem; }
+    .ri-act button:hover { background:#fee2e2; border-color:#dc2626; color:#dc2626; }
+    .ri-act button.restore:hover { background:#dcfce7; border-color:#16a34a; color:#16a34a; }
+    .rb-empty { padding:60px 20px; text-align:center; color:var(--text-muted); }
+    .rb-empty .rei { font-size:4rem; opacity:.25; }
 
-    /* =========================================================
-       MEU COMPUTADOR (Portal de Favoritos)
-    ========================================================= */
-    #win-portal { width: min(95vw, 980px); height: min(90vh, 680px); top: 40px; left: 50px; }
-    #portal-inner { flex: 1; overflow-y: auto; background: white; padding: 20px; }
-
-    /* =========================================================
-       MENU DE CONTEXTO (botão direito)
-    ========================================================= */
-    #ctx-menu {
-      position: fixed; background: white; border: 1px solid #9a9a9a;
-      border-radius: 4px; box-shadow: 4px 4px 10px rgba(0,0,0,0.35);
-      z-index: 9000; display: none; min-width: 190px; padding: 3px 0;
+    /* ─── PORTAL FAVORITOS ─── */
+    #win-portal { width:min(96vw,1000px); height:min(88vh,680px); top:40px; left:40px; }
+    #portal-inner {
+      flex:1; overflow-y:auto; background:#fff;
+      padding:16px 20px; font-family:'Segoe UI',system-ui,sans-serif;
     }
-    .ctx-i {
-      padding: 6px 20px; font-size: 0.82rem; cursor: pointer; color: #111;
-      display: flex; align-items: center; gap: 8px;
-    }
-    .ctx-i:hover { background: #316ac5; color: white; }
-    .ctx-i.ctx-disabled { color: #aaa; cursor: default; }
-    .ctx-i.ctx-disabled:hover { background: none; color: #aaa; }
-    .ctx-sep { border-top: 1px solid #d0d0d0; margin: 3px 0; }
 
-    /* =========================================================
-       NOTIFICAÇÃO
-    ========================================================= */
+    /* ─── MENU CONTEXTO ─── */
+    #ctx-menu, #np-ctx-menu {
+      position:fixed; background:rgba(250,250,250,.96);
+      backdrop-filter:blur(12px); border:1px solid rgba(0,0,0,.1);
+      border-radius:8px; box-shadow:0 4px 16px rgba(0,0,0,.18);
+      z-index:9000; display:none; min-width:185px; padding:4px;
+    }
+    .cxi { padding:7px 14px; font-size:.8rem; cursor:pointer; color:var(--text); border-radius:4px; }
+    .cxi:hover { background:var(--accent); color:#fff; }
+    .cx-sep { border-top:1px solid rgba(0,0,0,.08); margin:3px 0; }
+    .cxi.danger:hover { background:#c42b1c; }
+
+    /* ─── NOTIFICAÇÃO ─── */
     #notif {
-      position: fixed; bottom: 52px; right: 10px; z-index: 9998;
-      background: white; border: 1px solid #aaa; padding: 10px 14px;
-      border-radius: 5px; box-shadow: 3px 3px 10px rgba(0,0,0,0.3);
-      font-size: 0.8rem; display: none; max-width: 260px;
-      animation: slideUp 0.2s ease;
+      position:fixed; bottom:58px; right:14px; z-index:9998;
+      background:rgba(32,32,44,.92); backdrop-filter:blur(16px);
+      border:1px solid rgba(255,255,255,.1); border-radius:8px;
+      padding:12px 16px; color:#fff; font-size:.8rem; display:none;
+      max-width:260px; box-shadow:0 4px 16px rgba(0,0,0,.4);
+      animation:slideUp .2s ease;
     }
-    @keyframes slideUp { from{opacity:0;transform:translateY(10px)} to{opacity:1;transform:translateY(0)} }
-    #notif .n-title { font-weight: bold; margin-bottom: 4px; font-size: 0.82rem; }
+    @keyframes slideUp { from{opacity:0;transform:translateY(8px)} to{opacity:1;transform:translateY(0)} }
+    #notif .nt { font-weight:600; margin-bottom:3px; font-size:.82rem; }
 
-    /* =========================================================
-       DIÁLOGOS
-    ========================================================= */
-    .dialog-overlay {
-      position: fixed; inset: 0; background: rgba(0,0,0,0.3); z-index: 8000;
-      display: flex; align-items: center; justify-content: center;
+    /* ─── DIÁLOGOS ─── */
+    .dlg-overlay {
+      position:fixed; inset:0; background:rgba(0,0,0,.35);
+      backdrop-filter:blur(4px); z-index:8000;
+      display:flex; align-items:center; justify-content:center;
     }
-    .dialog-box {
-      background: #ece9d8; border: 2px solid #0054e3; border-radius: 8px 8px 3px 3px;
-      box-shadow: 3px 3px 12px rgba(0,0,0,0.5); min-width: 300px; max-width: 420px;
+    .dlg {
+      background:var(--bg-window); border:1px solid rgba(0,0,0,.12);
+      border-radius:10px; box-shadow:0 16px 48px rgba(0,0,0,.25);
+      min-width:320px; max-width:440px; overflow:hidden;
     }
-    .dialog-tbar {
-      background: linear-gradient(to right, #0a246a, #3668b8);
-      color: white; padding: 5px 8px; font-size: 0.83rem; font-weight: bold;
-      border-radius: 6px 6px 0 0; display: flex; align-items: center; gap: 6px;
+    .dlg-tbar {
+      background:var(--bg-tbar); padding:10px 16px;
+      border-bottom:1px solid var(--border); font-size:.85rem; font-weight:600;
+      display:flex; align-items:center; gap:8px;
     }
-    .dialog-body { padding: 20px 18px; font-size: 0.85rem; color: #111; display: flex; gap: 14px; align-items: flex-start; }
-    .dialog-icon { font-size: 2.5rem; flex-shrink: 0; }
-    .dialog-text { line-height: 1.5; }
-    .dialog-btns { display: flex; justify-content: center; gap: 8px; padding: 10px 18px 16px; }
-    .dialog-btn {
-      padding: 6px 22px; background: linear-gradient(to bottom, #f5f5f5, #ddd);
-      border: 1px solid #888; border-radius: 3px; cursor: pointer; font-size: 0.82rem;
-      font-family: 'Segoe UI', Tahoma, sans-serif;
+    .dlg-body { padding:20px 18px; font-size:.85rem; color:var(--text); line-height:1.6; }
+    .dlg-input {
+      width:100%; padding:8px 12px; border:1px solid var(--border); border-radius:5px;
+      font-size:.88rem; margin-top:8px; outline:none; font-family:inherit;
     }
-    .dialog-btn:hover { background: linear-gradient(to bottom, #dce8ff, #b8ccf0); }
-    .dialog-btn.primary { background: linear-gradient(to bottom, #4a8ed4, #2870bc); color: white; border-color: #1050a0; }
-    .dialog-btn.primary:hover { filter: brightness(1.1); }
+    .dlg-input:focus { border-color:var(--accent); }
+    .dlg-btns { padding:0 18px 16px; display:flex; justify-content:flex-end; gap:8px; }
+    .dlg-btn {
+      padding:6px 20px; border:1px solid var(--border); border-radius:5px;
+      background:var(--bg-window); font-size:.82rem; cursor:pointer; font-family:inherit;
+      transition:background .12s;
+    }
+    .dlg-btn:hover { background:#f0f0f0; }
+    .dlg-btn.primary { background:var(--accent); color:#fff; border-color:var(--accent); }
+    .dlg-btn.primary:hover { background:#006cbd; }
+    .dlg-btn.danger { background:#c42b1c; color:#fff; border-color:#c42b1c; }
+    .dlg-btn.danger:hover { background:#a82010; }
 
-    /* =========================================================
-       ANIMAÇÕES ABERTURA DE JANELA
-    ========================================================= */
-    @keyframes winOpen { from{opacity:0;transform:scale(0.88)} to{opacity:1;transform:scale(1)} }
-    .win.open { animation: winOpen 0.15s ease; }
-
-    /* Responsivo */
-    @media (max-width: 600px) {
-      #lock-screen .lock-time { font-size: 3.5rem; }
-      #win-notepad { width: 98vw; left: 1vw; }
-      #win-recyclebin { width: 98vw; left: 1vw; }
-      #win-portal { width: 98vw; left: 1vw; }
-    }
+    /* ─── SCROLLBAR ─── */
+    ::-webkit-scrollbar { width:6px; height:6px; }
+    ::-webkit-scrollbar-track { background:transparent; }
+    ::-webkit-scrollbar-thumb { background:rgba(0,0,0,.2); border-radius:3px; }
+    ::-webkit-scrollbar-thumb:hover { background:rgba(0,0,0,.35); }
   </style>
 </head>
 <body>
 
-<!-- ===================== ECRÃ DE BLOQUEIO ===================== -->
-<div id="lock-screen">
-  <div class="lock-time" id="lock-time">00:00</div>
-  <div class="lock-date" id="lock-date"></div>
-  <div class="lock-divider"></div>
-  <div class="lock-user">👤</div>
-  <div class="lock-username">André M. Fernandes</div>
+<!-- ═══════════════ ECRÃ DE BLOQUEIO ═══════════════ -->
+<div id="lock">
+  <div class="lt" id="lt">00:00</div>
+  <div class="ld" id="ld"></div>
+  <div class="lu">👤</div>
+  <div class="ln">André M. Fernandes</div>
   <div id="lock-form">
-    <input type="password" id="code-input" placeholder="Introduza o código" autocomplete="off" maxlength="20">
-    <button id="login-btn" onclick="doLogin()">➜ Entrar</button>
-    <span id="lock-error"></span>
-    <span class="lock-hint">Dica: utilize o código de acesso</span>
+    <input type="password" id="code-input" placeholder="Código de acesso" autocomplete="off" maxlength="20">
+    <button id="login-btn" onclick="doLogin()">Iniciar sessão</button>
+    <div id="lock-err"></div>
+    <div id="lock-hint">Introduza o código para entrar</div>
   </div>
 </div>
 
-<!-- ===================== AMBIENTE DE TRABALHO ===================== -->
+<!-- ═══════════════ AMBIENTE DE TRABALHO ═══════════════ -->
 <div id="desktop">
 
-  <!-- Ícones do ambiente de trabalho -->
-  <div id="desktop-icons">
-    <div class="dsk-icon" id="ico-notepad" ondblclick="openWin('notepad')" onclick="selIcon('ico-notepad')" title="Bloco de Notas">
-      <div class="dsk-img">📝</div>
-      <div class="dsk-lbl">Bloco de Notas</div>
+  <!-- Ícones -->
+  <div id="dsk-icons">
+    <div class="dicon" id="ico-np"     ondblclick="openWin('np')"     onclick="selDIcon('ico-np')">
+      <div class="di">📝</div><div class="dl">Bloco de Notas</div>
     </div>
-    <div class="dsk-icon" id="ico-recycle" ondblclick="openWin('recyclebin')" onclick="selIcon('ico-recycle')" title="Reciclagem">
-      <div class="dsk-img" id="recycle-icon-img">🗑️</div>
-      <div class="dsk-lbl">Reciclagem</div>
+    <div class="dicon" id="ico-rb"     ondblclick="openWin('rb')"     onclick="selDIcon('ico-rb')">
+      <div class="di" id="rb-dico">🗑️</div><div class="dl">Reciclagem</div>
     </div>
-    <div class="dsk-icon" id="ico-portal" ondblclick="openWin('portal')" onclick="selIcon('ico-portal')" title="Favoritos">
-      <div class="dsk-img">⭐</div>
-      <div class="dsk-lbl">Favoritos</div>
+    <div class="dicon" id="ico-portal" ondblclick="openWin('portal')" onclick="selDIcon('ico-portal')">
+      <div class="di">⭐</div><div class="dl">Favoritos</div>
     </div>
-    <div class="dsk-icon" id="ico-computer" ondblclick="showAbout()" onclick="selIcon('ico-computer')" title="O Meu Computador">
-      <div class="dsk-img">💻</div>
-      <div class="dsk-lbl">O Meu Computador</div>
+    <div class="dicon" id="ico-pc"     ondblclick="showAbout()"       onclick="selDIcon('ico-pc')">
+      <div class="di">💻</div><div class="dl">Este Computador</div>
     </div>
   </div>
 
-  <!-- ====== JANELA: BLOCO DE NOTAS ====== -->
-  <div class="win" id="win-notepad">
-    <div class="win-tbar" id="tbar-notepad">
-      <span class="wico">📝</span>
-      <span class="wtitle" id="notepad-title">Sem título — Bloco de Notas</span>
+  <!-- ════ JANELA: BLOCO DE NOTAS ════ -->
+  <div class="win" id="win-np">
+    <div class="win-tbar" id="tbar-np">
+      <span class="wi">📝</span>
+      <span class="wt" id="np-title">Bloco de Notas</span>
       <div class="win-ctrls">
-        <div class="wbtn wmin" onclick="minimizeWin('notepad')" title="Minimizar">_</div>
-        <div class="wbtn wmax" onclick="maximizeWin('notepad')" title="Maximizar">□</div>
-        <div class="wbtn wcls" onclick="closeWin('notepad')" title="Fechar">✕</div>
+        <div class="wbtn" onclick="minWin('np')" title="Minimizar">─</div>
+        <div class="wbtn" onclick="maxWin('np')" title="Maximizar">□</div>
+        <div class="wbtn wcls" onclick="closeWin('np')" title="Fechar">✕</div>
       </div>
     </div>
     <div class="win-mbar">
-      <div class="wmi" onclick="npMenu('ficheiro')">Ficheiro</div>
-      <div class="wmi" onclick="npMenu('editar')">Editar</div>
-      <div class="wmi" onclick="npToggleWrap()">Formato</div>
-      <div class="wmi" onclick="npMenu('ajuda')">Ajuda</div>
+      <div class="wmi" onclick="npMenuAct('ficheiro')">Ficheiro</div>
+      <div class="wmi" onclick="npMenuAct('editar')">Editar</div>
+      <div class="wmi" onclick="npMenuAct('ver')">Ver</div>
     </div>
     <div class="win-body">
-      <textarea id="notepad-area" spellcheck="false" placeholder="Escreve aqui..." oninput="npUpdate()"></textarea>
+      <div class="np-layout">
+        <!-- Sidebar de notas -->
+        <div class="np-sidebar">
+          <div class="np-sb-toolbar">
+            <button class="np-sb-btn" onclick="nmCreateNote()" title="Nova nota">📄 Nota</button>
+            <button class="np-sb-btn" onclick="nmCreateFolder()" title="Nova pasta">📁 Pasta</button>
+          </div>
+          <div class="np-tree" id="np-tree"></div>
+        </div>
+        <!-- Editor -->
+        <div class="np-editor">
+          <textarea id="notepad-area" spellcheck="false" placeholder="Seleciona ou cria uma nota..." oninput="nmUpdateContent()" onclick="npCursorInfo()" onkeyup="npCursorInfo()"></textarea>
+        </div>
+      </div>
     </div>
     <div class="win-sbar">
-      <span id="np-line">Linha 1, Col 1</span>
-      <span class="sbar-divider"></span>
+      <span id="np-pos">Linha 1, Col 1</span>
+      <span>|</span>
       <span id="np-chars">0 caracteres</span>
-      <span class="sbar-divider"></span>
-      <span id="np-wrap-status">Quebra de linha: Ativa</span>
+      <span>|</span>
+      <span id="np-notename" style="font-style:italic;color:#999">Nenhuma nota selecionada</span>
     </div>
   </div>
 
-  <!-- ====== JANELA: RECICLAGEM ====== -->
-  <div class="win" id="win-recyclebin">
-    <div class="win-tbar" id="tbar-recyclebin">
-      <span class="wico" id="rb-title-ico">🗑️</span>
-      <span class="wtitle">Reciclagem</span>
+  <!-- ════ JANELA: RECICLAGEM ════ -->
+  <div class="win" id="win-rb">
+    <div class="win-tbar" id="tbar-rb">
+      <span class="wi">🗑️</span>
+      <span class="wt">Reciclagem</span>
       <div class="win-ctrls">
-        <div class="wbtn wmin" onclick="minimizeWin('recyclebin')" title="Minimizar">_</div>
-        <div class="wbtn wmax" onclick="maximizeWin('recyclebin')" title="Maximizar">□</div>
-        <div class="wbtn wcls" onclick="closeWin('recyclebin')" title="Fechar">✕</div>
+        <div class="wbtn" onclick="minWin('rb')">─</div>
+        <div class="wbtn" onclick="maxWin('rb')">□</div>
+        <div class="wbtn wcls" onclick="closeWin('rb')">✕</div>
       </div>
-    </div>
-    <div class="win-mbar">
-      <div class="wmi">Ficheiro</div>
-      <div class="wmi">Editar</div>
-      <div class="wmi">Ver</div>
-      <div class="wmi">Ferramentas</div>
-      <div class="wmi">Ajuda</div>
     </div>
     <div class="rb-toolbar">
-      <button class="rb-tbtn" id="rb-empty-btn" onclick="emptyRecycleBin()">🗑️ Esvaziar Reciclagem</button>
-      <button class="rb-tbtn" onclick="rbRestoreAll()">♻️ Restaurar todos</button>
-      <div class="rb-addr"><span>📁</span><span>Reciclagem</span></div>
+      <button class="rb-btn" id="rb-empty-btn" onclick="rbEmpty()" disabled>🗑️ Esvaziar Reciclagem</button>
+      <button class="rb-btn" onclick="rbRestoreAll()">♻️ Restaurar todos</button>
     </div>
     <div class="rb-body" id="rb-body">
-      <div class="rb-empty"><div class="rb-ei">🗑️</div><p>A Reciclagem está vazia.</p></div>
+      <div class="rb-empty"><div class="rei">🗑️</div><p style="margin-top:10px">A reciclagem está vazia.</p></div>
     </div>
-    <div class="win-sbar" id="rb-sbar">
-      <span id="rb-count">0 itens</span>
-    </div>
+    <div class="win-sbar"><span id="rb-count">0 itens</span></div>
   </div>
 
-  <!-- ====== JANELA: FAVORITOS (Portal) ====== -->
+  <!-- ════ JANELA: FAVORITOS ════ -->
   <div class="win" id="win-portal">
     <div class="win-tbar" id="tbar-portal">
-      <span class="wico">⭐</span>
-      <span class="wtitle">Favoritos — Centro de Comando Digital</span>
+      <span class="wi">⭐</span>
+      <span class="wt">Favoritos — Centro de Comando Digital</span>
       <div class="win-ctrls">
-        <div class="wbtn wmin" onclick="minimizeWin('portal')" title="Minimizar">_</div>
-        <div class="wbtn wmax" onclick="maximizeWin('portal')" title="Maximizar">□</div>
-        <div class="wbtn wcls" onclick="closeWin('portal')" title="Fechar">✕</div>
+        <div class="wbtn" onclick="minWin('portal')">─</div>
+        <div class="wbtn" onclick="maxWin('portal')">□</div>
+        <div class="wbtn wcls" onclick="closeWin('portal')">✕</div>
       </div>
     </div>
-    <div class="win-body">
-      <div id="portal-inner">
-        <!-- Portal content is injected here -->
-      </div>
-    </div>
-    <div class="win-sbar">
-      <span>Centro de Comando Digital — André M. Fernandes</span>
-    </div>
+    <div class="win-body"><div id="portal-inner"></div></div>
+    <div class="win-sbar"><span>Centro de Comando Digital — André M. Fernandes</span></div>
   </div>
 
-  <!-- ====== BARRA DE TAREFAS ====== -->
+  <!-- ════ BARRA DE TAREFAS ════ -->
   <div id="taskbar">
-    <button id="start-btn" onclick="toggleStartMenu()">
-      <span>🪟</span><span>Iniciar</span>
-    </button>
-    <div id="taskbar-wins"></div>
+    <div id="tb-center">
+      <button id="start-btn" onclick="toggleStart()" title="Iniciar">🪟</button>
+      <div id="tb-wins"></div>
+    </div>
     <div id="sys-tray">
-      <span>🔊</span>
-      <span>🌐</span>
+      <span style="color:rgba(255,255,255,.7);font-size:.85rem">🔊</span>
+      <span style="color:rgba(255,255,255,.7);font-size:.85rem">📶</span>
       <div id="clock"></div>
     </div>
   </div>
 
-  <!-- ====== MENU INICIAR ====== -->
+  <!-- ════ MENU INICIAR ════ -->
   <div id="start-menu">
-    <div class="sm-head">
-      <div class="sm-av">👤</div>
-      <div class="sm-name">André M. Fernandes</div>
+    <div class="sm-search">
+      <input type="text" placeholder="🔍  Pesquisar aplicações...">
     </div>
-    <div class="sm-body">
-      <div class="sm-left">
-        <div class="sm-item" ondblclick="openWin('notepad');closeStartMenu()">
-          <span class="si">📝</span><span>Bloco de Notas</span>
-        </div>
-        <div class="sm-item" ondblclick="openWin('recyclebin');closeStartMenu()">
-          <span class="si">🗑️</span><span>Reciclagem</span>
-        </div>
-        <div class="sm-item" ondblclick="openWin('portal');closeStartMenu()">
-          <span class="si">⭐</span><span>Favoritos</span>
-        </div>
-        <div class="sm-sep"></div>
-        <div class="sm-item" onclick="openWin('notepad');closeStartMenu()">
-          <span class="si">📝</span><span><strong>Bloco de Notas</strong></span>
-        </div>
-        <div class="sm-item" onclick="openWin('recyclebin');closeStartMenu()">
-          <span class="si">🗑️</span><span><strong>Reciclagem</strong></span>
-        </div>
-        <div class="sm-item" onclick="openWin('portal');closeStartMenu()">
-          <span class="si">⭐</span><span><strong>Favoritos</strong></span>
-        </div>
-      </div>
-      <div class="sm-right">
-        <div class="sm-item" onclick="showAbout();closeStartMenu()">
-          <span class="si">💻</span><span>O Meu Computador</span>
-        </div>
-        <div class="sm-sep"></div>
-        <div class="sm-item" onclick="closeStartMenu()">
-          <span class="si">🔍</span><span>Pesquisar</span>
-        </div>
-        <div class="sm-item" onclick="closeStartMenu()">
-          <span class="si">❓</span><span>Ajuda e Suporte</span>
-        </div>
-        <div class="sm-sep"></div>
-        <div class="sm-item" onclick="closeStartMenu()">
-          <span class="si">⚙️</span><span>Painel de Controlo</span>
-        </div>
-        <div class="sm-item" onclick="closeStartMenu()">
-          <span class="si">🖨️</span><span>Impressoras</span>
-        </div>
+    <div class="sm-pinned">
+      <div class="sm-pinned-title">Fixado</div>
+      <div class="sm-apps">
+        <div class="sm-app" onclick="openWin('np');closeStart()"><span class="sa-i">📝</span>Bloco de Notas</div>
+        <div class="sm-app" onclick="openWin('rb');closeStart()"><span class="sa-i">🗑️</span>Reciclagem</div>
+        <div class="sm-app" onclick="openWin('portal');closeStart()"><span class="sa-i">⭐</span>Favoritos</div>
+        <div class="sm-app" onclick="showAbout();closeStart()"><span class="sa-i">💻</span>Este PC</div>
+        <div class="sm-app" onclick="closeStart()"><span class="sa-i">⚙️</span>Definições</div>
+        <div class="sm-app" onclick="closeStart()"><span class="sa-i">📁</span>Explorador</div>
       </div>
     </div>
     <div class="sm-foot">
-      <button class="sm-fBtn" onclick="lockScreen()">🔒 Bloquear</button>
-      <button class="sm-fBtn" onclick="shutdown()">⏻ Desligar</button>
+      <div class="sm-user"><span style="font-size:1.5rem">👤</span><span>André M. Fernandes</span></div>
+      <div class="sm-powers">
+        <button class="sm-pwr" onclick="lockScreen()" title="Bloquear">🔒</button>
+        <button class="sm-pwr" onclick="shutdown()" title="Desligar">⏻</button>
+      </div>
     </div>
   </div>
 
 </div><!-- /desktop -->
 
-<!-- MENU DE CONTEXTO -->
+<!-- MENU CONTEXTO DESKTOP -->
 <div id="ctx-menu">
-  <div class="ctx-i" onclick="ctxAction('arrange')">🔲 Organizar ícones</div>
-  <div class="ctx-i" onclick="ctxAction('refresh')">🔄 Atualizar</div>
-  <div class="ctx-sep"></div>
-  <div class="ctx-i" onclick="ctxAction('notepad')">📝 Novo documento de texto</div>
-  <div class="ctx-i" onclick="ctxAction('recycle')">🗑️ Abrir Reciclagem</div>
-  <div class="ctx-sep"></div>
-  <div class="ctx-i" onclick="ctxAction('about')">ℹ️ Propriedades do ecrã</div>
+  <div class="cxi" onclick="ctxAct('refresh')">🔄 Atualizar ambiente de trabalho</div>
+  <div class="cx-sep"></div>
+  <div class="cxi" onclick="ctxAct('newnote')">📄 Nova nota</div>
+  <div class="cxi" onclick="ctxAct('rb')">🗑️ Abrir Reciclagem</div>
+  <div class="cx-sep"></div>
+  <div class="cxi" onclick="ctxAct('about')">ℹ️ Propriedades do sistema</div>
+</div>
+
+<!-- MENU CONTEXTO NOTA/PASTA -->
+<div id="np-ctx-menu">
+  <div class="cxi" id="ctx-rename" onclick="ctxNpAct('rename')">✏️ Renomear</div>
+  <div class="cxi" id="ctx-newchild" onclick="ctxNpAct('newnote')">📄 Nova nota aqui</div>
+  <div class="cx-sep"></div>
+  <div class="cxi danger" id="ctx-delete" onclick="ctxNpAct('delete')">🗑️ Eliminar</div>
 </div>
 
 <!-- NOTIFICAÇÃO -->
-<div id="notif">
-  <div class="n-title" id="notif-title"></div>
-  <div id="notif-body"></div>
-</div>
-
-<!-- PORTAL CONTENT TEMPLATE (invisible) -->
-<template id="portal-tpl">
-  <style>
-    .p-search { width:100%; padding:10px; margin-bottom:16px; border:1px solid #ddd; border-radius:6px; font-size:0.9rem; }
-    .p-cat { margin-bottom:10px; border:1px solid #ddd; border-radius:8px; overflow:hidden; }
-    .p-hdr { background:#f5f5f5; padding:12px 16px; font-size:1rem; font-weight:700; cursor:pointer; border:none; width:100%; text-align:left; display:flex; justify-content:space-between; }
-    .p-hdr:hover{background:#e8e8e8}
-    .p-hdr::after{content:"+"; color:#3b82f6;}
-    .p-cat.popen .p-hdr::after{content:"-";}
-    .p-grid { display:none; padding:12px; grid-template-columns:repeat(auto-fill,minmax(240px,1fr)); gap:12px; background:#fafafa; }
-    .p-cat.popen .p-grid{display:grid;}
-    .p-card { background:white; border:1px solid #e5e7eb; border-radius:8px; padding:14px; display:flex; flex-direction:column; }
-    .p-card:hover{border-color:#3b82f6;}
-    .p-card h3{font-size:1rem;margin-bottom:4px;}
-    .p-card p{font-size:0.8rem;color:#666;margin-bottom:10px;flex:1;}
-    .p-tag{display:inline-block;padding:2px 7px;border-radius:4px;font-size:0.7rem;font-weight:700;margin-bottom:8px;}
-    .free{background:#dcfce7;color:#16a34a;} .paid{background:#fee2e2;color:#dc2626;} .mixed{background:#fef9c3;color:#ca8a04;}
-    .p-link{background:#3b82f6;color:white;text-decoration:none;text-align:center;padding:8px;border-radius:5px;font-size:0.82rem;font-weight:600;}
-    .p-link:hover{background:#2563eb;}
-  </style>
-  <input type="text" class="p-search" placeholder="Pesquisar..." oninput="pSearch(this)">
-  <div id="p-cats"></div>
-</template>
+<div id="notif"><div class="nt" id="notif-title"></div><div id="notif-body"></div></div>
 
 <script>
-/* =============================================
-   DADOS: CÓDIGO DE ACESSO
-============================================= */
-const ACCESS_CODE = '1234';
+/* ═══════════════════════════════════════════════════
+   CONFIGURAÇÃO
+═══════════════════════════════════════════════════ */
+const CODE = '2387';
 
-/* =============================================
+/* ═══════════════════════════════════════════════════
    ECRÃ DE BLOQUEIO
-============================================= */
+═══════════════════════════════════════════════════ */
 function updateLockClock() {
-  const now = new Date();
-  document.getElementById('lock-time').textContent =
-    now.toLocaleTimeString('pt-PT', {hour:'2-digit', minute:'2-digit'});
-  document.getElementById('lock-date').textContent =
-    now.toLocaleDateString('pt-PT', {weekday:'long', day:'numeric', month:'long', year:'numeric'});
+  const n = new Date();
+  document.getElementById('lt').textContent = n.toLocaleTimeString('pt-PT',{hour:'2-digit',minute:'2-digit'});
+  document.getElementById('ld').textContent = n.toLocaleDateString('pt-PT',{weekday:'long',day:'numeric',month:'long',year:'numeric'});
 }
 updateLockClock();
 setInterval(updateLockClock, 1000);
 
-document.getElementById('code-input').addEventListener('keydown', e => {
-  if (e.key === 'Enter') doLogin();
-});
+document.getElementById('code-input').addEventListener('keydown', e => { if(e.key==='Enter') doLogin(); });
 
 function doLogin() {
-  const val = document.getElementById('code-input').value;
-  const err = document.getElementById('lock-error');
-  const form = document.getElementById('lock-form');
-  if (val === ACCESS_CODE) {
-    document.getElementById('lock-screen').style.transition = 'opacity 0.6s';
-    document.getElementById('lock-screen').style.opacity = '0';
+  const v = document.getElementById('code-input').value;
+  if (v === CODE) {
+    const ls = document.getElementById('lock');
+    ls.style.transition = 'opacity .5s';
+    ls.style.opacity = '0';
     setTimeout(() => {
-      document.getElementById('lock-screen').style.display = 'none';
+      ls.style.display = 'none';
       document.getElementById('desktop').style.display = 'block';
       initDesktop();
-    }, 600);
+    }, 500);
   } else {
-    err.textContent = 'Código incorreto. Tenta novamente.';
-    form.classList.add('shake');
-    setTimeout(() => form.classList.remove('shake'), 400);
+    document.getElementById('lock-err').textContent = 'Código incorreto.';
+    const f = document.getElementById('lock-form');
+    f.classList.add('shake');
+    setTimeout(() => f.classList.remove('shake'), 400);
     document.getElementById('code-input').value = '';
-    document.getElementById('code-input').focus();
   }
 }
 
 function lockScreen() {
+  closeStart();
   document.getElementById('desktop').style.display = 'none';
-  const ls = document.getElementById('lock-screen');
+  const ls = document.getElementById('lock');
   ls.style.opacity = '0';
   ls.style.display = 'flex';
-  setTimeout(() => { ls.style.transition = 'opacity 0.4s'; ls.style.opacity = '1'; }, 10);
+  setTimeout(() => { ls.style.transition = 'opacity .4s'; ls.style.opacity = '1'; }, 10);
   document.getElementById('code-input').value = '';
-  document.getElementById('lock-error').textContent = '';
-  closeStartMenu();
+  document.getElementById('lock-err').textContent = '';
 }
 
 function shutdown() {
-  showDialog('⏻', 'Desligar o computador', 'Tem a certeza que deseja bloquear a sessão?', [{label:'Sim', cls:'primary', action: lockScreen}, {label:'Cancelar'}]);
-  closeStartMenu();
+  showDlg('⏻', 'Desligar', 'Tem a certeza que deseja bloquear a sessão?', [
+    {label:'Bloquear', cls:'primary', action: lockScreen},
+    {label:'Cancelar'}
+  ]); closeStart();
 }
 
-/* =============================================
-   AMBIENTE DE TRABALHO
-============================================= */
+/* ═══════════════════════════════════════════════════
+   INICIALIZAÇÃO
+═══════════════════════════════════════════════════ */
 function initDesktop() {
   startClock();
-  loadNotepad();
-  initRecycleBin();
+  nmInit();
+  rbInit();
   buildPortal();
-  // Recycle bin icon update
-  updateRecycleIcon();
 }
 
-function selIcon(id) {
-  document.querySelectorAll('.dsk-icon').forEach(i => i.classList.remove('sel'));
-  document.getElementById(id).classList.add('sel');
-}
-
-document.addEventListener('click', e => {
-  if (!e.target.closest('.dsk-icon')) {
-    document.querySelectorAll('.dsk-icon').forEach(i => i.classList.remove('sel'));
-  }
-  if (!e.target.closest('#start-btn') && !e.target.closest('#start-menu')) {
-    closeStartMenu();
-  }
-  hideCtxMenu();
-});
-
-document.getElementById('desktop').addEventListener('contextmenu', e => {
-  if (e.target.closest('.win') || e.target.closest('#taskbar')) return;
-  e.preventDefault();
-  showCtxMenu(e.clientX, e.clientY);
-});
-
-/* =============================================
+/* ═══════════════════════════════════════════════════
    RELÓGIO
-============================================= */
+═══════════════════════════════════════════════════ */
 function startClock() {
   function tick() {
-    const now = new Date();
-    const h = now.toLocaleTimeString('pt-PT', {hour:'2-digit', minute:'2-digit'});
-    const d = now.toLocaleDateString('pt-PT', {day:'2-digit', month:'2-digit', year:'numeric'});
-    document.getElementById('clock').innerHTML = `${h}<br>${d}`;
+    const n = new Date();
+    document.getElementById('clock').innerHTML =
+      n.toLocaleTimeString('pt-PT',{hour:'2-digit',minute:'2-digit'}) + '<br>' +
+      n.toLocaleDateString('pt-PT',{day:'2-digit',month:'2-digit',year:'numeric'});
   }
-  tick();
-  setInterval(tick, 1000);
+  tick(); setInterval(tick, 1000);
 }
 
-/* =============================================
+/* ═══════════════════════════════════════════════════
    MENU INICIAR
-============================================= */
-function toggleStartMenu() {
-  document.getElementById('start-menu').classList.toggle('open');
-}
-function closeStartMenu() {
-  document.getElementById('start-menu').classList.remove('open');
-}
+═══════════════════════════════════════════════════ */
+function toggleStart() { document.getElementById('start-menu').classList.toggle('open'); }
+function closeStart() { document.getElementById('start-menu').classList.remove('open'); }
 
-/* =============================================
+/* ═══════════════════════════════════════════════════
    GESTÃO DE JANELAS
-============================================= */
-const winConfig = {
-  notepad:    { el: 'win-notepad',    taskLabel: '📝 Bloco de Notas' },
-  recyclebin: { el: 'win-recyclebin', taskLabel: '🗑️ Reciclagem' },
-  portal:     { el: 'win-portal',     taskLabel: '⭐ Favoritos' },
+═══════════════════════════════════════════════════ */
+const WINS = {
+  np:     { el:'win-np',     label:'📝 Bloco de Notas', w:780, h:540 },
+  rb:     { el:'win-rb',     label:'🗑️ Reciclagem',     w:600, h:440 },
+  portal: { el:'win-portal', label:'⭐ Favoritos',      w:1000,h:680 },
 };
-const winState = {};
+const wState = {};
 let topZ = 500;
 
 function openWin(id) {
-  const cfg = winConfig[id];
-  if (!cfg) return;
+  const cfg = WINS[id]; if(!cfg) return;
   const el = document.getElementById(cfg.el);
-  el.classList.add('open');
-  el.classList.remove('minimized');
-  el.style.display = 'flex';
-  if (!winState[id]) {
-    winState[id] = { minimized: false, maximized: false, prevPos: null };
-    centerWindow(el);
+  if (!wState[id]) {
+    wState[id] = { min:false, max:false, prev:null };
+    el.style.width  = Math.min(cfg.w, window.innerWidth*.95) + 'px';
+    el.style.height = Math.min(cfg.h, (window.innerHeight - 48)*.9) + 'px';
+    centerWin(el);
   }
-  winState[id].minimized = false;
+  wState[id].min = false;
+  el.classList.add('open');
+  el.style.display = 'flex';
   focusWin(id);
   updateTaskbar();
 }
 
 function closeWin(id) {
-  const el = document.getElementById(winConfig[id].el);
+  const el = document.getElementById(WINS[id].el);
   el.classList.remove('open');
   el.style.display = 'none';
-  delete winState[id];
+  delete wState[id];
   updateTaskbar();
 }
 
-function minimizeWin(id) {
-  const el = document.getElementById(winConfig[id].el);
-  el.style.display = 'none';
-  winState[id].minimized = true;
+function minWin(id) {
+  document.getElementById(WINS[id].el).style.display = 'none';
+  wState[id].min = true;
   updateTaskbar();
 }
 
-function maximizeWin(id) {
-  const el = document.getElementById(winConfig[id].el);
-  const st = winState[id];
-  if (!st) return;
-  if (!st.maximized) {
-    st.prevPos = { w: el.style.width, h: el.style.height, t: el.style.top, l: el.style.left };
-    el.style.width = '100vw'; el.style.height = 'calc(100vh - 42px)';
-    el.style.top = '0'; el.style.left = '0'; el.style.borderRadius = '0';
-    st.maximized = true;
+function maxWin(id) {
+  const el = document.getElementById(WINS[id].el);
+  const s = wState[id]; if(!s) return;
+  if (!s.max) {
+    s.prev = {w:el.style.width,h:el.style.height,t:el.style.top,l:el.style.left};
+    el.style.cssText += ';width:100vw!important;height:calc(100vh - 48px)!important;top:0!important;left:0!important;border-radius:0!important';
+    s.max = true;
   } else {
-    if (st.prevPos) {
-      el.style.width = st.prevPos.w; el.style.height = st.prevPos.h;
-      el.style.top = st.prevPos.t; el.style.left = st.prevPos.l;
-    }
-    el.style.borderRadius = '8px 8px 3px 3px';
-    st.maximized = false;
+    if(s.prev){el.style.width=s.prev.w;el.style.height=s.prev.h;el.style.top=s.prev.t;el.style.left=s.prev.l;}
+    el.style.borderRadius = '8px';
+    s.max = false;
   }
   focusWin(id);
 }
 
 function focusWin(id) {
-  Object.keys(winConfig).forEach(k => {
-    document.getElementById(winConfig[k].el).classList.remove('focused');
-  });
-  const el = document.getElementById(winConfig[id].el);
+  Object.keys(WINS).forEach(k => document.getElementById(WINS[k].el).classList.remove('focused'));
+  const el = document.getElementById(WINS[id].el);
   el.classList.add('focused');
   el.style.zIndex = ++topZ;
-  updateTaskbarActive(id);
 }
 
-function centerWindow(el) {
-  const dw = window.innerWidth, dh = window.innerHeight - 42;
-  const ew = el.offsetWidth || 600, eh = el.offsetHeight || 400;
-  el.style.left = Math.max(0, (dw - ew) / 2) + 'px';
-  el.style.top = Math.max(0, (dh - eh) / 2) + 'px';
+function centerWin(el) {
+  const dw = window.innerWidth, dh = window.innerHeight - 48;
+  el.style.left = Math.max(0,(dw - el.offsetWidth)/2) + 'px';
+  el.style.top  = Math.max(0,(dh - el.offsetHeight)/2) + 'px';
 }
 
 function updateTaskbar() {
-  const bar = document.getElementById('taskbar-wins');
+  const bar = document.getElementById('tb-wins');
   bar.innerHTML = '';
-  Object.keys(winState).forEach(id => {
-    const st = winState[id];
-    const cfg = winConfig[id];
-    const btn = document.createElement('div');
-    btn.className = 'tbtn' + (st.minimized ? '' : ' active');
-    btn.textContent = cfg.taskLabel;
-    btn.title = cfg.taskLabel;
-    btn.onclick = () => {
-      if (st.minimized) {
-        const el = document.getElementById(cfg.el);
-        el.style.display = 'flex';
-        st.minimized = false;
-        focusWin(id);
-        updateTaskbar();
-      } else {
-        minimizeWin(id);
-      }
+  Object.keys(wState).forEach(id => {
+    const s = wState[id];
+    const b = document.createElement('div');
+    b.className = 'tbtn' + (s.min?'':' active');
+    b.innerHTML = WINS[id].label;
+    b.title = WINS[id].label;
+    b.onclick = () => {
+      if (s.min) { document.getElementById(WINS[id].el).style.display='flex'; s.min=false; focusWin(id); }
+      else minWin(id);
+      updateTaskbar();
     };
-    bar.appendChild(btn);
+    bar.appendChild(b);
   });
 }
 
-function updateTaskbarActive(activeId) {
-  document.querySelectorAll('.tbtn').forEach((btn, i) => {
-    const id = Object.keys(winState)[i];
-    btn.classList.toggle('active', id === activeId && !winState[id]?.minimized);
-  });
-}
-
-/* ===== ARRASTAR JANELAS ===== */
-(function() {
-  let dragging = null, ox = 0, oy = 0;
-  document.querySelectorAll('.win-tbar').forEach(tbar => {
-    tbar.addEventListener('mousedown', e => {
-      if (e.target.closest('.win-ctrls') || e.target.closest('.wbtn')) return;
-      dragging = tbar.closest('.win');
-      const id = Object.keys(winConfig).find(k => 'win-' + k === dragging.id || winConfig[k].el === dragging.id);
-      if (id) focusWin(id);
-      ox = e.clientX - dragging.offsetLeft;
-      oy = e.clientY - dragging.offsetTop;
+/* Arrastar */
+(function(){
+  let drag=null,ox=0,oy=0;
+  document.querySelectorAll('.win-tbar').forEach(tb => {
+    tb.addEventListener('mousedown', e => {
+      if(e.target.closest('.win-ctrls')) return;
+      drag = tb.closest('.win');
+      const id = Object.keys(WINS).find(k => WINS[k].el === drag.id);
+      if(id){ focusWin(id); }
+      ox = e.clientX - drag.offsetLeft;
+      oy = e.clientY - drag.offsetTop;
       e.preventDefault();
     });
   });
   document.addEventListener('mousemove', e => {
-    if (!dragging) return;
-    const x = Math.max(0, Math.min(window.innerWidth - dragging.offsetWidth, e.clientX - ox));
-    const y = Math.max(0, Math.min(window.innerHeight - 42 - dragging.offsetHeight, e.clientY - oy));
-    dragging.style.left = x + 'px';
-    dragging.style.top = y + 'px';
+    if(!drag) return;
+    const x = Math.max(0, Math.min(window.innerWidth  - drag.offsetWidth,  e.clientX - ox));
+    const y = Math.max(0, Math.min(window.innerHeight - 48 - drag.offsetHeight, e.clientY - oy));
+    drag.style.left = x+'px'; drag.style.top = y+'px';
   });
-  document.addEventListener('mouseup', () => { dragging = null; });
+  document.addEventListener('mouseup', () => { drag=null; });
 })();
 
-/* Clicar na janela para focar */
-Object.keys(winConfig).forEach(id => {
-  document.getElementById(winConfig[id].el).addEventListener('mousedown', () => focusWin(id));
+Object.keys(WINS).forEach(id => {
+  document.getElementById(WINS[id].el).addEventListener('mousedown', () => focusWin(id));
 });
 
-/* =============================================
-   BLOCO DE NOTAS
-============================================= */
-let npModified = false;
-let npCurrentFile = null;
-const npWrapMode = { on: true };
+/* ═══════════════════════════════════════════════════
+   BLOCO DE NOTAS — GESTOR DE NOTAS
+═══════════════════════════════════════════════════ */
+let nm = { notes:[], activeId:null, expandedFolders:{} };
+let npCtxTargetId = null;
 
-function loadNotepad() {
-  const saved = localStorage.getItem('np-content');
-  if (saved !== null) {
-    document.getElementById('notepad-area').value = saved;
-    npUpdate();
+function nmInit() {
+  const saved = localStorage.getItem('nm-notes');
+  nm.notes = saved ? JSON.parse(saved) : [];
+  nm.expandedFolders = JSON.parse(localStorage.getItem('nm-expanded') || '{}');
+  if (nm.notes.length === 0) {
+    const n = nmMakeNote('Bem-vindo', null);
+    n.content = 'Olá! Este é o teu Bloco de Notas.\n\nPodes criar novas notas e pastas na barra lateral.\nClica com o botão direito numa nota ou pasta para renomear ou eliminar.\n\nAtalhos:\n  Ctrl+S — Guardar\n  Ctrl+N — Nova nota';
+    nm.notes = [n];
+  }
+  nmSave();
+  nmRenderTree();
+  // Select first note
+  const first = nm.notes.find(n => n.type === 'note');
+  if (first) nmSelectNote(first.id);
+}
+
+function nmMakeNote(name='Sem título', parent=null) {
+  return { id:'n'+Date.now()+Math.random().toString(36).slice(2), name, content:'', type:'note', parent, created:Date.now(), modified:Date.now() };
+}
+
+function nmMakeFolder(name='Nova Pasta', parent=null) {
+  return { id:'f'+Date.now()+Math.random().toString(36).slice(2), name, content:null, type:'folder', parent, created:Date.now() };
+}
+
+function nmSave() {
+  localStorage.setItem('nm-notes', JSON.stringify(nm.notes));
+  localStorage.setItem('nm-expanded', JSON.stringify(nm.expandedFolders));
+}
+
+function nmRenderTree(parentId=null, depth=0) {
+  if (depth === 0) {
+    document.getElementById('np-tree').innerHTML = nmBuildTree(null, 0);
   }
 }
 
-function npUpdate() {
-  const ta = document.getElementById('notepad-area');
-  localStorage.setItem('np-content', ta.value);
-  const chars = ta.value.length;
-  const lines = ta.value.split('\n').length;
-  const pos = ta.selectionStart;
-  const beforeCursor = ta.value.substring(0, pos);
-  const curLine = beforeCursor.split('\n').length;
-  const curCol = pos - beforeCursor.lastIndexOf('\n');
-  document.getElementById('np-chars').textContent = chars + ' caracteres';
-  document.getElementById('np-line').textContent = `Linha ${curLine}, Col ${curCol}`;
-}
-
-function npToggleWrap() {
-  npWrapMode.on = !npWrapMode.on;
-  const el = document.getElementById('win-notepad');
-  if (npWrapMode.on) {
-    el.classList.add('np-wrap');
-    document.getElementById('np-wrap-status').textContent = 'Quebra de linha: Ativa';
-  } else {
-    el.classList.remove('np-wrap');
-    document.getElementById('np-wrap-status').textContent = 'Quebra de linha: Inativa';
-  }
-}
-
-function npMenu(action) {
-  const ta = document.getElementById('notepad-area');
-  switch(action) {
-    case 'ficheiro':
-      showDialog('📝', 'Ficheiro', `
-        <div style="display:flex;flex-direction:column;gap:8px;">
-          <button class="dialog-btn" onclick="npNew();closeDialog()">📄 Novo (Ctrl+N)</button>
-          <button class="dialog-btn primary" onclick="npSave();closeDialog()">💾 Guardar (Ctrl+S)</button>
-          <button class="dialog-btn" onclick="npPrint();closeDialog()">🖨️ Imprimir</button>
+function nmBuildTree(parentId, depth) {
+  const items = nm.notes.filter(n => n.parent === (parentId||null));
+  // folders first
+  items.sort((a,b) => {
+    if(a.type!==b.type) return a.type==='folder'?-1:1;
+    return a.name.localeCompare(b.name,'pt');
+  });
+  return items.map(item => {
+    const isActive = item.id === nm.activeId;
+    const indent = depth * 14;
+    if (item.type === 'folder') {
+      const open = nm.expandedFolders[item.id];
+      return `
+        <div class="np-tree-item${open?' open':''}" data-id="${item.id}" style="padding-left:${10+indent}px"
+             onclick="nmToggleFolder('${item.id}')"
+             oncontextmenu="npCtxOpen(event,'${item.id}')">
+          <span class="np-arr">▶</span>
+          <span class="npi">📁</span>
+          <span class="npn">${esc(item.name)}</span>
         </div>
-      `, [], true);
-      break;
-    case 'editar':
-      showDialog('✂️', 'Editar', `
-        <div style="display:flex;flex-direction:column;gap:8px;">
-          <button class="dialog-btn" onclick="document.getElementById('notepad-area').focus();document.execCommand('selectAll');closeDialog()">🔲 Selecionar Tudo</button>
-          <button class="dialog-btn" onclick="npClear();closeDialog()">🗑️ Limpar tudo</button>
-          <button class="dialog-btn" onclick="npInsertDate();closeDialog()">📅 Inserir data/hora</button>
+        ${open ? nmBuildTree(item.id, depth+1) : ''}
+      `;
+    } else {
+      return `
+        <div class="np-tree-item${isActive?' active':''}" data-id="${item.id}" style="padding-left:${10+indent}px"
+             onclick="nmSelectNote('${item.id}')"
+             oncontextmenu="npCtxOpen(event,'${item.id}')">
+          <span class="npi">📄</span>
+          <span class="npn">${esc(item.name)}</span>
         </div>
-      `, [], true);
-      break;
-    case 'ajuda':
-      showDialog('❓', 'Ajuda — Bloco de Notas', '<b>Atalhos:</b><br><br>Ctrl+S — Guardar<br>Ctrl+N — Novo<br>Ctrl+A — Selecionar tudo<br><br>Guarda automaticamente no browser.', [{label:'OK'}]);
-      break;
+      `;
+    }
+  }).join('');
+}
+
+function nmToggleFolder(id) {
+  nm.expandedFolders[id] = !nm.expandedFolders[id];
+  nmSave(); nmRenderTree();
+}
+
+function nmSelectNote(id) {
+  const note = nm.notes.find(n => n.id === id);
+  if (!note || note.type !== 'note') return;
+  nm.activeId = id;
+  document.getElementById('notepad-area').value = note.content || '';
+  document.getElementById('np-title').textContent = note.name + ' — Bloco de Notas';
+  document.getElementById('np-notename').textContent = note.name;
+  npCursorInfo();
+  nmRenderTree();
+  document.getElementById('notepad-area').focus();
+}
+
+function nmUpdateContent() {
+  if (!nm.activeId) return;
+  const note = nm.notes.find(n => n.id === nm.activeId);
+  if (note) {
+    note.content = document.getElementById('notepad-area').value;
+    note.modified = Date.now();
+    nmSave();
   }
+  npCursorInfo();
 }
 
-function npNew() {
-  if (document.getElementById('notepad-area').value.trim()) {
-    showDialog('📝', 'Bloco de Notas', 'Deseja guardar as alterações?', [
-      {label:'Guardar', cls:'primary', action: () => { npSave(); npClear(); }},
-      {label:'Não guardar', action: npClear},
-      {label:'Cancelar'}
-    ]);
-  }
+function nmCreateNote(parentId=null) {
+  // If a folder is selected/contextual, use it as parent
+  const parent = parentId !== null ? parentId : null;
+  const note = nmMakeNote();
+  nm.notes.push(note);
+  if (parent) nm.expandedFolders[parent] = true;
+  nmSave(); nmRenderTree();
+  nmSelectNote(note.id);
+  // Immediately open rename dialog
+  setTimeout(() => nmRename(note.id), 50);
 }
 
-function npSave() {
-  const content = document.getElementById('notepad-area').value;
-  localStorage.setItem('np-content', content);
-  showNotif('💾 Bloco de Notas', 'Documento guardado.');
+function nmCreateFolder(parentId=null) {
+  const folder = nmMakeFolder();
+  folder.parent = parentId;
+  nm.notes.push(folder);
+  if (parentId) nm.expandedFolders[parentId] = true;
+  nm.expandedFolders[folder.id] = true;
+  nmSave(); nmRenderTree();
+  setTimeout(() => nmRename(folder.id), 50);
 }
 
-function npClear() {
-  document.getElementById('notepad-area').value = '';
-  localStorage.removeItem('np-content');
-  npUpdate();
+function nmRename(id) {
+  const item = nm.notes.find(n => n.id === id);
+  if (!item) return;
+  showDlg(item.type==='folder'?'📁':'📄', 'Renomear', `Nome atual: <strong>${esc(item.name)}</strong>`, [
+    {label:'Guardar', cls:'primary', action: () => {
+      const v = document.querySelector('#dlg-rename-input')?.value.trim();
+      if (v) {
+        item.name = v;
+        nmSave(); nmRenderTree();
+        if (id === nm.activeId) {
+          document.getElementById('np-title').textContent = v + ' — Bloco de Notas';
+          document.getElementById('np-notename').textContent = v;
+        }
+        showNotif('✏️ Renomeado', `"${v}"`);
+      }
+    }},
+    {label:'Cancelar'}
+  ], item.name);
 }
 
-function npInsertDate() {
+function nmDelete(id) {
+  const item = nm.notes.find(n => n.id === id);
+  if (!item) return;
+  showDlg('🗑️', 'Eliminar', `Eliminar "${esc(item.name)}"?${item.type==='folder'?'<br><small>O conteúdo da pasta também será eliminado.</small>':''}`, [
+    {label:'Eliminar', cls:'danger', action: () => {
+      rbAddItem(item.name, item.type);
+      nmDeleteRec(id);
+      if (nm.activeId === id || !nm.notes.find(n=>n.id===nm.activeId)) {
+        nm.activeId = null;
+        document.getElementById('notepad-area').value = '';
+        document.getElementById('np-title').textContent = 'Bloco de Notas';
+        document.getElementById('np-notename').textContent = 'Nenhuma nota selecionada';
+      }
+      nmSave(); nmRenderTree();
+      showNotif('🗑️ Eliminado', `"${item.name}" movido para a Reciclagem.`);
+    }},
+    {label:'Cancelar'}
+  ]);
+}
+
+function nmDeleteRec(id) {
+  nm.notes.filter(n => n.parent === id).forEach(c => nmDeleteRec(c.id));
+  nm.notes = nm.notes.filter(n => n.id !== id);
+}
+
+/* CONTEXT MENU de nota/pasta */
+function npCtxOpen(e, id) {
+  e.preventDefault(); e.stopPropagation();
+  npCtxTargetId = id;
+  const item = nm.notes.find(n => n.id === id);
+  const m = document.getElementById('np-ctx-menu');
+  // Show/hide "nova nota aqui" only for folders
+  document.getElementById('ctx-newchild').style.display = item?.type==='folder' ? 'block' : 'none';
+  m.style.left = Math.min(e.clientX, window.innerWidth-200) + 'px';
+  m.style.top  = Math.min(e.clientY, window.innerHeight-150) + 'px';
+  m.style.display = 'block';
+}
+
+function ctxNpAct(act) {
+  document.getElementById('np-ctx-menu').style.display = 'none';
+  if (!npCtxTargetId) return;
+  const item = nm.notes.find(n => n.id === npCtxTargetId);
+  if (act === 'rename') nmRename(npCtxTargetId);
+  if (act === 'delete') nmDelete(npCtxTargetId);
+  if (act === 'newnote' && item?.type === 'folder') nmCreateNote(npCtxTargetId);
+  npCtxTargetId = null;
+}
+
+/* Notepad utils */
+function npCursorInfo() {
   const ta = document.getElementById('notepad-area');
-  const now = new Date().toLocaleString('pt-PT');
-  const pos = ta.selectionStart;
-  ta.value = ta.value.substring(0, pos) + now + ta.value.substring(pos);
-  npUpdate();
+  const val = ta.value, pos = ta.selectionStart;
+  const before = val.substring(0, pos);
+  const line = before.split('\n').length;
+  const col  = pos - before.lastIndexOf('\n');
+  document.getElementById('np-pos').textContent = `Linha ${line}, Col ${col}`;
+  document.getElementById('np-chars').textContent = `${val.length} caracteres`;
 }
 
-function npPrint() {
-  const content = document.getElementById('notepad-area').value;
-  const w = window.open('', '_blank');
-  w.document.write(`<pre style="font-family:monospace;font-size:12pt;white-space:pre-wrap;">${content}</pre>`);
-  w.print(); w.close();
+function npMenuAct(m) {
+  if (m === 'ficheiro') {
+    const btns = [
+      {label:'💾 Guardar (Ctrl+S)', action: () => { nmUpdateContent(); showNotif('💾','Nota guardada.'); }},
+      {label:'📄 Nova Nota', action: nmCreateNote},
+      {label:'📁 Nova Pasta', action: nmCreateFolder},
+    ];
+    showDlg('📝','Ficheiro','',btns,null,true);
+  }
+  if (m === 'ver') {
+    showDlg('📋','Notas guardadas',
+      `<strong>${nm.notes.filter(n=>n.type==='note').length}</strong> nota(s) | <strong>${nm.notes.filter(n=>n.type==='folder').length}</strong> pasta(s)`,
+      [{label:'OK'}]);
+  }
+  if (m === 'editar') {
+    showDlg('✂️','Editar','', [
+      {label:'📅 Inserir data/hora', action:()=>{
+        const ta=document.getElementById('notepad-area');
+        const p=ta.selectionStart, d=new Date().toLocaleString('pt-PT');
+        ta.value=ta.value.substring(0,p)+d+ta.value.substring(ta.selectionEnd);
+        nmUpdateContent();
+      }},
+      {label:'🔲 Selecionar tudo', action:()=>{ document.getElementById('notepad-area').select(); }},
+    ],null,true);
+  }
 }
 
-document.getElementById('notepad-area').addEventListener('keydown', e => {
-  if (e.ctrlKey && e.key === 's') { e.preventDefault(); npSave(); }
-  if (e.ctrlKey && e.key === 'n') { e.preventDefault(); npNew(); }
-  if (e.key === 'Tab') {
-    e.preventDefault();
-    const ta = e.target;
-    const s = ta.selectionStart;
-    ta.value = ta.value.substring(0, s) + '    ' + ta.value.substring(ta.selectionEnd);
-    ta.selectionStart = ta.selectionEnd = s + 4;
+document.addEventListener('keydown', e => {
+  const ta = document.getElementById('notepad-area');
+  if (document.activeElement === ta) {
+    if (e.ctrlKey && e.key==='s') { e.preventDefault(); nmUpdateContent(); showNotif('💾','Nota guardada.'); }
+    if (e.ctrlKey && e.key==='n') { e.preventDefault(); nmCreateNote(); }
+    if (e.key==='Tab') { e.preventDefault(); const s=ta.selectionStart; ta.value=ta.value.substring(0,s)+'    '+ta.value.substring(ta.selectionEnd); ta.selectionStart=ta.selectionEnd=s+4; }
   }
 });
 
-document.getElementById('notepad-area').addEventListener('click', npUpdate);
-document.getElementById('notepad-area').addEventListener('keyup', npUpdate);
-
-/* =============================================
+/* ═══════════════════════════════════════════════════
    RECICLAGEM
-============================================= */
-let recycleItems = [];
+═══════════════════════════════════════════════════ */
+let rbItems = [];
 
-function initRecycleBin() {
-  const saved = localStorage.getItem('recycle-items');
-  if (saved) recycleItems = JSON.parse(saved);
-  renderRecycleBin();
+function rbInit() {
+  rbItems = JSON.parse(localStorage.getItem('rb-items') || '[]');
+  rbRender();
 }
 
-function addToRecycleBin(name, type = 'document') {
-  recycleItems.push({
+function rbAddItem(name, type='note') {
+  rbItems.push({
     id: Date.now(),
     name,
-    type,
-    icon: type === 'document' ? '📄' : type === 'folder' ? '📁' : '🖼️',
+    icon: type==='folder'?'📁':'📄',
     deleted: new Date().toLocaleString('pt-PT')
   });
-  saveRecycleBin();
-  renderRecycleBin();
-  updateRecycleIcon();
+  rbSave(); rbRender();
 }
 
-function saveRecycleBin() {
-  localStorage.setItem('recycle-items', JSON.stringify(recycleItems));
-}
+function rbSave() { localStorage.setItem('rb-items', JSON.stringify(rbItems)); }
 
-function renderRecycleBin() {
+function rbRender() {
   const body = document.getElementById('rb-body');
-  const countEl = document.getElementById('rb-count');
-  if (recycleItems.length === 0) {
-    body.innerHTML = '<div class="rb-empty"><div class="rb-ei">🗑️</div><p>A Reciclagem está vazia.<br>Os itens eliminados aparecem aqui.</p></div>';
-    countEl.textContent = '0 itens';
-    document.getElementById('rb-empty-btn').disabled = true;
+  const cnt  = document.getElementById('rb-count');
+  const emptyBtn = document.getElementById('rb-empty-btn');
+  if (rbItems.length === 0) {
+    body.innerHTML = '<div class="rb-empty"><div class="rei">🗑️</div><p style="margin-top:10px">A reciclagem está vazia.</p></div>';
+    cnt.textContent = '0 itens';
+    emptyBtn.disabled = true;
   } else {
-    body.innerHTML = recycleItems.map(item => `
+    body.innerHTML = rbItems.map(i => `
       <div class="rb-item">
-        <span class="ri-ico">${item.icon}</span>
+        <span class="ri-ico">${i.icon}</span>
         <div class="ri-info">
-          <div class="ri-name">${item.name}</div>
-          <div class="ri-date">Eliminado: ${item.deleted}</div>
+          <div class="ri-name">${esc(i.name)}</div>
+          <div class="ri-date">Eliminado: ${i.deleted}</div>
         </div>
-        <button class="ri-del" onclick="rbRestore(${item.id})" title="Restaurar">↩</button>
-        <button class="ri-del" onclick="rbDelete(${item.id})" title="Eliminar permanentemente">✕</button>
+        <div class="ri-act">
+          <button class="restore" onclick="rbRestore(${i.id})">↩ Restaurar</button>
+          <button onclick="rbDeleteOne(${i.id})">✕</button>
+        </div>
       </div>
     `).join('');
-    countEl.textContent = recycleItems.length + ' item(ns)';
-    document.getElementById('rb-empty-btn').disabled = false;
+    cnt.textContent = rbItems.length + ' item(ns)';
+    emptyBtn.disabled = false;
   }
-  updateRecycleIcon();
+  document.getElementById('rb-dico').textContent = rbItems.length > 0 ? '🗑️' : '🗑️';
 }
 
 function rbRestore(id) {
-  recycleItems = recycleItems.filter(i => i.id !== id);
-  saveRecycleBin();
-  renderRecycleBin();
-  showNotif('♻️ Reciclagem', 'Item restaurado.');
+  rbItems = rbItems.filter(i => i.id !== id);
+  rbSave(); rbRender(); showNotif('♻️','Item restaurado.');
 }
 
-function rbDelete(id) {
-  recycleItems = recycleItems.filter(i => i.id !== id);
-  saveRecycleBin();
-  renderRecycleBin();
+function rbDeleteOne(id) {
+  rbItems = rbItems.filter(i => i.id !== id);
+  rbSave(); rbRender();
 }
 
 function rbRestoreAll() {
-  if (recycleItems.length === 0) return;
-  showDialog('♻️', 'Restaurar todos', 'Deseja restaurar todos os itens da reciclagem?', [
-    {label:'Restaurar', cls:'primary', action: () => {
-      recycleItems = [];
-      saveRecycleBin();
-      renderRecycleBin();
-      showNotif('♻️ Reciclagem', 'Todos os itens restaurados.');
-    }},
+  if (!rbItems.length) return;
+  showDlg('♻️','Restaurar todos','Restaurar todos os itens da reciclagem?',[
+    {label:'Restaurar', cls:'primary', action:()=>{ rbItems=[]; rbSave(); rbRender(); showNotif('♻️','Todos restaurados.'); }},
     {label:'Cancelar'}
   ]);
 }
 
-function emptyRecycleBin() {
-  if (recycleItems.length === 0) { showNotif('🗑️ Reciclagem', 'A reciclagem já está vazia.'); return; }
-  showDialog('⚠️', 'Esvaziar Reciclagem', `Tem a certeza que deseja eliminar permanentemente ${recycleItems.length} item(ns)?`, [
-    {label:'Esvaziar', cls:'primary', action: () => {
-      recycleItems = [];
-      saveRecycleBin();
-      renderRecycleBin();
-      showNotif('🗑️ Reciclagem', 'Reciclagem esvaziada.');
-    }},
+function rbEmpty() {
+  showDlg('⚠️','Esvaziar Reciclagem',`Eliminar permanentemente ${rbItems.length} item(ns)?`,[
+    {label:'Esvaziar', cls:'danger', action:()=>{ rbItems=[]; rbSave(); rbRender(); showNotif('🗑️','Reciclagem esvaziada.'); }},
     {label:'Cancelar'}
   ]);
 }
 
-function updateRecycleIcon() {
-  document.getElementById('recycle-icon-img').textContent = recycleItems.length > 0 ? '🗑️' : '🗑️';
-  document.getElementById('rb-title-ico').textContent = recycleItems.length > 0 ? '🗑️' : '🗑️';
-}
-
-/* =============================================
-   PORTAL DE FAVORITOS (conteúdo)
-============================================= */
-const portalData = [
-  {
-    id:'ia-chat', label:'🤖 Inteligência Artificial: Conversa', items:[
-      {id:'copilot',    name:'Copilot',       tag:'mixed', price:'Misto',  desc:'Assistente da Microsoft para auxílio no Windows e produtividade.', url:'https://m365.cloud.microsoft/chat'},
-      {id:'deepseek',   name:'DeepSeek',      tag:'free',  price:'Grátis', desc:'IA avançada focada em raciocínio lógico e programação.', url:'https://chat.deepseek.com/'},
-      {id:'gemini',     name:'Gemini',        tag:'mixed', price:'Misto',  desc:'IA da Google integrada para ajuda em tarefas quotidianas.', url:'https://gemini.google.com'},
-      {id:'claude',     name:'Claude',        tag:'mixed', price:'Misto',  desc:'IA com foco em segurança e análise textual muito apurada.', url:'https://claude.ai'},
-      {id:'charai',     name:'Character.ai',  tag:'mixed', price:'Misto',  desc:'Interação criativa com personalidades e personagens virtuais.', url:'https://character.ai'},
-      {id:'grok',       name:'Grok',          tag:'paid',  price:'Pago',   desc:'IA da rede X com acesso a informação em tempo real.', url:'https://x.ai'},
-      {id:'venice',     name:'Venice',        tag:'mixed', price:'Misto',  desc:'IA com foco absoluto na privacidade e liberdade de resposta.', url:'https://venice.ai'},
-    ]
-  },
-  {
-    id:'ia-prod', label:'⚡ IA: Criação e Produtividade', items:[
-      {id:'manus',      name:'Manus',         tag:'mixed', price:'Misto',  desc:'Agentes inteligentes para execução de tarefas digitais.', url:'https://manus.ai'},
-      {id:'notebooklm', name:'NotebookLM',    tag:'free',  price:'Grátis', desc:'Ferramenta para analisar e resumir os teus próprios ficheiros.', url:'https://notebooklm.google.com'},
-      {id:'chatpdf',    name:'ChatPDF',       tag:'mixed', price:'Misto',  desc:'Conversa diretamente com documentos e extrai informação.', url:'https://www.chatpdf.com'},
-      {id:'suno',       name:'Suno',          tag:'mixed', price:'Misto',  desc:'Geração de música e áudio a partir de simples texto.', url:'https://suno.com'},
-    ]
-  },
-  {
-    id:'dev', label:'💻 Desenvolvimento e Alojamento', items:[
-      {id:'github',  name:'GitHub',  tag:'free',  price:'Grátis', desc:'Alojamento de código e colaboração tecnológica mundial.', url:'https://github.com'},
-      {id:'vercel',  name:'Vercel',  tag:'mixed', price:'Misto',  desc:'Publicação instantânea de sítios web na rede.', url:'https://vercel.com'},
-      {id:'replit',  name:'Replit',  tag:'mixed', price:'Misto',  desc:'Ambiente de programação direto no teu navegador.', url:'https://replit.com'},
-      {id:'firebase',name:'Firebase',tag:'mixed', price:'Misto',  desc:'Conjunto de ferramentas para bases de dados e apps.', url:'https://firebase.google.com'},
-    ]
-  },
-  {
-    id:'office', label:'📋 Escritório e Produtividade', items:[
-      {id:'workspace', name:'Google Workspace', tag:'mixed', price:'Misto',  desc:'Suíte completa para documentos e colaboração na nuvem.', url:'https://workspace.google.com'},
-      {id:'gmail',     name:'Gmail',            tag:'free',  price:'Grátis', desc:'O serviço de correio eletrónico principal da Google.', url:'https://mail.google.com'},
-      {id:'outlook',   name:'Outlook',          tag:'free',  price:'Grátis', desc:'Gestão de correio e calendários do sistema Microsoft.', url:'https://outlook.live.com'},
-      {id:'keep',      name:'Google Keep',      tag:'free',  price:'Grátis', desc:'Notas e listas rápidas sincronizadas em todos os aparelhos.', url:'https://keep.google.com'},
-      {id:'calendar',  name:'Google Calendar',  tag:'free',  price:'Grátis', desc:'Agenda digital para organizar compromissos e reuniões.', url:'https://calendar.google.com'},
-    ]
-  },
-  {
-    id:'compras', label:'🛒 Compras e Lojas Online', items:[
-      {id:'amazon',    name:'Amazon',    tag:'paid', price:'Pago', desc:'A maior seleção de artigos com entregas rápidas na península.', url:'https://www.amazon.es'},
-      {id:'aliexpress',name:'AliExpress',tag:'paid', price:'Pago', desc:'Artigos de todo o tipo com preços diretos da China.', url:'https://www.aliexpress.com'},
-      {id:'pcdiga',    name:'PCDiga',    tag:'paid', price:'Pago', desc:'Referência nacional para informática e componentes eletrónicos.', url:'https://www.pcdiga.com'},
-      {id:'eneba',     name:'Eneba',     tag:'paid', price:'Pago', desc:'Mercado de chaves digitais para jogos e software em saldo.', url:'https://www.eneba.com'},
-    ]
-  },
-  {
-    id:'entertainment', label:'🎬 Entretenimento e Media', items:[
-      {id:'youtube',  name:'YouTube',       tag:'mixed', price:'Misto',  desc:'Líder mundial em vídeos e transmissões em direto.', url:'https://www.youtube.com'},
-      {id:'twitch',   name:'Twitch.tv',     tag:'mixed', price:'Misto',  desc:'Foco em diretos e interação em tempo real com criadores.', url:'https://www.twitch.tv'},
-      {id:'plex',     name:'Plex',          tag:'mixed', price:'Misto',  desc:'Gere e assiste à tua biblioteca pessoal de media.', url:'https://www.plex.tv'},
-      {id:'spotify',  name:'Spotify',       tag:'mixed', price:'Misto',  desc:'Música e podcasts acessíveis em qualquer lado.', url:'https://www.spotify.com'},
-      {id:'ytmusic',  name:'YouTube Music', tag:'mixed', price:'Misto',  desc:'O serviço musical baseado em todo o catálogo do YouTube.', url:'https://music.youtube.com'},
-      {id:'horizon',  name:'Meta Horizon',  tag:'free',  price:'Grátis', desc:'Visualização da tua experiência de realidade virtual.', url:'https://horizon.meta.com/casting'},
-    ]
-  },
-  {
-    id:'saber', label:'📚 Saber e Utilidades', items:[
-      {id:'wikipedia', name:'Wikipedia',    tag:'free',  price:'Grátis', desc:'Enciclopédia livre global sobre qualquer assunto.', url:'https://pt.wikipedia.org'},
-      {id:'imdb',      name:'IMDb',         tag:'free',  price:'Grátis', desc:'Base de dados técnica sobre produções cinematográficas.', url:'https://www.imdb.com'},
-      {id:'legendas',  name:'LegendasDivx', tag:'free',  price:'Grátis', desc:'Portal português para descarregar legendas de vídeos.', url:'https://www.legendasdivx.com'},
-      {id:'duckduckgo',name:'DuckDuckGo',   tag:'free',  price:'Grátis', desc:'Motor de busca com foco absoluto na tua privacidade.', url:'https://duckduckgo.com'},
-      {id:'speed',     name:'Speedtest',    tag:'free',  price:'Grátis', desc:'Analisa a velocidade real da tua ligação de rede.', url:'https://www.speedtest.net'},
-      {id:'sharesub',  name:'Sharesub',     tag:'paid',  price:'Pago',   desc:'Divide subscrições digitais para reduzir custos mensais.', url:'https://www.sharesub.com'},
-    ]
-  },
-  {
-    id:'arte', label:'🎨 Conteúdo, Leitura e Arte', items:[
-      {id:'lulu',      name:'Lulu.com',   tag:'mixed', price:'Misto',  desc:'Plataforma para publicar e vender os teus próprios livros.', url:'https://www.lulu.com'},
-      {id:'substack',  name:'Substack',   tag:'free',  price:'Grátis', desc:'Lê artigos e newsletters de autores independentes.', url:'https://substack.com'},
-      {id:'wattpad',   name:'Wattpad',    tag:'mixed', price:'Misto',  desc:'Comunidade para ler e publicar histórias de ficção.', url:'https://www.wattpad.com'},
-      {id:'pinterest', name:'Pinterest',  tag:'free',  price:'Grátis', desc:'Exploração visual de referências estéticas e ideias.', url:'https://www.pinterest.com'},
-      {id:'deviantart',name:'DeviantArt', tag:'mixed', price:'Misto',  desc:'Galeria massiva para artistas digitais e ilustradores.', url:'https://www.deviantart.com'},
-    ]
-  },
-  {
-    id:'trabalho', label:'💼 Carreira e Mercado de Trabalho', items:[
-      {id:'linkedin', name:'LinkedIn', tag:'free', price:'Grátis', desc:'Gestão de carreira e rede de contactos profissionais.', url:'https://www.linkedin.com'},
-      {id:'indeed',   name:'Indeed',   tag:'free', price:'Grátis', desc:'Procura massiva de ofertas de trabalho em Portugal.', url:'https://pt.indeed.com'},
-    ]
-  }
+/* ═══════════════════════════════════════════════════
+   PORTAL DE FAVORITOS
+═══════════════════════════════════════════════════ */
+const PORTAL_DATA = [
+  {id:'ia1',label:'🤖 IA: Conversa',items:[
+    {name:'Copilot',tag:'mixed',price:'Misto',desc:'Assistente da Microsoft para produtividade.',url:'https://m365.cloud.microsoft/chat'},
+    {name:'DeepSeek',tag:'free',price:'Grátis',desc:'IA avançada focada em raciocínio lógico.',url:'https://chat.deepseek.com/'},
+    {name:'Gemini',tag:'mixed',price:'Misto',desc:'IA da Google para tarefas quotidianas.',url:'https://gemini.google.com'},
+    {name:'Claude',tag:'mixed',price:'Misto',desc:'IA com foco em segurança e análise textual.',url:'https://claude.ai'},
+    {name:'Character.ai',tag:'mixed',price:'Misto',desc:'Interação com personalidades virtuais.',url:'https://character.ai'},
+    {name:'Venice',tag:'mixed',price:'Misto',desc:'IA com foco absoluto na privacidade.',url:'https://venice.ai'},
+  ]},
+  {id:'ia2',label:'⚡ IA: Criação',items:[
+    {name:'Manus',tag:'mixed',price:'Misto',desc:'Agentes inteligentes para tarefas digitais.',url:'https://manus.ai'},
+    {name:'NotebookLM',tag:'free',price:'Grátis',desc:'Analisa e resume os teus ficheiros.',url:'https://notebooklm.google.com'},
+    {name:'ChatPDF',tag:'mixed',price:'Misto',desc:'Conversa com documentos PDF.',url:'https://www.chatpdf.com'},
+    {name:'Suno',tag:'mixed',price:'Misto',desc:'Gera música a partir de texto.',url:'https://suno.com'},
+  ]},
+  {id:'dev',label:'💻 Desenvolvimento',items:[
+    {name:'GitHub',tag:'free',price:'Grátis',desc:'Alojamento de código e colaboração.',url:'https://github.com'},
+    {name:'Vercel',tag:'mixed',price:'Misto',desc:'Publicação instantânea de sites web.',url:'https://vercel.com'},
+    {name:'Replit',tag:'mixed',price:'Misto',desc:'Programação direto no navegador.',url:'https://replit.com'},
+    {name:'Firebase',tag:'mixed',price:'Misto',desc:'Ferramentas para bases de dados e apps.',url:'https://firebase.google.com'},
+  ]},
+  {id:'ofc',label:'📋 Produtividade',items:[
+    {name:'Google Workspace',tag:'mixed',price:'Misto',desc:'Suite completa de documentos na nuvem.',url:'https://workspace.google.com'},
+    {name:'Gmail',tag:'free',price:'Grátis',desc:'Correio eletrónico da Google.',url:'https://mail.google.com'},
+    {name:'Outlook',tag:'free',price:'Grátis',desc:'Correio e calendários Microsoft.',url:'https://outlook.live.com'},
+    {name:'Google Keep',tag:'free',price:'Grátis',desc:'Notas rápidas sincronizadas.',url:'https://keep.google.com'},
+    {name:'Google Calendar',tag:'free',price:'Grátis',desc:'Agenda digital para compromissos.',url:'https://calendar.google.com'},
+  ]},
+  {id:'shop',label:'🛒 Compras',items:[
+    {name:'Amazon',tag:'paid',price:'Pago',desc:'Grande seleção com entregas rápidas.',url:'https://www.amazon.es'},
+    {name:'AliExpress',tag:'paid',price:'Pago',desc:'Produtos a preços diretos da China.',url:'https://www.aliexpress.com'},
+    {name:'PCDiga',tag:'paid',price:'Pago',desc:'Referência nacional para informática.',url:'https://www.pcdiga.com'},
+    {name:'Eneba',tag:'paid',price:'Pago',desc:'Chaves digitais para jogos em saldo.',url:'https://www.eneba.com'},
+  ]},
+  {id:'ent',label:'🎬 Entretenimento',items:[
+    {name:'YouTube',tag:'mixed',price:'Misto',desc:'Vídeos e transmissões em direto.',url:'https://www.youtube.com'},
+    {name:'Twitch',tag:'mixed',price:'Misto',desc:'Diretos e interação com criadores.',url:'https://www.twitch.tv'},
+    {name:'Plex',tag:'mixed',price:'Misto',desc:'Gere a tua biblioteca de media.',url:'https://www.plex.tv'},
+    {name:'Spotify',tag:'mixed',price:'Misto',desc:'Música e podcasts em qualquer lado.',url:'https://www.spotify.com'},
+    {name:'Meta Horizon',tag:'free',price:'Grátis',desc:'Experiências de realidade virtual.',url:'https://horizon.meta.com/casting'},
+  ]},
+  {id:'know',label:'📚 Saber e Utilidades',items:[
+    {name:'Wikipedia',tag:'free',price:'Grátis',desc:'Enciclopédia livre sobre tudo.',url:'https://pt.wikipedia.org'},
+    {name:'IMDb',tag:'free',price:'Grátis',desc:'Base de dados de cinema.',url:'https://www.imdb.com'},
+    {name:'DuckDuckGo',tag:'free',price:'Grátis',desc:'Motor de busca privado.',url:'https://duckduckgo.com'},
+    {name:'Speedtest',tag:'free',price:'Grátis',desc:'Testa a velocidade da tua rede.',url:'https://www.speedtest.net'},
+    {name:'Sharesub',tag:'paid',price:'Pago',desc:'Divide subscrições digitais.',url:'https://www.sharesub.com'},
+  ]},
+  {id:'art',label:'🎨 Arte e Leitura',items:[
+    {name:'Lulu.com',tag:'mixed',price:'Misto',desc:'Publica e vende os teus livros.',url:'https://www.lulu.com'},
+    {name:'Substack',tag:'free',price:'Grátis',desc:'Newsletters de autores independentes.',url:'https://substack.com'},
+    {name:'Wattpad',tag:'mixed',price:'Misto',desc:'Lê e publica histórias de ficção.',url:'https://www.wattpad.com'},
+    {name:'Pinterest',tag:'free',price:'Grátis',desc:'Inspiração visual e referências.',url:'https://www.pinterest.com'},
+    {name:'DeviantArt',tag:'mixed',price:'Misto',desc:'Galeria para artistas digitais.',url:'https://www.deviantart.com'},
+  ]},
+  {id:'job',label:'💼 Carreira',items:[
+    {name:'LinkedIn',tag:'free',price:'Grátis',desc:'Rede de contactos profissionais.',url:'https://www.linkedin.com'},
+    {name:'Indeed',tag:'free',price:'Grátis',desc:'Procura de ofertas de trabalho.',url:'https://pt.indeed.com'},
+  ]},
 ];
 
 function buildPortal() {
   const inner = document.getElementById('portal-inner');
   inner.innerHTML = `
-    <div style="margin-bottom:14px;">
-      <input id="p-search" type="text" style="width:100%;padding:9px 12px;border:1px solid #ddd;border-radius:6px;font-size:0.88rem;font-family:inherit;" placeholder="🔍 Pesquisar recurso..." oninput="pSearch(this.value)">
-    </div>
-    <div id="p-cats"></div>
-    <div style="margin-top:20px;padding-top:14px;border-top:1px solid #eee;font-size:0.75rem;color:#aaa;text-align:center;">
-      Curadoria e Desenvolvimento por <strong>André M. Fernandes</strong>
-    </div>
+    <input id="ps" type="text" style="width:100%;padding:9px 12px;border:1px solid #e5e7eb;border-radius:8px;font-size:.88rem;margin-bottom:14px;outline:none;font-family:inherit;" placeholder="🔍  Pesquisar recurso..." oninput="pSearch(this.value)">
+    <div id="pcats"></div>
+    <div style="margin-top:18px;padding-top:12px;border-top:1px solid #f0f0f0;font-size:.73rem;color:#aaa;text-align:center;">Curadoria por <strong>André M. Fernandes</strong></div>
   `;
-  renderPortal(portalData);
+  renderPortalCats(PORTAL_DATA);
 }
 
-function renderPortal(data) {
-  const cats = document.getElementById('p-cats');
-  cats.innerHTML = '';
-  data.forEach(cat => {
-    const div = document.createElement('div');
-    div.className = 'p-cat-block';
-    div.style.cssText = 'margin-bottom:10px;border:1px solid #e5e7eb;border-radius:8px;overflow:hidden;';
-    div.innerHTML = `
-      <div class="p-chdr" style="background:#f9fafb;padding:10px 14px;font-size:0.92rem;font-weight:700;cursor:pointer;display:flex;justify-content:space-between;align-items:center;" onclick="this.parentElement.classList.toggle('popen')">
-        <span>${cat.label}</span><span class="p-arr" style="color:#6b7280;">▶</span>
+function renderPortalCats(data) {
+  document.getElementById('pcats').innerHTML = data.map(cat => `
+    <div style="margin-bottom:8px;border:1px solid #e5e7eb;border-radius:10px;overflow:hidden;">
+      <div style="background:#f9fafb;padding:10px 14px;font-size:.9rem;font-weight:700;cursor:pointer;display:flex;justify-content:space-between;"
+           onclick="this.nextElementSibling.style.display=this.nextElementSibling.style.display==='grid'?'none':'grid';this.querySelector('.pa').textContent=this.nextElementSibling.style.display==='grid'?'▼':'▶'">
+        <span>${cat.label}</span><span class="pa">▶</span>
       </div>
-      <div class="p-cgrid" style="display:none;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:10px;padding:12px;background:#fff;">
-        ${cat.items.map(item => `
-          <div style="background:white;border:1px solid #e5e7eb;border-radius:8px;padding:12px;display:flex;flex-direction:column;transition:border 0.2s;" onmouseenter="this.style.borderColor='#3b82f6'" onmouseleave="this.style.borderColor='#e5e7eb'">
-            <span style="display:inline-block;padding:2px 7px;border-radius:4px;font-size:0.69rem;font-weight:700;margin-bottom:6px;${item.tag==='free'?'background:#dcfce7;color:#16a34a':item.tag==='paid'?'background:#fee2e2;color:#dc2626':'background:#fef9c3;color:#ca8a04'}">${item.price}</span>
-            <strong style="font-size:0.92rem;margin-bottom:4px;">${item.name}</strong>
-            <p style="font-size:0.78rem;color:#6b7280;margin-bottom:10px;flex:1;line-height:1.4;">${item.desc}</p>
-            <a href="${item.url}" target="_blank" style="background:#3b82f6;color:white;text-decoration:none;text-align:center;padding:7px;border-radius:5px;font-size:0.8rem;font-weight:600;">Aceder ↗</a>
+      <div style="display:none;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:10px;padding:12px;background:#fff;">
+        ${cat.items.map(i=>`
+          <div style="border:1px solid #e5e7eb;border-radius:8px;padding:12px;display:flex;flex-direction:column;transition:border .15s;" onmouseenter="this.style.borderColor='#0078d4'" onmouseleave="this.style.borderColor='#e5e7eb'">
+            <span style="display:inline-block;padding:2px 7px;border-radius:4px;font-size:.68rem;font-weight:700;margin-bottom:6px;${i.tag==='free'?'background:#dcfce7;color:#16a34a':i.tag==='paid'?'background:#fee2e2;color:#dc2626':'background:#fef9c3;color:#ca8a04'}">${i.price}</span>
+            <strong style="font-size:.88rem;margin-bottom:4px;">${i.name}</strong>
+            <p style="font-size:.76rem;color:#6b7280;margin-bottom:10px;flex:1;line-height:1.4;">${i.desc}</p>
+            <a href="${i.url}" target="_blank" style="background:#0078d4;color:white;text-decoration:none;text-align:center;padding:7px;border-radius:5px;font-size:.78rem;font-weight:600;transition:background .15s;" onmouseenter="this.style.background='#006cbd'" onmouseleave="this.style.background='#0078d4'">Aceder ↗</a>
           </div>
         `).join('')}
       </div>
-    `;
-    div.querySelector('.p-chdr').addEventListener('click', function() {
-      const grid = div.querySelector('.p-cgrid');
-      const arr = div.querySelector('.p-arr');
-      const isOpen = grid.style.display === 'grid';
-      grid.style.display = isOpen ? 'none' : 'grid';
-      arr.textContent = isOpen ? '▶' : '▼';
-    });
-    cats.appendChild(div);
-  });
-}
-
-function pSearch(query) {
-  const q = query.toLowerCase();
-  if (!q) { renderPortal(portalData); return; }
-  const filtered = portalData.map(cat => ({
-    ...cat,
-    items: cat.items.filter(i => i.name.toLowerCase().includes(q) || i.desc.toLowerCase().includes(q) || i.price.toLowerCase().includes(q))
-  })).filter(cat => cat.items.length > 0);
-  renderPortal(filtered);
-  // Auto-expand on search
-  document.querySelectorAll('#p-cats .p-cgrid').forEach(g => {
-    g.style.display = 'grid';
-    const arr = g.parentElement.querySelector('.p-arr');
-    if (arr) arr.textContent = '▼';
-  });
-}
-
-/* =============================================
-   MENU DE CONTEXTO
-============================================= */
-function showCtxMenu(x, y) {
-  const m = document.getElementById('ctx-menu');
-  m.style.left = Math.min(x, window.innerWidth - 200) + 'px';
-  m.style.top = Math.min(y, window.innerHeight - 200) + 'px';
-  m.style.display = 'block';
-}
-function hideCtxMenu() {
-  document.getElementById('ctx-menu').style.display = 'none';
-}
-function ctxAction(act) {
-  hideCtxMenu();
-  switch(act) {
-    case 'notepad':  openWin('notepad'); addToRecycleBin('Novo Documento de Texto.txt'); break;
-    case 'recycle':  openWin('recyclebin'); break;
-    case 'refresh':  showNotif('🔄 Ambiente de Trabalho', 'Atualizado.'); break;
-    case 'arrange':  showNotif('🔲 Ícones', 'Ícones organizados.'); break;
-    case 'about':    showAbout(); break;
-  }
-}
-
-/* =============================================
-   SOBRE / O MEU COMPUTADOR
-============================================= */
-function showAbout() {
-  showDialog('💻', 'O Meu Computador', `
-    <div style="font-size:0.82rem;line-height:1.8;">
-      <strong>DesktopWeb v1.0</strong><br>
-      Ambiente de trabalho web por<br>
-      <strong>André M. Fernandes</strong><br><br>
-      <strong>Sistema:</strong> WebOS / HTML5<br>
-      <strong>Browser:</strong> ${navigator.userAgent.split(') ')[0].split('(')[1] || 'Desconhecido'}<br>
-      <strong>Resolução:</strong> ${window.screen.width}×${window.screen.height}<br>
-      <strong>Janela:</strong> ${window.innerWidth}×${window.innerHeight}
     </div>
-  `, [{label:'OK'}]);
+  `).join('');
 }
 
-/* =============================================
+function pSearch(q) {
+  q = q.toLowerCase().trim();
+  if (!q) { renderPortalCats(PORTAL_DATA); return; }
+  const filtered = PORTAL_DATA.map(cat => ({...cat, items:cat.items.filter(i=>i.name.toLowerCase().includes(q)||i.desc.toLowerCase().includes(q))})).filter(c=>c.items.length>0);
+  renderPortalCats(filtered);
+  document.querySelectorAll('#pcats [style*="display:none"]').forEach(g => {
+    g.style.display='grid';
+    const prev=g.previousElementSibling?.querySelector('.pa');
+    if(prev) prev.textContent='▼';
+  });
+}
+
+/* ═══════════════════════════════════════════════════
+   MENU CONTEXTO DESKTOP
+═══════════════════════════════════════════════════ */
+function ctxAct(act) {
+  document.getElementById('ctx-menu').style.display='none';
+  if(act==='newnote') { openWin('np'); nmCreateNote(); }
+  if(act==='rb')      openWin('rb');
+  if(act==='about')   showAbout();
+  if(act==='refresh') showNotif('🔄','Ambiente de trabalho atualizado.');
+}
+
+/* ═══════════════════════════════════════════════════
+   ÍCONES DE TRABALHO
+═══════════════════════════════════════════════════ */
+function selDIcon(id) {
+  document.querySelectorAll('.dicon').forEach(i=>i.classList.remove('sel'));
+  document.getElementById(id)?.classList.add('sel');
+}
+
+/* ═══════════════════════════════════════════════════
+   SOBRE
+═══════════════════════════════════════════════════ */
+function showAbout() {
+  showDlg('💻','Este Computador',`
+    <strong>DesktopWeb v2.0</strong><br>
+    Ambiente de trabalho web por<br>
+    <strong>André M. Fernandes</strong><br><br>
+    <strong>Sistema:</strong> WebOS / HTML5 / Windows 11 UI<br>
+    <strong>Browser:</strong> ${navigator.userAgent.split(')')[0].split('(')[1]||'Desconhecido'}<br>
+    <strong>Resolução:</strong> ${window.screen.width}×${window.screen.height}
+  `,[{label:'OK'}]);
+}
+
+/* ═══════════════════════════════════════════════════
    DIÁLOGOS
-============================================= */
-let dialogCloseCallback = null;
-
-function showDialog(icon, title, bodyHtml, buttons = [{label:'OK'}], rawHtml = false) {
-  closeDialog();
-  const overlay = document.createElement('div');
-  overlay.className = 'dialog-overlay';
-  overlay.id = 'dialog-overlay';
-
-  let btnsHtml = buttons.map(b =>
-    `<button class="dialog-btn ${b.cls||''}" onclick="dialogAction(${buttons.indexOf(b)})">${b.label}</button>`
+═══════════════════════════════════════════════════ */
+function showDlg(icon, title, bodyHtml, buttons=[], inputDefault=null, btnOnly=false) {
+  closeAllDlg();
+  const ov = document.createElement('div');
+  ov.className='dlg-overlay'; ov.id='dlg-ov';
+  const btnsHtml = buttons.map((b,i) =>
+    `<button class="dlg-btn ${b.cls||''}" onclick="dlgAct(${i})">${b.label}</button>`
   ).join('');
-
-  overlay.innerHTML = `
-    <div class="dialog-box">
-      <div class="dialog-tbar"><span>${icon}</span><span>${title}</span></div>
-      <div class="dialog-body" style="${rawHtml?'display:block;':''}">${rawHtml ? bodyHtml : `<span class="dialog-icon">${icon}</span><span class="dialog-text">${bodyHtml}</span>`}</div>
-      <div class="dialog-btns">${btnsHtml}</div>
+  ov.innerHTML = `
+    <div class="dlg">
+      <div class="dlg-tbar"><span>${icon}</span><span>${title}</span></div>
+      <div class="dlg-body">
+        ${btnOnly ? `<div style="display:flex;flex-direction:column;gap:8px;">${buttons.map((b,i)=>`<button class="dlg-btn" style="justify-content:flex-start;" onclick="dlgAct(${i})">${b.label}</button>`).join('')}</div>` : bodyHtml}
+        ${inputDefault!==null && !btnOnly ? `<input class="dlg-input" id="dlg-rename-input" value="${esc(inputDefault)}" placeholder="Novo nome...">` : ''}
+      </div>
+      ${!btnOnly ? `<div class="dlg-btns">${btnsHtml}</div>` : ''}
     </div>
   `;
-  document.body.appendChild(overlay);
-  window._dialogButtons = buttons;
+  document.body.appendChild(ov);
+  window._dlgBtns = buttons;
+  if (inputDefault !== null) {
+    setTimeout(() => {
+      const inp = document.getElementById('dlg-rename-input');
+      if(inp){ inp.focus(); inp.select(); }
+    }, 50);
+  }
+  ov.addEventListener('keydown', e => { if(e.key==='Enter') dlgAct(buttons.findIndex(b=>b.cls==='primary'||b.cls==='danger')||0); });
 }
 
-function dialogAction(idx) {
-  const btn = window._dialogButtons[idx];
-  closeDialog();
-  if (btn && btn.action) btn.action();
+function dlgAct(i) {
+  const btn = window._dlgBtns?.[i];
+  closeAllDlg();
+  if(btn?.action) btn.action();
 }
 
-function closeDialog() {
-  const d = document.getElementById('dialog-overlay');
-  if (d) d.remove();
+function closeAllDlg() {
+  document.getElementById('dlg-ov')?.remove();
 }
 
-/* =============================================
+/* ═══════════════════════════════════════════════════
    NOTIFICAÇÕES
-============================================= */
-let notifTimer = null;
+═══════════════════════════════════════════════════ */
+let _nTimer;
 function showNotif(title, body) {
-  const el = document.getElementById('notif');
   document.getElementById('notif-title').textContent = title;
   document.getElementById('notif-body').textContent = body;
-  el.style.display = 'block';
-  clearTimeout(notifTimer);
-  notifTimer = setTimeout(() => { el.style.display = 'none'; }, 3000);
+  const el = document.getElementById('notif');
+  el.style.display='block';
+  clearTimeout(_nTimer);
+  _nTimer = setTimeout(() => el.style.display='none', 2800);
 }
 
-/* =============================================
-   INICIALIZAÇÃO
-============================================= */
-document.addEventListener('DOMContentLoaded', () => {
-  updateLockClock();
+/* ═══════════════════════════════════════════════════
+   UTILIDADES
+═══════════════════════════════════════════════════ */
+function esc(s='') { return s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;'); }
+
+/* ═══════════════════════════════════════════════════
+   EVENTOS GLOBAIS
+═══════════════════════════════════════════════════ */
+document.addEventListener('click', e => {
+  if(!e.target.closest('#start-btn') && !e.target.closest('#start-menu')) closeStart();
+  if(!e.target.closest('.dicon')) document.querySelectorAll('.dicon').forEach(i=>i.classList.remove('sel'));
+  document.getElementById('ctx-menu').style.display='none';
+  if(!e.target.closest('[oncontextmenu]')) document.getElementById('np-ctx-menu').style.display='none';
+});
+
+document.getElementById('desktop').addEventListener('contextmenu', e => {
+  if(e.target.closest('.win') || e.target.closest('#taskbar') || e.target.closest('[oncontextmenu]')) return;
+  e.preventDefault();
+  const m = document.getElementById('ctx-menu');
+  m.style.left = Math.min(e.clientX, window.innerWidth-200)+'px';
+  m.style.top  = Math.min(e.clientY, window.innerHeight-180)+'px';
+  m.style.display='block';
 });
 </script>
 </body>
