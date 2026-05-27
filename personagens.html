@@ -1,0 +1,699 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Registo de Personagens</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          colors: {
+            surface: {
+              900: '#0d0d0f',
+              800: '#141417',
+              700: '#1c1c21',
+              600: '#242429',
+              500: '#2e2e35',
+            },
+            accent: {
+              DEFAULT: '#7c3aed',
+              hover:   '#6d28d9',
+              light:   '#a78bfa',
+              glow:    'rgba(124,58,237,0.35)',
+            }
+          },
+          boxShadow: {
+            card:  '0 2px 12px rgba(0,0,0,0.5)',
+            glow:  '0 0 24px rgba(124,58,237,0.4)',
+            inset: 'inset 0 1px 0 rgba(255,255,255,0.05)',
+          },
+          animation: {
+            'fade-in':    'fadeIn .25s ease',
+            'slide-up':   'slideUp .3s ease',
+            'scale-in':   'scaleIn .2s ease',
+          },
+          keyframes: {
+            fadeIn:  { from:{ opacity:'0' }, to:{ opacity:'1' } },
+            slideUp: { from:{ opacity:'0', transform:'translateY(12px)' }, to:{ opacity:'1', transform:'translateY(0)' } },
+            scaleIn: { from:{ opacity:'0', transform:'scale(.95)' }, to:{ opacity:'1', transform:'scale(1)' } },
+          }
+        }
+      }
+    }
+  </script>
+  <style>
+    *{ box-sizing:border-box; }
+    body{ font-family:'Inter',system-ui,-apple-system,sans-serif; }
+    ::-webkit-scrollbar{ width:6px; }
+    ::-webkit-scrollbar-track{ background:transparent; }
+    ::-webkit-scrollbar-thumb{ background:#3f3f46; border-radius:9999px; }
+    ::-webkit-scrollbar-thumb:hover{ background:#52525b; }
+
+    .card-grid{
+      display:grid;
+      grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+      gap:1rem;
+    }
+
+    .char-card{
+      background:#1c1c21;
+      border:1px solid rgba(255,255,255,0.06);
+      border-radius:12px;
+      padding:1.25rem;
+      position:relative;
+      transition:border-color .2s, box-shadow .2s, transform .2s;
+      animation:slideUp .3s ease;
+      box-shadow:0 2px 12px rgba(0,0,0,0.5), inset 0 1px 0 rgba(255,255,255,0.05);
+    }
+    .char-card:hover{
+      border-color:rgba(124,58,237,0.45);
+      box-shadow:0 4px 24px rgba(124,58,237,0.2), inset 0 1px 0 rgba(255,255,255,0.05);
+      transform:translateY(-2px);
+    }
+
+    .char-avatar{
+      width:42px; height:42px;
+      border-radius:50%;
+      background:linear-gradient(135deg,#7c3aed,#4f46e5);
+      display:flex; align-items:center; justify-content:center;
+      font-size:1.1rem; font-weight:700; color:#fff;
+      flex-shrink:0;
+    }
+
+    .badge{
+      display:inline-flex; align-items:center; gap:4px;
+      background:rgba(124,58,237,0.15);
+      border:1px solid rgba(124,58,237,0.3);
+      border-radius:999px;
+      padding:2px 10px;
+      font-size:0.72rem;
+      color:#a78bfa;
+      font-weight:500;
+    }
+
+    .btn-delete{
+      opacity:0;
+      transition:opacity .2s, background .15s;
+    }
+    .char-card:hover .btn-delete{ opacity:1; }
+
+    .input-field{
+      width:100%;
+      background:#1c1c21;
+      border:1px solid rgba(255,255,255,0.08);
+      border-radius:8px;
+      padding:10px 14px;
+      color:#e4e4e7;
+      font-size:0.9rem;
+      transition:border-color .2s, box-shadow .2s;
+      outline:none;
+    }
+    .input-field::placeholder{ color:#52525b; }
+    .input-field:focus{
+      border-color:#7c3aed;
+      box-shadow:0 0 0 3px rgba(124,58,237,0.2);
+    }
+
+    .btn-primary{
+      background:linear-gradient(135deg,#7c3aed,#4f46e5);
+      color:#fff;
+      border:none;
+      border-radius:8px;
+      padding:10px 20px;
+      font-size:0.9rem;
+      font-weight:600;
+      cursor:pointer;
+      transition:opacity .15s, transform .15s, box-shadow .15s;
+      display:inline-flex; align-items:center; gap:6px;
+    }
+    .btn-primary:hover{
+      opacity:.9;
+      transform:translateY(-1px);
+      box-shadow:0 4px 20px rgba(124,58,237,0.45);
+    }
+    .btn-primary:active{ transform:translateY(0); }
+
+    .btn-secondary{
+      background:#242429;
+      color:#a1a1aa;
+      border:1px solid rgba(255,255,255,0.08);
+      border-radius:8px;
+      padding:9px 16px;
+      font-size:0.85rem;
+      font-weight:500;
+      cursor:pointer;
+      transition:background .15s, color .15s, border-color .15s;
+      display:inline-flex; align-items:center; gap:6px;
+    }
+    .btn-secondary:hover{
+      background:#2e2e35;
+      color:#e4e4e7;
+      border-color:rgba(255,255,255,0.15);
+    }
+
+    .toast{
+      position:fixed; bottom:24px; right:24px;
+      background:#1c1c21;
+      border:1px solid rgba(255,255,255,0.08);
+      border-radius:10px;
+      padding:12px 18px;
+      color:#e4e4e7;
+      font-size:0.85rem;
+      font-weight:500;
+      display:flex; align-items:center; gap:8px;
+      animation:slideUp .3s ease;
+      box-shadow:0 8px 32px rgba(0,0,0,0.6);
+      z-index:9999;
+      max-width:320px;
+    }
+
+    .modal-backdrop{
+      position:fixed; inset:0;
+      background:rgba(0,0,0,0.7);
+      backdrop-filter:blur(4px);
+      z-index:9998;
+      display:flex; align-items:center; justify-content:center;
+      animation:fadeIn .2s ease;
+    }
+    .modal{
+      background:#1c1c21;
+      border:1px solid rgba(255,255,255,0.08);
+      border-radius:16px;
+      padding:2rem;
+      width:min(480px,90vw);
+      animation:scaleIn .2s ease;
+      box-shadow:0 24px 64px rgba(0,0,0,0.7);
+    }
+
+    .empty-state{
+      display:flex; flex-direction:column; align-items:center; justify-content:center;
+      gap:1rem; padding:4rem 2rem;
+      color:#52525b;
+      animation:fadeIn .4s ease;
+    }
+
+    .stat-chip{
+      background:#1c1c21;
+      border:1px solid rgba(255,255,255,0.06);
+      border-radius:8px;
+      padding:6px 14px;
+      font-size:0.8rem;
+      color:#71717a;
+      display:inline-flex; align-items:center; gap:6px;
+    }
+    .stat-chip strong{ color:#e4e4e7; }
+
+    .section-divider{
+      height:1px;
+      background:linear-gradient(to right, transparent, rgba(124,58,237,0.3), transparent);
+      margin:1.5rem 0;
+    }
+
+    @media(max-width:640px){
+      .card-grid{ grid-template-columns:1fr; }
+    }
+  </style>
+</head>
+<body class="dark bg-surface-900 text-zinc-100 min-h-screen">
+
+  <!-- ═══ CABEÇALHO ═══ -->
+  <header class="sticky top-0 z-50 border-b border-white/5" style="background:rgba(13,13,15,0.85);backdrop-filter:blur(16px)">
+    <div class="max-w-5xl mx-auto px-4 sm:px-6 flex items-center justify-between h-16 gap-4">
+      <div class="flex items-center gap-3">
+        <div style="background:linear-gradient(135deg,#7c3aed,#4f46e5);border-radius:10px;width:34px;height:34px;display:flex;align-items:center;justify-content:center;">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="12" cy="8" r="4"/><path d="M4 20c0-4 3.6-7 8-7s8 3 8 7"/>
+          </svg>
+        </div>
+        <div>
+          <h1 class="text-sm font-semibold text-zinc-100 leading-none">Registo de Personagens</h1>
+          <p class="text-xs text-zinc-500 mt-0.5">Base de dados local</p>
+        </div>
+      </div>
+
+      <div id="headerStats" class="flex items-center gap-2"></div>
+    </div>
+  </header>
+
+  <!-- ═══ CORPO PRINCIPAL ═══ -->
+  <main class="max-w-5xl mx-auto px-4 sm:px-6 py-8 space-y-8">
+
+    <!-- PAINEL DE REGISTO -->
+    <section>
+      <div class="flex items-center gap-2 mb-4">
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#7c3aed" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+          <circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="16"/><line x1="8" y1="12" x2="16" y2="12"/>
+        </svg>
+        <h2 class="text-sm font-semibold text-zinc-400 uppercase tracking-widest">Nova Personagem</h2>
+      </div>
+
+      <div class="rounded-xl border border-white/[0.07] p-5 sm:p-6" style="background:#141417;box-shadow:0 2px 12px rgba(0,0,0,0.4)">
+        <form id="charForm" class="space-y-4" novalidate>
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+            <div class="space-y-1.5">
+              <label class="text-xs font-medium text-zinc-400" for="charName">
+                Nome <span class="text-violet-400">*</span>
+              </label>
+              <input id="charName" type="text" class="input-field" placeholder="Ex: Arthas Menethil" maxlength="60" autocomplete="off">
+              <p id="nameError" class="text-xs text-red-400 hidden">O nome é obrigatório.</p>
+            </div>
+            <div class="space-y-1.5">
+              <label class="text-xs font-medium text-zinc-400" for="charAbility">
+                Habilidade Especial <span class="text-violet-400">*</span>
+              </label>
+              <input id="charAbility" type="text" class="input-field" placeholder="Ex: Necromancia" maxlength="80" autocomplete="off">
+              <p id="abilityError" class="text-xs text-red-400 hidden">A habilidade é obrigatória.</p>
+            </div>
+          </div>
+          <div class="flex justify-end">
+            <button type="submit" class="btn-primary">
+              <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"/><polyline points="17 21 17 13 7 13 7 21"/><polyline points="7 3 7 8 15 8"/>
+              </svg>
+              Guardar Personagem
+            </button>
+          </div>
+        </form>
+      </div>
+    </section>
+
+    <div class="section-divider"></div>
+
+    <!-- BARRA DE CONTROLO DA BASE DE DADOS -->
+    <section>
+      <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3 mb-5">
+        <div class="flex items-center gap-2">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#7c3aed" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+            <ellipse cx="12" cy="5" rx="9" ry="3"/><path d="M21 12c0 1.66-4 3-9 3s-9-1.34-9-3"/><path d="M3 5v14c0 1.66 4 3 9 3s9-1.34 9-3V5"/>
+          </svg>
+          <h2 class="text-sm font-semibold text-zinc-400 uppercase tracking-widest">Base de Dados</h2>
+        </div>
+
+        <div class="flex flex-wrap items-center gap-2">
+          <div class="relative">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#71717a" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="absolute left-3 top-1/2 -translate-y-1/2 pointer-events-none">
+              <circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/>
+            </svg>
+            <input id="searchInput" type="text" placeholder="Pesquisar…" autocomplete="off"
+              class="input-field pl-9 h-9 text-sm" style="width:180px;padding-top:0;padding-bottom:0;">
+          </div>
+
+          <button onclick="exportDB()" class="btn-secondary">
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/>
+            </svg>
+            Exportar JSON
+          </button>
+
+          <label class="btn-secondary cursor-pointer">
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/>
+            </svg>
+            Importar JSON
+            <input id="importFile" type="file" accept=".json" class="hidden" onchange="importDB(event)">
+          </label>
+
+          <button id="clearAllBtn" onclick="confirmClearAll()" class="btn-secondary hidden" style="color:#f87171;border-color:rgba(248,113,113,0.2);">
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6"/><path d="M10 11v6"/><path d="M14 11v6"/><path d="M9 6V4a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v2"/>
+            </svg>
+            Limpar Tudo
+          </button>
+        </div>
+      </div>
+
+      <!-- GRELHA DE PERSONAGENS -->
+      <div id="charGrid" class="card-grid"></div>
+      <div id="emptyState" class="hidden empty-state">
+        <div style="width:64px;height:64px;border-radius:50%;background:#141417;border:1px solid rgba(255,255,255,0.06);display:flex;align-items:center;justify-content:center;">
+          <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#3f3f46" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="12" cy="8" r="4"/><path d="M4 20c0-4 3.6-7 8-7s8 3 8 7"/>
+          </svg>
+        </div>
+        <p class="text-base font-medium text-zinc-600" id="emptyMsg">Nenhuma personagem registada.</p>
+        <p class="text-sm text-zinc-700">Usa o formulário acima para adicionar a primeira personagem.</p>
+      </div>
+      <div id="searchEmpty" class="hidden empty-state">
+        <div style="width:64px;height:64px;border-radius:50%;background:#141417;border:1px solid rgba(255,255,255,0.06);display:flex;align-items:center;justify-content:center;">
+          <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#3f3f46" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/>
+          </svg>
+        </div>
+        <p class="text-base font-medium text-zinc-600">Sem resultados para a pesquisa.</p>
+      </div>
+    </section>
+  </main>
+
+  <!-- ═══ RODAPÉ ═══ -->
+  <footer class="border-t border-white/5 mt-16 py-6 text-center text-xs text-zinc-600">
+    Sistema de Registo de Personagens &mdash; dados guardados localmente no seu browser
+  </footer>
+
+  <!-- MODAL DE CONFIRMAÇÃO -->
+  <div id="confirmModal" class="modal-backdrop hidden" role="dialog" aria-modal="true">
+    <div class="modal">
+      <div class="flex items-start gap-4">
+        <div style="width:40px;height:40px;border-radius:10px;background:rgba(239,68,68,0.1);border:1px solid rgba(239,68,68,0.2);flex-shrink:0;display:flex;align-items:center;justify-content:center;">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#f87171" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/>
+          </svg>
+        </div>
+        <div>
+          <h3 class="font-semibold text-zinc-100 mb-1" id="modalTitle">Confirmar ação</h3>
+          <p class="text-sm text-zinc-400" id="modalMsg">Tens a certeza?</p>
+        </div>
+      </div>
+      <div class="flex justify-end gap-2 mt-6">
+        <button onclick="closeModal()" class="btn-secondary">Cancelar</button>
+        <button id="modalConfirmBtn" class="btn-primary" style="background:linear-gradient(135deg,#dc2626,#b91c1c);">Confirmar</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- TOAST CONTAINER -->
+  <div id="toastContainer"></div>
+
+  <script>
+    // ─── CONSTANTES ───────────────────────────────────────────────────────────
+    const STORAGE_KEY = 'characterRegistry_v1';
+
+    // ─── ESTADO ───────────────────────────────────────────────────────────────
+    let characters = [];
+    let searchQuery = '';
+    let pendingAction = null;
+
+    // ─── PERSISTÊNCIA ────────────────────────────────────────────────────────
+    function loadData() {
+      try {
+        const raw = localStorage.getItem(STORAGE_KEY);
+        characters = raw ? JSON.parse(raw) : [];
+      } catch {
+        characters = [];
+      }
+    }
+
+    function saveData() {
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(characters));
+    }
+
+    // ─── RENDER ───────────────────────────────────────────────────────────────
+    function getInitials(name) {
+      return name.trim().split(/\s+/).map(w => w[0]).slice(0, 2).join('').toUpperCase();
+    }
+
+    function renderCards() {
+      const grid = document.getElementById('charGrid');
+      const emptyState = document.getElementById('emptyState');
+      const searchEmpty = document.getElementById('searchEmpty');
+      const clearBtn = document.getElementById('clearAllBtn');
+
+      const filtered = searchQuery
+        ? characters.filter(c =>
+            c.name.toLowerCase().includes(searchQuery) ||
+            c.ability.toLowerCase().includes(searchQuery))
+        : characters;
+
+      grid.innerHTML = '';
+
+      if (characters.length === 0) {
+        emptyState.classList.remove('hidden');
+        searchEmpty.classList.add('hidden');
+        clearBtn.classList.add('hidden');
+        updateHeaderStats();
+        return;
+      }
+
+      emptyState.classList.add('hidden');
+      clearBtn.classList.remove('hidden');
+
+      if (filtered.length === 0) {
+        searchEmpty.classList.remove('hidden');
+        updateHeaderStats();
+        return;
+      }
+
+      searchEmpty.classList.add('hidden');
+
+      filtered.forEach(char => {
+        const card = document.createElement('div');
+        card.className = 'char-card';
+        card.setAttribute('data-id', char.id);
+        card.innerHTML = `
+          <button class="btn-delete absolute top-3 right-3 w-7 h-7 rounded-lg flex items-center justify-center"
+            style="background:rgba(239,68,68,0.1);border:1px solid rgba(239,68,68,0.2);"
+            onclick="confirmDelete('${char.id}')" title="Eliminar personagem" aria-label="Eliminar ${escHtml(char.name)}">
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#f87171" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+              <line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/>
+            </svg>
+          </button>
+
+          <div class="flex items-center gap-3 mb-3">
+            <div class="char-avatar">${getInitials(char.name)}</div>
+            <div class="min-w-0">
+              <h3 class="font-semibold text-zinc-100 text-sm truncate" title="${escHtml(char.name)}">${escHtml(char.name)}</h3>
+              <time class="text-xs text-zinc-600">${formatDate(char.createdAt)}</time>
+            </div>
+          </div>
+
+          <div class="flex items-center gap-2 flex-wrap mt-1">
+            <span class="badge">
+              <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/>
+              </svg>
+              ${escHtml(char.ability)}
+            </span>
+          </div>
+        `;
+        grid.appendChild(card);
+      });
+
+      updateHeaderStats();
+    }
+
+    function updateHeaderStats() {
+      const container = document.getElementById('headerStats');
+      if (characters.length === 0) { container.innerHTML = ''; return; }
+      container.innerHTML = `
+        <span class="stat-chip">
+          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#7c3aed" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="12" cy="8" r="4"/><path d="M4 20c0-4 3.6-7 8-7s8 3 8 7"/>
+          </svg>
+          <strong>${characters.length}</strong> ${characters.length === 1 ? 'personagem' : 'personagens'}
+        </span>
+      `;
+    }
+
+    function formatDate(iso) {
+      if (!iso) return '';
+      const d = new Date(iso);
+      return d.toLocaleDateString('pt-PT', { day:'2-digit', month:'short', year:'numeric' });
+    }
+
+    function escHtml(str) {
+      return String(str)
+        .replace(/&/g,'&amp;')
+        .replace(/</g,'&lt;')
+        .replace(/>/g,'&gt;')
+        .replace(/"/g,'&quot;')
+        .replace(/'/g,'&#39;');
+    }
+
+    // ─── FORMULÁRIO ───────────────────────────────────────────────────────────
+    document.getElementById('charForm').addEventListener('submit', function(e) {
+      e.preventDefault();
+      const nameEl    = document.getElementById('charName');
+      const abilityEl = document.getElementById('charAbility');
+      const nameErr   = document.getElementById('nameError');
+      const abilErr   = document.getElementById('abilityError');
+
+      const name    = nameEl.value.trim();
+      const ability = abilityEl.value.trim();
+      let valid = true;
+
+      if (!name)    { nameErr.classList.remove('hidden');  valid = false; } else nameErr.classList.add('hidden');
+      if (!ability) { abilErr.classList.remove('hidden'); valid = false; } else abilErr.classList.add('hidden');
+
+      if (!valid) return;
+
+      const newChar = {
+        id: crypto.randomUUID(),
+        name,
+        ability,
+        createdAt: new Date().toISOString()
+      };
+
+      characters.unshift(newChar);
+      saveData();
+      renderCards();
+
+      nameEl.value = '';
+      abilityEl.value = '';
+      nameEl.focus();
+
+      showToast('success', `"${name}" adicionada com sucesso!`);
+    });
+
+    // ─── PESQUISA ─────────────────────────────────────────────────────────────
+    document.getElementById('searchInput').addEventListener('input', function() {
+      searchQuery = this.value.trim().toLowerCase();
+      renderCards();
+    });
+
+    // ─── ELIMINAR ─────────────────────────────────────────────────────────────
+    function confirmDelete(id) {
+      const char = characters.find(c => c.id === id);
+      if (!char) return;
+      openModal(
+        'Eliminar Personagem',
+        `Tens a certeza que queres eliminar <strong class="text-zinc-100">${escHtml(char.name)}</strong>? Esta ação não pode ser desfeita.`,
+        () => deleteChar(id)
+      );
+    }
+
+    function deleteChar(id) {
+      const char = characters.find(c => c.id === id);
+      characters = characters.filter(c => c.id !== id);
+      saveData();
+      renderCards();
+      showToast('info', `"${char?.name || 'Personagem'}" eliminada.`);
+    }
+
+    // ─── LIMPAR TUDO ─────────────────────────────────────────────────────────
+    function confirmClearAll() {
+      if (characters.length === 0) return;
+      openModal(
+        'Limpar Base de Dados',
+        `Tens a certeza que queres eliminar <strong class="text-zinc-100">todas as ${characters.length} personagens</strong>? Esta ação não pode ser desfeita.`,
+        () => {
+          characters = [];
+          saveData();
+          renderCards();
+          showToast('info', 'Base de dados limpa.');
+        }
+      );
+    }
+
+    // ─── EXPORTAR JSON ────────────────────────────────────────────────────────
+    function exportDB() {
+      if (characters.length === 0) {
+        showToast('warn', 'Não há personagens para exportar.');
+        return;
+      }
+      const blob = new Blob(
+        [JSON.stringify({ version: 1, exportedAt: new Date().toISOString(), characters }, null, 2)],
+        { type: 'application/json' }
+      );
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = `personagens_${new Date().toISOString().slice(0,10)}.json`;
+      a.click();
+      URL.revokeObjectURL(url);
+      showToast('success', `${characters.length} personagem(ns) exportada(s).`);
+    }
+
+    // ─── IMPORTAR JSON ────────────────────────────────────────────────────────
+    function importDB(event) {
+      const file = event.target.files[0];
+      if (!file) return;
+      const reader = new FileReader();
+      reader.onload = function(e) {
+        try {
+          const data = JSON.parse(e.target.result);
+          let imported = [];
+
+          if (Array.isArray(data)) {
+            imported = data;
+          } else if (data.characters && Array.isArray(data.characters)) {
+            imported = data.characters;
+          } else {
+            throw new Error('Formato inválido');
+          }
+
+          const valid = imported.filter(c => c.name && c.ability).map(c => ({
+            id: c.id || crypto.randomUUID(),
+            name: String(c.name).trim().slice(0, 60),
+            ability: String(c.ability).trim().slice(0, 80),
+            createdAt: c.createdAt || new Date().toISOString()
+          }));
+
+          if (valid.length === 0) throw new Error('Nenhuma personagem válida encontrada');
+
+          const existing = new Set(characters.map(c => c.id));
+          const novos = valid.filter(c => !existing.has(c.id));
+
+          characters = [...novos, ...characters];
+          saveData();
+          renderCards();
+          showToast('success', `${novos.length} personagem(ns) importada(s) com sucesso.`);
+        } catch (err) {
+          showToast('error', 'Erro ao importar: ficheiro inválido ou corrompido.');
+        }
+      };
+      reader.readAsText(file);
+      event.target.value = '';
+    }
+
+    // ─── MODAL ────────────────────────────────────────────────────────────────
+    function openModal(title, msg, onConfirm) {
+      document.getElementById('modalTitle').textContent = title;
+      document.getElementById('modalMsg').innerHTML = msg;
+      pendingAction = onConfirm;
+      document.getElementById('confirmModal').classList.remove('hidden');
+    }
+
+    function closeModal() {
+      document.getElementById('confirmModal').classList.add('hidden');
+      pendingAction = null;
+    }
+
+    document.getElementById('modalConfirmBtn').addEventListener('click', () => {
+      if (pendingAction) pendingAction();
+      closeModal();
+    });
+
+    document.getElementById('confirmModal').addEventListener('click', function(e) {
+      if (e.target === this) closeModal();
+    });
+
+    document.addEventListener('keydown', e => {
+      if (e.key === 'Escape') closeModal();
+    });
+
+    // ─── TOAST ────────────────────────────────────────────────────────────────
+    const toastIcons = {
+      success: { color:'#34d399', path:'M20 6L9 17l-5-5' },
+      info:    { color:'#60a5fa', path:'M12 8v4m0 4h.01M12 2a10 10 0 1 0 0 20A10 10 0 0 0 12 2z' },
+      warn:    { color:'#fbbf24', path:'M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0zM12 9v4M12 17h.01' },
+      error:   { color:'#f87171', path:'M18 6L6 18M6 6l12 12' },
+    };
+
+    function showToast(type, message) {
+      const container = document.getElementById('toastContainer');
+      const icon = toastIcons[type] || toastIcons.info;
+      const toast = document.createElement('div');
+      toast.className = 'toast';
+      toast.innerHTML = `
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="${icon.color}" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" style="flex-shrink:0">
+          <path d="${icon.path}"/>
+        </svg>
+        <span>${escHtml(message)}</span>
+      `;
+      container.appendChild(toast);
+      setTimeout(() => {
+        toast.style.animation = 'none';
+        toast.style.opacity = '0';
+        toast.style.transition = 'opacity .3s';
+        setTimeout(() => toast.remove(), 300);
+      }, 3200);
+    }
+
+    // ─── INIT ─────────────────────────────────────────────────────────────────
+    loadData();
+    renderCards();
+  </script>
+</body>
+</html>
