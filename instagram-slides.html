@@ -2,946 +2,972 @@
 <html lang="pt">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
-  <title>Gerador de Slides Instagram</title>
+  <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1">
+  <title>Slides Instagram — Gerador Profissional</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;0,900;1,400&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;0,900;1,400&family=Inter:wght@300;400;500;600;700&family=Montserrat:wght@300;700;800&display=swap" rel="stylesheet">
   <style>
-    :root {
-      --app: #0d0d14;
-      --panel: #14141f;
-      --card: #1c1c2a;
-      --border: rgba(255,255,255,0.07);
-      --accent: #7c3aed;
-      --accent2: #ec4899;
-      --text: #f0f0f5;
-      --muted: #6b6b85;
-      --green: #10b981;
-      --r: 12px;
-    }
     *, *::before, *::after { margin:0; padding:0; box-sizing:border-box; }
+    :root {
+      --app:    #06060f;
+      --panel:  #0b0b18;
+      --card:   #12121f;
+      --card2:  #181828;
+      --border: rgba(255,255,255,.065);
+      --acc:    #7c3aed;
+      --acc2:   #ec4899;
+      --text:   #eeeef8;
+      --muted:  #55556a;
+      --green:  #10b981;
+      --r:      14px;
+      --rs:     8px;
+    }
 
     body {
       font-family: 'Inter', system-ui, sans-serif;
       background: var(--app);
       color: var(--text);
       min-height: 100dvh;
+      overflow-x: hidden;
     }
 
-    /* ─── HEADER ─── */
-    header {
-      display: flex;
-      align-items: center;
-      gap: 14px;
-      padding: 18px 28px;
-      background: rgba(124,58,237,.07);
+    /* ── SCROLLBAR ── */
+    ::-webkit-scrollbar { width: 5px; }
+    ::-webkit-scrollbar-track { background: transparent; }
+    ::-webkit-scrollbar-thumb { background: rgba(255,255,255,.1); border-radius: 99px; }
+
+    /* ── HEADER ── */
+    .hdr {
+      position: sticky; top: 0; z-index: 300;
+      display: flex; align-items: center; gap: 14px;
+      padding: 15px 28px;
+      background: rgba(6,6,15,.88);
+      backdrop-filter: blur(20px) saturate(1.4);
       border-bottom: 1px solid var(--border);
-      position: sticky;
-      top: 0;
-      z-index: 100;
-      backdrop-filter: blur(12px);
     }
-    .logo {
-      width: 40px; height: 40px; flex-shrink: 0;
-      background: linear-gradient(135deg, var(--accent), var(--accent2));
+    .hdr-logo {
+      width: 36px; height: 36px; flex-shrink: 0;
+      background: linear-gradient(135deg, var(--acc), var(--acc2));
       border-radius: 10px;
       display: grid; place-items: center;
-      font-size: 20px;
+      font-size: 17px;
+      box-shadow: 0 4px 16px rgba(124,58,237,.4);
     }
-    header h1 { font-size: 17px; font-weight: 700; line-height: 1.2; }
-    header p  { font-size: 12px; color: var(--muted); margin-top: 2px; }
+    .hdr h1   { font-size: 15px; font-weight: 700; letter-spacing: -.01em; }
+    .hdr span { font-size: 12px; color: var(--muted); display: block; margin-top: 1px; }
 
-    /* ─── LAYOUT ─── */
-    main {
+    /* ── LAYOUT ── */
+    .app {
       display: grid;
-      grid-template-columns: 360px 1fr;
-      min-height: calc(100dvh - 77px);
+      grid-template-columns: 370px 1fr;
+      min-height: calc(100dvh - 67px);
     }
-    @media (max-width: 780px) {
-      main { grid-template-columns: 1fr; }
+    @media (max-width: 860px) {
+      .app { grid-template-columns: 1fr; }
     }
 
-    /* ─── FORM PANEL ─── */
-    .form-panel {
+    /* ── FORM PANEL ── */
+    .form {
       background: var(--panel);
       border-right: 1px solid var(--border);
-      padding: 24px 20px;
-      display: flex;
-      flex-direction: column;
-      gap: 20px;
+      padding: 0 0 32px;
+      display: flex; flex-direction: column;
       overflow-y: auto;
+      max-height: calc(100dvh - 67px);
+    }
+    @media (max-width: 860px) { .form { max-height: none; } }
+
+    .form-sec {
+      padding: 22px 22px 20px;
+      border-bottom: 1px solid var(--border);
+    }
+    .form-sec:last-of-type { border-bottom: none; }
+
+    .sec-label {
+      font-size: 10px; font-weight: 700;
+      letter-spacing: 1.1px; text-transform: uppercase;
+      color: var(--muted); margin-bottom: 16px;
+      display: flex; align-items: center; gap: 8px;
+    }
+    .sec-label::after {
+      content: ''; flex: 1; height: 1px;
+      background: var(--border);
     }
 
-    .field { display: flex; flex-direction: column; gap: 7px; }
-    .field label {
-      font-size: 11px;
-      font-weight: 600;
-      letter-spacing: .8px;
-      text-transform: uppercase;
-      color: var(--muted);
-    }
+    /* ── INPUTS ── */
+    .fld { display: flex; flex-direction: column; gap: 5px; margin-bottom: 12px; }
+    .fld:last-child { margin-bottom: 0; }
+    .fld label { font-size: 12px; font-weight: 500; color: #888; }
 
-    input[type="text"], textarea {
+    input[type=text], textarea {
       background: var(--card);
       border: 1px solid var(--border);
-      border-radius: 8px;
-      padding: 11px 14px;
+      border-radius: var(--rs);
+      padding: 10px 13px;
       color: var(--text);
-      font-family: inherit;
-      font-size: 14px;
-      outline: none;
-      transition: border-color .2s;
-      width: 100%;
+      font-family: inherit; font-size: 14px;
+      outline: none; width: 100%;
+      transition: border-color .18s, box-shadow .18s;
     }
-    input[type="text"]:focus, textarea:focus { border-color: var(--accent); }
-    textarea { resize: vertical; min-height: 160px; line-height: 1.6; }
-    .char-hint { font-size: 11px; color: var(--muted); text-align: right; }
+    input[type=text]:focus, textarea:focus {
+      border-color: rgba(124,58,237,.6);
+      box-shadow: 0 0 0 3px rgba(124,58,237,.12);
+    }
+    textarea { resize: vertical; min-height: 130px; line-height: 1.65; }
 
-    /* ─── UPLOAD ─── */
-    .upload-wrap {
+    .hint { font-size: 11px; color: var(--muted); }
+
+    /* ── UPLOAD BOX ── */
+    .upload-box {
       position: relative;
-      border: 2px dashed var(--border);
+      border: 1.5px dashed rgba(255,255,255,.12);
       border-radius: var(--r);
-      min-height: 120px;
-      cursor: pointer;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      flex-direction: column;
-      gap: 8px;
-      overflow: hidden;
+      min-height: 100px;
+      display: flex; flex-direction: column;
+      align-items: center; justify-content: center;
+      gap: 7px; cursor: pointer; overflow: hidden;
       transition: border-color .2s, background .2s;
+      background: var(--card);
     }
-    .upload-wrap:hover, .upload-wrap.drag { border-color: var(--accent); background: rgba(124,58,237,.05); }
-    .upload-wrap input { position:absolute; inset:0; opacity:0; cursor:pointer; width:100%; height:100%; }
-    .upload-icon  { font-size: 28px; pointer-events: none; }
-    .upload-hint  { font-size: 12px; color: var(--muted); pointer-events: none; }
-    #imgPreview   { max-width:100%; max-height:180px; border-radius:8px; object-fit:cover; display:none; }
+    .upload-box:hover, .upload-box.drag {
+      border-color: var(--acc);
+      background: rgba(124,58,237,.06);
+    }
+    .upload-box input {
+      position: absolute; inset: 0; opacity: 0;
+      cursor: pointer; width: 100%; height: 100%;
+    }
+    .upload-ico  { font-size: 26px; pointer-events: none; }
+    .upload-lbl  { font-size: 12px; color: var(--muted); pointer-events: none; }
+    #imgPrev     { max-width: 100%; max-height: 150px; border-radius: 8px; object-fit: cover; display: none; }
 
-    /* ─── THEMES ─── */
-    .theme-grid {
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 8px;
+    /* ── FONT PICKER ── */
+    .font-row { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+    .font-opt {
+      background: var(--card);
+      border: 1.5px solid var(--border);
+      border-radius: var(--rs);
+      padding: 10px 12px;
+      cursor: pointer; text-align: left;
+      transition: border-color .18s;
     }
+    .font-opt.on { border-color: var(--acc); background: rgba(124,58,237,.08); }
+    .font-opt-name { font-size: 13px; font-weight: 600; color: var(--text); display: block; }
+    .font-opt-sub  { font-size: 11px; color: var(--muted); }
+
+    /* ── THEME GRID ── */
+    .theme-grid { display: grid; grid-template-columns: repeat(3,1fr); gap: 8px; }
     .theme-btn {
       border: 2px solid transparent;
-      border-radius: 10px;
-      padding: 12px 6px 10px;
-      cursor: pointer;
-      font-family: inherit;
-      font-size: 12px;
-      font-weight: 600;
-      text-align: center;
-      transition: transform .15s, border-color .15s;
-      line-height: 1.4;
-    }
-    .theme-btn span { display:block; font-size:20px; margin-bottom:4px; }
-    .theme-btn.active { border-color: #fff; transform: scale(1.06); }
-
-    /* ─── GENERATE BTN ─── */
-    .gen-btn {
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      gap: 10px;
-      padding: 15px 20px;
-      background: linear-gradient(135deg, var(--accent), var(--accent2));
-      color: #fff;
-      font-family: inherit;
-      font-size: 15px;
-      font-weight: 700;
-      border: none;
       border-radius: var(--r);
-      cursor: pointer;
-      transition: opacity .2s, transform .15s, box-shadow .2s;
+      padding: 14px 6px 10px;
+      cursor: pointer; font-family: inherit;
+      font-size: 12px; font-weight: 600;
+      text-align: center; line-height: 1.35;
+      transition: transform .15s, border-color .15s, box-shadow .15s;
     }
-    .gen-btn:hover { opacity:.92; transform: translateY(-2px); box-shadow: 0 10px 28px rgba(124,58,237,.4); }
-    .gen-btn:active { transform: translateY(0); }
-
-    /* ─── PREVIEW PANEL ─── */
-    .preview-panel { padding: 24px 20px; overflow-y: auto; }
-
-    .preview-header {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      margin-bottom: 20px;
+    .theme-btn em  { display: block; font-style: normal; font-size: 18px; margin-bottom: 5px; }
+    .theme-btn.on  {
+      border-color: rgba(255,255,255,.75);
+      transform: scale(1.06);
+      box-shadow: 0 0 0 1px rgba(255,255,255,.15), 0 8px 20px rgba(0,0,0,.4);
     }
-    .preview-header h2 { font-size: 16px; font-weight: 700; }
 
-    .dl-all-btn {
-      display: none;
-      align-items: center;
-      gap: 8px;
-      padding: 9px 16px;
-      background: rgba(16,185,129,.12);
-      color: var(--green);
-      border: 1px solid rgba(16,185,129,.25);
-      border-radius: 8px;
-      font-family: inherit;
-      font-size: 13px;
-      font-weight: 600;
-      cursor: pointer;
-      transition: background .2s;
+    /* ── GENERATE BTN ── */
+    .gen {
+      margin: 0 22px;
+      display: flex; align-items: center; justify-content: center; gap: 10px;
+      padding: 15px 20px;
+      background: linear-gradient(135deg, var(--acc) 0%, var(--acc2) 100%);
+      color: #fff; font-family: inherit; font-size: 15px; font-weight: 700;
+      border: none; border-radius: var(--r); cursor: pointer;
+      position: relative; overflow: hidden;
+      transition: transform .15s, box-shadow .2s, opacity .15s;
     }
-    .dl-all-btn:hover { background: rgba(16,185,129,.22); }
+    .gen::after {
+      content: '';
+      position: absolute; inset: 0;
+      background: linear-gradient(135deg, rgba(255,255,255,.18) 0%, transparent 55%);
+      pointer-events: none;
+    }
+    .gen:hover  { transform: translateY(-2px); box-shadow: 0 12px 36px rgba(124,58,237,.5); }
+    .gen:active { transform: translateY(0); opacity: .9; }
 
-    /* ─── EMPTY STATE ─── */
+    /* ── PREVIEW PANEL ── */
+    .preview {
+      padding: 24px 22px;
+      overflow-y: auto;
+    }
+    .prev-hdr {
+      display: flex; align-items: center; justify-content: space-between;
+      margin-bottom: 22px;
+    }
+    .prev-hdr h2 { font-size: 15px; font-weight: 700; }
+
+    .dl-all {
+      display: none; align-items: center; gap: 7px;
+      padding: 8px 16px;
+      background: rgba(16,185,129,.1);
+      color: var(--green); border: 1px solid rgba(16,185,129,.2);
+      border-radius: var(--rs); font-family: inherit;
+      font-size: 13px; font-weight: 600; cursor: pointer;
+      transition: background .18s;
+    }
+    .dl-all:hover { background: rgba(16,185,129,.2); }
+
+    /* ── EMPTY / LOADING ── */
     .empty {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      gap: 14px;
-      height: 400px;
-      color: var(--muted);
-      text-align: center;
+      display: flex; flex-direction: column;
+      align-items: center; justify-content: center;
+      gap: 14px; height: 420px;
+      text-align: center; color: var(--muted);
     }
-    .empty-icon { font-size: 56px; opacity: .25; }
-    .empty strong { font-size: 15px; color: var(--text); }
-    .empty p { font-size: 13px; }
+    .empty-ico { font-size: 48px; opacity: .18; }
+    .empty strong { font-size: 15px; color: #888; display: block; margin-bottom: 4px; }
+    .empty p { font-size: 13px; line-height: 1.6; }
 
-    /* ─── SPINNER ─── */
     .loading {
-      display: none;
-      align-items: center;
-      justify-content: center;
-      gap: 12px;
-      height: 200px;
-      color: var(--muted);
+      display: none; align-items: center; justify-content: center;
+      gap: 12px; height: 200px; color: var(--muted); font-size: 14px;
     }
     .spin {
-      width: 22px; height: 22px;
-      border: 2px solid rgba(255,255,255,.1);
-      border-top-color: var(--accent);
+      width: 20px; height: 20px;
+      border: 2px solid rgba(255,255,255,.07);
+      border-top-color: var(--acc);
       border-radius: 50%;
-      animation: spin .7s linear infinite;
+      animation: spin .65s linear infinite;
     }
     @keyframes spin { to { transform: rotate(360deg); } }
 
-    /* ─── SLIDES GRID ─── */
-    .slides-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(190px, 1fr));
-      gap: 14px;
-    }
+    /* ── SLIDE GRID ── */
+    .grid { display: grid; grid-template-columns: repeat(auto-fill,minmax(180px,1fr)); gap: 14px; }
 
-    .slide-item {
+    .card {
       position: relative;
-      border-radius: var(--r);
-      overflow: hidden;
+      border-radius: var(--r); overflow: hidden;
       border: 1px solid var(--border);
       background: #000;
-      cursor: pointer;
+      cursor: pointer; aspect-ratio: 1/1;
       transition: transform .2s, box-shadow .2s;
-      aspect-ratio: 1;
     }
-    .slide-item:hover { transform: translateY(-4px); box-shadow: 0 12px 32px rgba(0,0,0,.5); }
-    .slide-item canvas { width: 100%; height: 100%; display: block; }
+    .card:hover { transform: translateY(-5px); box-shadow: 0 18px 44px rgba(0,0,0,.65); }
+    .card canvas { width: 100%; height: 100%; display: block; }
 
-    .slide-footer {
-      position: absolute;
-      bottom: 0; left: 0; right: 0;
+    .card-foot {
+      position: absolute; bottom: 0; left: 0; right: 0;
       padding: 7px 10px;
       background: rgba(0,0,0,.75);
-      backdrop-filter: blur(4px);
-      font-size: 12px;
-      font-weight: 600;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
+      backdrop-filter: blur(8px);
+      font-size: 12px; font-weight: 600;
+      display: flex; align-items: center; justify-content: space-between;
+      gap: 6px;
     }
-    .dl-one {
-      background: none;
-      border: none;
-      color: #fff;
-      font-size: 15px;
-      cursor: pointer;
-      opacity: .7;
-      padding: 2px 4px;
-      line-height: 1;
+    .card-badge {
+      background: rgba(255,255,255,.08);
+      border-radius: 4px; padding: 2px 7px;
+      font-size: 10px; font-weight: 700;
+      letter-spacing: .5px; text-transform: uppercase;
+      color: rgba(255,255,255,.55);
+    }
+    .dl1 {
+      background: none; border: none; color: #fff;
+      font-size: 14px; cursor: pointer;
+      opacity: .55; padding: 3px 4px;
       transition: opacity .15s;
     }
-    .dl-one:hover { opacity: 1; }
+    .dl1:hover { opacity: 1; }
 
-    /* ─── MODAL ─── */
-    .modal-bg {
-      display: none;
-      position: fixed;
-      inset: 0;
-      background: rgba(0,0,0,.92);
-      z-index: 500;
-      align-items: center;
-      justify-content: center;
+    /* ── MODAL ── */
+    .modal {
+      display: none; position: fixed; inset: 0;
+      background: rgba(0,0,0,.94); z-index: 500;
+      align-items: center; justify-content: center;
       padding: 20px;
     }
-    .modal-bg.open { display: flex; }
+    .modal.open { display: flex; }
+    .modal-box { position: relative; width: min(520px,100%); }
+    .modal-box canvas { width: 100%; height: auto; border-radius: var(--r); display: block; }
 
-    .modal-box {
-      position: relative;
-      width: min(520px, 100%);
-    }
-    .modal-box canvas {
-      width: 100%; height: auto;
-      border-radius: var(--r);
-      display: block;
-    }
     .modal-close {
-      position: absolute;
-      top: -38px; right: 0;
-      background: none;
-      border: none;
-      color: #fff;
-      font-size: 22px;
-      cursor: pointer;
-      opacity: .8;
-    }
-    .modal-close:hover { opacity: 1; }
-    .modal-nav {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      margin-top: 14px;
-    }
-    .modal-nav button {
-      background: rgba(255,255,255,.1);
-      border: none;
-      color: #fff;
-      padding: 9px 18px;
-      border-radius: 8px;
-      font-family: inherit;
-      font-size: 13px;
-      font-weight: 600;
-      cursor: pointer;
+      position: absolute; top: -42px; right: 0;
+      background: rgba(255,255,255,.1); border: none;
+      color: #fff; width: 32px; height: 32px;
+      border-radius: 50%; font-size: 14px;
+      cursor: pointer; display: grid; place-items: center;
       transition: background .15s;
     }
-    .modal-nav button:hover { background: rgba(255,255,255,.2); }
-    .modal-nav button:disabled { opacity: .3; cursor: default; }
-    .modal-counter { font-size: 13px; color: var(--muted); }
-    .modal-dl {
-      background: rgba(16,185,129,.15);
-      color: var(--green) !important;
-      border: 1px solid rgba(16,185,129,.3) !important;
+    .modal-close:hover { background: rgba(255,255,255,.2); }
+
+    .modal-nav {
+      display: flex; align-items: center; justify-content: space-between;
+      gap: 8px; margin-top: 14px;
     }
-    .modal-dl:hover { background: rgba(16,185,129,.25) !important; }
+    .m-btn {
+      background: rgba(255,255,255,.08); border: none; color: #fff;
+      padding: 9px 16px; border-radius: var(--rs);
+      font-family: inherit; font-size: 13px; font-weight: 600;
+      cursor: pointer; transition: background .15s;
+    }
+    .m-btn:hover { background: rgba(255,255,255,.16); }
+    .m-btn:disabled { opacity: .25; cursor: default; }
+    .m-btn.g {
+      background: rgba(16,185,129,.12);
+      color: var(--green);
+      border: 1px solid rgba(16,185,129,.22);
+    }
+    .m-btn.g:hover { background: rgba(16,185,129,.22); }
+    .m-ctr { font-size: 13px; color: var(--muted); flex: 1; text-align: center; }
+
+    /* ── TOAST ── */
+    .toast {
+      position: fixed; bottom: 24px; left: 50%;
+      transform: translateX(-50%) translateY(12px);
+      background: rgba(16,185,129,.15);
+      color: var(--green);
+      border: 1px solid rgba(16,185,129,.28);
+      border-radius: var(--rs); padding: 9px 18px;
+      font-size: 13px; font-weight: 600;
+      display: flex; align-items: center; gap: 8px;
+      backdrop-filter: blur(10px);
+      opacity: 0; pointer-events: none;
+      transition: opacity .25s, transform .25s;
+      white-space: nowrap; z-index: 999;
+    }
+    .toast.show {
+      opacity: 1;
+      transform: translateX(-50%) translateY(0);
+    }
   </style>
 </head>
 <body>
 
-<header>
-  <div class="logo">📸</div>
+<header class="hdr">
+  <div class="hdr-logo">📸</div>
   <div>
-    <h1>Gerador de Slides Instagram</h1>
-    <p>7 slides profissionais em segundos • 1080×1080 px</p>
+    <h1>Slides Instagram</h1>
+    <span>Gera 7 imagens 1080 × 1080 para carrossel</span>
   </div>
 </header>
 
-<main>
-  <!-- ─── FORM ─── -->
-  <section class="form-panel">
+<div class="app">
 
-    <div class="field">
-      <label>Imagem de Capa</label>
-      <div class="upload-wrap" id="uploadWrap">
-        <input type="file" accept="image/*" id="fileInput">
-        <div id="uploadPlaceholder">
-          <div class="upload-icon">🖼️</div>
-          <div class="upload-hint">Clica ou arrasta a imagem aqui</div>
+  <!-- ══ FORMULÁRIO ══ -->
+  <section class="form">
+
+    <div class="form-sec">
+      <div class="sec-label">Slide de Capa</div>
+
+      <div class="fld">
+        <label>Imagem de fundo</label>
+        <div class="upload-box" id="uploadBox">
+          <input type="file" accept="image/*" id="fileInput">
+          <div id="uploadPH">
+            <div class="upload-ico">🖼️</div>
+            <div class="upload-lbl">Clica ou arrasta a imagem aqui</div>
+          </div>
+          <img id="imgPrev" alt="">
         </div>
-        <img id="imgPreview" alt="Capa">
+      </div>
+
+      <div class="fld">
+        <label>Título principal</label>
+        <input type="text" id="titleIn" placeholder="Ex: 5 Dicas Para Crescer no Instagram">
+      </div>
+
+      <div class="fld">
+        <label>Subtítulo <span style="color:var(--muted)">(opcional)</span></label>
+        <input type="text" id="subIn" placeholder="Uma frase de contextualização">
       </div>
     </div>
 
-    <div class="field">
-      <label>Título do Post</label>
-      <input type="text" id="titleInput" placeholder="Ex: 5 Dicas Para Crescer no Instagram">
+    <div class="form-sec">
+      <div class="sec-label">Conteúdo</div>
+
+      <div class="fld">
+        <label>@Username <span style="color:var(--muted)">(opcional)</span></label>
+        <input type="text" id="handleIn" placeholder="@teuinstagram">
+      </div>
+
+      <div class="fld">
+        <label>Texto completo dos slides</label>
+        <textarea id="textIn" placeholder="Escreve o conteúdo completo. Usa parágrafos separados (linha em branco) para controlar a divisão entre slides."></textarea>
+        <div class="hint" id="charHint">0 caracteres</div>
+      </div>
+
+      <div class="fld">
+        <label>Call-to-action no último slide <span style="color:var(--muted)">(opcional)</span></label>
+        <input type="text" id="ctaIn" placeholder="Ex: Salva este post! Segue @handle">
+      </div>
     </div>
 
-    <div class="field">
-      <label>@Username (opcional)</label>
-      <input type="text" id="handleInput" placeholder="@teuinstagram">
+    <div class="form-sec">
+      <div class="sec-label">Estilo</div>
+
+      <div class="fld">
+        <label>Tipografia</label>
+        <div class="font-row" id="fontRow"></div>
+      </div>
+
+      <div class="fld" style="margin-top:14px">
+        <label>Tema</label>
+        <div class="theme-grid" id="themeGrid"></div>
+      </div>
     </div>
 
-    <div class="field">
-      <label>Conteúdo (dividido nos 6 slides)</label>
-      <textarea id="textInput"
-        placeholder="Escreve o texto completo aqui. Usa parágrafos separados (linha vazia entre eles) para controlar como o conteúdo fica dividido pelos slides."></textarea>
-      <div class="char-hint" id="charCount">0 caracteres</div>
-    </div>
-
-    <div class="field">
-      <label>Tema</label>
-      <div class="theme-grid" id="themeGrid"></div>
-    </div>
-
-    <button class="gen-btn" id="genBtn">
+    <button class="gen" id="genBtn">
       <span>✨</span>
       <span>Gerar 7 Slides</span>
     </button>
 
   </section>
 
-  <!-- ─── PREVIEW ─── -->
-  <section class="preview-panel">
-    <div class="preview-header">
-      <h2>Preview dos Slides</h2>
-      <button class="dl-all-btn" id="dlAllBtn">⬇ Download Todos</button>
+  <!-- ══ PREVIEW ══ -->
+  <section class="preview">
+    <div class="prev-hdr">
+      <h2>Preview</h2>
+      <button class="dl-all" id="dlAll">⬇&nbsp; Download Todos</button>
     </div>
 
-    <div class="empty" id="emptyState">
-      <div class="empty-icon">📲</div>
-      <strong>Os teus slides aparecem aqui</strong>
-      <p>Preenche o formulário e clica em "Gerar Slides"</p>
+    <div class="empty" id="emptyEl">
+      <div class="empty-ico">📲</div>
+      <div>
+        <strong>Os slides aparecem aqui</strong>
+        <p>Preenche o formulário à esquerda<br>e clica em Gerar Slides</p>
+      </div>
     </div>
 
-    <div class="loading" id="loadingState">
+    <div class="loading" id="loadEl">
       <div class="spin"></div>
       <span>A gerar slides…</span>
     </div>
 
-    <div class="slides-grid" id="slidesGrid"></div>
+    <div class="grid" id="gridEl"></div>
   </section>
-</main>
+</div>
 
-<!-- ─── MODAL ─── -->
-<div class="modal-bg" id="modalBg">
+<!-- ══ MODAL ══ -->
+<div class="modal" id="modal">
   <div class="modal-box">
-    <button class="modal-close" id="modalClose">✕</button>
-    <canvas id="modalCanvas"></canvas>
+    <button class="modal-close" id="mClose">✕</button>
+    <canvas id="mCanvas"></canvas>
     <div class="modal-nav">
-      <button id="modalPrev">← Anterior</button>
-      <span class="modal-counter" id="modalCounter">1 / 7</span>
-      <button class="modal-dl" id="modalDl">⬇ Download</button>
-      <button id="modalNext">Próximo →</button>
+      <button class="m-btn" id="mPrev">← Anterior</button>
+      <span class="m-ctr" id="mCtr">1 / 7</span>
+      <button class="m-btn g" id="mDl">⬇ Download</button>
+      <button class="m-btn" id="mNext">Próximo →</button>
     </div>
   </div>
 </div>
 
+<!-- ══ TOAST ══ -->
+<div class="toast" id="toast"></div>
+
 <script>
-// ══════════════════════════════════════════════════════
-//  THEMES
-// ══════════════════════════════════════════════════════
+'use strict';
+
+// ═══════════════════════════════════════════════════════
+//  CONFIG
+// ═══════════════════════════════════════════════════════
+const S = 1080, P = 72;
+
 const THEMES = {
-  dark: {
-    name:'Escuro', icon:'🖤',
-    bg1:'#0a0a0a', bg2:'#141414',
-    accent:'#f0c040', text:'#ffffff', sub:'#bbbbbb',
-    coverOverlay:'rgba(0,0,0,.58)'
-  },
-  purple: {
-    name:'Roxo', icon:'💜',
-    bg1:'#130829', bg2:'#1f0e40',
-    accent:'#c084fc', text:'#ffffff', sub:'#ddd6fe',
-    coverOverlay:'rgba(19,8,41,.62)'
-  },
-  white: {
-    name:'Branco', icon:'🤍',
-    bg1:'#ffffff', bg2:'#f0f0f0',
-    accent:'#111111', text:'#111111', sub:'#555555',
-    coverOverlay:'rgba(255,255,255,.48)'
-  },
-  green: {
-    name:'Verde', icon:'💚',
-    bg1:'#071a12', bg2:'#0e2d1f',
-    accent:'#34d399', text:'#ffffff', sub:'#a7f3d0',
-    coverOverlay:'rgba(7,26,18,.62)'
-  },
-  sunset: {
-    name:'Pôr do Sol', icon:'🧡',
-    bg1:'#180600', bg2:'#2d1000',
-    accent:'#fb923c', text:'#ffffff', sub:'#fed7aa',
-    coverOverlay:'rgba(24,6,0,.62)'
-  },
-  ocean: {
-    name:'Oceano', icon:'💙',
-    bg1:'#040f1c', bg2:'#0a1f35',
-    accent:'#38bdf8', text:'#ffffff', sub:'#bae6fd',
-    coverOverlay:'rgba(4,15,28,.62)'
-  }
+  noir:     { n:'Noir',     i:'🖤', g1:'#080808', g2:'#111111', ac:'#c9a84c', tx:'#f4f0e8', su:'#787870', ov:'rgba(0,0,0,.64)',       nb:'rgba(201,168,76,.052)'  },
+  slate:    { n:'Slate',    i:'🌊', g1:'#060e1c', g2:'#0c1726', ac:'#38bdf8', tx:'#e0eef8', su:'#5e88aa', ov:'rgba(6,14,28,.64)',      nb:'rgba(56,189,248,.048)'  },
+  ivory:    { n:'Ivory',    i:'🤍', g1:'#faf9f4', g2:'#ede8e0', ac:'#18181a', tx:'#18181a', su:'#686260', ov:'rgba(248,246,240,.52)',  nb:'rgba(24,24,26,.036)'    },
+  forest:   { n:'Forest',   i:'🌿', g1:'#06140c', g2:'#0a1e12', ac:'#4ade80', tx:'#edfaf3', su:'#78b48a', ov:'rgba(6,20,12,.65)',      nb:'rgba(74,222,128,.048)'  },
+  rose:     { n:'Rose',     i:'🌹', g1:'#160610', g2:'#200e18', ac:'#fb7185', tx:'#fff0f2', su:'#be7e8c', ov:'rgba(22,6,16,.65)',      nb:'rgba(251,113,133,.052)' },
+  midnight: { n:'Midnight', i:'🌙', g1:'#070517', g2:'#0d0b24', ac:'#a78bfa', tx:'#ede8ff', su:'#7868b4', ov:'rgba(7,5,23,.65)',       nb:'rgba(167,139,250,.052)' }
 };
 
-let activeTheme = 'dark';
-let coverImg    = null;
-let canvases    = [];
-let modalIdx    = 0;
+const FONTS = {
+  editorial: { n:'Editorial',  d:'Playfair + Inter',      tt:"'Playfair Display',Georgia,serif", tb:"'Inter',system-ui,sans-serif",  tw:'900', bw:'400' },
+  modern:    { n:'Moderno',     d:'Montserrat + Inter',   tt:"'Montserrat','Inter',sans-serif",  tb:"'Inter',system-ui,sans-serif",  tw:'800', bw:'300' }
+};
 
-const SIZE = 1080;
-const PAD  = 80;
+let TK = 'noir', FK = 'editorial', coverImg = null, slides = [], mIdx = 0;
 
-// ══════════════════════════════════════════════════════
-//  THEME PICKER
-// ══════════════════════════════════════════════════════
-function initThemes() {
-  const grid = document.getElementById('themeGrid');
-  Object.entries(THEMES).forEach(([key, t]) => {
-    const btn = document.createElement('button');
-    btn.className = 'theme-btn' + (key === activeTheme ? ' active' : '');
-    btn.style.background = `linear-gradient(135deg,${t.bg1},${t.bg2})`;
-    btn.style.color = t.text;
-    btn.innerHTML = `<span>${t.icon}</span>${t.name}`;
-    btn.onclick = () => {
-      document.querySelectorAll('.theme-btn').forEach(b => b.classList.remove('active'));
-      btn.classList.add('active');
-      activeTheme = key;
+// ═══════════════════════════════════════════════════════
+//  UI INIT
+// ═══════════════════════════════════════════════════════
+(function initThemes() {
+  const el = document.getElementById('themeGrid');
+  for (const [k, t] of Object.entries(THEMES)) {
+    const b = document.createElement('button');
+    b.className = 'theme-btn' + (k === TK ? ' on' : '');
+    b.style.cssText = `background:linear-gradient(150deg,${t.g1},${t.g2});color:${t.tx}`;
+    b.innerHTML = `<em>${t.i}</em>${t.n}`;
+    b.onclick = () => {
+      document.querySelectorAll('.theme-btn').forEach(x => x.classList.remove('on'));
+      b.classList.add('on'); TK = k;
     };
-    grid.appendChild(btn);
-  });
-}
+    el.appendChild(b);
+  }
+})();
 
-// ══════════════════════════════════════════════════════
-//  IMAGE UPLOAD
-// ══════════════════════════════════════════════════════
-function initUpload() {
-  const wrap   = document.getElementById('uploadWrap');
-  const input  = document.getElementById('fileInput');
-  const prev   = document.getElementById('imgPreview');
-  const ph     = document.getElementById('uploadPlaceholder');
+(function initFonts() {
+  const el = document.getElementById('fontRow');
+  for (const [k, f] of Object.entries(FONTS)) {
+    const b = document.createElement('button');
+    b.className = 'font-opt' + (k === FK ? ' on' : '');
+    b.innerHTML = `<span class="font-opt-name">${f.n}</span><span class="font-opt-sub">${f.d}</span>`;
+    b.onclick = () => {
+      document.querySelectorAll('.font-opt').forEach(x => x.classList.remove('on'));
+      b.classList.add('on'); FK = k;
+    };
+    el.appendChild(b);
+  }
+})();
 
-  function loadFile(file) {
-    if (!file || !file.type.startsWith('image/')) return;
-    const reader = new FileReader();
-    reader.onload = ev => {
+(function initUpload() {
+  const box = document.getElementById('uploadBox');
+  const inp = document.getElementById('fileInput');
+  const prv = document.getElementById('imgPrev');
+  const ph  = document.getElementById('uploadPH');
+
+  function load(file) {
+    if (!file?.type.startsWith('image/')) return;
+    const r = new FileReader();
+    r.onload = e => {
       const img = new Image();
-      img.onload = () => {
-        coverImg = img;
-        prev.src = ev.target.result;
-        prev.style.display = 'block';
-        ph.style.display = 'none';
-      };
-      img.src = ev.target.result;
+      img.onload = () => { coverImg = img; prv.src = e.target.result; prv.style.display = 'block'; ph.style.display = 'none'; };
+      img.src = e.target.result;
     };
-    reader.readAsDataURL(file);
+    r.readAsDataURL(file);
   }
 
-  input.addEventListener('change', e => loadFile(e.target.files[0]));
-  wrap.addEventListener('dragover', e => { e.preventDefault(); wrap.classList.add('drag'); });
-  wrap.addEventListener('dragleave', () => wrap.classList.remove('drag'));
-  wrap.addEventListener('drop', e => {
-    e.preventDefault();
-    wrap.classList.remove('drag');
-    loadFile(e.dataTransfer.files[0]);
-  });
+  inp.addEventListener('change', e => load(e.target.files[0]));
+  box.addEventListener('dragover', e => { e.preventDefault(); box.classList.add('drag'); });
+  box.addEventListener('dragleave', () => box.classList.remove('drag'));
+  box.addEventListener('drop', e => { e.preventDefault(); box.classList.remove('drag'); load(e.dataTransfer.files[0]); });
+})();
+
+// ═══════════════════════════════════════════════════════
+//  TEXT SPLIT
+// ═══════════════════════════════════════════════════════
+function splitN(raw, n) {
+  const t = (raw || '').trim();
+  if (!t) return Array(n).fill('');
+
+  let p = t.split(/\n\s*\n/).map(s => s.trim()).filter(Boolean);
+  if (p.length < 2) p = t.split(/\n/).map(s => s.trim()).filter(Boolean);
+  if (p.length < 2) { const m = t.match(/[^.!?]+[.!?]+(?:\s|$)/g); if (m) p = m.map(s => s.trim()).filter(Boolean); }
+  if (p.length < 2) {
+    const ws = t.split(/\s+/), cs = Math.ceil(ws.length / n);
+    p = Array.from({length: n}, (_, i) => ws.slice(i*cs, (i+1)*cs).join(' ').trim()).filter(Boolean);
+  }
+
+  if (p.length <= n) { while (p.length < n) p.push(''); return p; }
+
+  const out = [], base = Math.floor(p.length / n), ex = p.length % n;
+  let i = 0;
+  for (let g = 0; g < n; g++) { const sz = base + (g < ex ? 1 : 0); out.push(p.slice(i, i+sz).join('\n\n')); i += sz; }
+  return out;
 }
 
-// ══════════════════════════════════════════════════════
-//  TEXT SPLITTING
-// ══════════════════════════════════════════════════════
-function splitText(raw, n) {
-  const text = (raw || '').trim();
-  if (!text) return Array(n).fill('');
-
-  // Try double-newline paragraphs
-  let parts = text.split(/\n\s*\n/).map(s => s.trim()).filter(Boolean);
-
-  // Fall back to single newlines
-  if (parts.length < 2)
-    parts = text.split(/\n/).map(s => s.trim()).filter(Boolean);
-
-  // Fall back to sentences
-  if (parts.length < 2) {
-    const m = text.match(/[^.!?]+[.!?]+/g);
-    if (m) parts = m.map(s => s.trim()).filter(Boolean);
-  }
-
-  // Fall back to word chunks
-  if (parts.length < 2) {
-    const words = text.split(/\s+/);
-    const cs = Math.ceil(words.length / n);
-    parts = [];
-    for (let i = 0; i < n; i++) {
-      const chunk = words.slice(i * cs, (i + 1) * cs).join(' ').trim();
-      if (chunk) parts.push(chunk);
-    }
-  }
-
-  return groupIntoN(parts, n);
-}
-
-function groupIntoN(parts, n) {
-  if (parts.length === 0) return Array(n).fill('');
-  if (parts.length <= n) {
-    const r = [...parts];
-    while (r.length < n) r.push('');
-    return r;
-  }
-  const result = [];
-  const base = Math.floor(parts.length / n);
-  const extra = parts.length % n;
-  let idx = 0;
-  for (let i = 0; i < n; i++) {
-    const size = base + (i < extra ? 1 : 0);
-    result.push(parts.slice(idx, idx + size).join('\n\n'));
-    idx += size;
-  }
-  return result;
-}
-
-// ══════════════════════════════════════════════════════
+// ═══════════════════════════════════════════════════════
 //  CANVAS HELPERS
-// ══════════════════════════════════════════════════════
-function newCanvas() {
-  const c = document.createElement('canvas');
-  c.width = SIZE; c.height = SIZE;
-  return c;
+// ═══════════════════════════════════════════════════════
+function mkC() { const c = document.createElement('canvas'); c.width = S; c.height = S; return c; }
+function p2(n) { return String(n).padStart(2, '0'); }
+
+function gradBg(ctx, t) {
+  const g = ctx.createLinearGradient(0, 0, S * .25, S);
+  g.addColorStop(0, t.g1); g.addColorStop(1, t.g2);
+  ctx.fillStyle = g; ctx.fillRect(0, 0, S, S);
 }
 
-function drawBg(ctx, t) {
-  const g = ctx.createLinearGradient(0, 0, 0, SIZE);
-  g.addColorStop(0, t.bg1);
-  g.addColorStop(1, t.bg2);
-  ctx.fillStyle = g;
-  ctx.fillRect(0, 0, SIZE, SIZE);
+function coverFit(ctx, img) {
+  const ia = img.width / img.height;
+  let sw, sh, sx, sy;
+  if (ia >= 1) { sh = S; sw = S*ia; sx = -(sw-S)/2; sy = 0; }
+  else          { sw = S; sh = S/ia; sx = 0; sy = -(sh-S)/2; }
+  ctx.drawImage(img, sx, sy, sw, sh);
 }
 
-function drawSlideNum(ctx, cur, total, color, dark) {
-  ctx.save();
-  ctx.font = '500 30px "Inter",sans-serif';
-  ctx.fillStyle = dark ? 'rgba(0,0,0,.75)' : color;
-  ctx.textAlign = 'right';
-  ctx.textBaseline = 'top';
-  ctx.fillText(pad2(cur) + ' / ' + pad2(total), SIZE - PAD, PAD + 2);
-  ctx.restore();
-}
-
-function drawHandle(ctx, handle, color) {
-  if (!handle) return;
-  const h = handle.startsWith('@') ? handle : '@' + handle;
-  ctx.save();
-  ctx.font = '500 28px "Inter",sans-serif';
-  ctx.fillStyle = color;
-  ctx.textAlign = 'left';
-  ctx.textBaseline = 'top';
-  ctx.fillText(h, PAD, PAD + 2);
-  ctx.restore();
-}
-
-function drawAccent(ctx, color, x, y) {
-  ctx.save();
-  ctx.strokeStyle = color;
-  ctx.lineWidth = 5;
-  ctx.lineCap = 'round';
-  ctx.beginPath();
-  ctx.moveTo(x, y);
-  ctx.lineTo(x + 90, y);
-  ctx.stroke();
-  ctx.restore();
-}
-
-function pad2(n) { return String(n).padStart(2, '0'); }
-
-function wrapWords(ctx, text, maxW) {
-  const words = text.split(' ');
-  const lines = [];
+function wrap(ctx, text, maxW) {
+  const words = text.split(' '), lines = [];
   let line = '';
-  for (const word of words) {
-    const test = line ? line + ' ' + word : word;
-    if (ctx.measureText(test).width > maxW && line) {
-      lines.push(line);
-      line = word;
-    } else {
-      line = test;
-    }
+  for (const w of words) {
+    const t = line ? line+' '+w : w;
+    if (ctx.measureText(t).width > maxW && line) { lines.push(line); line = w; }
+    else line = t;
   }
   if (line) lines.push(line);
   return lines;
 }
 
-function drawBodyText(ctx, text, cx, cy, maxW, lh) {
-  // Collect all visual lines
-  const items = [];
+function drawCentered(ctx, text, cx, cy, maxW, lh) {
+  const rows = [];
   for (const para of text.split('\n')) {
-    if (!para.trim()) { items.push(null); continue; }
-    for (const l of wrapWords(ctx, para, maxW)) items.push(l);
+    if (!para.trim()) { rows.push(null); continue; }
+    for (const l of wrap(ctx, para, maxW)) rows.push(l);
   }
+  while (rows.length && rows[0] === null) rows.shift();
+  while (rows.length && rows[rows.length-1] === null) rows.pop();
 
-  // Remove leading/trailing blank items
-  while (items.length && items[0] === null) items.shift();
-  while (items.length && items[items.length - 1] === null) items.pop();
-
-  const total = items.reduce((a, l) => a + (l === null ? lh * 0.5 : lh), 0);
-  let y = cy - total / 2;
-
-  for (const item of items) {
-    if (item === null) { y += lh * 0.5; continue; }
-    ctx.fillText(item, cx, y + lh * 0.72);
+  const totalH = rows.reduce((a, l) => a + (l === null ? lh * .45 : lh), 0);
+  let y = cy - totalH / 2;
+  for (const row of rows) {
+    if (row === null) { y += lh * .45; continue; }
+    ctx.fillText(row, cx, y + lh * .74);
     y += lh;
   }
 }
 
-// ══════════════════════════════════════════════════════
-//  SLIDE 1 — COVER
-// ══════════════════════════════════════════════════════
-function makeCover(title, handle, t) {
-  const c = newCanvas();
-  const ctx = c.getContext('2d');
-
-  if (coverImg) {
-    // Cover-fit the image
-    const ia = coverImg.width / coverImg.height;
-    let sw, sh, sx, sy;
-    if (ia >= 1) {
-      sh = SIZE; sw = SIZE * ia;
-      sx = -(sw - SIZE) / 2; sy = 0;
-    } else {
-      sw = SIZE; sh = SIZE / ia;
-      sx = 0; sy = -(sh - SIZE) / 2;
-    }
-    ctx.drawImage(coverImg, sx, sy, sw, sh);
-
-    // Bottom gradient overlay
-    const bot = ctx.createLinearGradient(0, SIZE * 0.3, 0, SIZE);
-    bot.addColorStop(0, 'rgba(0,0,0,0)');
-    bot.addColorStop(.4, t.coverOverlay);
-    bot.addColorStop(1, 'rgba(0,0,0,.88)');
-    ctx.fillStyle = bot;
-    ctx.fillRect(0, 0, SIZE, SIZE);
-
-    // Top gradient overlay
-    const top = ctx.createLinearGradient(0, 0, 0, SIZE * 0.25);
-    top.addColorStop(0, 'rgba(0,0,0,.55)');
-    top.addColorStop(1, 'rgba(0,0,0,0)');
-    ctx.fillStyle = top;
-    ctx.fillRect(0, 0, SIZE, SIZE * 0.25);
-  } else {
-    drawBg(ctx, t);
-    // Decorative circle
-    ctx.save();
-    ctx.globalAlpha = .06;
+function dots(ctx, active, total, t) {
+  const r = 7, gap = 15, tw = total*(r*2) + (total-1)*gap;
+  const sx = (S - tw) / 2, y = S - 56;
+  for (let i = 0; i < total; i++) {
+    const x = sx + i*(r*2+gap) + r, cur = i === active-1;
     ctx.beginPath();
-    ctx.arc(SIZE * .8, SIZE * .2, 400, 0, Math.PI * 2);
-    ctx.fillStyle = t.accent;
+    ctx.arc(x, y, cur ? r : r*.55, 0, Math.PI*2);
+    ctx.fillStyle = cur ? t.ac : t.tx + '25';
     ctx.fill();
+  }
+}
+
+function topBar(ctx, handle, num, total, fp, light) {
+  const col = light ? 'rgba(255,255,255,.82)' : null;
+  if (handle) {
+    const h = handle.startsWith('@') ? handle : '@'+handle;
+    ctx.save();
+    ctx.font = `500 28px ${fp.tb}`;
+    ctx.fillStyle = col || (light ? 'rgba(255,255,255,.82)' : 'rgba(120,120,140,.9)');
+    ctx.textAlign = 'left'; ctx.textBaseline = 'top';
+    ctx.fillText(h, P, P+2);
     ctx.restore();
   }
-
-  // Handle top-left
-  drawHandle(ctx, handle, 'rgba(255,255,255,.88)');
-  // Slide number top-right
-  drawSlideNum(ctx, 1, 7, 'rgba(255,255,255,.8)', false);
-
-  // Accent line above title
-  const lineY = SIZE - PAD - 220;
   ctx.save();
-  ctx.strokeStyle = t.accent;
-  ctx.lineWidth = 5;
-  ctx.lineCap = 'round';
-  ctx.beginPath();
-  ctx.moveTo(PAD, lineY);
-  ctx.lineTo(PAD + 90, lineY);
-  ctx.stroke();
+  ctx.font = `600 26px ${fp.tb}`;
+  ctx.fillStyle = col || 'rgba(120,120,140,.9)';
+  ctx.textAlign = 'right'; ctx.textBaseline = 'top';
+  ctx.fillText(p2(num)+' / '+p2(total), S-P, P+2);
   ctx.restore();
+}
+
+// ═══════════════════════════════════════════════════════
+//  SLIDE 1 — CAPA
+// ═══════════════════════════════════════════════════════
+function makeCover(title, sub, handle, fp, t) {
+  const c = mkC(), ctx = c.getContext('2d');
+
+  if (coverImg) {
+    coverFit(ctx, coverImg);
+    // Vignette
+    const vig = ctx.createRadialGradient(S/2, S/2, S*.18, S/2, S/2, S*.88);
+    vig.addColorStop(0, 'rgba(0,0,0,0)'); vig.addColorStop(1, 'rgba(0,0,0,.42)');
+    ctx.fillStyle = vig; ctx.fillRect(0, 0, S, S);
+    // Bottom gradient
+    const bot = ctx.createLinearGradient(0, S*.3, 0, S);
+    bot.addColorStop(0, 'rgba(0,0,0,0)');
+    bot.addColorStop(.35, t.ov);
+    bot.addColorStop(1, 'rgba(0,0,0,.92)');
+    ctx.fillStyle = bot; ctx.fillRect(0, 0, S, S);
+    // Top gradient
+    const top = ctx.createLinearGradient(0, 0, 0, S*.2);
+    top.addColorStop(0, 'rgba(0,0,0,.48)'); top.addColorStop(1, 'rgba(0,0,0,0)');
+    ctx.fillStyle = top; ctx.fillRect(0, 0, S, S*.2);
+  } else {
+    gradBg(ctx, t);
+    ctx.save(); ctx.globalAlpha = .06;
+    ctx.beginPath(); ctx.arc(S*.88, S*.14, 400, 0, Math.PI*2);
+    ctx.fillStyle = t.ac; ctx.fill();
+    ctx.beginPath(); ctx.arc(S*.08, S*.82, 260, 0, Math.PI*2);
+    ctx.fillStyle = t.ac; ctx.fill(); ctx.restore();
+  }
+
+  topBar(ctx, handle, 1, 7, fp, true);
+
+  // Bottom content — build from bottom up
+  let y = S - P;
+
+  // Swipe hint
+  ctx.save();
+  ctx.font = `400 21px ${fp.tb}`;
+  ctx.fillStyle = 'rgba(255,255,255,.4)';
+  ctx.textAlign = 'right'; ctx.textBaseline = 'bottom';
+  ctx.fillText('desliza para ler  →', S-P, y);
+  ctx.restore(); y -= 46;
+
+  // Subtitle
+  if (sub) {
+    ctx.save();
+    ctx.font = `300 30px ${fp.tb}`;
+    ctx.fillStyle = 'rgba(255,255,255,.68)';
+    ctx.textAlign = 'left'; ctx.textBaseline = 'bottom';
+    ctx.shadowColor = 'rgba(0,0,0,.5)'; ctx.shadowBlur = 10;
+    const sl = wrap(ctx, sub, S-P*2), slh = 38;
+    y -= (sl.length-1) * slh;
+    sl.forEach((l,i) => ctx.fillText(l, P, y + i*slh));
+    y -= slh + 14; ctx.restore();
+  }
 
   // Title
   ctx.save();
-  ctx.font = '900 84px "Playfair Display",serif';
-  ctx.fillStyle = '#ffffff';
-  ctx.textAlign = 'left';
-  ctx.textBaseline = 'top';
-  const maxW = SIZE - PAD * 2;
-  const titleLines = wrapWords(ctx, title || 'Título do Post', maxW);
-  const lh = 98;
-  titleLines.forEach((line, i) => {
-    ctx.fillText(line, PAD, lineY + 20 + i * lh);
-  });
+  ctx.font = `${fp.tw} 78px ${fp.tt}`;
+  ctx.fillStyle = '#fff';
+  ctx.textAlign = 'left'; ctx.textBaseline = 'bottom';
+  ctx.shadowColor = 'rgba(0,0,0,.65)'; ctx.shadowBlur = 24;
+  const tl = wrap(ctx, title || 'Título', S-P*2), tlh = 90;
+  y -= (tl.length-1) * tlh;
+  tl.forEach((l,i) => ctx.fillText(l, P, y + i*tlh));
+  y -= tlh + 20; ctx.restore();
+
+  // Accent bar
+  ctx.save();
+  ctx.fillStyle = t.ac;
+  ctx.fillRect(P, y-4, 100, 5);
   ctx.restore();
 
   return c;
 }
 
-// ══════════════════════════════════════════════════════
-//  SLIDES 2–7 — CONTENT
-// ══════════════════════════════════════════════════════
-function makeContent(text, num, title, handle, t) {
-  const c = newCanvas();
-  const ctx = c.getContext('2d');
+// ═══════════════════════════════════════════════════════
+//  SLIDES 2–6 — CONTEÚDO
+// ═══════════════════════════════════════════════════════
+function makeContent(text, num, title, handle, fp, t) {
+  const c = mkC(), ctx = c.getContext('2d');
+  gradBg(ctx, t);
 
-  drawBg(ctx, t);
-
-  // Subtle bg circle decoration
+  // Faded background number
   ctx.save();
-  ctx.globalAlpha = .04;
-  ctx.beginPath();
-  ctx.arc(SIZE * .88, SIZE * .12, 380, 0, Math.PI * 2);
-  ctx.fillStyle = t.accent;
-  ctx.fill();
+  ctx.font = `700 290px ${fp.tb}`;
+  ctx.fillStyle = t.nb;
+  ctx.textAlign = 'right'; ctx.textBaseline = 'middle';
+  ctx.fillText(p2(num), S-P+20, S*.52);
   ctx.restore();
 
-  // Accent bar top-left
-  drawAccent(ctx, t.accent, PAD, PAD + 4);
-
-  // Slide number & handle
-  drawSlideNum(ctx, num, 7, t.accent, false);
-  drawHandle(ctx, handle, t.sub + 'cc');  // slightly transparent
-
-  // Main body text
+  // Left accent bar
   ctx.save();
-  ctx.font = '400 50px "Inter",sans-serif';
-  ctx.fillStyle = t.text;
-  ctx.textAlign = 'center';
-  ctx.textBaseline = 'alphabetic';
-  drawBodyText(ctx, text || '', SIZE / 2, SIZE / 2, SIZE - PAD * 2.2, 76);
+  ctx.fillStyle = t.ac;
+  ctx.fillRect(P, P+62, 4, 108);
   ctx.restore();
 
-  // Footer: title reference
+  topBar(ctx, handle, num, 7, fp, false);
+
+  // Body text
+  ctx.save();
+  ctx.font = `${fp.bw} 48px ${fp.tb}`;
+  ctx.fillStyle = t.tx;
+  ctx.textAlign = 'center'; ctx.textBaseline = 'alphabetic';
+  drawCentered(ctx, text || '', S/2, S*.48, S-P*2.5, 76);
+  ctx.restore();
+
+  // Title reference footer
   if (title) {
     ctx.save();
-    ctx.font = 'italic 26px "Playfair Display",serif';
-    ctx.fillStyle = t.sub;
-    ctx.globalAlpha = .5;
-    ctx.textAlign = 'center';
-    ctx.textBaseline = 'bottom';
-    ctx.fillText(title, SIZE / 2, SIZE - PAD);
+    ctx.font = `italic 400 24px ${fp.tt}`;
+    ctx.fillStyle = t.su; ctx.globalAlpha = .45;
+    ctx.textAlign = 'center'; ctx.textBaseline = 'bottom';
+    ctx.fillText(title, S/2, S-P-26);
     ctx.restore();
   }
 
+  dots(ctx, num, 7, t);
   return c;
 }
 
-// ══════════════════════════════════════════════════════
-//  GENERATE
-// ══════════════════════════════════════════════════════
-async function generate() {
-  const title  = document.getElementById('titleInput').value.trim();
-  const text   = document.getElementById('textInput').value.trim();
-  const handle = document.getElementById('handleInput').value.trim();
-  const t      = THEMES[activeTheme];
+// ═══════════════════════════════════════════════════════
+//  SLIDE 7 — FINAL / CTA
+// ═══════════════════════════════════════════════════════
+function makeLast(ctaText, handle, title, fp, t) {
+  const c = mkC(), ctx = c.getContext('2d');
+  gradBg(ctx, t);
 
-  if (!title && !text) {
-    alert('Por favor preenche o título ou o conteúdo!');
-    return;
+  // Decorative ring
+  ctx.save(); ctx.globalAlpha = .08;
+  ctx.beginPath(); ctx.arc(S/2, S*.44, 320, 0, Math.PI*2);
+  ctx.fillStyle = t.ac; ctx.fill(); ctx.restore();
+
+  ctx.save(); ctx.globalAlpha = .10;
+  ctx.beginPath(); ctx.arc(S/2, S*.44, 270, 0, Math.PI*2);
+  ctx.strokeStyle = t.ac; ctx.lineWidth = 1.5; ctx.stroke(); ctx.restore();
+
+  ctx.save(); ctx.globalAlpha = .05;
+  ctx.beginPath(); ctx.arc(S/2, S*.44, 220, 0, Math.PI*2);
+  ctx.strokeStyle = t.ac; ctx.lineWidth = 1; ctx.stroke(); ctx.restore();
+
+  topBar(ctx, handle, 7, 7, fp, false);
+
+  const cy = S * .44;
+
+  if (ctaText) {
+    ctx.save();
+    ctx.font = `${fp.tw} 68px ${fp.tt}`;
+    ctx.fillStyle = t.tx;
+    ctx.textAlign = 'center'; ctx.textBaseline = 'alphabetic';
+    drawCentered(ctx, ctaText, S/2, cy, S-P*2, 86);
+    ctx.restore();
+  } else {
+    ctx.save();
+    ctx.font = `${fp.tw} 62px ${fp.tt}`;
+    ctx.fillStyle = t.tx;
+    ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
+    ctx.fillText('Obrigado', S/2, cy - 36);
+    ctx.restore();
+    ctx.save();
+    ctx.font = `300 34px ${fp.tb}`;
+    ctx.fillStyle = t.su;
+    ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
+    ctx.fillText('por leres até ao fim ✦', S/2, cy + 28);
+    ctx.restore();
   }
 
-  document.getElementById('emptyState').style.display = 'none';
-  document.getElementById('loadingState').style.display = 'flex';
-  document.getElementById('slidesGrid').innerHTML = '';
-  document.getElementById('dlAllBtn').style.display = 'none';
-  canvases = [];
+  // Divider
+  ctx.save();
+  const grd = ctx.createLinearGradient(S/2-80, 0, S/2+80, 0);
+  grd.addColorStop(0, 'transparent');
+  grd.addColorStop(.5, t.ac);
+  grd.addColorStop(1, 'transparent');
+  ctx.strokeStyle = grd; ctx.lineWidth = 1.5; ctx.globalAlpha = .5;
+  ctx.beginPath(); ctx.moveTo(S/2-80, S*.65); ctx.lineTo(S/2+80, S*.65);
+  ctx.stroke(); ctx.restore();
 
-  await document.fonts.ready;
-  await new Promise(r => setTimeout(r, 80));
-
-  const parts = splitText(text, 6);
-
-  canvases.push(makeCover(title, handle, t));
-  for (let i = 0; i < 6; i++) {
-    canvases.push(makeContent(parts[i], i + 2, title, handle, t));
+  // Prominent handle
+  if (handle) {
+    const h = handle.startsWith('@') ? handle : '@'+handle;
+    ctx.save();
+    ctx.font = `600 36px ${fp.tb}`;
+    ctx.fillStyle = t.ac;
+    ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
+    ctx.fillText(h, S/2, S*.74);
+    ctx.restore();
   }
 
-  document.getElementById('loadingState').style.display = 'none';
-
-  const labels = ['Capa','Slide 2','Slide 3','Slide 4','Slide 5','Slide 6','Slide 7'];
-  const grid = document.getElementById('slidesGrid');
-
-  canvases.forEach((cv, i) => {
-    const item = document.createElement('div');
-    item.className = 'slide-item';
-
-    const thumb = document.createElement('canvas');
-    thumb.width  = cv.width;
-    thumb.height = cv.height;
-    thumb.getContext('2d').drawImage(cv, 0, 0);
-    item.appendChild(thumb);
-
-    const footer = document.createElement('div');
-    footer.className = 'slide-footer';
-
-    const lbl = document.createElement('span');
-    lbl.textContent = labels[i];
-
-    const dlBtn = document.createElement('button');
-    dlBtn.className = 'dl-one';
-    dlBtn.title = 'Download';
-    dlBtn.innerHTML = '⬇';
-    dlBtn.onclick = e => { e.stopPropagation(); downloadOne(cv, i + 1); };
-
-    footer.appendChild(lbl);
-    footer.appendChild(dlBtn);
-    item.appendChild(footer);
-
-    item.onclick = () => openModal(i);
-    grid.appendChild(item);
-  });
-
-  const dlAll = document.getElementById('dlAllBtn');
-  dlAll.style.display = 'flex';
+  dots(ctx, 7, 7, t);
+  return c;
 }
 
-// ══════════════════════════════════════════════════════
+// ═══════════════════════════════════════════════════════
+//  GENERATE
+// ═══════════════════════════════════════════════════════
+async function generate() {
+  const title  = document.getElementById('titleIn').value.trim();
+  const sub    = document.getElementById('subIn').value.trim();
+  const handle = document.getElementById('handleIn').value.trim();
+  const rawTxt = document.getElementById('textIn').value.trim();
+  const cta    = document.getElementById('ctaIn').value.trim();
+  const fp     = FONTS[FK], t = THEMES[TK];
+
+  if (!title && !rawTxt) { alert('Preenche pelo menos o título ou o conteúdo.'); return; }
+
+  document.getElementById('emptyEl').style.display   = 'none';
+  document.getElementById('loadEl').style.display    = 'flex';
+  document.getElementById('gridEl').innerHTML        = '';
+  document.getElementById('dlAll').style.display     = 'none';
+  slides = [];
+
+  await document.fonts.load(`${fp.tw} 80px ${fp.tt}`);
+  await document.fonts.load(`${fp.bw} 50px ${fp.tb}`);
+  await document.fonts.ready;
+  await new Promise(r => setTimeout(r, 60));
+
+  const parts = splitN(rawTxt, 5);
+
+  slides.push(makeCover(title, sub, handle, fp, t));
+  for (let i = 0; i < 5; i++) slides.push(makeContent(parts[i], i+2, title, handle, fp, t));
+  slides.push(makeLast(cta, handle, title, fp, t));
+
+  document.getElementById('loadEl').style.display = 'none';
+
+  const labels = ['Capa','Slide 2','Slide 3','Slide 4','Slide 5','Slide 6','Slide Final'];
+  const grid = document.getElementById('gridEl');
+
+  slides.forEach((cv, i) => {
+    const card = document.createElement('div');
+    card.className = 'card';
+
+    const th = document.createElement('canvas');
+    th.width = cv.width; th.height = cv.height;
+    th.getContext('2d').drawImage(cv, 0, 0);
+    card.appendChild(th);
+
+    const ft = document.createElement('div');
+    ft.className = 'card-foot';
+    ft.innerHTML = `<span class="card-badge">${labels[i]}</span>`;
+
+    const dl = document.createElement('button');
+    dl.className = 'dl1'; dl.innerHTML = '⬇'; dl.title = 'Download';
+    dl.onclick = e => { e.stopPropagation(); dlOne(cv, i+1); };
+    ft.appendChild(dl); card.appendChild(ft);
+
+    card.onclick = () => openM(i);
+    grid.appendChild(card);
+  });
+
+  document.getElementById('dlAll').style.display = 'flex';
+}
+
+// ═══════════════════════════════════════════════════════
 //  DOWNLOAD
-// ══════════════════════════════════════════════════════
-function downloadOne(cv, num) {
+// ═══════════════════════════════════════════════════════
+function dlOne(cv, num) {
   cv.toBlob(blob => {
-    const a = Object.assign(document.createElement('a'), {
-      href: URL.createObjectURL(blob),
-      download: 'slide_' + pad2(num) + '.png'
-    });
-    document.body.appendChild(a);
-    a.click();
-    document.body.removeChild(a);
-    URL.revokeObjectURL(a.href);
+    const a = document.createElement('a');
+    a.href = URL.createObjectURL(blob);
+    a.download = `slide_${p2(num)}.png`;
+    document.body.appendChild(a); a.click();
+    document.body.removeChild(a); URL.revokeObjectURL(a.href);
+    toast(`✓ slide_${p2(num)}.png descarregado`);
   }, 'image/png');
 }
 
-async function downloadAll() {
-  for (let i = 0; i < canvases.length; i++) {
+async function dlAll() {
+  for (let i = 0; i < slides.length; i++) {
     await new Promise(r => setTimeout(r, i * 350));
-    downloadOne(canvases[i], i + 1);
+    dlOne(slides[i], i+1);
   }
 }
 
-// ══════════════════════════════════════════════════════
+// ═══════════════════════════════════════════════════════
 //  MODAL
-// ══════════════════════════════════════════════════════
-function openModal(idx) {
-  modalIdx = idx;
-  renderModal();
-  document.getElementById('modalBg').classList.add('open');
-}
+// ═══════════════════════════════════════════════════════
+function openM(i) { mIdx = i; renderM(); document.getElementById('modal').classList.add('open'); }
+function closeM()  { document.getElementById('modal').classList.remove('open'); }
 
-function renderModal() {
-  const mc  = document.getElementById('modalCanvas');
-  const src = canvases[modalIdx];
-  mc.width  = src.width;
-  mc.height = src.height;
+function renderM() {
+  const mc = document.getElementById('mCanvas'), src = slides[mIdx];
+  mc.width = src.width; mc.height = src.height;
   mc.getContext('2d').drawImage(src, 0, 0);
-  document.getElementById('modalCounter').textContent = (modalIdx + 1) + ' / ' + canvases.length;
-  document.getElementById('modalPrev').disabled = modalIdx === 0;
-  document.getElementById('modalNext').disabled = modalIdx === canvases.length - 1;
+  document.getElementById('mCtr').textContent = (mIdx+1)+' / '+slides.length;
+  document.getElementById('mPrev').disabled = mIdx === 0;
+  document.getElementById('mNext').disabled = mIdx === slides.length-1;
 }
 
-function closeModal() {
-  document.getElementById('modalBg').classList.remove('open');
+// ═══════════════════════════════════════════════════════
+//  TOAST
+// ═══════════════════════════════════════════════════════
+let toastT = null;
+function toast(msg) {
+  const el = document.getElementById('toast');
+  el.textContent = msg; el.classList.add('show');
+  clearTimeout(toastT);
+  toastT = setTimeout(() => el.classList.remove('show'), 2600);
 }
 
-// ══════════════════════════════════════════════════════
+// ═══════════════════════════════════════════════════════
 //  EVENTS
-// ══════════════════════════════════════════════════════
-document.getElementById('genBtn').onclick    = generate;
-document.getElementById('dlAllBtn').onclick  = downloadAll;
+// ═══════════════════════════════════════════════════════
+document.getElementById('genBtn').onclick = generate;
+document.getElementById('dlAll').onclick  = dlAll;
 
-document.getElementById('textInput').addEventListener('input', function() {
-  document.getElementById('charCount').textContent = this.value.length + ' caracteres';
+document.getElementById('textIn').addEventListener('input', function() {
+  const n = this.value.length, w = this.value.trim().split(/\s+/).filter(Boolean).length;
+  document.getElementById('charHint').textContent = n ? `${n} caracteres · ~${w} palavras` : '0 caracteres';
 });
 
-document.getElementById('modalClose').onclick = closeModal;
-document.getElementById('modalBg').onclick = e => {
-  if (e.target === document.getElementById('modalBg')) closeModal();
-};
-document.getElementById('modalPrev').onclick = () => { if (modalIdx > 0) { modalIdx--; renderModal(); } };
-document.getElementById('modalNext').onclick = () => { if (modalIdx < canvases.length - 1) { modalIdx++; renderModal(); } };
-document.getElementById('modalDl').onclick   = () => downloadOne(canvases[modalIdx], modalIdx + 1);
+document.getElementById('mClose').onclick = closeM;
+document.getElementById('modal').onclick = e => { if (e.target.id === 'modal') closeM(); };
+document.getElementById('mPrev').onclick = () => { if (mIdx > 0)                   { mIdx--; renderM(); } };
+document.getElementById('mNext').onclick = () => { if (mIdx < slides.length-1)     { mIdx++; renderM(); } };
+document.getElementById('mDl').onclick   = () => dlOne(slides[mIdx], mIdx+1);
 
 document.addEventListener('keydown', e => {
-  if (!document.getElementById('modalBg').classList.contains('open')) return;
-  if (e.key === 'ArrowLeft')  document.getElementById('modalPrev').click();
-  if (e.key === 'ArrowRight') document.getElementById('modalNext').click();
-  if (e.key === 'Escape')     closeModal();
+  if (!document.getElementById('modal').classList.contains('open')) return;
+  if (e.key === 'ArrowLeft')  document.getElementById('mPrev').click();
+  if (e.key === 'ArrowRight') document.getElementById('mNext').click();
+  if (e.key === 'Escape')     closeM();
 });
-
-// ──────────────────
-initThemes();
-initUpload();
 </script>
 </body>
 </html>
