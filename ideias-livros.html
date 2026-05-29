@@ -1,0 +1,739 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="default">
+  <meta name="apple-mobile-web-app-title" content="Ideias Livros">
+  <title>Ideias para Livros</title>
+  <style>
+    :root {
+      --bg: #f2f2f7;
+      --card: #ffffff;
+      --primary: #ff9500;
+      --danger: #ff3b30;
+      --success: #34c759;
+      --text: #1c1c1e;
+      --text2: #6d6d72;
+      --sep: rgba(60,60,67,0.18);
+      --tab: rgba(249,249,251,0.9);
+      --hdr: rgba(242,242,247,0.88);
+      --safe-t: env(safe-area-inset-top, 0px);
+      --safe-b: env(safe-area-inset-bottom, 0px);
+      --safe-l: env(safe-area-inset-left, 0px);
+      --safe-r: env(safe-area-inset-right, 0px);
+    }
+    @media (prefers-color-scheme: dark) {
+      :root {
+        --bg: #000000;
+        --card: #1c1c1e;
+        --text: #ffffff;
+        --text2: #8e8e93;
+        --sep: rgba(84,84,88,0.65);
+        --tab: rgba(28,28,30,0.92);
+        --hdr: rgba(28,28,30,0.88);
+      }
+    }
+
+    *, *::before, *::after {
+      box-sizing: border-box; margin: 0; padding: 0;
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    html { height: 100%; }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "SF Pro Text", "SF Pro Display", system-ui, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      min-height: 100dvh;
+      overflow-x: hidden;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    /* ── HEADER ── */
+    .hdr {
+      position: fixed;
+      inset-block-start: 0;
+      inset-inline: 0;
+      z-index: 90;
+      backdrop-filter: blur(24px) saturate(180%);
+      -webkit-backdrop-filter: blur(24px) saturate(180%);
+      background: var(--hdr);
+      border-bottom: 0.5px solid var(--sep);
+    }
+    .hdr-bar {
+      display: flex;
+      align-items: center;
+      padding: calc(var(--safe-t) + 10px) calc(var(--safe-r) + 16px) 10px calc(var(--safe-l) + 16px);
+      gap: 12px;
+    }
+    .hdr-title {
+      flex: 1;
+      text-align: center;
+      font-size: 17px;
+      font-weight: 600;
+      letter-spacing: -0.4px;
+    }
+    .hdr-side { width: 36px; display: flex; justify-content: center; }
+    .btn-add {
+      width: 32px; height: 32px;
+      border-radius: 50%;
+      background: var(--primary);
+      border: none;
+      color: #fff;
+      font-size: 22px;
+      line-height: 1;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: transform 0.12s, opacity 0.12s;
+      padding-bottom: 1px;
+    }
+    .btn-add:active { transform: scale(0.88); opacity: 0.75; }
+    .hdr-large {
+      padding: 4px calc(var(--safe-r) + 20px) 12px calc(var(--safe-l) + 20px);
+      font-size: 34px;
+      font-weight: 700;
+      letter-spacing: -0.5px;
+    }
+
+    /* ── TAB BAR ── */
+    .tabs {
+      position: fixed;
+      inset-block-end: 0;
+      inset-inline: 0;
+      z-index: 90;
+      backdrop-filter: blur(24px) saturate(180%);
+      -webkit-backdrop-filter: blur(24px) saturate(180%);
+      background: var(--tab);
+      border-top: 0.5px solid var(--sep);
+      display: flex;
+      padding-bottom: var(--safe-b);
+    }
+    .tab {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 3px;
+      padding: 8px 0 4px;
+      cursor: pointer;
+      border: none;
+      background: none;
+      color: var(--text2);
+      font-size: 10px;
+      font-weight: 500;
+      letter-spacing: 0.1px;
+      transition: color 0.15s;
+      position: relative;
+    }
+    .tab.active { color: var(--primary); }
+    .tab-icon {
+      font-size: 24px;
+      line-height: 1;
+      transition: transform 0.2s cubic-bezier(0.34,1.56,0.64,1);
+    }
+    .tab.active .tab-icon { transform: scale(1.1); }
+    .tab-badge {
+      position: absolute;
+      top: 5px;
+      right: calc(50% - 22px);
+      background: var(--danger);
+      color: #fff;
+      font-size: 10px;
+      font-weight: 700;
+      min-width: 17px;
+      height: 17px;
+      border-radius: 9px;
+      align-items: center;
+      justify-content: center;
+      padding: 0 4px;
+      border: 2px solid var(--bg);
+      display: none;
+    }
+    .tab-badge.show { display: flex; }
+
+    /* ── MAIN ── */
+    .main {
+      padding-top: calc(var(--safe-t) + 100px);
+      padding-bottom: calc(var(--safe-b) + 82px);
+      padding-left: calc(var(--safe-l) + 16px);
+      padding-right: calc(var(--safe-r) + 16px);
+      min-height: 100dvh;
+    }
+    .view { display: none; }
+    .view.active { display: block; }
+
+    /* ── CARDS ── */
+    .list { display: flex; flex-direction: column; gap: 12px; }
+    .card {
+      background: var(--card);
+      border-radius: 16px;
+      padding: 16px;
+      box-shadow: 0 1px 0 rgba(0,0,0,0.06), 0 2px 8px rgba(0,0,0,0.05);
+      animation: cardIn 0.35s cubic-bezier(0.34,1.56,0.64,1) both;
+    }
+    .card.fade-out {
+      animation: cardOut 0.28s cubic-bezier(0.4,0,1,1) forwards;
+      pointer-events: none;
+    }
+    @keyframes cardIn {
+      from { opacity: 0; transform: translateY(20px) scale(0.96); }
+      to   { opacity: 1; transform: translateY(0) scale(1); }
+    }
+    @keyframes cardOut {
+      from { opacity: 1; transform: scale(1) translateX(0); }
+      to   { opacity: 0; transform: scale(0.94) translateX(-16px); }
+    }
+
+    .card-row { display: flex; align-items: flex-start; gap: 10px; }
+    .card-body { flex: 1; min-width: 0; }
+    .card-title {
+      font-size: 17px;
+      font-weight: 600;
+      letter-spacing: -0.3px;
+      line-height: 1.35;
+      word-break: break-word;
+    }
+    .card-desc {
+      margin-top: 5px;
+      font-size: 14px;
+      color: var(--text2);
+      line-height: 1.5;
+      word-break: break-word;
+    }
+    .card-meta { margin-top: 12px; display: flex; flex-direction: column; gap: 5px; }
+    .chip {
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      font-size: 12px;
+      font-weight: 500;
+      padding: 4px 10px;
+      border-radius: 20px;
+      width: fit-content;
+    }
+    .chip-orange { background: rgba(255,149,0,0.12); color: var(--primary); }
+    .chip-red    { background: rgba(255,59,48,0.12);  color: var(--danger); }
+
+    /* ── ACTION BUTTONS ── */
+    .btn-del {
+      width: 36px; height: 36px;
+      border-radius: 50%;
+      background: rgba(255,59,48,0.1);
+      border: none;
+      color: var(--danger);
+      font-size: 16px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+      transition: transform 0.12s, background 0.12s;
+    }
+    .btn-del:active { transform: scale(0.85); background: rgba(255,59,48,0.2); }
+    .btn-restore {
+      margin-top: 12px;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 8px 16px;
+      border-radius: 10px;
+      border: 1.5px solid var(--primary);
+      background: transparent;
+      color: var(--primary);
+      font-size: 14px;
+      font-weight: 600;
+      font-family: inherit;
+      cursor: pointer;
+      transition: background 0.12s, transform 0.1s;
+    }
+    .btn-restore:active { background: rgba(255,149,0,0.1); transform: scale(0.96); }
+
+    /* ── EMPTY STATE ── */
+    .empty {
+      padding: 64px 32px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      text-align: center;
+      gap: 10px;
+    }
+    .empty-icon { font-size: 72px; opacity: 0.35; line-height: 1; margin-bottom: 4px; }
+    .empty-h { font-size: 20px; font-weight: 700; letter-spacing: -0.3px; }
+    .empty-p { font-size: 15px; color: var(--text2); line-height: 1.55; }
+
+    /* ── ADD SHEET ── */
+    .overlay {
+      position: fixed;
+      inset: 0;
+      z-index: 200;
+      background: rgba(0,0,0,0.45);
+      display: flex;
+      align-items: flex-end;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.28s;
+    }
+    .overlay.open { opacity: 1; pointer-events: all; }
+    .sheet {
+      width: 100%;
+      background: var(--card);
+      border-radius: 20px 20px 0 0;
+      padding: 0 20px calc(20px + var(--safe-b));
+      transform: translateY(110%);
+      transition: transform 0.42s cubic-bezier(0.32,0.72,0,1);
+      will-change: transform;
+    }
+    .overlay.open .sheet { transform: translateY(0); }
+    .sheet-handle {
+      width: 36px; height: 4px;
+      background: var(--sep);
+      border-radius: 2px;
+      margin: 14px auto 20px;
+    }
+    .sheet-title {
+      font-size: 20px;
+      font-weight: 700;
+      letter-spacing: -0.4px;
+      margin-bottom: 22px;
+    }
+    .field-label {
+      font-size: 12px;
+      font-weight: 600;
+      color: var(--text2);
+      text-transform: uppercase;
+      letter-spacing: 0.6px;
+      margin-bottom: 7px;
+      display: block;
+    }
+    .field-input, .field-textarea {
+      width: 100%;
+      background: var(--bg);
+      border: 1.5px solid var(--sep);
+      border-radius: 12px;
+      padding: 13px 14px;
+      font-size: 16px;
+      color: var(--text);
+      font-family: inherit;
+      outline: none;
+      transition: border-color 0.2s;
+      -webkit-appearance: none;
+      appearance: none;
+    }
+    .field-input:focus, .field-textarea:focus { border-color: var(--primary); }
+    .field-textarea { resize: none; min-height: 96px; }
+    .field-group { margin-bottom: 14px; }
+    .sheet-actions {
+      display: flex;
+      gap: 10px;
+      margin-top: 22px;
+    }
+    .btn-cancel {
+      flex: 1;
+      padding: 15px;
+      border-radius: 14px;
+      border: 1.5px solid var(--sep);
+      background: transparent;
+      color: var(--text);
+      font-size: 16px;
+      font-weight: 500;
+      font-family: inherit;
+      cursor: pointer;
+      transition: background 0.12s;
+    }
+    .btn-cancel:active { background: rgba(128,128,128,0.12); }
+    .btn-save {
+      flex: 2;
+      padding: 15px;
+      border-radius: 14px;
+      border: none;
+      background: var(--primary);
+      color: #fff;
+      font-size: 16px;
+      font-weight: 700;
+      font-family: inherit;
+      cursor: pointer;
+      transition: opacity 0.15s, transform 0.1s;
+    }
+    .btn-save:disabled { opacity: 0.38; cursor: not-allowed; }
+    .btn-save:not(:disabled):active { opacity: 0.8; transform: scale(0.97); }
+
+    /* ── CONFIRM DIALOG ── */
+    .dlg-overlay {
+      position: fixed;
+      inset: 0;
+      z-index: 300;
+      background: rgba(0,0,0,0.45);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 24px;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.22s;
+    }
+    .dlg-overlay.open { opacity: 1; pointer-events: all; }
+    .dlg {
+      background: var(--card);
+      border-radius: 16px;
+      width: 100%;
+      max-width: 310px;
+      overflow: hidden;
+      transform: scale(0.88);
+      transition: transform 0.28s cubic-bezier(0.34,1.56,0.64,1);
+    }
+    .dlg-overlay.open .dlg { transform: scale(1); }
+    .dlg-body { padding: 20px 20px 16px; text-align: center; }
+    .dlg-icon { font-size: 40px; margin-bottom: 10px; }
+    .dlg-title { font-size: 17px; font-weight: 700; margin-bottom: 7px; }
+    .dlg-msg { font-size: 14px; color: var(--text2); line-height: 1.55; }
+    .dlg-actions {
+      border-top: 0.5px solid var(--sep);
+      display: flex;
+    }
+    .dlg-btn {
+      flex: 1;
+      padding: 15px;
+      border: none;
+      background: none;
+      font-family: inherit;
+      font-size: 17px;
+      cursor: pointer;
+      color: var(--primary);
+      transition: background 0.1s;
+    }
+    .dlg-btn:active { background: rgba(128,128,128,0.1); }
+    .dlg-btn.destructive {
+      color: var(--danger);
+      font-weight: 700;
+      border-left: 0.5px solid var(--sep);
+    }
+
+    /* ── TOAST ── */
+    .toast {
+      position: fixed;
+      bottom: calc(var(--safe-b) + 90px);
+      left: 50%;
+      transform: translateX(-50%) translateY(20px);
+      background: rgba(30,30,30,0.92);
+      color: #fff;
+      padding: 10px 20px;
+      border-radius: 20px;
+      font-size: 14px;
+      font-weight: 500;
+      z-index: 500;
+      opacity: 0;
+      transition: opacity 0.25s, transform 0.3s cubic-bezier(0.34,1.56,0.64,1);
+      pointer-events: none;
+      white-space: nowrap;
+      max-width: 80vw;
+      text-align: center;
+    }
+    .toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
+
+    /* ── SECTION LABEL ── */
+    .section-label {
+      font-size: 13px;
+      font-weight: 600;
+      color: var(--text2);
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      padding: 0 4px 10px;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- HEADER -->
+  <header class="hdr">
+    <div class="hdr-bar">
+      <div class="hdr-side"></div>
+      <h1 class="hdr-title" id="hdrTitle">Ideias para Livros</h1>
+      <div class="hdr-side" id="hdrAction">
+        <button class="btn-add" id="btnAdd" aria-label="Adicionar ideia">+</button>
+      </div>
+    </div>
+    <div class="hdr-large" id="hdrLarge">Ideias para Livros</div>
+  </header>
+
+  <!-- MAIN -->
+  <main class="main">
+    <div id="viewIdeas" class="view active">
+      <div id="listIdeas" class="list"></div>
+    </div>
+    <div id="viewArchive" class="view">
+      <div id="listArchive" class="list"></div>
+    </div>
+  </main>
+
+  <!-- TAB BAR -->
+  <nav class="tabs" role="tablist">
+    <button class="tab active" id="tabIdeas" role="tab" aria-selected="true" aria-label="Ideias ativas">
+      <span class="tab-icon">📖</span>
+      <span class="tab-badge" id="badgeIdeas"></span>
+      <span>Ideias</span>
+    </button>
+    <button class="tab" id="tabArchive" role="tab" aria-selected="false" aria-label="Arquivo">
+      <span class="tab-icon">🗂️</span>
+      <span class="tab-badge" id="badgeArchive"></span>
+      <span>Arquivo</span>
+    </button>
+  </nav>
+
+  <!-- ADD SHEET -->
+  <div class="overlay" id="overlay">
+    <div class="sheet" id="sheet">
+      <div class="sheet-handle"></div>
+      <div class="sheet-title">Nova Ideia de Livro</div>
+      <div class="field-group">
+        <label class="field-label" for="fTitle">Título / Tema</label>
+        <input type="text" class="field-input" id="fTitle" placeholder="Ex: Romance passado em Lisboa"
+               autocomplete="off" autocorrect="on" spellcheck="true">
+      </div>
+      <div class="field-group">
+        <label class="field-label" for="fDesc">Sinopse / Notas</label>
+        <textarea class="field-textarea" id="fDesc" rows="4"
+                  placeholder="Personagens, enredo, género, referências..."></textarea>
+      </div>
+      <div class="sheet-actions">
+        <button class="btn-cancel" id="btnCancel">Cancelar</button>
+        <button class="btn-save" id="btnSave" disabled>Guardar</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- CONFIRM ARCHIVE DIALOG -->
+  <div class="dlg-overlay" id="dlgOverlay">
+    <div class="dlg">
+      <div class="dlg-body">
+        <div class="dlg-icon">📦</div>
+        <div class="dlg-title">Arquivar Ideia?</div>
+        <div class="dlg-msg">Esta ideia será movida para o arquivo com a data de remoção. Podes restaurá-la a qualquer momento.</div>
+      </div>
+      <div class="dlg-actions">
+        <button class="dlg-btn" id="dlgCancel">Cancelar</button>
+        <button class="dlg-btn destructive" id="dlgConfirm">Arquivar</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- TOAST -->
+  <div class="toast" id="toast" role="status" aria-live="polite"></div>
+
+  <script>
+    let items = [];
+    let currentTab = 'ideas';
+    let pendingId = null;
+    let toastTimer = null;
+    const STORAGE_KEY = 'ideiasLIVROSv1';
+
+    function loadItems() {
+      try {
+        const raw = localStorage.getItem(STORAGE_KEY);
+        const parsed = raw ? JSON.parse(raw) : null;
+        items = Array.isArray(parsed) ? parsed : [];
+      } catch (_) { items = []; }
+    }
+
+    function saveItems() {
+      try {
+        localStorage.setItem(STORAGE_KEY, JSON.stringify(items));
+      } catch (_) {
+        showToast('⚠️ Não foi possível guardar — armazenamento indisponível');
+      }
+    }
+
+    function genId() {
+      return (typeof crypto !== 'undefined' && crypto.randomUUID)
+        ? crypto.randomUUID()
+        : `${Date.now().toString(36)}-${Math.random().toString(36).slice(2, 9)}`;
+    }
+
+    function fmt(iso) {
+      try {
+        return new Date(iso).toLocaleString('pt-PT', {
+          day: 'numeric', month: 'long', year: 'numeric',
+          hour: '2-digit', minute: '2-digit'
+        });
+      } catch (_) { return iso || '—'; }
+    }
+
+    function esc(str) {
+      return String(str)
+        .replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;')
+        .replace(/"/g, '&quot;').replace(/'/g, '&#039;');
+    }
+
+    function showToast(msg, duration) {
+      const el = document.getElementById('toast');
+      el.textContent = msg;
+      el.classList.add('show');
+      if (toastTimer) clearTimeout(toastTimer);
+      toastTimer = setTimeout(() => el.classList.remove('show'), duration || 2800);
+    }
+
+    function renderCard(item) {
+      const isArchived = item.status === 'archived';
+      const descHtml = item.description
+        ? `<div class="card-desc">${esc(item.description)}</div>` : '';
+      const delBtn     = `<button class="btn-del"     data-action="archive" data-id="${esc(item.id)}" aria-label="Arquivar">🗑</button>`;
+      const restoreBtn = `<button class="btn-restore" data-action="restore" data-id="${esc(item.id)}" aria-label="Restaurar">↩ Restaurar</button>`;
+      const metaHtml = isArchived
+        ? `<div class="card-meta">
+             <div><span class="chip chip-orange">📅 Criada: ${esc(fmt(item.createdAt))}</span></div>
+             <div><span class="chip chip-red">🗑 Arquivada: ${esc(fmt(item.deletedAt))}</span></div>
+           </div>`
+        : `<div class="card-meta">
+             <div><span class="chip chip-orange">📅 Criada: ${esc(fmt(item.createdAt))}</span></div>
+           </div>`;
+      return `<div class="card" id="card-${esc(item.id)}">
+        <div class="card-row">
+          <div class="card-body">
+            <div class="card-title">${esc(item.title)}</div>
+            ${descHtml}
+            ${metaHtml}
+          </div>
+          ${isArchived ? '' : `<div>${delBtn}</div>`}
+        </div>
+        ${isArchived ? restoreBtn : ''}
+      </div>`;
+    }
+
+    function renderAll() {
+      const active   = items.filter(i => i.status === 'active');
+      const archived = items.filter(i => i.status === 'archived');
+
+      document.getElementById('listIdeas').innerHTML = active.length === 0
+        ? `<div class="empty">
+             <div class="empty-icon">📖</div>
+             <div class="empty-h">Sem ideias ainda</div>
+             <div class="empty-p">Toca em <strong>+</strong> para guardar a tua próxima ideia de livro!</div>
+           </div>`
+        : active.map(renderCard).join('');
+
+      document.getElementById('listArchive').innerHTML = archived.length === 0
+        ? `<div class="empty">
+             <div class="empty-icon">🗂️</div>
+             <div class="empty-h">Arquivo vazio</div>
+             <div class="empty-p">Quando arquivares ideias, aparecerão aqui com a data de criação e de remoção.</div>
+           </div>`
+        : `<div class="section-label">${archived.length} ideia${archived.length !== 1 ? 's' : ''} arquivada${archived.length !== 1 ? 's' : ''}</div>`
+          + [...archived].reverse().map(renderCard).join('');
+
+      const bi = document.getElementById('badgeIdeas');
+      const ba = document.getElementById('badgeArchive');
+      if (active.length > 0) { bi.textContent = active.length; bi.classList.add('show'); } else { bi.classList.remove('show'); }
+      if (archived.length > 0) { ba.textContent = archived.length; ba.classList.add('show'); } else { ba.classList.remove('show'); }
+    }
+
+    function switchTab(tab) {
+      currentTab = tab;
+      const isIdeas = tab === 'ideas';
+      document.getElementById('viewIdeas').classList.toggle('active', isIdeas);
+      document.getElementById('viewArchive').classList.toggle('active', !isIdeas);
+      document.getElementById('tabIdeas').classList.toggle('active', isIdeas);
+      document.getElementById('tabIdeas').setAttribute('aria-selected', isIdeas ? 'true' : 'false');
+      document.getElementById('tabArchive').classList.toggle('active', !isIdeas);
+      document.getElementById('tabArchive').setAttribute('aria-selected', isIdeas ? 'false' : 'true');
+      const label = isIdeas ? 'Ideias para Livros' : 'Arquivo';
+      document.getElementById('hdrTitle').textContent = label;
+      document.getElementById('hdrLarge').textContent = label;
+      document.getElementById('hdrAction').style.visibility = isIdeas ? 'visible' : 'hidden';
+    }
+
+    function openSheet() {
+      document.getElementById('overlay').classList.add('open');
+      document.getElementById('btnSave').disabled = true;
+      const sheet = document.getElementById('sheet');
+      const focusInput = () => { document.getElementById('fTitle').focus(); sheet.removeEventListener('transitionend', focusInput); };
+      sheet.addEventListener('transitionend', focusInput);
+    }
+
+    function closeSheet() {
+      document.getElementById('overlay').classList.remove('open');
+      document.getElementById('fTitle').value = '';
+      document.getElementById('fDesc').value = '';
+      document.getElementById('btnSave').disabled = true;
+    }
+
+    function validateSheet() {
+      document.getElementById('btnSave').disabled =
+        document.getElementById('fTitle').value.trim().length === 0;
+    }
+
+    function addIdea() {
+      const title = document.getElementById('fTitle').value.trim();
+      const description = document.getElementById('fDesc').value.trim();
+      if (!title) return;
+      items.unshift({ id: genId(), title, description, status: 'active', createdAt: new Date().toISOString() });
+      saveItems(); closeSheet(); renderAll();
+      showToast('✅ Ideia adicionada!');
+    }
+
+    function archiveIdea(id) {
+      pendingId = id;
+      document.getElementById('dlgOverlay').classList.add('open');
+    }
+
+    function cancelArchive() {
+      pendingId = null;
+      document.getElementById('dlgOverlay').classList.remove('open');
+    }
+
+    function confirmArchive() {
+      const id = pendingId;
+      document.getElementById('dlgOverlay').classList.remove('open');
+      pendingId = null;
+      const item = items.find(i => i.id === id);
+      if (!item) return;
+      const cardEl = document.getElementById('card-' + item.id);
+      const doArchive = () => { item.status = 'archived'; item.deletedAt = new Date().toISOString(); saveItems(); renderAll(); showToast('📦 Ideia arquivada'); };
+      if (cardEl) { cardEl.classList.add('fade-out'); cardEl.addEventListener('animationend', doArchive, { once: true }); }
+      else { doArchive(); }
+    }
+
+    function restoreIdea(id) {
+      const item = items.find(i => i.id === id);
+      if (!item) return;
+      item.status = 'active';
+      delete item.deletedAt;
+      saveItems(); renderAll(); switchTab('ideas');
+      showToast('✅ Ideia restaurada!');
+    }
+
+    document.getElementById('btnAdd').addEventListener('click', openSheet);
+    document.getElementById('tabIdeas').addEventListener('click', () => switchTab('ideas'));
+    document.getElementById('tabArchive').addEventListener('click', () => switchTab('archive'));
+    document.getElementById('fTitle').addEventListener('input', validateSheet);
+    document.getElementById('fDesc').addEventListener('input', validateSheet);
+    document.getElementById('btnCancel').addEventListener('click', closeSheet);
+    document.getElementById('btnSave').addEventListener('click', addIdea);
+    document.getElementById('overlay').addEventListener('click', (e) => { if (e.target === document.getElementById('overlay')) closeSheet(); });
+    document.getElementById('fTitle').addEventListener('keydown', (e) => { if (e.key === 'Enter') { e.preventDefault(); document.getElementById('fDesc').focus(); } });
+    document.getElementById('dlgCancel').addEventListener('click', cancelArchive);
+    document.getElementById('dlgConfirm').addEventListener('click', confirmArchive);
+    document.getElementById('dlgOverlay').addEventListener('click', (e) => { if (e.target === document.getElementById('dlgOverlay')) cancelArchive(); });
+    document.addEventListener('keydown', (e) => {
+      if (e.key !== 'Escape') return;
+      if (document.getElementById('dlgOverlay').classList.contains('open')) cancelArchive();
+      else if (document.getElementById('overlay').classList.contains('open')) closeSheet();
+    });
+
+    function onListClick(e) {
+      const btn = e.target.closest('[data-action]');
+      if (!btn) return;
+      if (btn.dataset.action === 'archive') archiveIdea(btn.dataset.id);
+      if (btn.dataset.action === 'restore') restoreIdea(btn.dataset.id);
+    }
+    document.getElementById('listIdeas').addEventListener('click', onListClick);
+    document.getElementById('listArchive').addEventListener('click', onListClick);
+
+    loadItems();
+    renderAll();
+  </script>
+</body>
+</html>
