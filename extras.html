@@ -1,0 +1,633 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Claude Extras — Centro de Descoberta</title>
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --bg: #0f0f13;
+    --bg2: #16161e;
+    --bg3: #1e1e2a;
+    --border: #2a2a38;
+    --accent: #7c6af7;
+    --accent2: #5b4fe0;
+    --text: #e8e8f0;
+    --muted: #8888a8;
+    --green: #4ade80;
+    --orange: #fb923c;
+    --pink: #f472b6;
+    --blue: #60a5fa;
+    --yellow: #facc15;
+  }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    min-height: 100vh;
+  }
+
+  /* ── Header ── */
+  header {
+    background: var(--bg2);
+    border-bottom: 1px solid var(--border);
+    padding: 16px 20px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    position: sticky;
+    top: 0;
+    z-index: 100;
+  }
+  header .logo { font-size: 22px; }
+  header h1 { font-size: 16px; font-weight: 600; }
+  header p  { font-size: 12px; color: var(--muted); }
+  .search-wrap {
+    flex: 1;
+    max-width: 340px;
+    margin-left: auto;
+    position: relative;
+  }
+  .search-wrap input {
+    width: 100%;
+    background: var(--bg3);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    color: var(--text);
+    padding: 8px 12px 8px 34px;
+    font-size: 14px;
+    outline: none;
+    transition: border-color .2s;
+  }
+  .search-wrap input:focus { border-color: var(--accent); }
+  .search-wrap .icon {
+    position: absolute; left: 10px; top: 50%;
+    transform: translateY(-50%);
+    color: var(--muted); font-size: 14px;
+  }
+
+  /* ── Main ── */
+  main { max-width: 900px; margin: 0 auto; padding: 24px 16px; }
+
+  /* ── Discover button ── */
+  .discover-section { text-align: center; margin-bottom: 32px; }
+  .discover-section p { color: var(--muted); font-size: 13px; margin-bottom: 14px; }
+  .btn-discover {
+    background: linear-gradient(135deg, var(--accent), var(--accent2));
+    color: #fff;
+    border: none;
+    border-radius: 14px;
+    padding: 16px 40px;
+    font-size: 17px;
+    font-weight: 600;
+    cursor: pointer;
+    box-shadow: 0 4px 24px #7c6af740;
+    transition: transform .15s, box-shadow .15s;
+    letter-spacing: .3px;
+  }
+  .btn-discover:hover { transform: translateY(-2px); box-shadow: 0 6px 32px #7c6af760; }
+  .btn-discover:active { transform: scale(.97); }
+
+  /* ── Spotlight card ── */
+  #spotlight { margin-bottom: 32px; display: none; }
+  .spotlight-card {
+    background: var(--bg2);
+    border: 1px solid var(--accent);
+    border-radius: 16px;
+    padding: 24px;
+    position: relative;
+    animation: fadeIn .3s ease;
+  }
+  @keyframes fadeIn { from { opacity:0; transform:translateY(8px) } to { opacity:1; transform:none } }
+  .spotlight-card .label {
+    font-size: 11px; font-weight: 700; text-transform: uppercase;
+    letter-spacing: 1px; color: var(--accent); margin-bottom: 6px;
+  }
+  .spotlight-card h2 { font-size: 22px; margin-bottom: 8px; }
+  .spotlight-card .desc { color: var(--muted); line-height: 1.6; margin-bottom: 16px; }
+  .spotlight-card .tags { display: flex; gap: 6px; flex-wrap: wrap; margin-bottom: 16px; }
+  .tag {
+    background: var(--bg3); border: 1px solid var(--border);
+    border-radius: 20px; padding: 3px 10px; font-size: 12px; color: var(--muted);
+  }
+  .spotlight-card .actions { display: flex; gap: 10px; flex-wrap: wrap; }
+  .btn {
+    border: none; border-radius: 8px; padding: 9px 18px;
+    font-size: 13px; font-weight: 600; cursor: pointer; transition: opacity .15s;
+  }
+  .btn:hover { opacity: .85; }
+  .btn-primary { background: var(--accent); color: #fff; }
+  .btn-save   { background: var(--bg3); color: var(--text); border: 1px solid var(--border); }
+  .btn-copy   { background: var(--bg3); color: var(--green); border: 1px solid var(--border); }
+  .install-block {
+    background: var(--bg3); border-radius: 8px;
+    padding: 10px 14px; font-family: monospace; font-size: 13px;
+    color: var(--green); margin-bottom: 16px;
+    border: 1px solid var(--border);
+    word-break: break-all;
+  }
+  .type-badge {
+    position: absolute; top: 20px; right: 20px;
+    border-radius: 20px; padding: 4px 12px; font-size: 11px; font-weight: 700;
+  }
+  .type-skill  { background: #7c6af720; color: var(--accent); border: 1px solid #7c6af750; }
+  .type-mcp    { background: #60a5fa20; color: var(--blue);   border: 1px solid #60a5fa50; }
+  .type-plugin { background: #4ade8020; color: var(--green);  border: 1px solid #4ade8050; }
+
+  /* ── Tabs ── */
+  .tabs { display: flex; gap: 4px; margin-bottom: 20px; overflow-x: auto; padding-bottom: 2px; }
+  .tab {
+    background: none; border: 1px solid transparent;
+    color: var(--muted); padding: 7px 16px; border-radius: 8px;
+    font-size: 13px; cursor: pointer; white-space: nowrap; transition: all .15s;
+  }
+  .tab:hover { color: var(--text); }
+  .tab.active { background: var(--bg3); border-color: var(--border); color: var(--text); font-weight: 600; }
+  .count-badge {
+    display: inline-block; background: var(--bg3);
+    border-radius: 10px; padding: 1px 7px; font-size: 11px;
+    color: var(--muted); margin-left: 5px;
+  }
+
+  /* ── Grid ── */
+  .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(260px,1fr)); gap: 14px; }
+  .card {
+    background: var(--bg2); border: 1px solid var(--border);
+    border-radius: 12px; padding: 18px; cursor: pointer;
+    transition: border-color .2s, transform .15s;
+    position: relative;
+  }
+  .card:hover { border-color: var(--accent); transform: translateY(-2px); }
+  .card .card-top { display: flex; align-items: flex-start; gap: 10px; margin-bottom: 8px; }
+  .card .emoji { font-size: 24px; line-height: 1; }
+  .card h3 { font-size: 14px; font-weight: 600; line-height: 1.3; }
+  .card .card-type { font-size: 11px; color: var(--muted); }
+  .card p  { font-size: 13px; color: var(--muted); line-height: 1.5; }
+  .card .card-badge {
+    position: absolute; top: 14px; right: 14px;
+    border-radius: 10px; padding: 2px 8px; font-size: 10px; font-weight: 700;
+  }
+  .saved-star {
+    position: absolute; top: 14px; right: 14px;
+    font-size: 16px; color: var(--yellow);
+  }
+
+  /* ── History & Saved ── */
+  .list { display: flex; flex-direction: column; gap: 10px; }
+  .list-item {
+    background: var(--bg2); border: 1px solid var(--border);
+    border-radius: 10px; padding: 14px 16px;
+    display: flex; align-items: center; gap: 12px; cursor: pointer;
+    transition: border-color .2s;
+  }
+  .list-item:hover { border-color: var(--accent); }
+  .list-item .emoji { font-size: 20px; }
+  .list-item .info { flex: 1; }
+  .list-item h4 { font-size: 14px; font-weight: 600; }
+  .list-item .meta { font-size: 12px; color: var(--muted); }
+  .list-item .remove {
+    background: none; border: none; color: var(--muted);
+    cursor: pointer; font-size: 16px; padding: 4px;
+    transition: color .15s;
+  }
+  .list-item .remove:hover { color: #f87171; }
+
+  .empty {
+    text-align: center; padding: 60px 20px;
+    color: var(--muted); font-size: 14px; line-height: 1.8;
+  }
+  .empty .icon { font-size: 40px; margin-bottom: 12px; }
+
+  .toast {
+    position: fixed; bottom: 24px; left: 50%; transform: translateX(-50%);
+    background: var(--bg3); border: 1px solid var(--border);
+    color: var(--text); padding: 10px 20px; border-radius: 10px;
+    font-size: 13px; z-index: 999; opacity: 0;
+    transition: opacity .3s; pointer-events: none;
+  }
+  .toast.show { opacity: 1; }
+
+  @media (max-width: 500px) {
+    header { flex-wrap: wrap; }
+    .search-wrap { max-width: 100%; width: 100%; margin-left: 0; }
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <span class="logo">✦</span>
+  <div>
+    <h1>Claude Extras</h1>
+    <p>Centro de descoberta</p>
+  </div>
+  <div class="search-wrap">
+    <span class="icon">⌕</span>
+    <input type="text" id="searchInput" placeholder="Pesquisar skills, MCP, plugins...">
+  </div>
+</header>
+
+<main>
+  <div class="discover-section">
+    <p>Clica para descobrir algo novo — cada clique mostra um extra diferente</p>
+    <button class="btn-discover" onclick="discover()">✦ Descobrir</button>
+  </div>
+
+  <div id="spotlight"></div>
+
+  <div class="tabs">
+    <button class="tab active" onclick="setTab('todos')">Todos <span class="count-badge" id="countTodos">0</span></button>
+    <button class="tab" onclick="setTab('skill')">Skills <span class="count-badge" id="countSkill">0</span></button>
+    <button class="tab" onclick="setTab('mcp')">MCP Servers <span class="count-badge" id="countMcp">0</span></button>
+    <button class="tab" onclick="setTab('plugin')">Plugins <span class="count-badge" id="countPlugin">0</span></button>
+    <button class="tab" onclick="setTab('saved')">⭐ Guardados <span class="count-badge" id="countSaved">0</span></button>
+    <button class="tab" onclick="setTab('history')">🕑 Histórico <span class="count-badge" id="countHistory">0</span></button>
+  </div>
+
+  <div id="content"></div>
+</main>
+
+<div class="toast" id="toast"></div>
+
+<script>
+const CATALOG = [
+  /* ── SKILLS ─────────────────────────────────────────────── */
+  { id:'autopilot', emoji:'🚀', name:'Autopilot', type:'skill', cat:'Automação',
+    desc:'Executa tarefas complexas do início ao fim sem supervisão. Cria um plano, critica-o, implementa, revê e abre PR automaticamente.',
+    tags:['automação','código','PR','planeamento'],
+    use:'/autopilot [descrição da tarefa]', install:null },
+
+  { id:'bugfix', emoji:'🐛', name:'Bug Fix', type:'skill', cat:'Código',
+    desc:'Reproduz o bug, vai à raiz do problema, aplica a correção mínima e cria um teste de regressão.',
+    tags:['bugs','testes','código','correção'],
+    use:'/bugfix [descrição do bug]', install:null },
+
+  { id:'code-review', emoji:'🔍', name:'Code Review', type:'skill', cat:'Código',
+    desc:'Revê o código para bugs, simplificações e melhorias de eficiência. Pode publicar comentários inline no PR.',
+    tags:['revisão','qualidade','PR','análise'],
+    use:'/code-review [--fix | --comment]', install:null },
+
+  { id:'deep-research', emoji:'🔬', name:'Deep Research', type:'skill', cat:'Pesquisa',
+    desc:'Pesquisa aprofundada em múltiplas fontes, verifica factos de forma adversarial e sintetiza um relatório citado.',
+    tags:['pesquisa','web','análise','relatório'],
+    use:'/deep-research [tópico]', install:null },
+
+  { id:'docs', emoji:'📖', name:'Docs Generator', type:'skill', cat:'Documentação',
+    desc:'Descobre a superfície de funcionalidades, escreve documentação para a audiência certa e verifica os exemplos de código.',
+    tags:['documentação','código','escrita'],
+    use:'/docs [módulo ou funcionalidade]', install:null },
+
+  { id:'security-review', emoji:'🛡️', name:'Security Review', type:'skill', cat:'Segurança',
+    desc:'Revê as alterações pendentes na branch atual para vulnerabilidades de segurança.',
+    tags:['segurança','vulnerabilidades','OWASP','auditoria'],
+    use:'/security-review', install:null },
+
+  { id:'investigate', emoji:'🕵️', name:'Investigate', type:'skill', cat:'Análise',
+    desc:'Reúne evidências, gera hipóteses em paralelo, refuta cada uma e produz um relatório de causa raiz.',
+    tags:['análise','debugging','incidentes','relatório'],
+    use:'/investigate [problema ou comportamento]', install:null },
+
+  { id:'verify', emoji:'✅', name:'Verify', type:'skill', cat:'Testes',
+    desc:'Corre a app e observa o comportamento real para confirmar que uma alteração funciona, além dos testes automáticos.',
+    tags:['testes','verificação','QA'],
+    use:'/verify [o que verificar]', install:null },
+
+  { id:'simplify', emoji:'✂️', name:'Simplify', type:'skill', cat:'Código',
+    desc:'Revê o código alterado para reutilização, simplificação e eficiência, e aplica as correções automaticamente.',
+    tags:['refactoring','limpeza','código','qualidade'],
+    use:'/simplify', install:null },
+
+  { id:'loop', emoji:'🔄', name:'Loop', type:'skill', cat:'Automação',
+    desc:'Corre um prompt ou slash command num intervalo recorrente. Ideal para tarefas periódicas ou monitorização.',
+    tags:['agendamento','automação','recorrência'],
+    use:'/loop [5m] [/comando]', install:null },
+
+  { id:'dashboard', emoji:'📊', name:'Dashboard', type:'skill', cat:'Visualização',
+    desc:'Descobre fontes de dados, desenha o layout, implementa painéis e valida queries. Abre PR no final.',
+    tags:['dashboard','métricas','visualização','dados'],
+    use:'/dashboard [descrição]', install:null },
+
+  { id:'run', emoji:'▶️', name:'Run', type:'skill', cat:'Desenvolvimento',
+    desc:'Arranca a app do projeto e observa o comportamento real. Detecta o tipo de projeto automaticamente.',
+    tags:['arranque','desenvolvimento','app'],
+    use:'/run', install:null },
+
+  { id:'init', emoji:'🗂️', name:'Init', type:'skill', cat:'Configuração',
+    desc:'Inicializa um ficheiro CLAUDE.md com documentação do codebase para o Claude conhecer o projeto.',
+    tags:['configuração','CLAUDE.md','onboarding'],
+    use:'/init', install:null },
+
+  { id:'review', emoji:'👀', name:'Review PR', type:'skill', cat:'Código',
+    desc:'Revê um pull request completo — lê todos os commits, analisa o contexto e dá feedback detalhado.',
+    tags:['PR','revisão','GitHub'],
+    use:'/review', install:null },
+
+  { id:'claude-api', emoji:'⚡', name:'Claude API', type:'skill', cat:'Desenvolvimento',
+    desc:'Constrói, depura e optimiza apps com a Claude API / Anthropic SDK. Inclui prompt caching e migração de modelos.',
+    tags:['API','Anthropic','SDK','integração'],
+    use:'/claude-api [tarefa]', install:null },
+
+  { id:'update-config', emoji:'⚙️', name:'Update Config', type:'skill', cat:'Configuração',
+    desc:'Configura o Claude Code: permissões, hooks automáticos, variáveis de ambiente e settings.json.',
+    tags:['configuração','hooks','permissões','settings'],
+    use:'/update-config [o que configurar]', install:null },
+
+  /* ── MCP SERVERS ─────────────────────────────────────────── */
+  { id:'mcp-github', emoji:'🐙', name:'GitHub MCP', type:'mcp', cat:'Código',
+    desc:'Gere repositórios, cria PRs, comenta em issues e vê código diretamente no Claude.',
+    tags:['GitHub','repositórios','PR','código'],
+    use:'Acesso direto ao GitHub em qualquer conversa',
+    install:'claude mcp add github-official' },
+
+  { id:'mcp-filesystem', emoji:'📁', name:'Filesystem MCP', type:'mcp', cat:'Sistema',
+    desc:'Permite ao Claude ler e escrever ficheiros locais com controlo total sobre as pastas autorizadas.',
+    tags:['ficheiros','sistema','local','leitura'],
+    use:'Acesso a ficheiros locais autorizado por ti',
+    install:'claude mcp add @modelcontextprotocol/server-filesystem /pasta/autorizada' },
+
+  { id:'mcp-browser', emoji:'🌐', name:'Browser MCP', type:'mcp', cat:'Web',
+    desc:'O Claude abre páginas web, faz scraping, preenche formulários e interage com sites reais.',
+    tags:['browser','web','automação','scraping'],
+    use:'Claude navega na web durante conversas',
+    install:'npx @playwright/mcp@latest' },
+
+  { id:'mcp-postgres', emoji:'🐘', name:'PostgreSQL MCP', type:'mcp', cat:'Base de Dados',
+    desc:'Claude faz queries à tua base de dados PostgreSQL — analisa dados, gera relatórios, sugere optimizações.',
+    tags:['PostgreSQL','SQL','base de dados','queries'],
+    use:'claude mcp add @modelcontextprotocol/server-postgres',
+    install:'claude mcp add @modelcontextprotocol/server-postgres "postgresql://..."' },
+
+  { id:'mcp-slack', emoji:'💬', name:'Slack MCP', type:'mcp', cat:'Comunicação',
+    desc:'Envia mensagens, lê canais e gere o Slack diretamente a partir do Claude.',
+    tags:['Slack','comunicação','mensagens','equipas'],
+    use:'Envia mensagens Slack pelo Claude',
+    install:'claude mcp add slack' },
+
+  { id:'mcp-notion', emoji:'📝', name:'Notion MCP', type:'mcp', cat:'Produtividade',
+    desc:'Cria e edita páginas Notion, gere bases de dados e lê notas existentes com o Claude.',
+    tags:['Notion','notas','produtividade','base de dados'],
+    use:'Cria páginas Notion com o Claude',
+    install:'claude mcp add @notionhq/notion-mcp-server' },
+
+  { id:'mcp-gdrive', emoji:'📂', name:'Google Drive MCP', type:'mcp', cat:'Produtividade',
+    desc:'Acede, cria e edita documentos, folhas e apresentações do Google Drive.',
+    tags:['Google','Drive','Docs','Sheets'],
+    use:'Acede ao Google Drive no Claude',
+    install:'claude mcp add gdrive' },
+
+  { id:'mcp-linear', emoji:'📋', name:'Linear MCP', type:'mcp', cat:'Gestão',
+    desc:'Cria issues, actualiza estados e gere sprints no Linear sem sair do Claude.',
+    tags:['Linear','issues','sprint','gestão'],
+    use:'Gere o Linear com o Claude',
+    install:'claude mcp add linear' },
+
+  { id:'mcp-stripe', emoji:'💳', name:'Stripe MCP', type:'mcp', cat:'Pagamentos',
+    desc:'Consulta transações, clientes e dados de pagamentos Stripe diretamente no Claude.',
+    tags:['Stripe','pagamentos','financeiro','API'],
+    use:'Analisa dados Stripe no Claude',
+    install:'claude mcp add stripe' },
+
+  { id:'mcp-sqlite', emoji:'🗄️', name:'SQLite MCP', type:'mcp', cat:'Base de Dados',
+    desc:'Executa queries, cria tabelas e analisa bases de dados SQLite locais com o Claude.',
+    tags:['SQLite','SQL','base de dados','local'],
+    use:'Gere SQLite com o Claude',
+    install:'claude mcp add @modelcontextprotocol/server-sqlite ./base.db' },
+
+  { id:'mcp-puppeteer', emoji:'🤖', name:'Puppeteer MCP', type:'mcp', cat:'Web',
+    desc:'Automatiza o browser com Puppeteer — screenshots, scraping, testes E2E pelo Claude.',
+    tags:['automação','browser','testes','scraping'],
+    use:'Automatiza browser com o Claude',
+    install:'claude mcp add @modelcontextprotocol/server-puppeteer' },
+
+  { id:'mcp-docker', emoji:'🐳', name:'Docker MCP', type:'mcp', cat:'DevOps',
+    desc:'Gere containers, imagens e volumes Docker diretamente a partir de conversas com o Claude.',
+    tags:['Docker','containers','DevOps','infraestrutura'],
+    use:'Gere Docker com o Claude',
+    install:'claude mcp add docker' },
+
+  { id:'mcp-aws', emoji:'☁️', name:'AWS MCP', type:'mcp', cat:'Cloud',
+    desc:'Consulta recursos AWS, vê logs CloudWatch e gere serviços cloud com o Claude.',
+    tags:['AWS','cloud','infraestrutura','DevOps'],
+    use:'Acede aos recursos AWS no Claude',
+    install:'claude mcp add aws' },
+
+  /* ── PLUGINS (Channels) ─────────────────────────────────── */
+  { id:'plugin-telegram', emoji:'✈️', name:'Telegram Channel', type:'plugin', cat:'Comunicação',
+    desc:'Envia mensagens do Telegram para o Claude Code em execução no teu computador. Claude responde e executa tarefas reais.',
+    tags:['Telegram','mensagens','bot','automação'],
+    use:'claude --channels plugin:telegram@claude-plugins-official',
+    install:'/plugin install telegram@claude-plugins-official' },
+
+  { id:'plugin-discord', emoji:'🎮', name:'Discord Channel', type:'plugin', cat:'Comunicação',
+    desc:'Liga o Discord ao Claude Code. Envia mensagens do Discord e o Claude executa tarefas no teu computador.',
+    tags:['Discord','mensagens','bot','automação'],
+    use:'claude --channels plugin:discord@claude-plugins-official',
+    install:'/plugin install discord@claude-plugins-official' },
+
+  { id:'plugin-imessage', emoji:'💬', name:'iMessage Channel', type:'plugin', cat:'Comunicação',
+    desc:'Envia iMessages para o Claude Code no teu Mac. Funciona sem token — lê diretamente da base de dados do Messages (macOS only).',
+    tags:['iMessage','Apple','Mac','automação'],
+    use:'claude --channels plugin:imessage@claude-plugins-official',
+    install:'/plugin install imessage@claude-plugins-official' },
+
+  { id:'plugin-fakechat', emoji:'🧪', name:'Fakechat (Demo)', type:'plugin', cat:'Desenvolvimento',
+    desc:'Canal de demonstração que corre no localhost. Testa o sistema de channels sem precisar de configurar nada.',
+    tags:['demo','teste','desenvolvimento','channels'],
+    use:'claude --channels plugin:fakechat@claude-plugins-official',
+    install:'/plugin install fakechat@claude-plugins-official' },
+];
+
+/* ── State ─────────────────────────────────────────────────── */
+let currentTab = 'todos';
+let searchQuery = '';
+let saved   = JSON.parse(localStorage.getItem('cc_saved')   || '[]');
+let history = JSON.parse(localStorage.getItem('cc_history') || '[]');
+let lastDiscovered = null;
+
+/* ── Storage helpers ── */
+function saveSaved()   { localStorage.setItem('cc_saved',   JSON.stringify(saved));   }
+function saveHistory() { localStorage.setItem('cc_history', JSON.stringify(history)); }
+
+function addToHistory(item) {
+  history = history.filter(h => h.id !== item.id);
+  history.unshift({ id: item.id, ts: new Date().toLocaleString('pt-PT') });
+  if (history.length > 100) history = history.slice(0, 100);
+  saveHistory();
+  updateCounts();
+}
+
+function toggleSave(id) {
+  if (saved.includes(id)) {
+    saved = saved.filter(s => s !== id);
+    toast('Removido dos guardados');
+  } else {
+    saved.push(id);
+    toast('Guardado ⭐');
+  }
+  saveSaved();
+  updateCounts();
+  render();
+}
+
+/* ── Discover ── */
+function discover() {
+  const pool = CATALOG.filter(i => i.id !== (lastDiscovered && lastDiscovered.id));
+  const item = pool[Math.floor(Math.random() * pool.length)];
+  lastDiscovered = item;
+  addToHistory(item);
+  showSpotlight(item);
+  render();
+}
+
+function showSpotlight(item) {
+  const el = document.getElementById('spotlight');
+  const isSaved = saved.includes(item.id);
+  el.style.display = 'block';
+  el.innerHTML = `
+    <div class="spotlight-card">
+      <span class="type-badge type-${item.type}">${typeLabel(item.type)}</span>
+      <div class="label">✦ Descoberta</div>
+      <h2>${item.emoji} ${item.name}</h2>
+      <p class="desc">${item.desc}</p>
+      <div class="tags">${item.tags.map(t => `<span class="tag">#${t}</span>`).join('')}</div>
+      ${item.install ? `<div class="install-block">${item.install}</div>` : ''}
+      <div class="actions">
+        ${item.install ? `<button class="btn btn-copy" onclick="copyCmd('${item.id}')">📋 Copiar comando</button>` : ''}
+        <button class="btn btn-save" onclick="toggleSave('${item.id}')">${isSaved ? '⭐ Guardado' : '☆ Guardar'}</button>
+      </div>
+    </div>`;
+}
+
+/* ── Copy ── */
+function copyCmd(id) {
+  const item = CATALOG.find(i => i.id === id);
+  if (!item || !item.install) return;
+  navigator.clipboard.writeText(item.install).then(() => toast('Comando copiado! ✓'));
+}
+
+/* ── Tabs ── */
+function setTab(tab) {
+  currentTab = tab;
+  document.querySelectorAll('.tab').forEach((t, i) => {
+    t.classList.toggle('active', ['todos','skill','mcp','plugin','saved','history'][i] === tab);
+  });
+  render();
+}
+
+/* ── Counts ── */
+function updateCounts() {
+  document.getElementById('countTodos').textContent   = CATALOG.length;
+  document.getElementById('countSkill').textContent   = CATALOG.filter(i=>i.type==='skill').length;
+  document.getElementById('countMcp').textContent     = CATALOG.filter(i=>i.type==='mcp').length;
+  document.getElementById('countPlugin').textContent  = CATALOG.filter(i=>i.type==='plugin').length;
+  document.getElementById('countSaved').textContent   = saved.length;
+  document.getElementById('countHistory').textContent = history.length;
+}
+
+/* ── Render ── */
+function render() {
+  const el = document.getElementById('content');
+  const q  = searchQuery.toLowerCase();
+
+  if (currentTab === 'saved') {
+    const items = CATALOG.filter(i => saved.includes(i.id) && matches(i, q));
+    if (!items.length) { el.innerHTML = empty('⭐','Ainda não guardaste nada','Clica em "Descobrir" e guarda os extras que te interessam.'); return; }
+    el.innerHTML = `<div class="grid">${items.map(card).join('')}</div>`;
+    return;
+  }
+
+  if (currentTab === 'history') {
+    const hItems = history
+      .map(h => { const it = CATALOG.find(i=>i.id===h.id); return it ? { ...it, ts: h.ts } : null; })
+      .filter(Boolean)
+      .filter(i => matches(i, q));
+    if (!hItems.length) { el.innerHTML = empty('🕑','Histórico vazio','Cada vez que clicares em "Descobrir" ou num card, aparece aqui.'); return; }
+    el.innerHTML = `<div class="list">${hItems.map(historyItem).join('')}</div>`;
+    return;
+  }
+
+  const items = CATALOG.filter(i => {
+    if (currentTab !== 'todos' && i.type !== currentTab) return false;
+    return matches(i, q);
+  });
+  if (!items.length) { el.innerHTML = empty('🔍','Sem resultados','Tenta outra pesquisa.'); return; }
+  el.innerHTML = `<div class="grid">${items.map(card).join('')}</div>`;
+}
+
+function matches(item, q) {
+  if (!q) return true;
+  return (item.name+item.desc+item.tags.join(' ')+item.cat).toLowerCase().includes(q);
+}
+
+function card(item) {
+  const isSaved = saved.includes(item.id);
+  return `
+    <div class="card" onclick="openCard('${item.id}')">
+      ${isSaved ? '<span class="saved-star">⭐</span>' : `<span class="card-badge type-${item.type}">${typeLabel(item.type)}</span>`}
+      <div class="card-top">
+        <span class="emoji">${item.emoji}</span>
+        <div><h3>${item.name}</h3><div class="card-type">${item.cat}</div></div>
+      </div>
+      <p>${item.desc.slice(0, 90)}…</p>
+    </div>`;
+}
+
+function historyItem(item) {
+  return `
+    <div class="list-item" onclick="openCard('${item.id}')">
+      <span class="emoji">${item.emoji}</span>
+      <div class="info">
+        <h4>${item.name}</h4>
+        <div class="meta">${typeLabel(item.type)} · ${item.ts}</div>
+      </div>
+      <button class="remove" onclick="removeHistory(event,'${item.id}')">✕</button>
+    </div>`;
+}
+
+function removeHistory(e, id) {
+  e.stopPropagation();
+  history = history.filter(h => h.id !== id);
+  saveHistory();
+  updateCounts();
+  render();
+}
+
+function openCard(id) {
+  const item = CATALOG.find(i => i.id === id);
+  if (!item) return;
+  addToHistory(item);
+  showSpotlight(item);
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+function typeLabel(t) {
+  return { skill: 'Skill', mcp: 'MCP Server', plugin: 'Plugin' }[t] || t;
+}
+
+function empty(icon, title, sub) {
+  return `<div class="empty"><div class="icon">${icon}</div><strong>${title}</strong><br>${sub}</div>`;
+}
+
+/* ── Toast ── */
+function toast(msg) {
+  const el = document.getElementById('toast');
+  el.textContent = msg;
+  el.classList.add('show');
+  setTimeout(() => el.classList.remove('show'), 2000);
+}
+
+/* ── Search ── */
+document.getElementById('searchInput').addEventListener('input', e => {
+  searchQuery = e.target.value;
+  render();
+});
+
+/* ── Init ── */
+updateCounts();
+render();
+</script>
+</body>
+</html>
