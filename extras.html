@@ -120,8 +120,9 @@
   }
   .btn:hover { opacity: .85; }
   .btn-primary { background: var(--accent); color: #fff; }
-  .btn-save   { background: var(--bg3); color: var(--text); border: 1px solid var(--border); }
-  .btn-copy   { background: var(--bg3); color: var(--green); border: 1px solid var(--border); }
+  .btn-save    { background: var(--bg3); color: var(--text); border: 1px solid var(--border); }
+  .btn-copy    { background: var(--bg3); color: var(--green); border: 1px solid var(--border); }
+  .btn-open    { background: linear-gradient(135deg,#f472b6,#a855f7); color: #fff; }
   .install-block {
     background: var(--bg3); border-radius: 8px;
     padding: 10px 14px; font-family: monospace; font-size: 13px;
@@ -495,7 +496,10 @@ function showSpotlight(item) {
       <div class="tags">${item.tags.map(t => `<span class="tag">#${t}</span>`).join('')}</div>
       ${item.install ? `<div class="install-block">${item.install}</div>` : ''}
       <div class="actions">
-        ${item.install ? `<button class="btn btn-copy" onclick="copyCmd('${item.id}')">📋 Copiar comando</button>` : ''}
+        ${item.install ? `
+          <button class="btn btn-open" onclick="openInClaude('${item.id}')">⚡ Abrir no Claude</button>
+          <button class="btn btn-copy" onclick="copyCmd('${item.id}')">📋 Copiar</button>
+        ` : ''}
         <button class="btn btn-save" onclick="toggleSave('${item.id}')">${isSaved ? '⭐ Guardado' : '☆ Guardar'}</button>
       </div>
     </div>`;
@@ -506,6 +510,16 @@ function copyCmd(id) {
   const item = CATALOG.find(i => i.id === id);
   if (!item || !item.install) return;
   navigator.clipboard.writeText(item.install).then(() => toast('Comando copiado! ✓'));
+}
+
+/* ── Open in Claude ── */
+function openInClaude(id) {
+  const item = CATALOG.find(i => i.id === id);
+  if (!item || !item.install) return;
+  navigator.clipboard.writeText(item.install).then(() => {
+    window.open('https://claude.ai/code', '_blank');
+    toast('Comando copiado! Cola-o no Claude Code que abriu ✓');
+  });
 }
 
 /* ── Tabs ── */
