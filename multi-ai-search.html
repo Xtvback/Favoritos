@@ -1,0 +1,715 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Multi-AI Search</title>
+<script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --bg:      #0b0b10;
+    --bg2:     #13131c;
+    --bg3:     #1a1a26;
+    --bg4:     #21212f;
+    --border:  #2a2a3d;
+    --accent:  #7c6af7;
+    --accent2: #5b4fe0;
+    --text:    #e8e8f0;
+    --muted:   #7878a0;
+    --green:   #4ade80;
+    --red:     #f87171;
+    --radius:  12px;
+  }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+  }
+
+  /* ── Header ── */
+  header {
+    background: var(--bg2);
+    border-bottom: 1px solid var(--border);
+    padding: 16px 24px;
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    backdrop-filter: blur(12px);
+  }
+  .logo-icon { font-size: 26px; line-height: 1; }
+  .logo-text h1 { font-size: 17px; font-weight: 700; letter-spacing: -.3px; }
+  .logo-text p  { font-size: 12px; color: var(--muted); }
+  .header-right { margin-left: auto; display: flex; gap: 8px; }
+  .btn-icon {
+    background: var(--bg3); border: 1px solid var(--border);
+    color: var(--text); border-radius: 8px; padding: 7px 12px;
+    font-size: 13px; cursor: pointer; transition: background .15s, border-color .15s;
+    display: flex; align-items: center; gap: 6px;
+  }
+  .btn-icon:hover { background: var(--bg4); border-color: var(--accent); }
+
+  /* ── Settings panel ── */
+  #settings-panel {
+    background: var(--bg2);
+    border-bottom: 1px solid var(--border);
+    padding: 0 24px;
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height .35s ease, padding .35s ease;
+  }
+  #settings-panel.open {
+    max-height: 500px;
+    padding: 20px 24px;
+  }
+  .settings-inner {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+    gap: 16px;
+    max-width: 960px;
+  }
+  .api-group { display: flex; flex-direction: column; gap: 6px; }
+  .api-group label {
+    font-size: 12px; font-weight: 600; color: var(--muted);
+    text-transform: uppercase; letter-spacing: .5px;
+    display: flex; align-items: center; gap: 6px;
+  }
+  .api-group label .dot {
+    width: 8px; height: 8px; border-radius: 50%;
+    display: inline-block; flex-shrink: 0;
+  }
+  .key-row { display: flex; gap: 6px; }
+  .key-row input {
+    flex: 1; background: var(--bg3); border: 1px solid var(--border);
+    border-radius: 8px; color: var(--text); padding: 9px 12px;
+    font-size: 13px; font-family: monospace; outline: none;
+    transition: border-color .2s;
+  }
+  .key-row input:focus { border-color: var(--accent); }
+  .key-row input::placeholder { color: var(--muted); font-family: inherit; }
+  .btn-save {
+    background: var(--accent2); border: none; color: #fff;
+    border-radius: 8px; padding: 9px 14px; font-size: 13px;
+    cursor: pointer; transition: filter .15s; white-space: nowrap;
+  }
+  .btn-save:hover { filter: brightness(1.15); }
+  .settings-hint { font-size: 11px; color: var(--muted); margin-top: 12px; }
+
+  /* ── Main search area ── */
+  main {
+    flex: 1;
+    padding: 28px 24px;
+    max-width: 1280px;
+    width: 100%;
+    margin: 0 auto;
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+  }
+
+  .search-box {
+    background: var(--bg2);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 18px;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    transition: border-color .2s;
+  }
+  .search-box:focus-within { border-color: var(--accent); }
+
+  #query {
+    width: 100%; background: transparent; border: none; color: var(--text);
+    font-size: 15px; resize: none; outline: none; min-height: 72px;
+    line-height: 1.6; font-family: inherit;
+  }
+  #query::placeholder { color: var(--muted); }
+
+  .search-actions {
+    display: flex; align-items: center; justify-content: space-between;
+    border-top: 1px solid var(--border); padding-top: 12px; gap: 10px;
+  }
+  .search-actions-left { display: flex; gap: 8px; align-items: center; }
+  .char-count { font-size: 12px; color: var(--muted); }
+
+  .btn-primary {
+    background: linear-gradient(135deg, var(--accent), var(--accent2));
+    border: none; color: #fff; border-radius: 8px;
+    padding: 10px 20px; font-size: 14px; font-weight: 600;
+    cursor: pointer; display: flex; align-items: center; gap: 7px;
+    transition: filter .15s, transform .1s; white-space: nowrap;
+  }
+  .btn-primary:hover { filter: brightness(1.12); }
+  .btn-primary:active { transform: scale(.97); }
+  .btn-primary:disabled { opacity: .5; cursor: not-allowed; transform: none; filter: none; }
+
+  .btn-clear {
+    background: transparent; border: 1px solid var(--border);
+    color: var(--muted); border-radius: 8px; padding: 9px 14px;
+    font-size: 13px; cursor: pointer; transition: background .15s, color .15s;
+  }
+  .btn-clear:hover { background: var(--bg3); color: var(--text); }
+
+  /* ── AI cards grid ── */
+  #cards-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 18px;
+  }
+
+  .ai-card {
+    background: var(--bg2);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    min-height: 200px;
+    transition: border-color .2s;
+  }
+
+  .card-header {
+    padding: 14px 16px 12px;
+    border-bottom: 1px solid var(--border);
+    display: flex; align-items: center; gap: 10px;
+  }
+  .ai-logo {
+    width: 34px; height: 34px; border-radius: 8px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 18px; flex-shrink: 0;
+  }
+  .card-meta { flex: 1; min-width: 0; }
+  .card-meta .ai-name { font-size: 14px; font-weight: 700; line-height: 1.2; }
+  .card-meta .ai-model { font-size: 11px; color: var(--muted); margin-top: 1px; }
+  .card-actions { display: flex; gap: 6px; margin-left: auto; }
+  .btn-copy {
+    background: var(--bg3); border: 1px solid var(--border);
+    color: var(--muted); border-radius: 6px; padding: 5px 9px;
+    font-size: 11px; cursor: pointer; transition: all .15s;
+    display: flex; align-items: center; gap: 4px;
+  }
+  .btn-copy:hover { background: var(--bg4); color: var(--text); border-color: var(--accent); }
+  .btn-copy.copied { color: var(--green); border-color: var(--green); }
+
+  .card-body {
+    padding: 16px;
+    flex: 1;
+    overflow-y: auto;
+    font-size: 14px;
+    line-height: 1.7;
+  }
+
+  /* Idle state */
+  .card-idle {
+    display: flex; flex-direction: column;
+    align-items: center; justify-content: center;
+    gap: 8px; height: 100%; color: var(--muted);
+    text-align: center; padding: 20px;
+  }
+  .card-idle .idle-icon { font-size: 28px; opacity: .45; }
+  .card-idle p { font-size: 13px; }
+
+  /* Loading */
+  .card-loading {
+    display: flex; flex-direction: column;
+    align-items: center; justify-content: center;
+    gap: 14px; height: 100%; color: var(--muted);
+    text-align: center; padding: 20px;
+  }
+  .spinner {
+    width: 32px; height: 32px; border-radius: 50%;
+    border: 3px solid var(--border);
+    border-top-color: var(--accent);
+    animation: spin .8s linear infinite;
+  }
+  @keyframes spin { to { transform: rotate(360deg); } }
+  .card-loading p { font-size: 13px; }
+
+  /* Error */
+  .card-error {
+    display: flex; flex-direction: column;
+    gap: 8px; padding: 4px;
+  }
+  .error-badge {
+    display: inline-flex; align-items: center; gap: 5px;
+    background: rgba(248,113,113,.12); color: var(--red);
+    border: 1px solid rgba(248,113,113,.25); border-radius: 6px;
+    padding: 5px 10px; font-size: 12px; font-weight: 600;
+  }
+  .error-msg { font-size: 13px; color: var(--muted); }
+
+  /* Markdown output */
+  .md-output h1, .md-output h2, .md-output h3 {
+    color: var(--text); margin: .8em 0 .4em; line-height: 1.3;
+  }
+  .md-output h1 { font-size: 1.2em; }
+  .md-output h2 { font-size: 1.1em; }
+  .md-output h3 { font-size: 1em; }
+  .md-output p { margin: .5em 0; }
+  .md-output ul, .md-output ol { padding-left: 20px; margin: .5em 0; }
+  .md-output li { margin: .2em 0; }
+  .md-output code {
+    background: var(--bg3); border: 1px solid var(--border);
+    border-radius: 4px; padding: 1px 5px; font-size: 12px;
+    font-family: 'SF Mono', 'Fira Code', monospace; color: #c9b8ff;
+  }
+  .md-output pre {
+    background: var(--bg3); border: 1px solid var(--border);
+    border-radius: 8px; padding: 12px 14px; overflow-x: auto;
+    margin: .8em 0;
+  }
+  .md-output pre code { background: none; border: none; padding: 0; color: var(--text); }
+  .md-output blockquote {
+    border-left: 3px solid var(--accent); padding-left: 12px;
+    color: var(--muted); margin: .6em 0;
+  }
+  .md-output strong { color: var(--text); font-weight: 700; }
+  .md-output em { color: #c0b8e8; }
+  .md-output table { border-collapse: collapse; width: 100%; margin: .8em 0; font-size: 13px; }
+  .md-output th, .md-output td {
+    border: 1px solid var(--border); padding: 6px 10px; text-align: left;
+  }
+  .md-output th { background: var(--bg3); }
+  .md-output a { color: var(--accent); text-decoration: none; }
+  .md-output a:hover { text-decoration: underline; }
+
+  /* Status dot on card */
+  .status-dot {
+    width: 7px; height: 7px; border-radius: 50%;
+    flex-shrink: 0; background: var(--border);
+    transition: background .3s;
+  }
+  .status-dot.loading { background: #facc15; animation: pulse 1s ease-in-out infinite; }
+  .status-dot.done    { background: var(--green); }
+  .status-dot.error   { background: var(--red); }
+  @keyframes pulse { 0%,100%{opacity:1} 50%{opacity:.4} }
+
+  /* Token/time badge */
+  .resp-meta {
+    padding: 8px 16px 12px;
+    font-size: 11px; color: var(--muted);
+    border-top: 1px solid var(--border);
+    display: flex; gap: 12px;
+  }
+  .resp-meta span { display: flex; align-items: center; gap: 3px; }
+
+  /* No-key warning */
+  .no-key-warn {
+    display: flex; align-items: center; gap: 7px;
+    background: rgba(250,204,21,.08); color: #facc15;
+    border: 1px solid rgba(250,204,21,.2); border-radius: 8px;
+    padding: 8px 12px; font-size: 12px; margin-bottom: 6px;
+    cursor: pointer; transition: background .15s;
+  }
+  .no-key-warn:hover { background: rgba(250,204,21,.14); }
+
+  /* Responsive */
+  @media (max-width: 900px) {
+    #cards-grid { grid-template-columns: 1fr; }
+  }
+  @media (max-width: 600px) {
+    header { padding: 12px 16px; }
+    main   { padding: 16px; gap: 16px; }
+    .settings-inner { grid-template-columns: 1fr; }
+  }
+</style>
+</head>
+<body>
+
+<!-- ── Header ── -->
+<header>
+  <div class="logo-icon">🔍</div>
+  <div class="logo-text">
+    <h1>Multi-AI Search</h1>
+    <p>Compara respostas de várias IAs em simultâneo</p>
+  </div>
+  <div class="header-right">
+    <button class="btn-icon" id="settings-toggle" title="Configurar chaves de API">
+      ⚙️ <span>Configurações</span>
+    </button>
+  </div>
+</header>
+
+<!-- ── Settings Panel ── -->
+<div id="settings-panel">
+  <div class="settings-inner">
+
+    <div class="api-group">
+      <label><span class="dot" style="background:#6c47ff"></span>Qwen (DashScope)</label>
+      <div class="key-row">
+        <input type="password" id="key-qwen" placeholder="sk-..." autocomplete="off">
+        <button class="btn-save" onclick="saveKey('qwen')">Guardar</button>
+      </div>
+      <div style="font-size:11px;color:var(--muted)">dashscope.aliyuncs.com — modelo: qwen-plus</div>
+    </div>
+
+    <div class="api-group">
+      <label><span class="dot" style="background:#00b4d8"></span>DeepSeek</label>
+      <div class="key-row">
+        <input type="password" id="key-deepseek" placeholder="sk-..." autocomplete="off">
+        <button class="btn-save" onclick="saveKey('deepseek')">Guardar</button>
+      </div>
+      <div style="font-size:11px;color:var(--muted)">api.deepseek.com — modelo: deepseek-chat</div>
+    </div>
+
+    <div class="api-group">
+      <label><span class="dot" style="background:#4285f4"></span>Google Gemini</label>
+      <div class="key-row">
+        <input type="password" id="key-gemini" placeholder="AIza..." autocomplete="off">
+        <button class="btn-save" onclick="saveKey('gemini')">Guardar</button>
+      </div>
+      <div style="font-size:11px;color:var(--muted)">generativelanguage.googleapis.com — gemini-2.0-flash</div>
+    </div>
+
+  </div>
+  <p class="settings-hint">🔒 As chaves são guardadas apenas no teu browser (localStorage). Nunca saem do dispositivo.</p>
+</div>
+
+<!-- ── Main ── -->
+<main>
+
+  <!-- Search box -->
+  <div class="search-box">
+    <textarea id="query" placeholder="Faz uma pergunta a todas as IAs…" rows="3"></textarea>
+    <div class="search-actions">
+      <div class="search-actions-left">
+        <span class="char-count" id="char-count">0 / 4000</span>
+      </div>
+      <div style="display:flex;gap:8px">
+        <button class="btn-clear" id="btn-clear">Limpar</button>
+        <button class="btn-primary" id="btn-search">
+          <span>▶</span> Pesquisar
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- AI cards -->
+  <div id="cards-grid">
+
+    <!-- Qwen -->
+    <div class="ai-card" id="card-qwen">
+      <div class="card-header">
+        <div class="ai-logo" style="background:rgba(108,71,255,.18)">🤖</div>
+        <div class="card-meta">
+          <div class="ai-name">Qwen</div>
+          <div class="ai-model">qwen-plus · DashScope</div>
+        </div>
+        <div class="status-dot" id="dot-qwen"></div>
+        <div class="card-actions">
+          <button class="btn-copy" id="copy-qwen" onclick="copyResponse('qwen')" style="display:none">
+            📋 Copiar
+          </button>
+        </div>
+      </div>
+      <div class="card-body" id="body-qwen">
+        <div class="card-idle">
+          <div class="idle-icon">🤖</div>
+          <p>À espera da tua pergunta…</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- DeepSeek -->
+    <div class="ai-card" id="card-deepseek">
+      <div class="card-header">
+        <div class="ai-logo" style="background:rgba(0,180,216,.18)">🌊</div>
+        <div class="card-meta">
+          <div class="ai-name">DeepSeek</div>
+          <div class="ai-model">deepseek-chat · DeepSeek API</div>
+        </div>
+        <div class="status-dot" id="dot-deepseek"></div>
+        <div class="card-actions">
+          <button class="btn-copy" id="copy-deepseek" onclick="copyResponse('deepseek')" style="display:none">
+            📋 Copiar
+          </button>
+        </div>
+      </div>
+      <div class="card-body" id="body-deepseek">
+        <div class="card-idle">
+          <div class="idle-icon">🌊</div>
+          <p>À espera da tua pergunta…</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Gemini -->
+    <div class="ai-card" id="card-gemini">
+      <div class="card-header">
+        <div class="ai-logo" style="background:rgba(66,133,244,.18)">✨</div>
+        <div class="card-meta">
+          <div class="ai-name">Gemini</div>
+          <div class="ai-model">gemini-2.0-flash · Google AI</div>
+        </div>
+        <div class="status-dot" id="dot-gemini"></div>
+        <div class="card-actions">
+          <button class="btn-copy" id="copy-gemini" onclick="copyResponse('gemini')" style="display:none">
+            📋 Copiar
+          </button>
+        </div>
+      </div>
+      <div class="card-body" id="body-gemini">
+        <div class="card-idle">
+          <div class="idle-icon">✨</div>
+          <p>À espera da tua pergunta…</p>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</main>
+
+<script>
+// ── Storage helpers ──
+const KEYS = { qwen: 'mai_key_qwen', deepseek: 'mai_key_deepseek', gemini: 'mai_key_gemini' };
+const stored = {};
+const rawText = {};
+
+function loadKeys() {
+  for (const [ai, lsKey] of Object.entries(KEYS)) {
+    const v = localStorage.getItem(lsKey) || '';
+    stored[ai] = v;
+    const el = document.getElementById('key-' + ai);
+    if (el && v) el.value = v;
+  }
+}
+
+function saveKey(ai) {
+  const el = document.getElementById('key-' + ai);
+  const val = el.value.trim();
+  stored[ai] = val;
+  localStorage.setItem(KEYS[ai], val);
+  el.style.borderColor = 'var(--green)';
+  setTimeout(() => el.style.borderColor = '', 1500);
+}
+
+// ── Settings toggle ──
+document.getElementById('settings-toggle').addEventListener('click', () => {
+  const panel = document.getElementById('settings-panel');
+  panel.classList.toggle('open');
+});
+
+// ── Char counter ──
+const queryEl = document.getElementById('query');
+queryEl.addEventListener('input', () => {
+  const len = queryEl.value.length;
+  document.getElementById('char-count').textContent = `${len} / 4000`;
+});
+
+// Ctrl/Cmd+Enter to search
+queryEl.addEventListener('keydown', e => {
+  if ((e.ctrlKey || e.metaKey) && e.key === 'Enter') search();
+});
+
+// ── Clear ──
+document.getElementById('btn-clear').addEventListener('click', () => {
+  queryEl.value = '';
+  document.getElementById('char-count').textContent = '0 / 4000';
+  resetCards();
+});
+
+function resetCards() {
+  const icons = { qwen: '🤖', deepseek: '🌊', gemini: '✨' };
+  for (const ai of ['qwen', 'deepseek', 'gemini']) {
+    setIdle(ai, icons[ai]);
+    setDot(ai, '');
+    document.getElementById('copy-' + ai).style.display = 'none';
+    rawText[ai] = '';
+  }
+}
+
+// ── UI state helpers ──
+function setDot(ai, state) {
+  const d = document.getElementById('dot-' + ai);
+  d.className = 'status-dot' + (state ? ' ' + state : '');
+}
+
+function setIdle(ai, icon) {
+  document.getElementById('body-' + ai).innerHTML =
+    `<div class="card-idle"><div class="idle-icon">${icon}</div><p>À espera da tua pergunta…</p></div>`;
+}
+
+function setLoading(ai) {
+  document.getElementById('body-' + ai).innerHTML =
+    `<div class="card-loading"><div class="spinner"></div><p>A gerar resposta…</p></div>`;
+  setDot(ai, 'loading');
+  document.getElementById('copy-' + ai).style.display = 'none';
+}
+
+function setError(ai, msg) {
+  document.getElementById('body-' + ai).innerHTML =
+    `<div class="card-error">
+      <span class="error-badge">⚠ Erro</span>
+      <p class="error-msg">${escHtml(msg)}</p>
+    </div>`;
+  setDot(ai, 'error');
+}
+
+function setResult(ai, text, ms) {
+  rawText[ai] = text;
+  const html = marked.parse(text);
+  const timeBadge = ms ? `<span>⏱ ${(ms/1000).toFixed(1)}s</span>` : '';
+  document.getElementById('body-' + ai).innerHTML =
+    `<div class="md-output">${html}</div>`;
+  setDot(ai, 'done');
+  document.getElementById('copy-' + ai).style.display = 'flex';
+}
+
+function noKeyWarning(ai) {
+  document.getElementById('body-' + ai).innerHTML =
+    `<div class="no-key-warn" onclick="openSettings()">
+      🔑 Chave de API não configurada — clica para abrir as configurações
+    </div>`;
+  setDot(ai, 'error');
+}
+
+function openSettings() {
+  document.getElementById('settings-panel').classList.add('open');
+}
+
+function escHtml(s) {
+  return s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+}
+
+// ── Copy ──
+function copyResponse(ai) {
+  const text = rawText[ai] || '';
+  if (!text) return;
+  navigator.clipboard.writeText(text).then(() => {
+    const btn = document.getElementById('copy-' + ai);
+    btn.textContent = '✓ Copiado';
+    btn.classList.add('copied');
+    setTimeout(() => {
+      btn.innerHTML = '📋 Copiar';
+      btn.classList.remove('copied');
+    }, 1800);
+  });
+}
+
+// ── API calls ──
+async function callQwen(query) {
+  const key = stored.qwen;
+  if (!key) { noKeyWarning('qwen'); return; }
+  const t0 = Date.now();
+  setLoading('qwen');
+  try {
+    const res = await fetch('https://dashscope.aliyuncs.com/compatible-mode/v1/chat/completions', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': 'Bearer ' + key
+      },
+      body: JSON.stringify({
+        model: 'qwen-plus',
+        messages: [{ role: 'user', content: query }],
+        max_tokens: 2048
+      })
+    });
+    if (!res.ok) {
+      const err = await res.json().catch(() => ({}));
+      throw new Error(err.error?.message || `HTTP ${res.status}`);
+    }
+    const data = await res.json();
+    const text = data.choices?.[0]?.message?.content || '(sem resposta)';
+    setResult('qwen', text, Date.now() - t0);
+  } catch (e) {
+    setError('qwen', e.message);
+  }
+}
+
+async function callDeepSeek(query) {
+  const key = stored.deepseek;
+  if (!key) { noKeyWarning('deepseek'); return; }
+  const t0 = Date.now();
+  setLoading('deepseek');
+  try {
+    const res = await fetch('https://api.deepseek.com/v1/chat/completions', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': 'Bearer ' + key
+      },
+      body: JSON.stringify({
+        model: 'deepseek-chat',
+        messages: [{ role: 'user', content: query }],
+        max_tokens: 2048
+      })
+    });
+    if (!res.ok) {
+      const err = await res.json().catch(() => ({}));
+      throw new Error(err.error?.message || `HTTP ${res.status}`);
+    }
+    const data = await res.json();
+    const text = data.choices?.[0]?.message?.content || '(sem resposta)';
+    setResult('deepseek', text, Date.now() - t0);
+  } catch (e) {
+    setError('deepseek', e.message);
+  }
+}
+
+async function callGemini(query) {
+  const key = stored.gemini;
+  if (!key) { noKeyWarning('gemini'); return; }
+  const t0 = Date.now();
+  setLoading('gemini');
+  try {
+    const url = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${encodeURIComponent(key)}`;
+    const res = await fetch(url, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        contents: [{ parts: [{ text: query }] }],
+        generationConfig: { maxOutputTokens: 2048 }
+      })
+    });
+    if (!res.ok) {
+      const err = await res.json().catch(() => ({}));
+      throw new Error(err.error?.message || `HTTP ${res.status}`);
+    }
+    const data = await res.json();
+    const text = data.candidates?.[0]?.content?.parts?.[0]?.text || '(sem resposta)';
+    setResult('gemini', text, Date.now() - t0);
+  } catch (e) {
+    setError('gemini', e.message);
+  }
+}
+
+// ── Main search ──
+async function search() {
+  const query = queryEl.value.trim();
+  if (!query) {
+    queryEl.focus();
+    return;
+  }
+
+  const btn = document.getElementById('btn-search');
+  btn.disabled = true;
+  btn.innerHTML = '<div class="spinner" style="width:16px;height:16px;border-width:2px;margin:0"></div> A pesquisar…';
+
+  // Fire all three in parallel
+  await Promise.allSettled([
+    callQwen(query),
+    callDeepSeek(query),
+    callGemini(query)
+  ]);
+
+  btn.disabled = false;
+  btn.innerHTML = '<span>▶</span> Pesquisar';
+}
+
+document.getElementById('btn-search').addEventListener('click', search);
+
+// ── Init ──
+loadKeys();
+</script>
+</body>
+</html>
