@@ -130,6 +130,28 @@
     border: 1px solid var(--border);
     word-break: break-all;
   }
+  .steps-section { margin-bottom: 16px; }
+  .steps-title {
+    font-size: 11px; font-weight: 700; text-transform: uppercase;
+    letter-spacing: 1px; color: var(--muted); margin-bottom: 10px;
+  }
+  .steps-list { display: flex; flex-direction: column; gap: 8px; }
+  .step {
+    display: flex; gap: 10px; align-items: flex-start;
+  }
+  .step-num {
+    min-width: 22px; height: 22px; border-radius: 50%;
+    background: var(--accent); color: #fff;
+    font-size: 11px; font-weight: 700;
+    display: flex; align-items: center; justify-content: center;
+    flex-shrink: 0; margin-top: 1px;
+  }
+  .step-text { font-size: 13px; color: var(--text); line-height: 1.5; }
+  .step-text code {
+    background: var(--bg3); border: 1px solid var(--border);
+    border-radius: 4px; padding: 1px 6px;
+    font-family: monospace; font-size: 12px; color: var(--green);
+  }
   .type-badge {
     position: absolute; top: 20px; right: 20px;
     border-radius: 20px; padding: 4px 12px; font-size: 11px; font-weight: 700;
@@ -259,186 +281,219 @@ const CATALOG = [
   { id:'autopilot', emoji:'🚀', name:'Autopilot', type:'skill', cat:'Automação',
     desc:'Executa tarefas complexas do início ao fim sem supervisão. Cria um plano, critica-o, implementa, revê e abre PR automaticamente.',
     tags:['automação','código','PR','planeamento'],
-    use:'/autopilot [descrição da tarefa]', install:null },
+    use:'/autopilot [descrição da tarefa]', install:null,
+    steps:['Abre o Claude Code no terminal: <code>claude</code>','Navega até à pasta do teu projeto','Escreve <code>/autopilot</code> seguido da descrição da tarefa','O Claude planeia, implementa e abre um PR automaticamente'] },
 
   { id:'bugfix', emoji:'🐛', name:'Bug Fix', type:'skill', cat:'Código',
     desc:'Reproduz o bug, vai à raiz do problema, aplica a correção mínima e cria um teste de regressão.',
     tags:['bugs','testes','código','correção'],
-    use:'/bugfix [descrição do bug]', install:null },
+    use:'/bugfix [descrição do bug]', install:null,
+    steps:['Abre o Claude Code na pasta do projeto: <code>claude</code>','Escreve <code>/bugfix</code> e descreve o bug com o máximo de detalhe','O Claude reproduz o bug, encontra a causa e aplica a correção','Um teste de regressão é criado automaticamente'] },
 
   { id:'code-review', emoji:'🔍', name:'Code Review', type:'skill', cat:'Código',
     desc:'Revê o código para bugs, simplificações e melhorias de eficiência. Pode publicar comentários inline no PR.',
     tags:['revisão','qualidade','PR','análise'],
-    use:'/code-review [--fix | --comment]', install:null },
+    use:'/code-review [--fix | --comment]', install:null,
+    steps:['Abre o Claude Code na pasta do projeto','Escreve <code>/code-review</code> para uma revisão simples','Usa <code>/code-review --fix</code> para aplicar as correções automaticamente','Usa <code>/code-review --comment</code> para publicar no GitHub PR'] },
 
   { id:'deep-research', emoji:'🔬', name:'Deep Research', type:'skill', cat:'Pesquisa',
     desc:'Pesquisa aprofundada em múltiplas fontes, verifica factos de forma adversarial e sintetiza um relatório citado.',
     tags:['pesquisa','web','análise','relatório'],
-    use:'/deep-research [tópico]', install:null },
+    use:'/deep-research [tópico]', install:null,
+    steps:['Abre o Claude Code: <code>claude</code>','Escreve <code>/deep-research</code> seguido do tópico a pesquisar','O Claude pesquisa várias fontes e verifica os factos','Recebes um relatório detalhado com referências'] },
 
   { id:'docs', emoji:'📖', name:'Docs Generator', type:'skill', cat:'Documentação',
     desc:'Descobre a superfície de funcionalidades, escreve documentação para a audiência certa e verifica os exemplos de código.',
     tags:['documentação','código','escrita'],
-    use:'/docs [módulo ou funcionalidade]', install:null },
+    use:'/docs [módulo ou funcionalidade]', install:null,
+    steps:['Abre o Claude Code na pasta do projeto','Escreve <code>/docs</code> e indica o módulo ou funcionalidade','O Claude analisa o código e escreve a documentação','Os exemplos de código são verificados automaticamente'] },
 
   { id:'security-review', emoji:'🛡️', name:'Security Review', type:'skill', cat:'Segurança',
     desc:'Revê as alterações pendentes na branch atual para vulnerabilidades de segurança.',
     tags:['segurança','vulnerabilidades','OWASP','auditoria'],
-    use:'/security-review', install:null },
+    use:'/security-review', install:null,
+    steps:['Abre o Claude Code na pasta do projeto','Certifica que tens alterações pendentes na branch','Escreve <code>/security-review</code>','O Claude analisa o código para vulnerabilidades OWASP e boas práticas'] },
 
   { id:'investigate', emoji:'🕵️', name:'Investigate', type:'skill', cat:'Análise',
     desc:'Reúne evidências, gera hipóteses em paralelo, refuta cada uma e produz um relatório de causa raiz.',
     tags:['análise','debugging','incidentes','relatório'],
-    use:'/investigate [problema ou comportamento]', install:null },
+    use:'/investigate [problema ou comportamento]', install:null,
+    steps:['Abre o Claude Code','Escreve <code>/investigate</code> e descreve o problema ou comportamento estranho','O Claude reúne evidências e testa várias hipóteses','Recebes um relatório com a causa raiz e sugestão de correção'] },
 
   { id:'verify', emoji:'✅', name:'Verify', type:'skill', cat:'Testes',
     desc:'Corre a app e observa o comportamento real para confirmar que uma alteração funciona, além dos testes automáticos.',
     tags:['testes','verificação','QA'],
-    use:'/verify [o que verificar]', install:null },
+    use:'/verify [o que verificar]', install:null,
+    steps:['Abre o Claude Code na pasta do projeto','Faz as alterações que queres verificar','Escreve <code>/verify</code> e descreve o que deve ser testado','O Claude corre a app e confirma se funciona corretamente'] },
 
   { id:'simplify', emoji:'✂️', name:'Simplify', type:'skill', cat:'Código',
     desc:'Revê o código alterado para reutilização, simplificação e eficiência, e aplica as correções automaticamente.',
     tags:['refactoring','limpeza','código','qualidade'],
-    use:'/simplify', install:null },
+    use:'/simplify', install:null,
+    steps:['Abre o Claude Code com alterações pendentes no projeto','Escreve <code>/simplify</code>','O Claude identifica código desnecessário, duplicado ou ineficiente','As correções são aplicadas automaticamente no ficheiro'] },
 
   { id:'loop', emoji:'🔄', name:'Loop', type:'skill', cat:'Automação',
     desc:'Corre um prompt ou slash command num intervalo recorrente. Ideal para tarefas periódicas ou monitorização.',
     tags:['agendamento','automação','recorrência'],
-    use:'/loop [5m] [/comando]', install:null },
+    use:'/loop [5m] [/comando]', install:null,
+    steps:['Abre o Claude Code','Escreve <code>/loop 10m /code-review</code> para repetir de 10 em 10 minutos','Define o intervalo: <code>5m</code>, <code>1h</code>, <code>30s</code>','Para parar, fecha o Claude Code ou prime Ctrl+C'] },
 
   { id:'dashboard', emoji:'📊', name:'Dashboard', type:'skill', cat:'Visualização',
     desc:'Descobre fontes de dados, desenha o layout, implementa painéis e valida queries. Abre PR no final.',
     tags:['dashboard','métricas','visualização','dados'],
-    use:'/dashboard [descrição]', install:null },
+    use:'/dashboard [descrição]', install:null,
+    steps:['Abre o Claude Code na pasta do projeto','Escreve <code>/dashboard</code> e descreve o que queres ver (ex: "métricas de vendas")','O Claude descobre as fontes de dados disponíveis e cria os painéis','Um PR é aberto automaticamente com o dashboard pronto'] },
 
   { id:'run', emoji:'▶️', name:'Run', type:'skill', cat:'Desenvolvimento',
     desc:'Arranca a app do projeto e observa o comportamento real. Detecta o tipo de projeto automaticamente.',
     tags:['arranque','desenvolvimento','app'],
-    use:'/run', install:null },
+    use:'/run', install:null,
+    steps:['Abre o Claude Code na pasta do projeto','Escreve <code>/run</code>','O Claude deteta automaticamente o tipo de projeto (Node, Python, etc.)','A app arranca e o Claude observa o comportamento'] },
 
   { id:'init', emoji:'🗂️', name:'Init', type:'skill', cat:'Configuração',
     desc:'Inicializa um ficheiro CLAUDE.md com documentação do codebase para o Claude conhecer o projeto.',
     tags:['configuração','CLAUDE.md','onboarding'],
-    use:'/init', install:null },
+    use:'/init', install:null,
+    steps:['Abre o Claude Code numa pasta de projeto nova ou existente','Escreve <code>/init</code>','O Claude analisa todos os ficheiros e cria um <code>CLAUDE.md</code>','A partir daí, o Claude conhece o contexto do projeto automaticamente'] },
 
   { id:'review', emoji:'👀', name:'Review PR', type:'skill', cat:'Código',
     desc:'Revê um pull request completo — lê todos os commits, analisa o contexto e dá feedback detalhado.',
     tags:['PR','revisão','GitHub'],
-    use:'/review', install:null },
+    use:'/review', install:null,
+    steps:['Abre o Claude Code com o repositório ligado ao GitHub','Navega para a branch com o PR aberto','Escreve <code>/review</code>','O Claude lê todos os commits e dá feedback detalhado sobre o PR'] },
 
   { id:'claude-api', emoji:'⚡', name:'Claude API', type:'skill', cat:'Desenvolvimento',
     desc:'Constrói, depura e optimiza apps com a Claude API / Anthropic SDK. Inclui prompt caching e migração de modelos.',
     tags:['API','Anthropic','SDK','integração'],
-    use:'/claude-api [tarefa]', install:null },
+    use:'/claude-api [tarefa]', install:null,
+    steps:['Cria uma conta em <code>console.anthropic.com</code> e obtém uma API key','Abre o Claude Code na pasta do teu projeto','Escreve <code>/claude-api</code> e descreve o que queres construir','O Claude cria o código com prompt caching e boas práticas incluídas'] },
 
   { id:'update-config', emoji:'⚙️', name:'Update Config', type:'skill', cat:'Configuração',
     desc:'Configura o Claude Code: permissões, hooks automáticos, variáveis de ambiente e settings.json.',
     tags:['configuração','hooks','permissões','settings'],
-    use:'/update-config [o que configurar]', install:null },
+    use:'/update-config [o que configurar]', install:null,
+    steps:['Abre o Claude Code','Escreve <code>/update-config</code> e descreve o que queres configurar','Exemplo: <code>/update-config sempre que terminar mostrar o resumo</code>','O Claude edita o <code>settings.json</code> automaticamente'] },
 
   /* ── MCP SERVERS ─────────────────────────────────────────── */
   { id:'mcp-github', emoji:'🐙', name:'GitHub MCP', type:'mcp', cat:'Código',
     desc:'Gere repositórios, cria PRs, comenta em issues e vê código diretamente no Claude.',
     tags:['GitHub','repositórios','PR','código'],
     use:'Acesso direto ao GitHub em qualquer conversa',
-    install:'claude mcp add github-official' },
+    install:'claude mcp add github-official',
+    steps:['Abre o terminal (PowerShell no Windows)','Cola o comando de instalação e prime Enter','Reinicia o Claude Code','Nas conversas, o Claude tem agora acesso ao teu GitHub automaticamente'] },
 
   { id:'mcp-filesystem', emoji:'📁', name:'Filesystem MCP', type:'mcp', cat:'Sistema',
     desc:'Permite ao Claude ler e escrever ficheiros locais com controlo total sobre as pastas autorizadas.',
     tags:['ficheiros','sistema','local','leitura'],
     use:'Acesso a ficheiros locais autorizado por ti',
-    install:'claude mcp add @modelcontextprotocol/server-filesystem /pasta/autorizada' },
+    install:'claude mcp add @modelcontextprotocol/server-filesystem /pasta/autorizada',
+    steps:['Decide qual pasta queres que o Claude possa aceder (ex: <code>C:\\Documentos</code>)','No comando, substitui <code>/pasta/autorizada</code> pelo caminho real','Executa o comando no terminal','Reinicia o Claude — agora consegue ler e editar ficheiros nessa pasta'] },
 
   { id:'mcp-browser', emoji:'🌐', name:'Browser MCP', type:'mcp', cat:'Web',
     desc:'O Claude abre páginas web, faz scraping, preenche formulários e interage com sites reais.',
     tags:['browser','web','automação','scraping'],
     use:'Claude navega na web durante conversas',
-    install:'npx @playwright/mcp@latest' },
+    install:'npx @playwright/mcp@latest',
+    steps:['Garante que tens o Node.js instalado (<code>node --version</code> no terminal)','Executa o comando de instalação','Reinicia o Claude Code','Pede ao Claude para "abrir" ou "pesquisar" um site — ele navega sozinho'] },
 
   { id:'mcp-postgres', emoji:'🐘', name:'PostgreSQL MCP', type:'mcp', cat:'Base de Dados',
     desc:'Claude faz queries à tua base de dados PostgreSQL — analisa dados, gera relatórios, sugere optimizações.',
     tags:['PostgreSQL','SQL','base de dados','queries'],
     use:'claude mcp add @modelcontextprotocol/server-postgres',
-    install:'claude mcp add @modelcontextprotocol/server-postgres "postgresql://..."' },
+    install:'claude mcp add @modelcontextprotocol/server-postgres "postgresql://utilizador:password@localhost/base"',
+    steps:['Substitui <code>utilizador</code>, <code>password</code> e <code>base</code> pelos teus dados de acesso','Executa o comando no terminal','Reinicia o Claude Code','Pede ao Claude para "consultar" ou "analisar" dados da tua base'] },
 
   { id:'mcp-slack', emoji:'💬', name:'Slack MCP', type:'mcp', cat:'Comunicação',
     desc:'Envia mensagens, lê canais e gere o Slack diretamente a partir do Claude.',
     tags:['Slack','comunicação','mensagens','equipas'],
     use:'Envia mensagens Slack pelo Claude',
-    install:'claude mcp add slack' },
+    install:'claude mcp add slack',
+    steps:['Cria uma app Slack em <code>api.slack.com/apps</code> e obtém um token Bot','Executa o comando de instalação','Quando pedido, introduz o token Bot do Slack','Reinicia o Claude — consegue enviar e ler mensagens Slack'] },
 
   { id:'mcp-notion', emoji:'📝', name:'Notion MCP', type:'mcp', cat:'Produtividade',
     desc:'Cria e edita páginas Notion, gere bases de dados e lê notas existentes com o Claude.',
     tags:['Notion','notas','produtividade','base de dados'],
     use:'Cria páginas Notion com o Claude',
-    install:'claude mcp add @notionhq/notion-mcp-server' },
+    install:'claude mcp add @notionhq/notion-mcp-server',
+    steps:['Vai a <code>notion.so/my-integrations</code> e cria uma nova integração','Copia o token interno de integração','Executa o comando de instalação e introduz o token','Partilha as páginas Notion com a integração e reinicia o Claude'] },
 
   { id:'mcp-gdrive', emoji:'📂', name:'Google Drive MCP', type:'mcp', cat:'Produtividade',
     desc:'Acede, cria e edita documentos, folhas e apresentações do Google Drive.',
     tags:['Google','Drive','Docs','Sheets'],
     use:'Acede ao Google Drive no Claude',
-    install:'claude mcp add gdrive' },
+    install:'claude mcp add gdrive',
+    steps:['Executa o comando de instalação','O browser abre para autenticação Google — faz login','Autoriza o acesso ao Google Drive','Reinicia o Claude — consegue aceder e editar os teus ficheiros Drive'] },
 
   { id:'mcp-linear', emoji:'📋', name:'Linear MCP', type:'mcp', cat:'Gestão',
     desc:'Cria issues, actualiza estados e gere sprints no Linear sem sair do Claude.',
     tags:['Linear','issues','sprint','gestão'],
     use:'Gere o Linear com o Claude',
-    install:'claude mcp add linear' },
+    install:'claude mcp add linear',
+    steps:['Vai às definições do Linear e cria uma API key em <code>Settings → API</code>','Executa o comando de instalação e introduz a API key','Reinicia o Claude Code','Pede ao Claude para "criar uma issue" ou "listar o sprint atual"'] },
 
   { id:'mcp-stripe', emoji:'💳', name:'Stripe MCP', type:'mcp', cat:'Pagamentos',
     desc:'Consulta transações, clientes e dados de pagamentos Stripe diretamente no Claude.',
     tags:['Stripe','pagamentos','financeiro','API'],
     use:'Analisa dados Stripe no Claude',
-    install:'claude mcp add stripe' },
+    install:'claude mcp add stripe',
+    steps:['Vai ao dashboard Stripe em <code>dashboard.stripe.com/apikeys</code>','Copia a chave secreta (começa com <code>sk_</code>)','Executa o comando e introduz a chave quando pedido','Reinicia o Claude — consegue consultar transações e clientes'] },
 
   { id:'mcp-sqlite', emoji:'🗄️', name:'SQLite MCP', type:'mcp', cat:'Base de Dados',
     desc:'Executa queries, cria tabelas e analisa bases de dados SQLite locais com o Claude.',
     tags:['SQLite','SQL','base de dados','local'],
     use:'Gere SQLite com o Claude',
-    install:'claude mcp add @modelcontextprotocol/server-sqlite ./base.db' },
+    install:'claude mcp add @modelcontextprotocol/server-sqlite ./base.db',
+    steps:['Substitui <code>./base.db</code> pelo caminho do teu ficheiro SQLite','Executa o comando no terminal','Reinicia o Claude Code','Pede ao Claude para "ver as tabelas" ou "fazer uma query" à base de dados'] },
 
   { id:'mcp-puppeteer', emoji:'🤖', name:'Puppeteer MCP', type:'mcp', cat:'Web',
     desc:'Automatiza o browser com Puppeteer — screenshots, scraping, testes E2E pelo Claude.',
     tags:['automação','browser','testes','scraping'],
     use:'Automatiza browser com o Claude',
-    install:'claude mcp add @modelcontextprotocol/server-puppeteer' },
+    install:'claude mcp add @modelcontextprotocol/server-puppeteer',
+    steps:['Garante que tens o Node.js instalado','Executa o comando de instalação','Reinicia o Claude Code','Pede ao Claude para "fazer screenshot" ou "testar o fluxo de login" de um site'] },
 
   { id:'mcp-docker', emoji:'🐳', name:'Docker MCP', type:'mcp', cat:'DevOps',
     desc:'Gere containers, imagens e volumes Docker diretamente a partir de conversas com o Claude.',
     tags:['Docker','containers','DevOps','infraestrutura'],
     use:'Gere Docker com o Claude',
-    install:'claude mcp add docker' },
+    install:'claude mcp add docker',
+    steps:['Garante que o Docker Desktop está instalado e a correr','Executa o comando de instalação no terminal','Reinicia o Claude Code','Pede ao Claude para "listar containers" ou "fazer build" de uma imagem'] },
 
   { id:'mcp-aws', emoji:'☁️', name:'AWS MCP', type:'mcp', cat:'Cloud',
     desc:'Consulta recursos AWS, vê logs CloudWatch e gere serviços cloud com o Claude.',
     tags:['AWS','cloud','infraestrutura','DevOps'],
     use:'Acede aos recursos AWS no Claude',
-    install:'claude mcp add aws' },
+    install:'claude mcp add aws',
+    steps:['Configura as credenciais AWS: <code>aws configure</code> no terminal','Introduz a Access Key ID e Secret Access Key da tua conta AWS','Executa o comando de instalação do MCP','Reinicia o Claude — consegue ver e gerir recursos AWS'] },
 
   /* ── PLUGINS (Channels) ─────────────────────────────────── */
   { id:'plugin-telegram', emoji:'✈️', name:'Telegram Channel', type:'plugin', cat:'Comunicação',
     desc:'Envia mensagens do Telegram para o Claude Code em execução no teu computador. Claude responde e executa tarefas reais.',
     tags:['Telegram','mensagens','bot','automação'],
     use:'claude --channels plugin:telegram@claude-plugins-official',
-    install:'/plugin install telegram@claude-plugins-official' },
+    install:'/plugin install telegram@claude-plugins-official',
+    steps:['No Telegram, fala com <code>@BotFather</code> e envia <code>/newbot</code> para criar o teu bot','Copia o token que o BotFather te envia','No Claude Code, executa: <code>/plugin install telegram@claude-plugins-official</code>','Configura o token: <code>/telegram:configure SEU_TOKEN</code>','Reinicia com: <code>claude --channels plugin:telegram@claude-plugins-official</code>','Envia uma mensagem ao bot — receberes um código de emparelhamento','No terminal: <code>/telegram:access pair CODIGO</code>'] },
 
   { id:'plugin-discord', emoji:'🎮', name:'Discord Channel', type:'plugin', cat:'Comunicação',
     desc:'Liga o Discord ao Claude Code. Envia mensagens do Discord e o Claude executa tarefas no teu computador.',
     tags:['Discord','mensagens','bot','automação'],
     use:'claude --channels plugin:discord@claude-plugins-official',
-    install:'/plugin install discord@claude-plugins-official' },
+    install:'/plugin install discord@claude-plugins-official',
+    steps:['Vai a <code>discord.com/developers/applications</code> e cria uma nova app','Na secção Bot, cria o bot e copia o token','Ativa a permissão "Message Content Intent" nas definições do bot','No Claude Code: <code>/plugin install discord@claude-plugins-official</code>','Configura: <code>/discord:configure SEU_TOKEN</code>','Reinicia: <code>claude --channels plugin:discord@claude-plugins-official</code>','Envia DM ao bot → emparelha com o código recebido'] },
 
   { id:'plugin-imessage', emoji:'💬', name:'iMessage Channel', type:'plugin', cat:'Comunicação',
     desc:'Envia iMessages para o Claude Code no teu Mac. Funciona sem token — lê diretamente da base de dados do Messages (macOS only).',
     tags:['iMessage','Apple','Mac','automação'],
     use:'claude --channels plugin:imessage@claude-plugins-official',
-    install:'/plugin install imessage@claude-plugins-official' },
+    install:'/plugin install imessage@claude-plugins-official',
+    steps:['Apenas disponível em macOS — não funciona no Windows','No Claude Code (Mac): <code>/plugin install imessage@claude-plugins-official</code>','Vai a Definições do Sistema → Privacidade → Acesso Total ao Disco e adiciona o Terminal','Reinicia: <code>claude --channels plugin:imessage@claude-plugins-official</code>','Envia uma mensagem para ti próprio no iPhone via iMessage — chega ao Claude imediatamente'] },
 
   { id:'plugin-fakechat', emoji:'🧪', name:'Fakechat (Demo)', type:'plugin', cat:'Desenvolvimento',
     desc:'Canal de demonstração que corre no localhost. Testa o sistema de channels sem precisar de configurar nada.',
     tags:['demo','teste','desenvolvimento','channels'],
     use:'claude --channels plugin:fakechat@claude-plugins-official',
-    install:'/plugin install fakechat@claude-plugins-official' },
+    install:'/plugin install fakechat@claude-plugins-official',
+    steps:['No Claude Code: <code>/plugin install fakechat@claude-plugins-official</code>','Executa: <code>/reload-plugins</code>','Reinicia: <code>claude --channels plugin:fakechat@claude-plugins-official</code>','Abre o browser em <code>http://localhost:8787</code>','Escreve uma mensagem na interface — chega ao Claude Code instantaneamente'] },
 ];
 
 /* ── State ─────────────────────────────────────────────────── */
@@ -494,6 +549,17 @@ function showSpotlight(item) {
       <h2>${item.emoji} ${item.name}</h2>
       <p class="desc">${item.desc}</p>
       <div class="tags">${item.tags.map(t => `<span class="tag">#${t}</span>`).join('')}</div>
+      ${item.steps ? `
+        <div class="steps-section">
+          <div class="steps-title">Como instalar</div>
+          <div class="steps-list">
+            ${item.steps.map((s,i) => `
+              <div class="step">
+                <span class="step-num">${i+1}</span>
+                <span class="step-text">${s}</span>
+              </div>`).join('')}
+          </div>
+        </div>` : ''}
       ${item.install ? `<div class="install-block">${item.install}</div>` : ''}
       <div class="actions">
         ${item.install ? `
