@@ -1,274 +1,358 @@
 <!DOCTYPE html>
 <html lang="pt">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Links — André M. Fernandes</title>
-<style>
-  * { box-sizing: border-box; margin: 0; padding: 0; }
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="default">
+  <meta name="apple-mobile-web-app-title" content="Links">
+  <title>Links — André M. Fernandes</title>
+  <style>
+    :root {
+      --bg: #f2f2f7;
+      --card: #ffffff;
+      --card2: #f2f2f7;
+      --primary: #007aff;
+      --text: #1c1c1e;
+      --text2: #6d6d72;
+      --sep: rgba(60,60,67,0.18);
+      --hdr: rgba(242,242,247,0.88);
+      --safe-t: env(safe-area-inset-top, 0px);
+      --safe-b: env(safe-area-inset-bottom, 0px);
+      --safe-l: env(safe-area-inset-left, 0px);
+      --safe-r: env(safe-area-inset-right, 0px);
+    }
+    @media (prefers-color-scheme: dark) {
+      :root {
+        --bg: #000000;
+        --card: #1c1c1e;
+        --card2: #2c2c2e;
+        --text: #ffffff;
+        --text2: #8e8e93;
+        --sep: rgba(84,84,88,0.65);
+        --hdr: rgba(28,28,30,0.88);
+      }
+    }
 
-  :root {
-    --bg: #0f0f13;
-    --bg2: #16161e;
-    --bg3: #1e1e2a;
-    --border: #2a2a38;
-    --accent: #7c6af7;
-    --accent2: #5b4fe0;
-    --text: #e8e8f0;
-    --muted: #8888a8;
-    --green: #4ade80;
-    --orange: #fb923c;
-    --pink: #f472b6;
-    --blue: #60a5fa;
-    --yellow: #facc15;
-  }
+    *, *::before, *::after {
+      box-sizing: border-box; margin: 0; padding: 0;
+      -webkit-tap-highlight-color: transparent;
+    }
+    html { height: 100%; }
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "SF Pro Text", "SF Pro Display", system-ui, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      min-height: 100dvh;
+      -webkit-font-smoothing: antialiased;
+    }
 
-  body {
-    background: var(--bg);
-    color: var(--text);
-    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
-    min-height: 100vh;
-  }
+    /* ── HEADER ── */
+    .hdr {
+      position: sticky;
+      top: 0;
+      z-index: 90;
+      backdrop-filter: blur(24px) saturate(180%);
+      -webkit-backdrop-filter: blur(24px) saturate(180%);
+      background: var(--hdr);
+      border-bottom: 0.5px solid var(--sep);
+    }
+    .hdr-bar {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: calc(var(--safe-t) + 12px) calc(var(--safe-r) + 20px) 12px calc(var(--safe-l) + 20px);
+    }
+    .hdr-avatar {
+      width: 36px; height: 36px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, #007aff, #5856d6);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 18px; flex-shrink: 0;
+    }
+    .hdr-info { flex: 1; }
+    .hdr-name { font-size: 16px; font-weight: 700; letter-spacing: -0.3px; }
+    .hdr-sub  { font-size: 12px; color: var(--text2); margin-top: 1px; }
 
-  header {
-    background: var(--bg2);
-    border-bottom: 1px solid var(--border);
-    padding: 16px 20px;
-    display: flex;
-    align-items: center;
-    gap: 12px;
-    position: sticky;
-    top: 0;
-    z-index: 100;
-  }
-  header .logo { font-size: 22px; }
-  header div h1 { font-size: 16px; font-weight: 600; }
-  header div p  { font-size: 12px; color: var(--muted); }
+    /* ── MAIN ── */
+    .main {
+      padding: 28px calc(var(--safe-r) + 16px) calc(var(--safe-b) + 40px) calc(var(--safe-l) + 16px);
+      max-width: 680px;
+      margin: 0 auto;
+    }
 
-  main { max-width: 820px; margin: 0 auto; padding: 28px 16px; }
+    /* ── SECTION LABEL ── */
+    .section-label {
+      font-size: 13px;
+      font-weight: 600;
+      color: var(--text2);
+      text-transform: uppercase;
+      letter-spacing: 0.6px;
+      padding: 0 4px;
+      margin-bottom: 10px;
+      margin-top: 32px;
+    }
+    .section-label:first-child { margin-top: 0; }
 
-  h2 {
-    font-size: 12px;
-    font-weight: 600;
-    text-transform: uppercase;
-    letter-spacing: 1px;
-    color: var(--muted);
-    margin-bottom: 12px;
-    margin-top: 32px;
-  }
-  h2:first-of-type { margin-top: 0; }
+    /* ── REPO CARDS ── */
+    .repo-list { display: flex; flex-direction: column; gap: 0; }
+    .repo-card {
+      background: var(--card);
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      padding: 14px 16px;
+      text-decoration: none;
+      color: inherit;
+      border-bottom: 0.5px solid var(--sep);
+      transition: background 0.12s;
+    }
+    .repo-list .repo-card:first-child { border-radius: 14px 14px 0 0; }
+    .repo-list .repo-card:last-child  { border-radius: 0 0 14px 14px; border-bottom: none; }
+    .repo-list .repo-card:only-child  { border-radius: 14px; border-bottom: none; }
+    .repo-card:active { background: rgba(128,128,128,0.08); }
 
-  .grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
-    gap: 12px;
-    margin-bottom: 8px;
-  }
+    .repo-icon-wrap {
+      width: 44px; height: 44px; flex-shrink: 0;
+      border-radius: 10px;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 22px;
+    }
+    .repo-body { flex: 1; min-width: 0; }
+    .repo-name {
+      font-size: 15px; font-weight: 600;
+      letter-spacing: -0.2px;
+      white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+    }
+    .repo-desc { font-size: 12px; color: var(--text2); margin-top: 2px; line-height: 1.4; }
+    .repo-tags { display: flex; gap: 6px; margin-top: 7px; flex-wrap: wrap; }
+    .tag {
+      font-size: 11px; font-weight: 600;
+      padding: 4px 10px; border-radius: 20px;
+      text-decoration: none;
+      transition: opacity 0.12s;
+      display: inline-flex; align-items: center; gap: 4px;
+    }
+    .tag:active { opacity: 0.6; }
+    .tag-gh     { background: rgba(0,0,0,0.08); color: var(--text2); }
+    @media (prefers-color-scheme: dark) {
+      .tag-gh   { background: rgba(255,255,255,0.1); color: var(--text2); }
+    }
+    .tag-web    { background: rgba(0,122,255,0.12); color: var(--primary); }
+    .tag-vercel { background: rgba(0,0,0,0.08); color: var(--text2); }
+    @media (prefers-color-scheme: dark) {
+      .tag-vercel { background: rgba(255,255,255,0.1); }
+    }
+    .repo-chevron { color: var(--sep); font-size: 14px; flex-shrink: 0; }
 
-  .card {
-    background: var(--bg2);
-    border: 1px solid var(--border);
-    border-radius: 14px;
-    padding: 18px 20px;
-    display: flex;
-    flex-direction: column;
-    gap: 6px;
-    transition: border-color .18s, transform .18s;
-    text-decoration: none;
-    color: inherit;
-  }
-  .card:hover {
-    border-color: var(--accent);
-    transform: translateY(-2px);
-  }
+    /* ── ICON GRID (Páginas) ── */
+    .icon-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 16px 8px;
+    }
+    @media (min-width: 480px) {
+      .icon-grid { grid-template-columns: repeat(5, 1fr); }
+    }
+    @media (min-width: 600px) {
+      .icon-grid { grid-template-columns: repeat(6, 1fr); }
+    }
 
-  .card-top {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-  }
-  .card-icon { font-size: 20px; }
-  .card-name {
-    font-size: 15px;
-    font-weight: 600;
-    color: var(--text);
-  }
-  .card-desc {
-    font-size: 12px;
-    color: var(--muted);
-    line-height: 1.4;
-    min-height: 16px;
-  }
-  .card-links {
-    display: flex;
-    gap: 8px;
-    margin-top: 4px;
-    flex-wrap: wrap;
-  }
-  .tag {
-    font-size: 11px;
-    padding: 3px 10px;
-    border-radius: 20px;
-    text-decoration: none;
-    font-weight: 500;
-    transition: opacity .15s;
-  }
-  .tag:hover { opacity: .75; }
-  .tag-gh  { background: #24292e; color: #fff; border: 1px solid #444; }
-  .tag-web { background: var(--accent2); color: #fff; }
-  .tag-vercel { background: #000; color: #fff; border: 1px solid #444; }
+    .app-icon {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 6px;
+      text-decoration: none;
+      color: var(--text);
+      cursor: pointer;
+      transition: transform 0.15s;
+    }
+    .app-icon:active { transform: scale(0.88); }
 
-  .pages-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
-    gap: 10px;
-  }
+    .app-icon-img {
+      width: 64px; height: 64px;
+      border-radius: 16px;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 30px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.12), 0 0.5px 0 rgba(0,0,0,0.06);
+    }
+    .app-icon-label {
+      font-size: 11px;
+      font-weight: 400;
+      text-align: center;
+      line-height: 1.3;
+      color: var(--text);
+      max-width: 72px;
+      overflow: hidden;
+      display: -webkit-box;
+      -webkit-line-clamp: 2;
+      -webkit-box-orient: vertical;
+    }
 
-  .page-card {
-    background: var(--bg3);
-    border: 1px solid var(--border);
-    border-radius: 12px;
-    padding: 14px 16px;
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    text-decoration: none;
-    color: var(--text);
-    font-size: 14px;
-    font-weight: 500;
-    transition: border-color .18s, background .18s;
-  }
-  .page-card:hover {
-    border-color: var(--accent);
-    background: var(--bg2);
-  }
-  .page-card .pi { font-size: 18px; }
-</style>
+    /* App icon background colours */
+    .ic-blue   { background: linear-gradient(145deg, #1a91ff, #0062d4); }
+    .ic-purple { background: linear-gradient(145deg, #bf5af2, #9b40d1); }
+    .ic-green  { background: linear-gradient(145deg, #30d158, #25a244); }
+    .ic-orange { background: linear-gradient(145deg, #ff9f0a, #e07a00); }
+    .ic-red    { background: linear-gradient(145deg, #ff453a, #d93025); }
+    .ic-teal   { background: linear-gradient(145deg, #5ac8fa, #3ba0d1); }
+    .ic-indigo { background: linear-gradient(145deg, #5e5ce6, #4240c4); }
+    .ic-pink   { background: linear-gradient(145deg, #ff375f, #d4234a); }
+    .ic-gray   { background: linear-gradient(145deg, #8e8e93, #636366); }
+    .ic-yellow { background: linear-gradient(145deg, #ffd60a, #d4ac00); }
+  </style>
 </head>
 <body>
 
-<header>
-  <span class="logo">🔖</span>
-  <div>
-    <h1>Links</h1>
-    <p>Repositórios e páginas de André M. Fernandes</p>
-  </div>
-</header>
-
-<main>
-
-  <h2>Repositórios GitHub</h2>
-  <div class="grid">
-
-    <div class="card">
-      <div class="card-top">
-        <span class="card-icon">🌐</span>
-        <span class="card-name">minha-primeira-app</span>
-      </div>
-      <div class="card-desc">Site do Autor André Fernandes</div>
-      <div class="card-links">
-        <a class="tag tag-gh"     href="https://github.com/Xtvback/minha-primeira-app" target="_blank">GitHub</a>
-        <a class="tag tag-vercel" href="https://andremfernandes.vercel.app"             target="_blank">Vercel ↗</a>
+  <!-- HEADER -->
+  <header class="hdr">
+    <div class="hdr-bar">
+      <div class="hdr-avatar">🔖</div>
+      <div class="hdr-info">
+        <div class="hdr-name">André M. Fernandes</div>
+        <div class="hdr-sub">Repositórios e páginas pessoais</div>
       </div>
     </div>
+  </header>
 
-    <div class="card">
-      <div class="card-top">
-        <span class="card-icon">📋</span>
-        <span class="card-name">mural-textos</span>
-      </div>
-      <div class="card-desc">Mural de textos</div>
-      <div class="card-links">
-        <a class="tag tag-gh"  href="https://github.com/Xtvback/mural-textos"            target="_blank">GitHub</a>
-        <a class="tag tag-web" href="https://xtvback.github.io/mural-textos"             target="_blank">Página ↗</a>
-      </div>
+  <!-- MAIN -->
+  <main class="main">
+
+    <!-- PÁGINAS DO FAVORITOS -->
+    <div class="section-label">Páginas do Favoritos</div>
+    <div class="icon-grid">
+
+      <a class="app-icon" href="https://xtvback.github.io/Favoritos/" target="_blank">
+        <div class="app-icon-img ic-indigo">🖥️</div>
+        <span class="app-icon-label">DesktopWeb</span>
+      </a>
+
+      <a class="app-icon" href="https://xtvback.github.io/Favoritos/app-ideas.html" target="_blank">
+        <div class="app-icon-img ic-blue">💡</div>
+        <span class="app-icon-label">App Ideas</span>
+      </a>
+
+      <a class="app-icon" href="https://xtvback.github.io/Favoritos/ideias-soltas.html" target="_blank">
+        <div class="app-icon-img ic-purple">✨</div>
+        <span class="app-icon-label">Ideias Soltas</span>
+      </a>
+
+      <a class="app-icon" href="https://xtvback.github.io/Favoritos/ideias-livros.html" target="_blank">
+        <div class="app-icon-img ic-orange">📖</div>
+        <span class="app-icon-label">Ideias Livros</span>
+      </a>
+
+      <a class="app-icon" href="https://xtvback.github.io/Favoritos/passwords.html" target="_blank">
+        <div class="app-icon-img ic-green">🔐</div>
+        <span class="app-icon-label">Passwords</span>
+      </a>
+
+      <a class="app-icon" href="https://xtvback.github.io/Favoritos/multi-ai-search.html" target="_blank">
+        <div class="app-icon-img ic-teal">🤖</div>
+        <span class="app-icon-label">Multi AI Search</span>
+      </a>
+
+      <a class="app-icon" href="https://xtvback.github.io/Favoritos/instagram-slides.html" target="_blank">
+        <div class="app-icon-img ic-pink">📸</div>
+        <span class="app-icon-label">Instagram Slides</span>
+      </a>
+
+      <a class="app-icon" href="https://xtvback.github.io/Favoritos/frases.html" target="_blank">
+        <div class="app-icon-img ic-yellow">💬</div>
+        <span class="app-icon-label">Frases</span>
+      </a>
+
+      <a class="app-icon" href="https://xtvback.github.io/Favoritos/extras.html" target="_blank">
+        <div class="app-icon-img ic-red">⚡</div>
+        <span class="app-icon-label">Claude Extras</span>
+      </a>
+
+      <a class="app-icon" href="https://xtvback.github.io/Favoritos/links.html" target="_blank">
+        <div class="app-icon-img ic-gray">🔖</div>
+        <span class="app-icon-label">Links</span>
+      </a>
+
     </div>
 
-    <div class="card">
-      <div class="card-top">
-        <span class="card-icon">📸</span>
-        <span class="card-name">insta-tool-web</span>
+    <!-- REPOSITÓRIOS GITHUB -->
+    <div class="section-label">Repositórios GitHub</div>
+    <div class="repo-list">
+
+      <div class="repo-card">
+        <div class="repo-icon-wrap ic-indigo">🌐</div>
+        <div class="repo-body">
+          <div class="repo-name">minha-primeira-app</div>
+          <div class="repo-desc">Site do Autor André Fernandes</div>
+          <div class="repo-tags">
+            <a class="tag tag-gh" href="https://github.com/Xtvback/minha-primeira-app" target="_blank">GitHub</a>
+            <a class="tag tag-vercel" href="https://andremfernandes.vercel.app" target="_blank">Vercel ↗</a>
+          </div>
+        </div>
       </div>
-      <div class="card-desc">Ferramentas Instagram acessíveis via browser</div>
-      <div class="card-links">
-        <a class="tag tag-gh"  href="https://github.com/Xtvback/insta-tool-web"          target="_blank">GitHub</a>
-        <a class="tag tag-web" href="https://xtvback.github.io/insta-tool-web"           target="_blank">Página ↗</a>
+
+      <div class="repo-card">
+        <div class="repo-icon-wrap ic-blue">📋</div>
+        <div class="repo-body">
+          <div class="repo-name">mural-textos</div>
+          <div class="repo-desc">Mural de textos</div>
+          <div class="repo-tags">
+            <a class="tag tag-gh"  href="https://github.com/Xtvback/mural-textos" target="_blank">GitHub</a>
+            <a class="tag tag-web" href="https://xtvback.github.io/mural-textos" target="_blank">Página ↗</a>
+          </div>
+        </div>
       </div>
+
+      <div class="repo-card">
+        <div class="repo-icon-wrap ic-pink">📸</div>
+        <div class="repo-body">
+          <div class="repo-name">insta-tool-web</div>
+          <div class="repo-desc">Ferramentas Instagram acessíveis via browser</div>
+          <div class="repo-tags">
+            <a class="tag tag-gh"  href="https://github.com/Xtvback/insta-tool-web" target="_blank">GitHub</a>
+            <a class="tag tag-web" href="https://xtvback.github.io/insta-tool-web" target="_blank">Página ↗</a>
+          </div>
+        </div>
+      </div>
+
+      <div class="repo-card">
+        <div class="repo-icon-wrap ic-orange">🗂️</div>
+        <div class="repo-body">
+          <div class="repo-name">Favoritos</div>
+          <div class="repo-desc">Este repositório — ferramentas e páginas pessoais</div>
+          <div class="repo-tags">
+            <a class="tag tag-gh"  href="https://github.com/Xtvback/Favoritos" target="_blank">GitHub</a>
+            <a class="tag tag-web" href="https://xtvback.github.io/Favoritos" target="_blank">Página ↗</a>
+          </div>
+        </div>
+      </div>
+
+      <div class="repo-card">
+        <div class="repo-icon-wrap ic-purple">🧩</div>
+        <div class="repo-body">
+          <div class="repo-name">solvero</div>
+          <div class="repo-desc"></div>
+          <div class="repo-tags">
+            <a class="tag tag-gh"  href="https://github.com/Xtvback/solvero" target="_blank">GitHub</a>
+            <a class="tag tag-web" href="https://xtvback.github.io/solvero" target="_blank">Página ↗</a>
+          </div>
+        </div>
+      </div>
+
+      <div class="repo-card">
+        <div class="repo-icon-wrap ic-gray">📁</div>
+        <div class="repo-body">
+          <div class="repo-name">mark2016</div>
+          <div class="repo-desc">Site (2016)</div>
+          <div class="repo-tags">
+            <a class="tag tag-gh"  href="https://github.com/Xtvback/mark2016" target="_blank">GitHub</a>
+            <a class="tag tag-web" href="https://xtvback.github.io/mark2016" target="_blank">Página ↗</a>
+          </div>
+        </div>
+      </div>
+
     </div>
 
-    <div class="card">
-      <div class="card-top">
-        <span class="card-icon">🗂️</span>
-        <span class="card-name">Favoritos</span>
-      </div>
-      <div class="card-desc">Este repositório — ferramentas e páginas pessoais</div>
-      <div class="card-links">
-        <a class="tag tag-gh"  href="https://github.com/Xtvback/Favoritos"               target="_blank">GitHub</a>
-        <a class="tag tag-web" href="https://xtvback.github.io/Favoritos"                target="_blank">Página ↗</a>
-      </div>
-    </div>
-
-    <div class="card">
-      <div class="card-top">
-        <span class="card-icon">🧩</span>
-        <span class="card-name">solvero</span>
-      </div>
-      <div class="card-desc"></div>
-      <div class="card-links">
-        <a class="tag tag-gh"  href="https://github.com/Xtvback/solvero"                 target="_blank">GitHub</a>
-        <a class="tag tag-web" href="https://xtvback.github.io/solvero"                  target="_blank">Página ↗</a>
-      </div>
-    </div>
-
-    <div class="card">
-      <div class="card-top">
-        <span class="card-icon">📁</span>
-        <span class="card-name">mark2016</span>
-      </div>
-      <div class="card-desc">Site (2016)</div>
-      <div class="card-links">
-        <a class="tag tag-gh"  href="https://github.com/Xtvback/mark2016"                target="_blank">GitHub</a>
-        <a class="tag tag-web" href="https://xtvback.github.io/mark2016"                 target="_blank">Página ↗</a>
-      </div>
-    </div>
-
-  </div>
-
-  <h2>Páginas do Favoritos</h2>
-  <div class="pages-grid">
-    <a class="page-card" href="https://xtvback.github.io/Favoritos/"                    target="_blank">
-      <span class="pi">🖥️</span> DesktopWeb
-    </a>
-    <a class="page-card" href="https://xtvback.github.io/Favoritos/extras.html"         target="_blank">
-      <span class="pi">✨</span> Claude Extras
-    </a>
-    <a class="page-card" href="https://xtvback.github.io/Favoritos/frases.html"         target="_blank">
-      <span class="pi">💬</span> Frases
-    </a>
-    <a class="page-card" href="https://xtvback.github.io/Favoritos/instagram-slides.html" target="_blank">
-      <span class="pi">📱</span> Instagram Slides
-    </a>
-    <a class="page-card" href="https://xtvback.github.io/Favoritos/links.html"          target="_blank">
-      <span class="pi">🔖</span> Links (esta página)
-    </a>
-    <a class="page-card" href="https://xtvback.github.io/Favoritos/app-ideas.html"     target="_blank">
-      <span class="pi">💡</span> App Ideas
-    </a>
-    <a class="page-card" href="https://xtvback.github.io/Favoritos/ideias-soltas.html" target="_blank">
-      <span class="pi">✨</span> Ideias Soltas
-    </a>
-    <a class="page-card" href="https://xtvback.github.io/Favoritos/ideias-livros.html" target="_blank">
-      <span class="pi">📖</span> Ideias Livros
-    </a>
-    <a class="page-card" href="https://xtvback.github.io/Favoritos/passwords.html" target="_blank">
-      <span class="pi">🔐</span> Passwords
-    </a>
-    <a class="page-card" href="https://xtvback.github.io/Favoritos/multi-ai-search.html" target="_blank">
-      <span class="pi">🤖</span> Multi AI Search
-    </a>
-  </div>
-
-</main>
-
+  </main>
 </body>
 </html>
