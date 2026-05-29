@@ -19,8 +19,9 @@
     --text:    #e8e8f0;
     --muted:   #7878a0;
     --green:   #4ade80;
+    --yellow:  #facc15;
     --red:     #f87171;
-    --radius:  12px;
+    --r:       12px;
   }
 
   body {
@@ -36,666 +37,756 @@
   header {
     background: var(--bg2);
     border-bottom: 1px solid var(--border);
-    padding: 16px 24px;
+    padding: 14px 24px;
     display: flex;
     align-items: center;
     gap: 14px;
     position: sticky;
     top: 0;
     z-index: 100;
-    backdrop-filter: blur(12px);
+    backdrop-filter: blur(16px);
   }
-  .logo-icon { font-size: 26px; line-height: 1; }
-  .logo-text h1 { font-size: 17px; font-weight: 700; letter-spacing: -.3px; }
-  .logo-text p  { font-size: 12px; color: var(--muted); }
-  .header-right { margin-left: auto; display: flex; gap: 8px; }
+  .logo { font-size: 26px; }
+  .logo-text h1 { font-size: 16px; font-weight: 700; letter-spacing: -.3px; }
+  .logo-text p  { font-size: 11px; color: var(--muted); }
+  .hdr-right { margin-left: auto; display: flex; align-items: center; gap: 8px; }
+
+  .free-badge {
+    background: rgba(74,222,128,.12);
+    color: var(--green);
+    border: 1px solid rgba(74,222,128,.25);
+    border-radius: 20px;
+    padding: 4px 10px;
+    font-size: 11px;
+    font-weight: 600;
+    display: flex; align-items: center; gap: 4px;
+  }
+
   .btn-icon {
     background: var(--bg3); border: 1px solid var(--border);
     color: var(--text); border-radius: 8px; padding: 7px 12px;
-    font-size: 13px; cursor: pointer; transition: background .15s, border-color .15s;
-    display: flex; align-items: center; gap: 6px;
+    font-size: 12px; cursor: pointer; transition: background .15s, border-color .15s;
+    display: flex; align-items: center; gap: 5px;
+    white-space: nowrap;
   }
   .btn-icon:hover { background: var(--bg4); border-color: var(--accent); }
 
-  /* ── Settings panel ── */
+  /* ── Settings Panel ── */
   #settings-panel {
     background: var(--bg2);
     border-bottom: 1px solid var(--border);
-    padding: 0 24px;
-    max-height: 0;
     overflow: hidden;
-    transition: max-height .35s ease, padding .35s ease;
+    max-height: 0;
+    transition: max-height .38s cubic-bezier(.4,0,.2,1);
   }
-  #settings-panel.open {
-    max-height: 500px;
-    padding: 20px 24px;
-  }
+  #settings-panel.open { max-height: 600px; }
   .settings-inner {
+    padding: 20px 24px 24px;
+    display: flex;
+    flex-direction: column;
+    gap: 18px;
+    max-width: 900px;
+  }
+  .settings-title { font-size: 13px; font-weight: 600; color: var(--muted); text-transform: uppercase; letter-spacing: .5px; }
+
+  .settings-row {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
-    gap: 16px;
-    max-width: 960px;
+    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+    gap: 14px;
   }
   .api-group { display: flex; flex-direction: column; gap: 6px; }
-  .api-group label {
-    font-size: 12px; font-weight: 600; color: var(--muted);
-    text-transform: uppercase; letter-spacing: .5px;
-    display: flex; align-items: center; gap: 6px;
+  .api-label {
+    font-size: 12px; font-weight: 600; display: flex; align-items: center; gap: 6px;
   }
-  .api-group label .dot {
-    width: 8px; height: 8px; border-radius: 50%;
-    display: inline-block; flex-shrink: 0;
+  .api-label .dot { width: 8px; height: 8px; border-radius: 50%; flex-shrink: 0; }
+  .api-label .mode-tag {
+    margin-left: auto; font-size: 10px; padding: 2px 7px; border-radius: 20px;
+    font-weight: 600;
   }
+  .mode-free { background: rgba(74,222,128,.12); color: var(--green); border: 1px solid rgba(74,222,128,.2); }
+  .mode-key  { background: rgba(250,204,21,.1); color: var(--yellow); border: 1px solid rgba(250,204,21,.2); }
+
   .key-row { display: flex; gap: 6px; }
   .key-row input {
     flex: 1; background: var(--bg3); border: 1px solid var(--border);
-    border-radius: 8px; color: var(--text); padding: 9px 12px;
-    font-size: 13px; font-family: monospace; outline: none;
+    border-radius: 8px; color: var(--text); padding: 8px 12px;
+    font-size: 12px; font-family: monospace; outline: none;
     transition: border-color .2s;
   }
   .key-row input:focus { border-color: var(--accent); }
-  .key-row input::placeholder { color: var(--muted); font-family: inherit; }
+  .key-row input::placeholder { color: var(--muted); font-family: inherit; font-size: 12px; }
   .btn-save {
     background: var(--accent2); border: none; color: #fff;
-    border-radius: 8px; padding: 9px 14px; font-size: 13px;
+    border-radius: 8px; padding: 8px 13px; font-size: 12px;
     cursor: pointer; transition: filter .15s; white-space: nowrap;
   }
   .btn-save:hover { filter: brightness(1.15); }
-  .settings-hint { font-size: 11px; color: var(--muted); margin-top: 12px; }
+  .api-hint { font-size: 11px; color: var(--muted); display: flex; gap: 6px; align-items: center; flex-wrap: wrap; }
+  .api-hint a { color: var(--accent); text-decoration: none; }
+  .api-hint a:hover { text-decoration: underline; }
 
-  /* ── Main search area ── */
+  .settings-info {
+    background: rgba(124,106,247,.07);
+    border: 1px solid rgba(124,106,247,.2);
+    border-radius: 8px;
+    padding: 10px 14px;
+    font-size: 12px;
+    color: var(--muted);
+    line-height: 1.6;
+  }
+  .settings-info b { color: var(--text); }
+
+  /* ── Main ── */
   main {
     flex: 1;
-    padding: 28px 24px;
-    max-width: 1280px;
+    padding: 24px;
+    max-width: 1360px;
     width: 100%;
     margin: 0 auto;
     display: flex;
     flex-direction: column;
-    gap: 24px;
+    gap: 20px;
   }
 
-  .search-box {
+  /* ── Search box ── */
+  .search-wrap {
     background: var(--bg2);
     border: 1px solid var(--border);
-    border-radius: var(--radius);
-    padding: 18px;
+    border-radius: var(--r);
+    padding: 16px 18px;
     display: flex;
     flex-direction: column;
-    gap: 12px;
+    gap: 10px;
     transition: border-color .2s;
   }
-  .search-box:focus-within { border-color: var(--accent); }
-
+  .search-wrap:focus-within { border-color: var(--accent); box-shadow: 0 0 0 3px rgba(124,106,247,.08); }
   #query {
     width: 100%; background: transparent; border: none; color: var(--text);
-    font-size: 15px; resize: none; outline: none; min-height: 72px;
+    font-size: 15px; resize: none; outline: none; min-height: 68px;
     line-height: 1.6; font-family: inherit;
   }
   #query::placeholder { color: var(--muted); }
-
-  .search-actions {
+  .search-foot {
     display: flex; align-items: center; justify-content: space-between;
-    border-top: 1px solid var(--border); padding-top: 12px; gap: 10px;
+    border-top: 1px solid var(--border); padding-top: 10px; gap: 8px;
+    flex-wrap: wrap;
   }
-  .search-actions-left { display: flex; gap: 8px; align-items: center; }
-  .char-count { font-size: 12px; color: var(--muted); }
+  .search-foot-left { display: flex; align-items: center; gap: 10px; }
+  #char-count { font-size: 11px; color: var(--muted); }
 
   .btn-primary {
     background: linear-gradient(135deg, var(--accent), var(--accent2));
     border: none; color: #fff; border-radius: 8px;
     padding: 10px 20px; font-size: 14px; font-weight: 600;
     cursor: pointer; display: flex; align-items: center; gap: 7px;
-    transition: filter .15s, transform .1s; white-space: nowrap;
+    transition: filter .15s, transform .1s;
   }
   .btn-primary:hover { filter: brightness(1.12); }
   .btn-primary:active { transform: scale(.97); }
-  .btn-primary:disabled { opacity: .5; cursor: not-allowed; transform: none; filter: none; }
-
-  .btn-clear {
+  .btn-primary:disabled { opacity: .45; cursor: not-allowed; transform: none; filter: none; }
+  .btn-ghost {
     background: transparent; border: 1px solid var(--border);
     color: var(--muted); border-radius: 8px; padding: 9px 14px;
     font-size: 13px; cursor: pointer; transition: background .15s, color .15s;
   }
-  .btn-clear:hover { background: var(--bg3); color: var(--text); }
+  .btn-ghost:hover { background: var(--bg3); color: var(--text); }
 
-  /* ── AI cards grid ── */
-  #cards-grid {
+  /* ── AI Cards Grid ── */
+  #grid {
     display: grid;
     grid-template-columns: repeat(3, 1fr);
-    gap: 18px;
+    gap: 16px;
+    align-items: start;
   }
 
   .ai-card {
     background: var(--bg2);
     border: 1px solid var(--border);
-    border-radius: var(--radius);
+    border-radius: var(--r);
     overflow: hidden;
     display: flex;
     flex-direction: column;
-    min-height: 200px;
-    transition: border-color .2s;
+    transition: border-color .25s, box-shadow .25s;
   }
+  .ai-card.active  { border-color: rgba(124,106,247,.4); box-shadow: 0 0 0 3px rgba(124,106,247,.07); }
+  .ai-card.success { border-color: rgba(74,222,128,.3); }
+  .ai-card.failed  { border-color: rgba(248,113,113,.3); }
 
-  .card-header {
-    padding: 14px 16px 12px;
+  /* Card header */
+  .card-hdr {
+    padding: 13px 15px 11px;
     border-bottom: 1px solid var(--border);
     display: flex; align-items: center; gap: 10px;
   }
-  .ai-logo {
-    width: 34px; height: 34px; border-radius: 8px;
+  .ai-icon {
+    width: 36px; height: 36px; border-radius: 9px;
     display: flex; align-items: center; justify-content: center;
-    font-size: 18px; flex-shrink: 0;
+    font-size: 20px; flex-shrink: 0;
   }
-  .card-meta { flex: 1; min-width: 0; }
-  .card-meta .ai-name { font-size: 14px; font-weight: 700; line-height: 1.2; }
-  .card-meta .ai-model { font-size: 11px; color: var(--muted); margin-top: 1px; }
-  .card-actions { display: flex; gap: 6px; margin-left: auto; }
+  .card-info { flex: 1; min-width: 0; }
+  .card-name { font-size: 14px; font-weight: 700; line-height: 1.2; }
+  .card-sub  { font-size: 11px; color: var(--muted); margin-top: 1px; }
+  .card-right { display: flex; align-items: center; gap: 6px; margin-left: auto; flex-shrink: 0; }
+
+  .status-dot {
+    width: 7px; height: 7px; border-radius: 50%; background: var(--border);
+    transition: background .3s;
+  }
+  .status-dot.loading { background: var(--yellow); animation: pulse 1s ease-in-out infinite; }
+  .status-dot.done    { background: var(--green); }
+  .status-dot.error   { background: var(--red); }
+  @keyframes pulse { 0%,100%{opacity:1} 50%{opacity:.35} }
+
+  /* Source badge */
+  .src-badge {
+    font-size: 10px; padding: 2px 7px; border-radius: 20px;
+    font-weight: 600; white-space: nowrap;
+  }
+  .src-free   { background: rgba(74,222,128,.1);  color: var(--green); border: 1px solid rgba(74,222,128,.2); }
+  .src-direct { background: rgba(124,106,247,.12); color: #a89cf7;     border: 1px solid rgba(124,106,247,.2); }
+  .src-key    { background: rgba(250,204,21,.08);  color: var(--yellow);border: 1px solid rgba(250,204,21,.18); }
+
+  /* Copy btn */
   .btn-copy {
     background: var(--bg3); border: 1px solid var(--border);
-    color: var(--muted); border-radius: 6px; padding: 5px 9px;
+    color: var(--muted); border-radius: 6px; padding: 4px 8px;
     font-size: 11px; cursor: pointer; transition: all .15s;
-    display: flex; align-items: center; gap: 4px;
+    display: none; align-items: center; gap: 3px;
   }
   .btn-copy:hover { background: var(--bg4); color: var(--text); border-color: var(--accent); }
-  .btn-copy.copied { color: var(--green); border-color: var(--green); }
+  .btn-copy.show  { display: flex; }
+  .btn-copy.ok    { color: var(--green); border-color: var(--green); }
 
+  /* Card body */
   .card-body {
     padding: 16px;
+    font-size: 13.5px;
+    line-height: 1.75;
+    min-height: 180px;
     flex: 1;
     overflow-y: auto;
-    font-size: 14px;
-    line-height: 1.7;
+    max-height: 55vh;
   }
 
-  /* Idle state */
-  .card-idle {
+  /* States */
+  .state-idle, .state-loading, .state-nokey {
     display: flex; flex-direction: column;
     align-items: center; justify-content: center;
-    gap: 8px; height: 100%; color: var(--muted);
-    text-align: center; padding: 20px;
+    min-height: 150px; gap: 10px;
+    text-align: center; color: var(--muted);
   }
-  .card-idle .idle-icon { font-size: 28px; opacity: .45; }
-  .card-idle p { font-size: 13px; }
+  .state-icon { font-size: 30px; opacity: .4; }
+  .state-idle p, .state-loading p { font-size: 12px; }
 
-  /* Loading */
-  .card-loading {
-    display: flex; flex-direction: column;
-    align-items: center; justify-content: center;
-    gap: 14px; height: 100%; color: var(--muted);
-    text-align: center; padding: 20px;
-  }
   .spinner {
-    width: 32px; height: 32px; border-radius: 50%;
-    border: 3px solid var(--border);
-    border-top-color: var(--accent);
-    animation: spin .8s linear infinite;
+    width: 28px; height: 28px; border-radius: 50%;
+    border: 2.5px solid var(--border); border-top-color: var(--accent);
+    animation: spin .75s linear infinite;
   }
   @keyframes spin { to { transform: rotate(360deg); } }
-  .card-loading p { font-size: 13px; }
 
-  /* Error */
-  .card-error {
-    display: flex; flex-direction: column;
-    gap: 8px; padding: 4px;
+  .state-nokey {
+    gap: 12px;
   }
-  .error-badge {
+  .state-nokey .nk-icon { font-size: 28px; }
+  .state-nokey p { font-size: 12px; line-height: 1.5; max-width: 220px; }
+  .btn-getkey {
+    background: rgba(250,204,21,.12); border: 1px solid rgba(250,204,21,.25);
+    color: var(--yellow); border-radius: 8px; padding: 8px 14px;
+    font-size: 12px; font-weight: 600; cursor: pointer;
+    text-decoration: none; display: inline-flex; align-items: center; gap: 5px;
+    transition: background .15s;
+  }
+  .btn-getkey:hover { background: rgba(250,204,21,.2); }
+  .btn-setkey {
+    background: var(--bg3); border: 1px solid var(--border);
+    color: var(--muted); border-radius: 8px; padding: 6px 12px;
+    font-size: 11px; cursor: pointer; transition: background .15s, color .15s;
+  }
+  .btn-setkey:hover { background: var(--bg4); color: var(--text); }
+
+  .state-error { padding: 4px; display: flex; flex-direction: column; gap: 8px; }
+  .err-badge {
     display: inline-flex; align-items: center; gap: 5px;
-    background: rgba(248,113,113,.12); color: var(--red);
-    border: 1px solid rgba(248,113,113,.25); border-radius: 6px;
-    padding: 5px 10px; font-size: 12px; font-weight: 600;
+    background: rgba(248,113,113,.1); color: var(--red);
+    border: 1px solid rgba(248,113,113,.22); border-radius: 6px;
+    padding: 5px 10px; font-size: 12px; font-weight: 600; width: fit-content;
   }
-  .error-msg { font-size: 13px; color: var(--muted); }
+  .err-msg { font-size: 12px; color: var(--muted); line-height: 1.5; }
 
-  /* Markdown output */
-  .md-output h1, .md-output h2, .md-output h3 {
-    color: var(--text); margin: .8em 0 .4em; line-height: 1.3;
+  /* Card footer */
+  .card-foot {
+    padding: 8px 15px 10px;
+    border-top: 1px solid var(--border);
+    font-size: 11px; color: var(--muted);
+    display: none; gap: 12px; flex-wrap: wrap;
   }
-  .md-output h1 { font-size: 1.2em; }
-  .md-output h2 { font-size: 1.1em; }
-  .md-output h3 { font-size: 1em; }
-  .md-output p { margin: .5em 0; }
-  .md-output ul, .md-output ol { padding-left: 20px; margin: .5em 0; }
-  .md-output li { margin: .2em 0; }
-  .md-output code {
+  .card-foot.show { display: flex; }
+  .card-foot span { display: flex; align-items: center; gap: 3px; }
+
+  /* Markdown */
+  .md h1,.md h2,.md h3 { color: var(--text); margin: .75em 0 .35em; line-height: 1.3; }
+  .md h1 { font-size: 1.15em; } .md h2 { font-size: 1.05em; } .md h3 { font-size: 1em; }
+  .md p  { margin: .45em 0; }
+  .md ul,.md ol { padding-left: 18px; margin: .4em 0; }
+  .md li { margin: .2em 0; }
+  .md code {
     background: var(--bg3); border: 1px solid var(--border);
     border-radius: 4px; padding: 1px 5px; font-size: 12px;
-    font-family: 'SF Mono', 'Fira Code', monospace; color: #c9b8ff;
+    font-family: 'SF Mono','Fira Code',monospace; color: #c4b5fd;
   }
-  .md-output pre {
+  .md pre {
     background: var(--bg3); border: 1px solid var(--border);
-    border-radius: 8px; padding: 12px 14px; overflow-x: auto;
-    margin: .8em 0;
+    border-radius: 8px; padding: 12px 14px; overflow-x: auto; margin: .75em 0;
   }
-  .md-output pre code { background: none; border: none; padding: 0; color: var(--text); }
-  .md-output blockquote {
+  .md pre code { background: none; border: none; padding: 0; color: var(--text); font-size: 12px; }
+  .md blockquote {
     border-left: 3px solid var(--accent); padding-left: 12px;
     color: var(--muted); margin: .6em 0;
   }
-  .md-output strong { color: var(--text); font-weight: 700; }
-  .md-output em { color: #c0b8e8; }
-  .md-output table { border-collapse: collapse; width: 100%; margin: .8em 0; font-size: 13px; }
-  .md-output th, .md-output td {
-    border: 1px solid var(--border); padding: 6px 10px; text-align: left;
-  }
-  .md-output th { background: var(--bg3); }
-  .md-output a { color: var(--accent); text-decoration: none; }
-  .md-output a:hover { text-decoration: underline; }
-
-  /* Status dot on card */
-  .status-dot {
-    width: 7px; height: 7px; border-radius: 50%;
-    flex-shrink: 0; background: var(--border);
-    transition: background .3s;
-  }
-  .status-dot.loading { background: #facc15; animation: pulse 1s ease-in-out infinite; }
-  .status-dot.done    { background: var(--green); }
-  .status-dot.error   { background: var(--red); }
-  @keyframes pulse { 0%,100%{opacity:1} 50%{opacity:.4} }
-
-  /* Token/time badge */
-  .resp-meta {
-    padding: 8px 16px 12px;
-    font-size: 11px; color: var(--muted);
-    border-top: 1px solid var(--border);
-    display: flex; gap: 12px;
-  }
-  .resp-meta span { display: flex; align-items: center; gap: 3px; }
-
-  /* No-key warning */
-  .no-key-warn {
-    display: flex; align-items: center; gap: 7px;
-    background: rgba(250,204,21,.08); color: #facc15;
-    border: 1px solid rgba(250,204,21,.2); border-radius: 8px;
-    padding: 8px 12px; font-size: 12px; margin-bottom: 6px;
-    cursor: pointer; transition: background .15s;
-  }
-  .no-key-warn:hover { background: rgba(250,204,21,.14); }
+  .md strong { color: var(--text); font-weight: 700; }
+  .md em { color: #c0b8e8; }
+  .md table { border-collapse: collapse; width: 100%; margin: .75em 0; font-size: 12px; }
+  .md th,.md td { border: 1px solid var(--border); padding: 6px 10px; text-align: left; }
+  .md th { background: var(--bg3); }
+  .md a { color: var(--accent); text-decoration: none; }
+  .md a:hover { text-decoration: underline; }
+  .md hr { border: none; border-top: 1px solid var(--border); margin: .8em 0; }
 
   /* Responsive */
-  @media (max-width: 900px) {
-    #cards-grid { grid-template-columns: 1fr; }
-  }
-  @media (max-width: 600px) {
-    header { padding: 12px 16px; }
-    main   { padding: 16px; gap: 16px; }
-    .settings-inner { grid-template-columns: 1fr; }
-  }
+  @media (max-width: 960px)  { #grid { grid-template-columns: 1fr 1fr; } }
+  @media (max-width: 620px)  { #grid { grid-template-columns: 1fr; } header { padding: 12px 16px; } main { padding: 14px; } }
+  @media (max-width: 480px)  { .hdr-right .free-badge { display: none; } }
 </style>
 </head>
 <body>
 
 <!-- ── Header ── -->
 <header>
-  <div class="logo-icon">🔍</div>
+  <div class="logo">🔍</div>
   <div class="logo-text">
     <h1>Multi-AI Search</h1>
-    <p>Compara respostas de várias IAs em simultâneo</p>
+    <p>Compara Qwen, DeepSeek e Gemini em simultâneo</p>
   </div>
-  <div class="header-right">
-    <button class="btn-icon" id="settings-toggle" title="Configurar chaves de API">
-      ⚙️ <span>Configurações</span>
-    </button>
+  <div class="hdr-right">
+    <span class="free-badge">✦ Qwen &amp; DeepSeek grátis</span>
+    <button class="btn-icon" id="settings-toggle">⚙ Configurações</button>
   </div>
 </header>
 
 <!-- ── Settings Panel ── -->
 <div id="settings-panel">
   <div class="settings-inner">
-
-    <div class="api-group">
-      <label><span class="dot" style="background:#6c47ff"></span>Qwen (DashScope)</label>
-      <div class="key-row">
-        <input type="password" id="key-qwen" placeholder="sk-..." autocomplete="off">
-        <button class="btn-save" onclick="saveKey('qwen')">Guardar</button>
-      </div>
-      <div style="font-size:11px;color:var(--muted)">dashscope.aliyuncs.com — modelo: qwen-plus</div>
+    <div class="settings-info">
+      <b>✦ Qwen e DeepSeek funcionam sem qualquer configuração</b> — são servidos pela
+      <a href="https://pollinations.ai" target="_blank" style="color:var(--accent)">Pollinations.ai</a>
+      (API pública e gratuita). O Gemini precisa de uma chave grátis do Google AI Studio
+      (demora &lt; 1 minuto a obter).
     </div>
 
-    <div class="api-group">
-      <label><span class="dot" style="background:#00b4d8"></span>DeepSeek</label>
-      <div class="key-row">
-        <input type="password" id="key-deepseek" placeholder="sk-..." autocomplete="off">
-        <button class="btn-save" onclick="saveKey('deepseek')">Guardar</button>
-      </div>
-      <div style="font-size:11px;color:var(--muted)">api.deepseek.com — modelo: deepseek-chat</div>
-    </div>
+    <div>
+      <div class="settings-title" style="margin-bottom:12px">Chaves de API (opcionais / Gemini obrigatório)</div>
+      <div class="settings-row">
 
-    <div class="api-group">
-      <label><span class="dot" style="background:#4285f4"></span>Google Gemini</label>
-      <div class="key-row">
-        <input type="password" id="key-gemini" placeholder="AIza..." autocomplete="off">
-        <button class="btn-save" onclick="saveKey('gemini')">Guardar</button>
-      </div>
-      <div style="font-size:11px;color:var(--muted)">generativelanguage.googleapis.com — gemini-2.0-flash</div>
-    </div>
+        <div class="api-group">
+          <div class="api-label">
+            <span class="dot" style="background:#7c6af7"></span> Gemini
+            <span class="mode-tag mode-key" id="gemini-mode-tag">chave necessária</span>
+          </div>
+          <div class="key-row">
+            <input type="password" id="key-gemini" placeholder="AIza…" autocomplete="off">
+            <button class="btn-save" onclick="saveKey('gemini')">Guardar</button>
+          </div>
+          <div class="api-hint">
+            Obter chave grátis em
+            <a href="https://aistudio.google.com/apikey" target="_blank">aistudio.google.com/apikey</a>
+            · gemini-2.0-flash
+          </div>
+        </div>
 
+        <div class="api-group">
+          <div class="api-label">
+            <span class="dot" style="background:#00c2e0"></span> DeepSeek (direto)
+            <span class="mode-tag mode-free">pollinations grátis</span>
+          </div>
+          <div class="key-row">
+            <input type="password" id="key-deepseek" placeholder="sk-… (opcional)" autocomplete="off">
+            <button class="btn-save" onclick="saveKey('deepseek')">Guardar</button>
+          </div>
+          <div class="api-hint">
+            Se fornecido, usa api.deepseek.com direto em vez da Pollinations
+          </div>
+        </div>
+
+        <div class="api-group">
+          <div class="api-label">
+            <span class="dot" style="background:#6c47ff"></span> Qwen (direto)
+            <span class="mode-tag mode-free">pollinations grátis</span>
+          </div>
+          <div class="key-row">
+            <input type="password" id="key-qwen" placeholder="sk-… (opcional)" autocomplete="off">
+            <button class="btn-save" onclick="saveKey('qwen')">Guardar</button>
+          </div>
+          <div class="api-hint">
+            Se fornecido, usa dashscope.aliyuncs.com direto (modelo qwen-plus)
+          </div>
+        </div>
+
+      </div>
+    </div>
+    <div class="api-hint" style="margin-top:-6px">🔒 Chaves guardadas apenas no teu browser (localStorage). Nunca saem do dispositivo.</div>
   </div>
-  <p class="settings-hint">🔒 As chaves são guardadas apenas no teu browser (localStorage). Nunca saem do dispositivo.</p>
 </div>
 
 <!-- ── Main ── -->
 <main>
 
-  <!-- Search box -->
-  <div class="search-box">
-    <textarea id="query" placeholder="Faz uma pergunta a todas as IAs…" rows="3"></textarea>
-    <div class="search-actions">
-      <div class="search-actions-left">
-        <span class="char-count" id="char-count">0 / 4000</span>
+  <!-- Search -->
+  <div class="search-wrap">
+    <textarea id="query" placeholder="Faz uma pergunta… as três IAs respondem ao mesmo tempo  (Ctrl+Enter para enviar)" rows="3"></textarea>
+    <div class="search-foot">
+      <div class="search-foot-left">
+        <span id="char-count" style="font-size:11px;color:var(--muted)">0</span>
       </div>
       <div style="display:flex;gap:8px">
-        <button class="btn-clear" id="btn-clear">Limpar</button>
-        <button class="btn-primary" id="btn-search">
-          <span>▶</span> Pesquisar
-        </button>
+        <button class="btn-ghost" id="btn-clear">Limpar</button>
+        <button class="btn-primary" id="btn-search">▶ Pesquisar</button>
       </div>
     </div>
   </div>
 
-  <!-- AI cards -->
-  <div id="cards-grid">
+  <!-- Cards -->
+  <div id="grid">
 
     <!-- Qwen -->
     <div class="ai-card" id="card-qwen">
-      <div class="card-header">
-        <div class="ai-logo" style="background:rgba(108,71,255,.18)">🤖</div>
-        <div class="card-meta">
-          <div class="ai-name">Qwen</div>
-          <div class="ai-model">qwen-plus · DashScope</div>
+      <div class="card-hdr">
+        <div class="ai-icon" style="background:rgba(108,71,255,.18)">🤖</div>
+        <div class="card-info">
+          <div class="card-name">Qwen</div>
+          <div class="card-sub" id="qwen-sub">qwen-coder · Pollinations</div>
         </div>
-        <div class="status-dot" id="dot-qwen"></div>
-        <div class="card-actions">
-          <button class="btn-copy" id="copy-qwen" onclick="copyResponse('qwen')" style="display:none">
-            📋 Copiar
-          </button>
+        <div class="card-right">
+          <span class="src-badge src-free" id="qwen-src-badge">grátis</span>
+          <div class="status-dot" id="dot-qwen"></div>
+          <button class="btn-copy" id="copy-qwen" onclick="copyResp('qwen')">📋 Copiar</button>
         </div>
       </div>
       <div class="card-body" id="body-qwen">
-        <div class="card-idle">
-          <div class="idle-icon">🤖</div>
-          <p>À espera da tua pergunta…</p>
-        </div>
+        <div class="state-idle"><div class="state-icon">🤖</div><p>Pronto para responder</p></div>
       </div>
+      <div class="card-foot" id="foot-qwen"></div>
     </div>
 
     <!-- DeepSeek -->
     <div class="ai-card" id="card-deepseek">
-      <div class="card-header">
-        <div class="ai-logo" style="background:rgba(0,180,216,.18)">🌊</div>
-        <div class="card-meta">
-          <div class="ai-name">DeepSeek</div>
-          <div class="ai-model">deepseek-chat · DeepSeek API</div>
+      <div class="card-hdr">
+        <div class="ai-icon" style="background:rgba(0,194,224,.15)">🌊</div>
+        <div class="card-info">
+          <div class="card-name">DeepSeek</div>
+          <div class="card-sub" id="deepseek-sub">deepseek-r1 · Pollinations</div>
         </div>
-        <div class="status-dot" id="dot-deepseek"></div>
-        <div class="card-actions">
-          <button class="btn-copy" id="copy-deepseek" onclick="copyResponse('deepseek')" style="display:none">
-            📋 Copiar
-          </button>
+        <div class="card-right">
+          <span class="src-badge src-free" id="deepseek-src-badge">grátis</span>
+          <div class="status-dot" id="dot-deepseek"></div>
+          <button class="btn-copy" id="copy-deepseek" onclick="copyResp('deepseek')">📋 Copiar</button>
         </div>
       </div>
       <div class="card-body" id="body-deepseek">
-        <div class="card-idle">
-          <div class="idle-icon">🌊</div>
-          <p>À espera da tua pergunta…</p>
-        </div>
+        <div class="state-idle"><div class="state-icon">🌊</div><p>Pronto para responder</p></div>
       </div>
+      <div class="card-foot" id="foot-deepseek"></div>
     </div>
 
     <!-- Gemini -->
     <div class="ai-card" id="card-gemini">
-      <div class="card-header">
-        <div class="ai-logo" style="background:rgba(66,133,244,.18)">✨</div>
-        <div class="card-meta">
-          <div class="ai-name">Gemini</div>
-          <div class="ai-model">gemini-2.0-flash · Google AI</div>
+      <div class="card-hdr">
+        <div class="ai-icon" style="background:rgba(66,133,244,.18)">✨</div>
+        <div class="card-info">
+          <div class="card-name">Gemini</div>
+          <div class="card-sub">gemini-2.0-flash · Google</div>
         </div>
-        <div class="status-dot" id="dot-gemini"></div>
-        <div class="card-actions">
-          <button class="btn-copy" id="copy-gemini" onclick="copyResponse('gemini')" style="display:none">
-            📋 Copiar
-          </button>
+        <div class="card-right">
+          <span class="src-badge src-key" id="gemini-src-badge">chave necessária</span>
+          <div class="status-dot" id="dot-gemini"></div>
+          <button class="btn-copy" id="copy-gemini" onclick="copyResp('gemini')">📋 Copiar</button>
         </div>
       </div>
       <div class="card-body" id="body-gemini">
-        <div class="card-idle">
-          <div class="idle-icon">✨</div>
-          <p>À espera da tua pergunta…</p>
+        <div class="state-nokey" id="gemini-nokey">
+          <div class="nk-icon">🔑</div>
+          <p>Gemini precisa de uma chave grátis do Google AI Studio</p>
+          <a class="btn-getkey" href="https://aistudio.google.com/apikey" target="_blank">✦ Obter chave grátis</a>
+          <button class="btn-setkey" onclick="openSettings()">Já tenho — configurar</button>
         </div>
       </div>
+      <div class="card-foot" id="foot-gemini"></div>
     </div>
 
   </div>
 </main>
 
 <script>
-// ── Storage helpers ──
-const KEYS = { qwen: 'mai_key_qwen', deepseek: 'mai_key_deepseek', gemini: 'mai_key_gemini' };
-const stored = {};
-const rawText = {};
+// ─── State ───────────────────────────────────────────────────────────────────
+const keys = { qwen: '', deepseek: '', gemini: '' };
+const rawText = { qwen: '', deepseek: '', gemini: '' };
 
 function loadKeys() {
-  for (const [ai, lsKey] of Object.entries(KEYS)) {
-    const v = localStorage.getItem(lsKey) || '';
-    stored[ai] = v;
+  for (const ai of ['qwen', 'deepseek', 'gemini']) {
+    const v = localStorage.getItem('mai2_' + ai) || '';
+    keys[ai] = v;
     const el = document.getElementById('key-' + ai);
     if (el && v) el.value = v;
   }
+  updateModes();
 }
 
 function saveKey(ai) {
   const el = document.getElementById('key-' + ai);
-  const val = el.value.trim();
-  stored[ai] = val;
-  localStorage.setItem(KEYS[ai], val);
+  const v = el.value.trim();
+  keys[ai] = v;
+  if (v) localStorage.setItem('mai2_' + ai, v);
+  else localStorage.removeItem('mai2_' + ai);
   el.style.borderColor = 'var(--green)';
-  setTimeout(() => el.style.borderColor = '', 1500);
+  setTimeout(() => { el.style.borderColor = ''; }, 1600);
+  updateModes();
 }
 
-// ── Settings toggle ──
-document.getElementById('settings-toggle').addEventListener('click', () => {
-  const panel = document.getElementById('settings-panel');
-  panel.classList.toggle('open');
-});
-
-// ── Char counter ──
-const queryEl = document.getElementById('query');
-queryEl.addEventListener('input', () => {
-  const len = queryEl.value.length;
-  document.getElementById('char-count').textContent = `${len} / 4000`;
-});
-
-// Ctrl/Cmd+Enter to search
-queryEl.addEventListener('keydown', e => {
-  if ((e.ctrlKey || e.metaKey) && e.key === 'Enter') search();
-});
-
-// ── Clear ──
-document.getElementById('btn-clear').addEventListener('click', () => {
-  queryEl.value = '';
-  document.getElementById('char-count').textContent = '0 / 4000';
-  resetCards();
-});
-
-function resetCards() {
-  const icons = { qwen: '🤖', deepseek: '🌊', gemini: '✨' };
-  for (const ai of ['qwen', 'deepseek', 'gemini']) {
-    setIdle(ai, icons[ai]);
-    setDot(ai, '');
-    document.getElementById('copy-' + ai).style.display = 'none';
-    rawText[ai] = '';
+function updateModes() {
+  // Qwen
+  if (keys.qwen) {
+    document.getElementById('qwen-sub').textContent = 'qwen-plus · DashScope';
+    setBadge('qwen-src-badge', 'direto', 'src-direct');
+  } else {
+    document.getElementById('qwen-sub').textContent = 'qwen-coder · Pollinations';
+    setBadge('qwen-src-badge', 'grátis', 'src-free');
+  }
+  // DeepSeek
+  if (keys.deepseek) {
+    document.getElementById('deepseek-sub').textContent = 'deepseek-chat · DeepSeek';
+    setBadge('deepseek-src-badge', 'direto', 'src-direct');
+  } else {
+    document.getElementById('deepseek-sub').textContent = 'deepseek-r1 · Pollinations';
+    setBadge('deepseek-src-badge', 'grátis', 'src-free');
+  }
+  // Gemini mode tag in settings
+  const tag = document.getElementById('gemini-mode-tag');
+  if (keys.gemini) {
+    tag.textContent = 'configurado ✓';
+    tag.className = 'mode-tag mode-free';
+    setBadge('gemini-src-badge', 'direto', 'src-direct');
+    // If idle/nokey → restore idle
+    const b = document.getElementById('body-gemini');
+    if (b.querySelector('.state-nokey')) {
+      b.innerHTML = `<div class="state-idle"><div class="state-icon">✨</div><p>Pronto para responder</p></div>`;
+    }
+  } else {
+    tag.textContent = 'chave necessária';
+    tag.className = 'mode-tag mode-key';
+    setBadge('gemini-src-badge', 'chave necessária', 'src-key');
   }
 }
 
-// ── UI state helpers ──
-function setDot(ai, state) {
-  const d = document.getElementById('dot-' + ai);
-  d.className = 'status-dot' + (state ? ' ' + state : '');
+function setBadge(id, text, cls) {
+  const el = document.getElementById(id);
+  el.textContent = text;
+  el.className = 'src-badge ' + cls;
 }
 
-function setIdle(ai, icon) {
-  document.getElementById('body-' + ai).innerHTML =
-    `<div class="card-idle"><div class="idle-icon">${icon}</div><p>À espera da tua pergunta…</p></div>`;
-}
-
-function setLoading(ai) {
-  document.getElementById('body-' + ai).innerHTML =
-    `<div class="card-loading"><div class="spinner"></div><p>A gerar resposta…</p></div>`;
-  setDot(ai, 'loading');
-  document.getElementById('copy-' + ai).style.display = 'none';
-}
-
-function setError(ai, msg) {
-  document.getElementById('body-' + ai).innerHTML =
-    `<div class="card-error">
-      <span class="error-badge">⚠ Erro</span>
-      <p class="error-msg">${escHtml(msg)}</p>
-    </div>`;
-  setDot(ai, 'error');
-}
-
-function setResult(ai, text, ms) {
-  rawText[ai] = text;
-  const html = marked.parse(text);
-  const timeBadge = ms ? `<span>⏱ ${(ms/1000).toFixed(1)}s</span>` : '';
-  document.getElementById('body-' + ai).innerHTML =
-    `<div class="md-output">${html}</div>`;
-  setDot(ai, 'done');
-  document.getElementById('copy-' + ai).style.display = 'flex';
-}
-
-function noKeyWarning(ai) {
-  document.getElementById('body-' + ai).innerHTML =
-    `<div class="no-key-warn" onclick="openSettings()">
-      🔑 Chave de API não configurada — clica para abrir as configurações
-    </div>`;
-  setDot(ai, 'error');
-}
-
+// ─── Settings toggle ──────────────────────────────────────────────────────────
+document.getElementById('settings-toggle').addEventListener('click', openSettings);
 function openSettings() {
   document.getElementById('settings-panel').classList.add('open');
 }
 
-function escHtml(s) {
-  return s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+// ─── Search UI ────────────────────────────────────────────────────────────────
+const queryEl = document.getElementById('query');
+queryEl.addEventListener('input', () => {
+  document.getElementById('char-count').textContent = queryEl.value.length;
+});
+queryEl.addEventListener('keydown', e => {
+  if ((e.ctrlKey || e.metaKey) && e.key === 'Enter') search();
+});
+document.getElementById('btn-clear').addEventListener('click', () => {
+  queryEl.value = '';
+  document.getElementById('char-count').textContent = '0';
+  resetAll();
+});
+document.getElementById('btn-search').addEventListener('click', search);
+
+function resetAll() {
+  const icons = { qwen: '🤖', deepseek: '🌊', gemini: '✨' };
+  for (const ai of ['qwen', 'deepseek', 'gemini']) {
+    rawText[ai] = '';
+    setDot(ai, '');
+    document.getElementById('copy-' + ai).classList.remove('show', 'ok');
+    document.getElementById('foot-' + ai).classList.remove('show');
+    document.getElementById('foot-' + ai).innerHTML = '';
+    setCard(ai, '');
+    if (ai === 'gemini' && !keys.gemini) {
+      document.getElementById('body-gemini').innerHTML = `
+        <div class="state-nokey" id="gemini-nokey">
+          <div class="nk-icon">🔑</div>
+          <p>Gemini precisa de uma chave grátis do Google AI Studio</p>
+          <a class="btn-getkey" href="https://aistudio.google.com/apikey" target="_blank">✦ Obter chave grátis</a>
+          <button class="btn-setkey" onclick="openSettings()">Já tenho — configurar</button>
+        </div>`;
+    } else {
+      document.getElementById('body-' + ai).innerHTML =
+        `<div class="state-idle"><div class="state-icon">${icons[ai]}</div><p>Pronto para responder</p></div>`;
+    }
+  }
 }
 
-// ── Copy ──
-function copyResponse(ai) {
-  const text = rawText[ai] || '';
-  if (!text) return;
-  navigator.clipboard.writeText(text).then(() => {
+// ─── Card state helpers ───────────────────────────────────────────────────────
+function setCard(ai, state) {
+  const card = document.getElementById('card-' + ai);
+  card.classList.remove('active', 'success', 'failed');
+  if (state) card.classList.add(state);
+}
+function setDot(ai, s) {
+  const d = document.getElementById('dot-' + ai);
+  d.className = 'status-dot' + (s ? ' ' + s : '');
+}
+function setLoading(ai) {
+  document.getElementById('body-' + ai).innerHTML =
+    `<div class="state-loading"><div class="spinner"></div><p>A gerar resposta…</p></div>`;
+  setDot(ai, 'loading');
+  setCard(ai, 'active');
+  document.getElementById('copy-' + ai).classList.remove('show');
+  document.getElementById('foot-' + ai).classList.remove('show');
+}
+function setResult(ai, text, ms, tokens) {
+  rawText[ai] = text;
+  document.getElementById('body-' + ai).innerHTML = `<div class="md">${marked.parse(text)}</div>`;
+  setDot(ai, 'done');
+  setCard(ai, 'success');
+  document.getElementById('copy-' + ai).classList.add('show');
+  const foot = document.getElementById('foot-' + ai);
+  const parts = [];
+  if (ms)     parts.push(`<span>⏱ ${(ms/1000).toFixed(1)}s</span>`);
+  if (tokens) parts.push(`<span>≈ ${tokens} tokens</span>`);
+  if (parts.length) { foot.innerHTML = parts.join(''); foot.classList.add('show'); }
+}
+function setError(ai, msg) {
+  document.getElementById('body-' + ai).innerHTML =
+    `<div class="state-error"><span class="err-badge">⚠ Erro</span><p class="err-msg">${esc(msg)}</p></div>`;
+  setDot(ai, 'error');
+  setCard(ai, 'failed');
+}
+function esc(s) {
+  return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+}
+
+// ─── Copy ─────────────────────────────────────────────────────────────────────
+function copyResp(ai) {
+  if (!rawText[ai]) return;
+  navigator.clipboard.writeText(rawText[ai]).then(() => {
     const btn = document.getElementById('copy-' + ai);
     btn.textContent = '✓ Copiado';
-    btn.classList.add('copied');
-    setTimeout(() => {
-      btn.innerHTML = '📋 Copiar';
-      btn.classList.remove('copied');
-    }, 1800);
+    btn.classList.add('ok');
+    setTimeout(() => { btn.innerHTML = '📋 Copiar'; btn.classList.remove('ok'); }, 1800);
   });
 }
 
-// ── API calls ──
+// ─── API: Pollinations ────────────────────────────────────────────────────────
+async function pollinations(query, model) {
+  const res = await fetch('https://text.pollinations.ai/', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({
+      messages: [{ role: 'user', content: query }],
+      model,
+      seed: Math.floor(Math.random() * 9999),
+      private: true
+    })
+  });
+  if (!res.ok) throw new Error(`Pollinations HTTP ${res.status}`);
+  const text = await res.text();
+  // Pollinations returns plain text; if it looks like JSON, parse it
+  try {
+    const j = JSON.parse(text);
+    // OpenAI-style response
+    if (j.choices?.[0]?.message?.content) return j.choices[0].message.content;
+    // Error object
+    if (j.error?.message) throw new Error(j.error.message);
+    return text;
+  } catch { return text; }
+}
+
+// ─── API: Qwen ────────────────────────────────────────────────────────────────
 async function callQwen(query) {
-  const key = stored.qwen;
-  if (!key) { noKeyWarning('qwen'); return; }
-  const t0 = Date.now();
   setLoading('qwen');
+  const t0 = Date.now();
   try {
-    const res = await fetch('https://dashscope.aliyuncs.com/compatible-mode/v1/chat/completions', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        'Authorization': 'Bearer ' + key
-      },
-      body: JSON.stringify({
-        model: 'qwen-plus',
-        messages: [{ role: 'user', content: query }],
-        max_tokens: 2048
-      })
-    });
-    if (!res.ok) {
-      const err = await res.json().catch(() => ({}));
-      throw new Error(err.error?.message || `HTTP ${res.status}`);
+    let text;
+    if (keys.qwen) {
+      const res = await fetch('https://dashscope.aliyuncs.com/compatible-mode/v1/chat/completions', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + keys.qwen },
+        body: JSON.stringify({ model: 'qwen-plus', messages: [{ role: 'user', content: query }], max_tokens: 2048 })
+      });
+      if (!res.ok) { const e = await res.json().catch(() => ({})); throw new Error(e.error?.message || `HTTP ${res.status}`); }
+      const data = await res.json();
+      text = data.choices?.[0]?.message?.content || '(sem resposta)';
+    } else {
+      text = await pollinations(query, 'qwen-coder');
     }
-    const data = await res.json();
-    const text = data.choices?.[0]?.message?.content || '(sem resposta)';
     setResult('qwen', text, Date.now() - t0);
-  } catch (e) {
-    setError('qwen', e.message);
-  }
+  } catch (e) { setError('qwen', e.message); }
 }
 
+// ─── API: DeepSeek ────────────────────────────────────────────────────────────
 async function callDeepSeek(query) {
-  const key = stored.deepseek;
-  if (!key) { noKeyWarning('deepseek'); return; }
-  const t0 = Date.now();
   setLoading('deepseek');
+  const t0 = Date.now();
   try {
-    const res = await fetch('https://api.deepseek.com/v1/chat/completions', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        'Authorization': 'Bearer ' + key
-      },
-      body: JSON.stringify({
-        model: 'deepseek-chat',
-        messages: [{ role: 'user', content: query }],
-        max_tokens: 2048
-      })
-    });
-    if (!res.ok) {
-      const err = await res.json().catch(() => ({}));
-      throw new Error(err.error?.message || `HTTP ${res.status}`);
+    let text;
+    if (keys.deepseek) {
+      const res = await fetch('https://api.deepseek.com/v1/chat/completions', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + keys.deepseek },
+        body: JSON.stringify({ model: 'deepseek-chat', messages: [{ role: 'user', content: query }], max_tokens: 2048 })
+      });
+      if (!res.ok) { const e = await res.json().catch(() => ({})); throw new Error(e.error?.message || `HTTP ${res.status}`); }
+      const data = await res.json();
+      text = data.choices?.[0]?.message?.content || '(sem resposta)';
+    } else {
+      text = await pollinations(query, 'deepseek');
     }
-    const data = await res.json();
-    const text = data.choices?.[0]?.message?.content || '(sem resposta)';
     setResult('deepseek', text, Date.now() - t0);
-  } catch (e) {
-    setError('deepseek', e.message);
-  }
+  } catch (e) { setError('deepseek', e.message); }
 }
 
+// ─── API: Gemini ──────────────────────────────────────────────────────────────
 async function callGemini(query) {
-  const key = stored.gemini;
-  if (!key) { noKeyWarning('gemini'); return; }
-  const t0 = Date.now();
+  if (!keys.gemini) return; // card already shows "get key" state
   setLoading('gemini');
+  const t0 = Date.now();
   try {
-    const url = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${encodeURIComponent(key)}`;
+    const url = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${encodeURIComponent(keys.gemini)}`;
     const res = await fetch(url, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({
-        contents: [{ parts: [{ text: query }] }],
-        generationConfig: { maxOutputTokens: 2048 }
-      })
+      body: JSON.stringify({ contents: [{ parts: [{ text: query }] }], generationConfig: { maxOutputTokens: 2048 } })
     });
-    if (!res.ok) {
-      const err = await res.json().catch(() => ({}));
-      throw new Error(err.error?.message || `HTTP ${res.status}`);
-    }
+    if (!res.ok) { const e = await res.json().catch(() => ({})); throw new Error(e.error?.message || `HTTP ${res.status}`); }
     const data = await res.json();
     const text = data.candidates?.[0]?.content?.parts?.[0]?.text || '(sem resposta)';
-    setResult('gemini', text, Date.now() - t0);
-  } catch (e) {
-    setError('gemini', e.message);
-  }
+    const tokens = data.usageMetadata?.totalTokenCount;
+    setResult('gemini', text, Date.now() - t0, tokens);
+  } catch (e) { setError('gemini', e.message); }
 }
 
-// ── Main search ──
+// ─── Main search ──────────────────────────────────────────────────────────────
 async function search() {
   const query = queryEl.value.trim();
-  if (!query) {
-    queryEl.focus();
-    return;
-  }
+  if (!query) { queryEl.focus(); return; }
 
   const btn = document.getElementById('btn-search');
   btn.disabled = true;
-  btn.innerHTML = '<div class="spinner" style="width:16px;height:16px;border-width:2px;margin:0"></div> A pesquisar…';
+  btn.innerHTML = '<div class="spinner" style="width:14px;height:14px;border-width:2px;margin:0"></div> A pesquisar…';
 
-  // Fire all three in parallel
   await Promise.allSettled([
     callQwen(query),
     callDeepSeek(query),
@@ -703,12 +794,10 @@ async function search() {
   ]);
 
   btn.disabled = false;
-  btn.innerHTML = '<span>▶</span> Pesquisar';
+  btn.innerHTML = '▶ Pesquisar';
 }
 
-document.getElementById('btn-search').addEventListener('click', search);
-
-// ── Init ──
+// ─── Init ─────────────────────────────────────────────────────────────────────
 loadKeys();
 </script>
 </body>
