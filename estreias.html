@@ -1,0 +1,894 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="default">
+  <meta name="apple-mobile-web-app-title" content="Estreias">
+  <title>Estreias — André M. Fernandes</title>
+  <style>
+    :root {
+      --bg: #f2f2f7;
+      --bg2: #e5e5ea;
+      --card: #ffffff;
+      --primary: #007aff;
+      --text: #1c1c1e;
+      --text2: #6d6d72;
+      --text3: #aeaeb2;
+      --sep: rgba(60,60,67,0.18);
+      --safe-t: env(safe-area-inset-top, 0px);
+      --safe-b: env(safe-area-inset-bottom, 0px);
+      --safe-l: env(safe-area-inset-left, 0px);
+      --safe-r: env(safe-area-inset-right, 0px);
+      --tab-bg: rgba(118,118,128,0.12);
+      --upcoming-color: #ff9500;
+      --recent-color: #34c759;
+      --aired-color: #007aff;
+    }
+    @media (prefers-color-scheme: dark) {
+      :root {
+        --bg: #000000;
+        --bg2: #1c1c1e;
+        --card: #2c2c2e;
+        --text: #ffffff;
+        --text2: #8e8e93;
+        --text3: #48484a;
+        --sep: rgba(84,84,88,0.6);
+        --tab-bg: rgba(118,118,128,0.24);
+      }
+    }
+
+    *, *::before, *::after {
+      box-sizing: border-box;
+      margin: 0; padding: 0;
+      -webkit-tap-highlight-color: transparent;
+    }
+    html { height: 100%; }
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "SF Pro Text", system-ui, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      min-height: 100dvh;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    /* ── HEADER ── */
+    .header {
+      background: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%);
+      padding: calc(var(--safe-t) + 20px) 20px 20px;
+      position: sticky;
+      top: 0;
+      z-index: 100;
+    }
+    .header-top {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 16px;
+    }
+    .header-back {
+      color: rgba(255,255,255,0.7);
+      font-size: 16px;
+      text-decoration: none;
+      display: flex;
+      align-items: center;
+      gap: 4px;
+      transition: color 0.15s;
+    }
+    .header-back:hover { color: #fff; }
+    .header-title {
+      flex: 1;
+      color: #fff;
+      font-size: 18px;
+      font-weight: 700;
+      letter-spacing: -0.3px;
+    }
+    .header-actions { display: flex; gap: 8px; }
+    .header-btn {
+      width: 34px; height: 34px;
+      border: none;
+      background: rgba(255,255,255,0.12);
+      backdrop-filter: blur(8px);
+      border-radius: 50%;
+      color: #fff;
+      font-size: 16px;
+      cursor: pointer;
+      display: flex; align-items: center; justify-content: center;
+      transition: background 0.15s;
+    }
+    .header-btn:hover { background: rgba(255,255,255,0.2); }
+    .header-btn.spinning { animation: spin 1s linear infinite; }
+    @keyframes spin { to { transform: rotate(360deg); } }
+    .header-sub {
+      color: rgba(255,255,255,0.55);
+      font-size: 11px;
+      margin-top: -12px;
+      margin-bottom: 12px;
+    }
+
+    /* ── CATEGORY TABS ── */
+    .tabs-wrap {
+      display: flex;
+      gap: 6px;
+      overflow-x: auto;
+      scrollbar-width: none;
+      -webkit-overflow-scrolling: touch;
+    }
+    .tabs-wrap::-webkit-scrollbar { display: none; }
+    .tab-btn {
+      flex-shrink: 0;
+      padding: 7px 16px;
+      border: none;
+      border-radius: 20px;
+      background: rgba(255,255,255,0.1);
+      color: rgba(255,255,255,0.65);
+      font-size: 13px;
+      font-weight: 500;
+      cursor: pointer;
+      transition: background 0.15s, color 0.15s;
+      font-family: inherit;
+    }
+    .tab-btn.active {
+      background: #fff;
+      color: #1a1a2e;
+    }
+
+    /* ── FILTERS ── */
+    .filters {
+      display: flex;
+      gap: 8px;
+      padding: 14px 16px 8px;
+      overflow-x: auto;
+      scrollbar-width: none;
+    }
+    .filters::-webkit-scrollbar { display: none; }
+    .filter-btn {
+      flex-shrink: 0;
+      padding: 5px 14px;
+      border: none;
+      border-radius: 14px;
+      background: var(--tab-bg);
+      color: var(--text2);
+      font-size: 12px;
+      font-weight: 500;
+      cursor: pointer;
+      transition: background 0.15s, color 0.15s;
+      font-family: inherit;
+    }
+    .filter-btn.active {
+      background: var(--primary);
+      color: #fff;
+    }
+
+    /* ── CONTENT ── */
+    .content {
+      padding: 4px 12px calc(var(--safe-b) + 32px);
+    }
+
+    /* ── SOURCE BADGE ── */
+    .source-badge {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      padding: 8px 12px;
+      background: var(--card);
+      border-radius: 10px;
+      margin: 8px 0 12px;
+      font-size: 11px;
+      color: var(--text2);
+    }
+    .source-badge .dot {
+      width: 6px; height: 6px;
+      border-radius: 50%;
+      background: var(--recent-color);
+      flex-shrink: 0;
+    }
+    .source-badge.static .dot { background: var(--upcoming-color); }
+    .source-badge a { color: var(--primary); text-decoration: none; }
+
+    /* ── GRID ── */
+    .grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px;
+    }
+    @media (min-width: 480px) { .grid { grid-template-columns: repeat(3, 1fr); } }
+    @media (min-width: 700px) { .grid { grid-template-columns: repeat(4, 1fr); } }
+    @media (min-width: 900px) { .grid { grid-template-columns: repeat(5, 1fr); } }
+
+    /* ── PREMIERE CARD ── */
+    .card {
+      background: var(--card);
+      border-radius: 14px;
+      overflow: hidden;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.08);
+      cursor: pointer;
+      transition: transform 0.15s, box-shadow 0.15s;
+      animation: fadeIn 0.3s ease forwards;
+    }
+    .card:active { transform: scale(0.97); }
+    @keyframes fadeIn { from { opacity: 0; transform: translateY(6px); } to { opacity: 1; transform: none; } }
+
+    .card-poster {
+      position: relative;
+      aspect-ratio: 2/3;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      overflow: hidden;
+    }
+    .card-poster img {
+      width: 100%; height: 100%;
+      object-fit: cover;
+      display: block;
+    }
+    .card-poster-placeholder {
+      width: 100%; height: 100%;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+    }
+    .card-poster-emoji {
+      font-size: 42px;
+      filter: drop-shadow(0 2px 8px rgba(0,0,0,0.3));
+    }
+    .card-poster-title-small {
+      font-size: 9px;
+      color: rgba(255,255,255,0.6);
+      text-align: center;
+      padding: 0 6px;
+      line-height: 1.3;
+    }
+
+    /* Status badge overlaid on poster */
+    .card-status {
+      position: absolute;
+      top: 8px;
+      left: 8px;
+      padding: 3px 8px;
+      border-radius: 8px;
+      font-size: 9px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.3px;
+      backdrop-filter: blur(8px);
+    }
+    .card-status.upcoming {
+      background: rgba(255,149,0,0.85);
+      color: #fff;
+    }
+    .card-status.recent {
+      background: rgba(52,199,89,0.85);
+      color: #fff;
+    }
+    .card-status.airing {
+      background: rgba(0,122,255,0.85);
+      color: #fff;
+    }
+
+    /* Platform badge */
+    .card-platform-badge {
+      position: absolute;
+      bottom: 8px;
+      right: 8px;
+      padding: 3px 7px;
+      border-radius: 6px;
+      background: rgba(0,0,0,0.65);
+      color: rgba(255,255,255,0.9);
+      font-size: 9px;
+      font-weight: 600;
+      backdrop-filter: blur(6px);
+      max-width: 72px;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    /* Card info */
+    .card-info {
+      padding: 8px 10px 10px;
+    }
+    .card-title {
+      font-size: 12px;
+      font-weight: 600;
+      line-height: 1.3;
+      color: var(--text);
+      display: -webkit-box;
+      -webkit-line-clamp: 2;
+      -webkit-box-orient: vertical;
+      overflow: hidden;
+      margin-bottom: 3px;
+    }
+    .card-note {
+      font-size: 10px;
+      color: var(--primary);
+      font-weight: 600;
+      margin-bottom: 3px;
+    }
+    .card-date {
+      font-size: 10px;
+      color: var(--text2);
+    }
+
+    /* ── EMPTY / LOADING ── */
+    .state-wrap {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 60px 20px;
+      gap: 12px;
+      color: var(--text2);
+      text-align: center;
+    }
+    .state-wrap .state-icon { font-size: 48px; opacity: 0.4; }
+    .state-wrap .state-title { font-size: 16px; font-weight: 600; color: var(--text); }
+    .state-wrap .state-desc { font-size: 13px; line-height: 1.5; }
+    .state-wrap button {
+      margin-top: 8px;
+      padding: 10px 24px;
+      background: var(--primary);
+      color: #fff;
+      border: none;
+      border-radius: 12px;
+      font-size: 14px;
+      font-weight: 600;
+      cursor: pointer;
+      font-family: inherit;
+    }
+
+    /* ── SETTINGS SHEET ── */
+    .sheet-overlay {
+      position: fixed; inset: 0;
+      background: rgba(0,0,0,0.4);
+      backdrop-filter: blur(4px);
+      z-index: 200;
+      display: none;
+      align-items: flex-end;
+      justify-content: center;
+    }
+    .sheet-overlay.open { display: flex; animation: fadeOv 0.2s ease; }
+    @keyframes fadeOv { from { opacity: 0; } to { opacity: 1; } }
+    .sheet {
+      width: 100%;
+      max-width: 600px;
+      background: var(--card);
+      border-radius: 20px 20px 0 0;
+      padding: 12px 20px calc(var(--safe-b) + 24px);
+      animation: slideUp 0.3s cubic-bezier(0.16,1,0.3,1);
+    }
+    @keyframes slideUp { from { transform: translateY(100%); } to { transform: none; } }
+    .sheet-handle {
+      width: 36px; height: 4px;
+      background: var(--text3);
+      border-radius: 2px;
+      margin: 0 auto 20px;
+    }
+    .sheet-title {
+      font-size: 18px;
+      font-weight: 700;
+      margin-bottom: 6px;
+      color: var(--text);
+    }
+    .sheet-desc {
+      font-size: 13px;
+      color: var(--text2);
+      line-height: 1.5;
+      margin-bottom: 20px;
+    }
+    .sheet-label {
+      font-size: 12px;
+      font-weight: 600;
+      color: var(--text2);
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      margin-bottom: 8px;
+    }
+    .sheet-input {
+      width: 100%;
+      background: var(--bg);
+      border: 1px solid var(--sep);
+      border-radius: 10px;
+      padding: 12px 14px;
+      font-size: 14px;
+      color: var(--text);
+      outline: none;
+      font-family: inherit;
+      transition: border-color 0.15s;
+      margin-bottom: 12px;
+    }
+    .sheet-input:focus { border-color: var(--primary); }
+    .sheet-btns {
+      display: flex;
+      gap: 10px;
+    }
+    .sheet-btn {
+      flex: 1;
+      padding: 13px;
+      border: none;
+      border-radius: 12px;
+      font-size: 15px;
+      font-weight: 600;
+      cursor: pointer;
+      font-family: inherit;
+      transition: opacity 0.15s;
+    }
+    .sheet-btn:active { opacity: 0.75; }
+    .sheet-btn.primary { background: var(--primary); color: #fff; }
+    .sheet-btn.secondary { background: var(--tab-bg); color: var(--text); }
+    .sheet-link {
+      display: block;
+      text-align: center;
+      color: var(--primary);
+      font-size: 13px;
+      text-decoration: none;
+      margin-top: 16px;
+    }
+    .sheet-key-status {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      padding: 10px 12px;
+      background: var(--bg2);
+      border-radius: 10px;
+      font-size: 12px;
+      color: var(--text2);
+      margin-bottom: 16px;
+    }
+    .sheet-key-status .dot {
+      width: 6px; height: 6px;
+      border-radius: 50%;
+      flex-shrink: 0;
+    }
+    .sheet-key-status.has-key .dot { background: var(--recent-color); }
+    .sheet-key-status.no-key .dot { background: var(--text3); }
+    .sheet-clear-btn {
+      background: none;
+      border: none;
+      color: #ff3b30;
+      font-size: 12px;
+      cursor: pointer;
+      font-family: inherit;
+      margin-left: auto;
+      padding: 2px 6px;
+    }
+  </style>
+</head>
+<body>
+
+<!-- ════ HEADER ════ -->
+<div class="header">
+  <div class="header-top">
+    <a class="header-back" href="links.html">‹ Links</a>
+    <div class="header-title">🎬 Estreias</div>
+    <div class="header-actions">
+      <button class="header-btn" id="btn-refresh" onclick="refreshData()" title="Atualizar">↻</button>
+      <button class="header-btn" onclick="openSettings()" title="Configurações">⚙</button>
+    </div>
+  </div>
+  <div class="header-sub" id="last-updated">A carregar...</div>
+  <div class="tabs-wrap">
+    <button class="tab-btn active" data-cat="filmes" onclick="setCategory('filmes')">🎬 Filmes</button>
+    <button class="tab-btn" data-cat="series" onclick="setCategory('series')">📺 Séries</button>
+    <button class="tab-btn" data-cat="anime" onclick="setCategory('anime')">⛩️ Anime</button>
+    <button class="tab-btn" data-cat="docs" onclick="setCategory('docs')">🎥 Documentários</button>
+  </div>
+</div>
+
+<!-- ════ FILTERS ════ -->
+<div class="filters">
+  <button class="filter-btn active" data-filter="all" onclick="setFilter('all')">Todos</button>
+  <button class="filter-btn" data-filter="upcoming" onclick="setFilter('upcoming')">Em breve</button>
+  <button class="filter-btn" data-filter="recent" onclick="setFilter('recent')">Recentes</button>
+</div>
+
+<!-- ════ CONTENT ════ -->
+<div class="content">
+  <div class="source-badge static" id="source-badge">
+    <span class="dot"></span>
+    <span id="source-text">Dados curados — configure a API do TMDB para atualizações em tempo real</span>
+  </div>
+  <div class="grid" id="grid"></div>
+</div>
+
+<!-- ════ SETTINGS SHEET ════ -->
+<div class="sheet-overlay" id="sheet-overlay" onclick="closeSettings(event)">
+  <div class="sheet" onclick="event.stopPropagation()">
+    <div class="sheet-handle"></div>
+    <div class="sheet-title">⚙️ Configurações</div>
+    <div class="sheet-desc">
+      Adicione a sua API Key do TMDB para obter as estreias mais recentes em tempo real.
+      O registo é gratuito em themoviedb.org.
+    </div>
+
+    <div class="sheet-key-status no-key" id="key-status">
+      <span class="dot"></span>
+      <span id="key-status-text">Nenhuma chave configurada — a usar dados curados</span>
+      <button class="sheet-clear-btn" id="clear-btn" onclick="clearApiKey()" style="display:none">Remover</button>
+    </div>
+
+    <div class="sheet-label">TMDB Read Access Token</div>
+    <input
+      type="password"
+      class="sheet-input"
+      id="api-key-input"
+      placeholder="eyJhbGciOiJIUzI1NiJ9..."
+      autocomplete="off"
+      spellcheck="false"
+    >
+    <div class="sheet-btns">
+      <button class="sheet-btn secondary" onclick="closeSettings()">Cancelar</button>
+      <button class="sheet-btn primary" onclick="saveApiKey()">Guardar e Atualizar</button>
+    </div>
+    <a class="sheet-link" href="https://www.themoviedb.org/settings/api" target="_blank">
+      Obter chave gratuita em themoviedb.org →
+    </a>
+  </div>
+</div>
+
+<script>
+/* ════════════════════════════════════════════════════════
+   STATIC FALLBACK DATA — curated 2025 / 2026 premieres
+════════════════════════════════════════════════════════ */
+const STATIC = {
+  filmes: [
+    { id:'f1', title:'Avengers: Doomsday', note:'Marvel Studios', date:'2026-05-01', platform:'Cinema', emoji:'🦸', color:'linear-gradient(145deg,#8B0000,#4B0082)', genre:'Ação' },
+    { id:'f2', title:'Mission: Impossible – The Final Reckoning', note:'', date:'2025-05-23', platform:'Cinema', emoji:'💣', color:'linear-gradient(145deg,#1a1a2e,#16213e)', genre:'Ação' },
+    { id:'f3', title:'Superman', note:'DC Studios', date:'2025-07-11', platform:'Cinema', emoji:'🦸‍♂️', color:'linear-gradient(145deg,#003087,#D4001A)', genre:'Super-heróis' },
+    { id:'f4', title:'Jurassic World Rebirth', note:'', date:'2025-07-02', platform:'Cinema', emoji:'🦕', color:'linear-gradient(145deg,#1a3a0a,#2d5a1b)', genre:'Aventura' },
+    { id:'f5', title:'The Fantastic Four: First Steps', note:'Marvel Studios', date:'2025-07-25', platform:'Cinema', emoji:'🔥', color:'linear-gradient(145deg,#1565c0,#0d47a1)', genre:'Super-heróis' },
+    { id:'f6', title:'Thunderbolts*', note:'Marvel Studios', date:'2025-05-02', platform:'Cinema', emoji:'⚡', color:'linear-gradient(145deg,#37474f,#263238)', genre:'Ação' },
+    { id:'f7', title:'Wicked: For Good', note:'Parte 2', date:'2025-11-21', platform:'Cinema', emoji:'🧹', color:'linear-gradient(145deg,#4a148c,#006064)', genre:'Musical' },
+    { id:'f8', title:'Avatar: Fire and Ash', note:'Avatar 3', date:'2025-12-19', platform:'Cinema', emoji:'🔵', color:'linear-gradient(145deg,#004d40,#006064)', genre:'Ficção Científica' },
+  ],
+  series: [
+    { id:'s1', title:'Squid Game', note:'T3', date:'2025-06-27', platform:'Netflix', emoji:'🎭', color:'linear-gradient(145deg,#b71c1c,#880e4f)', genre:'Thriller' },
+    { id:'s2', title:'The Last of Us', note:'T2', date:'2025-04-13', platform:'HBO Max', emoji:'🍄', color:'linear-gradient(145deg,#1b5e20,#33691e)', genre:'Drama' },
+    { id:'s3', title:'Severance', note:'T2', date:'2025-01-17', platform:'Apple TV+', emoji:'🧠', color:'linear-gradient(145deg,#0d1b2a,#1b2838)', genre:'Thriller' },
+    { id:'s4', title:'Andor', note:'T2', date:'2025-04-22', platform:'Disney+', emoji:'🌌', color:'linear-gradient(145deg,#0a0a2e,#1a237e)', genre:'Star Wars' },
+    { id:'s5', title:'Wednesday', note:'T2', date:'2025-08-06', platform:'Netflix', emoji:'🖤', color:'linear-gradient(145deg,#212121,#424242)', genre:'Terror/Comédia' },
+    { id:'s6', title:'Stranger Things', note:'T5', date:'2025-11-26', platform:'Netflix', emoji:'🌀', color:'linear-gradient(145deg,#1a0033,#0d1b47)', genre:'Ficção Científica' },
+    { id:'s7', title:'House of the Dragon', note:'T3', date:'2026-06-15', platform:'HBO Max', emoji:'🐉', color:'linear-gradient(145deg,#4a0000,#7b1fa2)', genre:'Fantasia' },
+  ],
+  anime: [
+    { id:'a1', title:'Demon Slayer: Infinity Castle', note:'Filme', date:'2025-06-20', platform:'Cinema', emoji:'⚔️', color:'linear-gradient(145deg,#880e4f,#1a237e)', genre:'Ação' },
+    { id:'a2', title:'Jujutsu Kaisen', note:'T3', date:'2025-10-02', platform:'Crunchyroll', emoji:'🟣', color:'linear-gradient(145deg,#4a148c,#1a237e)', genre:'Ação/Sobrenatural' },
+    { id:'a3', title:'Solo Leveling', note:'T2 — Arise from the Shadow', date:'2025-01-04', platform:'Crunchyroll', emoji:'🔮', color:'linear-gradient(145deg,#0d1b2a,#1565c0)', genre:'Ação/Fantasia' },
+    { id:'a4', title:'My Hero Academia', note:'T8', date:'2025-04-05', platform:'Crunchyroll', emoji:'💪', color:'linear-gradient(145deg,#1565c0,#388e3c)', genre:'Super-heróis' },
+    { id:'a5', title:'Blue Lock', note:'T2 — Part 2', date:'2025-04-05', platform:'Netflix', emoji:'⚽', color:'linear-gradient(145deg,#1a237e,#0d47a1)', genre:'Desporto' },
+    { id:'a6', title:'Chainsaw Man', note:'T2', date:'2025-10-04', platform:'Crunchyroll', emoji:'🪚', color:'linear-gradient(145deg,#7f0000,#212121)', genre:'Ação/Terror' },
+    { id:'a7', title:'One Piece', note:'Elbaf Arc (2025)', date:'2025-01-05', platform:'Crunchyroll', emoji:'🏴‍☠️', color:'linear-gradient(145deg,#e65100,#bf360c)', genre:'Aventura' },
+  ],
+  docs: [
+    { id:'d1', title:"Don't Die: The Man Who Wants to Live Forever", note:'Documentário', date:'2025-01-01', platform:'Netflix', emoji:'🧬', color:'linear-gradient(145deg,#b71c1c,#880e4f)', genre:'Tecnologia' },
+    { id:'d2', title:'Formula 1: Drive to Survive', note:'T7', date:'2025-03-07', platform:'Netflix', emoji:'🏎️', color:'linear-gradient(145deg,#e53935,#6d0000)', genre:'Desporto' },
+    { id:'d3', title:'Full Swing', note:'T3 — Golf', date:'2025-06-06', platform:'Netflix', emoji:'⛳', color:'linear-gradient(145deg,#2e7d32,#1b5e20)', genre:'Desporto' },
+    { id:'d4', title:'Senna', note:'Série documental', date:'2024-11-29', platform:'Netflix', emoji:'🏁', color:'linear-gradient(145deg,#f9a825,#e65100)', genre:'Desporto/Biografia' },
+    { id:'d5', title:'Trainwreck: Storm Area 51', note:'Documentário', date:'2025-09-18', platform:'Netflix', emoji:'👽', color:'linear-gradient(145deg,#37474f,#546e7a)', genre:'Cultura Pop' },
+    { id:'d6', title:'Tour de France: Au Cœur du Peloton', note:'T3', date:'2025-07-01', platform:'Netflix', emoji:'🚴', color:'linear-gradient(145deg,#1565c0,#0d47a1)', genre:'Desporto' },
+  ]
+};
+
+/* ════════════════════════════════════════════════════════
+   STATE
+════════════════════════════════════════════════════════ */
+let currentCategory = 'filmes';
+let currentFilter   = 'all';
+let isLoading       = false;
+
+const TMDB_BASE  = 'https://api.themoviedb.org/3';
+const IMG_BASE   = 'https://image.tmdb.org/t/p/w342';
+const CACHE_TTL  = 6 * 60 * 60 * 1000; // 6 hours
+
+/* ════════════════════════════════════════════════════════
+   API KEY MANAGEMENT
+════════════════════════════════════════════════════════ */
+function getApiKey() { return localStorage.getItem('tmdb_token') || ''; }
+function setApiKey(k) { localStorage.setItem('tmdb_token', k.trim()); }
+function clearApiKey() {
+  localStorage.removeItem('tmdb_token');
+  ['tmdb_filmes','tmdb_series','tmdb_anime','tmdb_docs'].forEach(k => localStorage.removeItem(k));
+  updateKeyStatus();
+  render();
+}
+
+function updateKeyStatus() {
+  const k = getApiKey();
+  const el = document.getElementById('key-status');
+  const txt = document.getElementById('key-status-text');
+  const clearBtn = document.getElementById('clear-btn');
+  if (k) {
+    el.className = 'sheet-key-status has-key';
+    txt.textContent = 'Chave TMDB configurada — dados em tempo real';
+    clearBtn.style.display = 'block';
+  } else {
+    el.className = 'sheet-key-status no-key';
+    txt.textContent = 'Nenhuma chave configurada — a usar dados curados';
+    clearBtn.style.display = 'none';
+  }
+}
+
+function saveApiKey() {
+  const v = document.getElementById('api-key-input').value.trim();
+  if (v) setApiKey(v);
+  closeSettings();
+  ['tmdb_filmes','tmdb_series','tmdb_anime','tmdb_docs'].forEach(k => localStorage.removeItem(k));
+  updateKeyStatus();
+  refreshData();
+}
+
+/* ════════════════════════════════════════════════════════
+   SETTINGS SHEET
+════════════════════════════════════════════════════════ */
+function openSettings() {
+  updateKeyStatus();
+  const k = getApiKey();
+  document.getElementById('api-key-input').value = k ? '•'.repeat(20) : '';
+  document.getElementById('api-key-input').addEventListener('focus', function onFocus() {
+    if (this.value.startsWith('•')) this.value = '';
+    this.removeEventListener('focus', onFocus);
+  }, { once: true });
+  document.getElementById('sheet-overlay').classList.add('open');
+}
+function closeSettings(e) {
+  if (e && e.target !== document.getElementById('sheet-overlay')) return;
+  document.getElementById('sheet-overlay').classList.remove('open');
+}
+
+/* ════════════════════════════════════════════════════════
+   TMDB FETCH
+════════════════════════════════════════════════════════ */
+async function tmdbFetch(path) {
+  const token = getApiKey();
+  if (!token) return null;
+  const cacheKey = 'tmdb_cache_' + path.replace(/\W/g,'-');
+  const cached = localStorage.getItem(cacheKey);
+  if (cached) {
+    try {
+      const { ts, data } = JSON.parse(cached);
+      if (Date.now() - ts < CACHE_TTL) return data;
+    } catch(e) {}
+  }
+  try {
+    const r = await fetch(TMDB_BASE + path, {
+      headers: { Authorization: 'Bearer ' + token, 'Content-Type': 'application/json' }
+    });
+    if (!r.ok) return null;
+    const data = await r.json();
+    localStorage.setItem(cacheKey, JSON.stringify({ ts: Date.now(), data }));
+    return data;
+  } catch(e) { return null; }
+}
+
+async function fetchTmdbCategory(cat) {
+  const today = new Date().toISOString().slice(0,10);
+  const past90 = new Date(Date.now() - 90*24*60*60*1000).toISOString().slice(0,10);
+  const fut180 = new Date(Date.now() + 180*24*60*60*1000).toISOString().slice(0,10);
+
+  const paths = {
+    filmes: `/discover/movie?language=pt-PT&sort_by=release_date.desc&release_date.gte=${past90}&release_date.lte=${fut180}&include_adult=false&vote_count.gte=0`,
+    series: `/tv/on_the_air?language=pt-PT&page=1`,
+    anime:  `/discover/tv?with_genres=16&with_original_language=ja&language=pt-PT&sort_by=popularity.desc&air_date.gte=${past90}`,
+    docs:   `/discover/movie?with_genres=99&language=pt-PT&sort_by=release_date.desc&release_date.gte=${past90}&vote_count.gte=0`
+  };
+
+  const data = await tmdbFetch(paths[cat]);
+  if (!data || !data.results) return null;
+  return normalizeTmdb(data.results, cat);
+}
+
+function normalizeTmdb(results, cat) {
+  return results.slice(0, 20).map((r, i) => ({
+    id: 'tmdb_' + r.id,
+    title: r.title || r.name || 'Sem título',
+    note: r.release_date ? '' : (r.first_air_date ? '' : ''),
+    date: r.release_date || r.first_air_date || '',
+    platform: cat === 'filmes' ? 'Cinema' : cat === 'anime' ? 'Crunchyroll' : 'Streaming',
+    emoji: categoryEmoji(cat),
+    color: posterGradient(i),
+    poster: r.poster_path ? IMG_BASE + r.poster_path : null,
+    genre: r.genre_ids ? '' : '',
+    overview: r.overview || '',
+    tmdb: true
+  }));
+}
+
+/* ════════════════════════════════════════════════════════
+   HELPERS
+════════════════════════════════════════════════════════ */
+function categoryEmoji(cat) {
+  return { filmes:'🎬', series:'📺', anime:'⛩️', docs:'🎥' }[cat] || '🎬';
+}
+
+const GRADIENTS = [
+  'linear-gradient(145deg,#1a1a2e,#16213e)',
+  'linear-gradient(145deg,#0f3460,#533483)',
+  'linear-gradient(145deg,#4a0000,#7b1fa2)',
+  'linear-gradient(145deg,#004d40,#006064)',
+  'linear-gradient(145deg,#e65100,#bf360c)',
+  'linear-gradient(145deg,#1b5e20,#33691e)',
+  'linear-gradient(145deg,#880e4f,#1a237e)',
+  'linear-gradient(145deg,#b71c1c,#880e4f)',
+  'linear-gradient(145deg,#0d47a1,#1565c0)',
+  'linear-gradient(145deg,#212121,#424242)',
+];
+function posterGradient(i) { return GRADIENTS[i % GRADIENTS.length]; }
+
+function isUpcoming(dateStr) {
+  if (!dateStr) return false;
+  return new Date(dateStr) > new Date();
+}
+function isRecent(dateStr) {
+  if (!dateStr) return false;
+  const d = new Date(dateStr);
+  const now = new Date();
+  return d <= now && (now - d) < 90 * 24 * 60 * 60 * 1000;
+}
+function statusLabel(dateStr) {
+  if (!dateStr) return { label: 'Anunciado', cls: 'airing' };
+  if (isUpcoming(dateStr)) return { label: 'Em breve', cls: 'upcoming' };
+  if (isRecent(dateStr))   return { label: 'Recente',  cls: 'recent' };
+  return { label: 'Estreou', cls: 'airing' };
+}
+function fmtDate(dateStr) {
+  if (!dateStr) return 'Data a anunciar';
+  try {
+    return new Date(dateStr + 'T00:00:00').toLocaleDateString('pt-PT', { day:'2-digit', month:'short', year:'numeric' });
+  } catch(e) { return dateStr; }
+}
+function passesFilter(item, filter) {
+  if (filter === 'all') return true;
+  if (filter === 'upcoming') return isUpcoming(item.date);
+  if (filter === 'recent')   return isRecent(item.date);
+  return true;
+}
+
+/* ════════════════════════════════════════════════════════
+   CATEGORY / FILTER
+════════════════════════════════════════════════════════ */
+function setCategory(cat) {
+  currentCategory = cat;
+  document.querySelectorAll('.tab-btn').forEach(b => b.classList.toggle('active', b.dataset.cat === cat));
+  render();
+}
+function setFilter(f) {
+  currentFilter = f;
+  document.querySelectorAll('.filter-btn').forEach(b => b.classList.toggle('active', b.dataset.filter === f));
+  render();
+}
+
+/* ════════════════════════════════════════════════════════
+   RENDER
+════════════════════════════════════════════════════════ */
+function render() {
+  const grid = document.getElementById('grid');
+  const cacheKey = 'tmdb_' + currentCategory;
+  const raw = localStorage.getItem(cacheKey);
+  let items = null;
+
+  if (raw) {
+    try { const { data } = JSON.parse(raw); items = data; } catch(e) {}
+  }
+  if (!items) items = STATIC[currentCategory] || [];
+
+  // source badge
+  const badge = document.getElementById('source-badge');
+  const srcTxt = document.getElementById('source-text');
+  if (raw) {
+    badge.className = 'source-badge';
+    srcTxt.innerHTML = 'Dados em tempo real via <strong>TMDB</strong>';
+  } else {
+    badge.className = 'source-badge static';
+    srcTxt.innerHTML = getApiKey()
+      ? 'A carregar dados TMDB...'
+      : 'Dados curados — <a onclick="openSettings()" style="cursor:pointer">configure a API do TMDB</a> para atualizações em tempo real';
+  }
+
+  const filtered = items.filter(item => passesFilter(item, currentFilter));
+
+  if (filtered.length === 0) {
+    grid.innerHTML = `
+      <div class="state-wrap" style="grid-column:1/-1">
+        <div class="state-icon">🔍</div>
+        <div class="state-title">Sem resultados</div>
+        <div class="state-desc">Não há estreias para este filtro.</div>
+      </div>`;
+    return;
+  }
+
+  grid.innerHTML = filtered.map(item => cardHTML(item)).join('');
+}
+
+function cardHTML(item) {
+  const { label, cls } = statusLabel(item.date);
+  const poster = item.poster
+    ? `<img src="${item.poster}" alt="${item.title}" loading="lazy" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">`
+    : '';
+  const placeholder = `
+    <div class="card-poster-placeholder" style="${item.poster ? 'display:none' : ''}">
+      <div class="card-poster-emoji">${item.emoji}</div>
+    </div>`;
+
+  return `
+    <div class="card">
+      <div class="card-poster" style="background:${item.color}">
+        ${poster}
+        ${placeholder}
+        <div class="card-status ${cls}">${label}</div>
+        <div class="card-platform-badge">${item.platform}</div>
+      </div>
+      <div class="card-info">
+        ${item.note ? `<div class="card-note">${item.note}</div>` : ''}
+        <div class="card-title">${item.title}</div>
+        <div class="card-date">${fmtDate(item.date)}</div>
+      </div>
+    </div>`;
+}
+
+/* ════════════════════════════════════════════════════════
+   REFRESH
+════════════════════════════════════════════════════════ */
+async function refreshData() {
+  if (isLoading) return;
+  isLoading = true;
+  const btn = document.getElementById('btn-refresh');
+  btn.classList.add('spinning');
+
+  const key = getApiKey();
+  if (key) {
+    for (const cat of ['filmes','series','anime','docs']) {
+      const items = await fetchTmdbCategory(cat);
+      if (items) {
+        localStorage.setItem('tmdb_' + cat, JSON.stringify({ ts: Date.now(), data: items }));
+      }
+    }
+  }
+
+  isLoading = false;
+  btn.classList.remove('spinning');
+  render();
+  updateLastUpdated();
+}
+
+function updateLastUpdated() {
+  const el = document.getElementById('last-updated');
+  const cacheKey = 'tmdb_filmes';
+  const raw = localStorage.getItem(cacheKey);
+  if (raw) {
+    try {
+      const { ts } = JSON.parse(raw);
+      const d = new Date(ts);
+      el.textContent = 'Atualizado às ' + d.toLocaleTimeString('pt-PT', { hour: '2-digit', minute: '2-digit' }) + ' de ' + d.toLocaleDateString('pt-PT', { day: '2-digit', month: 'short' });
+      return;
+    } catch(e) {}
+  }
+  el.textContent = 'Dados curados • configure o TMDB para atualizações automáticas';
+}
+
+/* ════════════════════════════════════════════════════════
+   AUTO-REFRESH CHECK (every 6h)
+════════════════════════════════════════════════════════ */
+async function autoRefreshIfStale() {
+  const key = getApiKey();
+  if (!key) return;
+  const raw = localStorage.getItem('tmdb_filmes');
+  if (!raw) { refreshData(); return; }
+  try {
+    const { ts } = JSON.parse(raw);
+    if (Date.now() - ts > CACHE_TTL) refreshData();
+  } catch(e) { refreshData(); }
+}
+
+/* ════════════════════════════════════════════════════════
+   INIT
+════════════════════════════════════════════════════════ */
+updateKeyStatus();
+render();
+updateLastUpdated();
+autoRefreshIfStale();
+</script>
+</body>
+</html>
