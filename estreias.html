@@ -208,6 +208,7 @@
       animation: fadeIn 0.3s ease forwards;
     }
     .card:active { transform: scale(0.97); }
+    a.card { text-decoration: none; display: block; }
     @keyframes fadeIn { from { opacity: 0; transform: translateY(6px); } to { opacity: 1; transform: none; } }
 
     .card-poster {
@@ -681,16 +682,18 @@ async function fetchTmdbCategory(cat) {
 }
 
 function normalizeTmdb(results, cat) {
+  const mediaType = (cat === 'filmes' || cat === 'docs') ? 'movie' : 'tv';
   return results.slice(0, 20).map((r, i) => ({
     id: 'tmdb_' + r.id,
+    tmdbId: r.id,
+    mediaType,
     title: r.title || r.name || 'Sem título',
-    note: r.release_date ? '' : (r.first_air_date ? '' : ''),
+    note: '',
     date: r.release_date || r.first_air_date || '',
     platform: cat === 'filmes' ? 'Cinema' : cat === 'anime' ? 'Crunchyroll' : 'Streaming',
     emoji: categoryEmoji(cat),
     color: posterGradient(i),
     poster: r.poster_path ? IMG_BASE + r.poster_path : null,
-    genre: r.genre_ids ? '' : '',
     overview: r.overview || '',
     tmdb: true
   }));
@@ -802,8 +805,15 @@ function render() {
   grid.innerHTML = filtered.map(item => cardHTML(item)).join('');
 }
 
+function cardLink(item) {
+  if (item.tmdbId && item.mediaType)
+    return `https://www.themoviedb.org/${item.mediaType}/${item.tmdbId}`;
+  return `https://www.themoviedb.org/search?query=${encodeURIComponent(item.title)}`;
+}
+
 function cardHTML(item) {
   const { label, cls } = statusLabel(item.date);
+  const href = cardLink(item);
   const poster = item.poster
     ? `<img src="${item.poster}" alt="${item.title}" loading="lazy" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">`
     : '';
@@ -813,7 +823,7 @@ function cardHTML(item) {
     </div>`;
 
   return `
-    <div class="card">
+    <a class="card" href="${href}" target="_blank" rel="noopener">
       <div class="card-poster" style="background:${item.color}">
         ${poster}
         ${placeholder}
@@ -825,7 +835,7 @@ function cardHTML(item) {
         <div class="card-title">${item.title}</div>
         <div class="card-date">${fmtDate(item.date)}</div>
       </div>
-    </div>`;
+    </a>`;
 }
 
 /* ════════════════════════════════════════════════════════
