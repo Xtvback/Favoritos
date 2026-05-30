@@ -143,51 +143,11 @@
     @media (prefers-color-scheme: dark) {
       .tag-vercel { background: rgba(255,255,255,0.1); }
     }
-    .repo-chevron { color: var(--sep); font-size: 14px; flex-shrink: 0; }
-
-    /* ── ICON GRID (Páginas) ── */
-    .icon-grid {
-      display: grid;
-      grid-template-columns: repeat(4, 1fr);
-      gap: 16px 8px;
-    }
-    @media (min-width: 480px) {
-      .icon-grid { grid-template-columns: repeat(5, 1fr); }
-    }
-    @media (min-width: 600px) {
-      .icon-grid { grid-template-columns: repeat(6, 1fr); }
-    }
-
-    .app-icon {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      gap: 6px;
-      text-decoration: none;
-      color: var(--text);
-      cursor: pointer;
-      transition: transform 0.15s;
-    }
-    .app-icon:active { transform: scale(0.88); }
-
-    .app-icon-img {
-      width: 64px; height: 64px;
-      border-radius: 16px;
-      display: flex; align-items: center; justify-content: center;
-      font-size: 30px;
-      box-shadow: 0 2px 8px rgba(0,0,0,0.12), 0 0.5px 0 rgba(0,0,0,0.06);
-    }
-    .app-icon-label {
-      font-size: 11px;
-      font-weight: 400;
-      text-align: center;
-      line-height: 1.3;
-      color: var(--text);
-      max-width: 72px;
-      overflow: hidden;
-      display: -webkit-box;
-      -webkit-line-clamp: 2;
-      -webkit-box-orient: vertical;
+    .chevron {
+      color: var(--text2);
+      font-size: 13px;
+      opacity: 0.4;
+      flex-shrink: 0;
     }
 
     /* App icon background colours */
@@ -221,56 +181,96 @@
 
     <!-- PÁGINAS DO FAVORITOS -->
     <div class="section-label">Páginas do Favoritos</div>
-    <div class="icon-grid">
+    <div class="repo-list">
 
-      <a class="app-icon" href="https://xtvback.github.io/Favoritos/" target="_blank">
-        <div class="app-icon-img ic-indigo">🖥️</div>
-        <span class="app-icon-label">DesktopWeb</span>
+      <a class="repo-card" href="https://xtvback.github.io/Favoritos/" target="_blank">
+        <div class="repo-icon-wrap ic-indigo">🖥️</div>
+        <div class="repo-body">
+          <div class="repo-name">DesktopWeb</div>
+          <div class="repo-desc">Ambiente de trabalho virtual com atalhos para as ferramentas e apps web</div>
+        </div>
+        <span class="chevron">›</span>
       </a>
 
-      <a class="app-icon" href="https://xtvback.github.io/Favoritos/app-ideas.html" target="_blank">
-        <div class="app-icon-img ic-blue">💡</div>
-        <span class="app-icon-label">App Ideas</span>
+      <a class="repo-card" href="https://xtvback.github.io/Favoritos/app-ideas.html" target="_blank">
+        <div class="repo-icon-wrap ic-blue">💡</div>
+        <div class="repo-body">
+          <div class="repo-name">App Ideas</div>
+          <div class="repo-desc">Gestor de ideias para criação de apps, com histórico e arquivo por data</div>
+        </div>
+        <span class="chevron">›</span>
       </a>
 
-      <a class="app-icon" href="https://xtvback.github.io/Favoritos/ideias-soltas.html" target="_blank">
-        <div class="app-icon-img ic-purple">✨</div>
-        <span class="app-icon-label">Ideias Soltas</span>
+      <a class="repo-card" href="https://xtvback.github.io/Favoritos/ideias-soltas.html" target="_blank">
+        <div class="repo-icon-wrap ic-purple">✨</div>
+        <div class="repo-body">
+          <div class="repo-name">Ideias Soltas</div>
+          <div class="repo-desc">Captura rápida de ideias gerais e pensamentos soltos, com arquivo</div>
+        </div>
+        <span class="chevron">›</span>
       </a>
 
-      <a class="app-icon" href="https://xtvback.github.io/Favoritos/ideias-livros.html" target="_blank">
-        <div class="app-icon-img ic-orange">📖</div>
-        <span class="app-icon-label">Ideias Livros</span>
+      <a class="repo-card" href="https://xtvback.github.io/Favoritos/ideias-livros.html" target="_blank">
+        <div class="repo-icon-wrap ic-orange">📖</div>
+        <div class="repo-body">
+          <div class="repo-name">Ideias Livros</div>
+          <div class="repo-desc">Registo de ideias para livros: título, género literário e sinopse</div>
+        </div>
+        <span class="chevron">›</span>
       </a>
 
-      <a class="app-icon" href="https://xtvback.github.io/Favoritos/passwords.html" target="_blank">
-        <div class="app-icon-img ic-green">🔐</div>
-        <span class="app-icon-label">Passwords</span>
+      <a class="repo-card" href="https://xtvback.github.io/Favoritos/passwords.html" target="_blank">
+        <div class="repo-icon-wrap ic-green">🔐</div>
+        <div class="repo-body">
+          <div class="repo-name">Passwords</div>
+          <div class="repo-desc">Cofre de passwords protegido por PIN — serviço, utilizador, password e notas extra</div>
+        </div>
+        <span class="chevron">›</span>
       </a>
 
-      <a class="app-icon" href="https://xtvback.github.io/Favoritos/multi-ai-search.html" target="_blank">
-        <div class="app-icon-img ic-teal">🤖</div>
-        <span class="app-icon-label">Multi AI Search</span>
+      <a class="repo-card" href="https://xtvback.github.io/Favoritos/multi-ai-search.html" target="_blank">
+        <div class="repo-icon-wrap ic-teal">🤖</div>
+        <div class="repo-body">
+          <div class="repo-name">Multi AI Search</div>
+          <div class="repo-desc">Pesquisa simultânea em várias IAs — envia a mesma pergunta a múltiplos modelos de uma vez</div>
+        </div>
+        <span class="chevron">›</span>
       </a>
 
-      <a class="app-icon" href="https://xtvback.github.io/Favoritos/instagram-slides.html" target="_blank">
-        <div class="app-icon-img ic-pink">📸</div>
-        <span class="app-icon-label">Instagram Slides</span>
+      <a class="repo-card" href="https://xtvback.github.io/Favoritos/instagram-slides.html" target="_blank">
+        <div class="repo-icon-wrap ic-pink">📸</div>
+        <div class="repo-body">
+          <div class="repo-name">Instagram Slides</div>
+          <div class="repo-desc">Gerador de slides para carrosséis do Instagram com texto, estilos e hashtags</div>
+        </div>
+        <span class="chevron">›</span>
       </a>
 
-      <a class="app-icon" href="https://xtvback.github.io/Favoritos/frases.html" target="_blank">
-        <div class="app-icon-img ic-yellow">💬</div>
-        <span class="app-icon-label">Frases</span>
+      <a class="repo-card" href="https://xtvback.github.io/Favoritos/frases.html" target="_blank">
+        <div class="repo-icon-wrap ic-yellow">💬</div>
+        <div class="repo-body">
+          <div class="repo-name">Frases</div>
+          <div class="repo-desc">Gerador de slides com citações filosóficas e frases para partilhar nas redes sociais</div>
+        </div>
+        <span class="chevron">›</span>
       </a>
 
-      <a class="app-icon" href="https://xtvback.github.io/Favoritos/extras.html" target="_blank">
-        <div class="app-icon-img ic-red">⚡</div>
-        <span class="app-icon-label">Claude Extras</span>
+      <a class="repo-card" href="https://xtvback.github.io/Favoritos/extras.html" target="_blank">
+        <div class="repo-icon-wrap ic-red">⚡</div>
+        <div class="repo-body">
+          <div class="repo-name">Claude Extras</div>
+          <div class="repo-desc">Centro de descoberta de ferramentas, extras e funcionalidades do Claude</div>
+        </div>
+        <span class="chevron">›</span>
       </a>
 
-      <a class="app-icon" href="https://xtvback.github.io/Favoritos/links.html" target="_blank">
-        <div class="app-icon-img ic-gray">🔖</div>
-        <span class="app-icon-label">Links</span>
+      <a class="repo-card" href="https://xtvback.github.io/Favoritos/links.html" target="_blank">
+        <div class="repo-icon-wrap ic-gray">🔖</div>
+        <div class="repo-body">
+          <div class="repo-name">Links</div>
+          <div class="repo-desc">Esta página — todos os repositórios GitHub e páginas do Favoritos</div>
+        </div>
+        <span class="chevron">›</span>
       </a>
 
     </div>
