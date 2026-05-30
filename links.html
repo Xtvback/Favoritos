@@ -11,12 +11,11 @@
     :root {
       --bg: #f2f2f7;
       --card: #ffffff;
-      --card2: #f2f2f7;
       --primary: #007aff;
       --text: #1c1c1e;
       --text2: #6d6d72;
+      --text3: #aeaeb2;
       --sep: rgba(60,60,67,0.18);
-      --hdr: rgba(242,242,247,0.88);
       --safe-t: env(safe-area-inset-top, 0px);
       --safe-b: env(safe-area-inset-bottom, 0px);
       --safe-l: env(safe-area-inset-left, 0px);
@@ -24,13 +23,12 @@
     }
     @media (prefers-color-scheme: dark) {
       :root {
-        --bg: #000000;
+        --bg: #000;
         --card: #1c1c1e;
-        --card2: #2c2c2e;
-        --text: #ffffff;
+        --text: #fff;
         --text2: #8e8e93;
-        --sep: rgba(84,84,88,0.65);
-        --hdr: rgba(28,28,30,0.88);
+        --text3: #48484a;
+        --sep: rgba(84,84,88,0.6);
       }
     }
 
@@ -47,304 +45,365 @@
       -webkit-font-smoothing: antialiased;
     }
 
-    /* ── HEADER ── */
-    .hdr {
-      position: sticky;
-      top: 0;
-      z-index: 90;
-      backdrop-filter: blur(24px) saturate(180%);
-      -webkit-backdrop-filter: blur(24px) saturate(180%);
-      background: var(--hdr);
-      border-bottom: 0.5px solid var(--sep);
+    /* ── PAGE WRAPPER ── */
+    .page {
+      padding-top: var(--safe-t);
+      padding-bottom: calc(var(--safe-b) + 48px);
+      padding-left: var(--safe-l);
+      padding-right: var(--safe-r);
     }
-    .hdr-bar {
+
+    /* ── HERO ── */
+    .hero {
       display: flex;
+      flex-direction: column;
       align-items: center;
-      gap: 12px;
-      padding: calc(var(--safe-t) + 12px) calc(var(--safe-r) + 20px) 12px calc(var(--safe-l) + 20px);
+      padding: 40px 24px 32px;
+      gap: 0;
     }
-    .hdr-avatar {
-      width: 36px; height: 36px;
+    .hero-avatar {
+      width: 88px; height: 88px;
       border-radius: 50%;
-      background: linear-gradient(135deg, #007aff, #5856d6);
+      background: linear-gradient(145deg, #1a91ff, #5856d6);
       display: flex; align-items: center; justify-content: center;
-      font-size: 18px; flex-shrink: 0;
+      font-size: 42px;
+      box-shadow: 0 4px 20px rgba(0,122,255,0.3);
+      margin-bottom: 16px;
     }
-    .hdr-info { flex: 1; }
-    .hdr-name { font-size: 16px; font-weight: 700; letter-spacing: -0.3px; }
-    .hdr-sub  { font-size: 12px; color: var(--text2); margin-top: 1px; }
-
-    /* ── MAIN ── */
-    .main {
-      padding: 28px calc(var(--safe-r) + 16px) calc(var(--safe-b) + 40px) calc(var(--safe-l) + 16px);
-      max-width: 680px;
-      margin: 0 auto;
+    .hero-name {
+      font-size: 24px;
+      font-weight: 700;
+      letter-spacing: -0.5px;
+      text-align: center;
+    }
+    .hero-sub {
+      font-size: 14px;
+      color: var(--text2);
+      margin-top: 4px;
+      text-align: center;
     }
 
-    /* ── SECTION LABEL ── */
-    .section-label {
+    /* ── SECTION ── */
+    .section {
+      padding: 0 16px;
+      margin-bottom: 8px;
+    }
+    .section-header {
       font-size: 13px;
-      font-weight: 600;
+      font-weight: 400;
       color: var(--text2);
       text-transform: uppercase;
-      letter-spacing: 0.6px;
-      padding: 0 4px;
-      margin-bottom: 10px;
-      margin-top: 32px;
+      letter-spacing: 0.5px;
+      padding: 0 16px;
+      margin-bottom: 8px;
+      margin-top: 28px;
     }
-    .section-label:first-child { margin-top: 0; }
 
-    /* ── REPO CARDS ── */
-    .repo-list { display: flex; flex-direction: column; gap: 0; }
-    .repo-card {
+    /* ── LIST GROUP ── */
+    .list-group {
       background: var(--card);
+      border-radius: 16px;
+      overflow: hidden;
+    }
+
+    /* ── ROW ── */
+    .row {
       display: flex;
       align-items: center;
-      gap: 14px;
-      padding: 14px 16px;
+      gap: 0;
+      min-height: 60px;
+      padding: 10px 16px 10px 16px;
       text-decoration: none;
       color: inherit;
-      border-bottom: 0.5px solid var(--sep);
-      transition: background 0.12s;
+      position: relative;
+      transition: background 0.1s;
+      cursor: pointer;
     }
-    .repo-list .repo-card:first-child { border-radius: 14px 14px 0 0; }
-    .repo-list .repo-card:last-child  { border-radius: 0 0 14px 14px; border-bottom: none; }
-    .repo-list .repo-card:only-child  { border-radius: 14px; border-bottom: none; }
-    .repo-card:active { background: rgba(128,128,128,0.08); }
+    .row:active { background: rgba(128,128,128,0.1); }
 
-    .repo-icon-wrap {
-      width: 44px; height: 44px; flex-shrink: 0;
-      border-radius: 10px;
+    /* Inset separator: starts after icon (16px padding + 46px icon + 14px gap = 76px) */
+    .row:not(:last-child)::after {
+      content: '';
+      position: absolute;
+      bottom: 0;
+      left: 76px;
+      right: 0;
+      height: 0.5px;
+      background: var(--sep);
+    }
+
+    .row-icon {
+      width: 46px; height: 46px;
+      border-radius: 11px;
       display: flex; align-items: center; justify-content: center;
-      font-size: 22px;
+      font-size: 24px;
+      flex-shrink: 0;
+      margin-right: 14px;
     }
-    .repo-body { flex: 1; min-width: 0; }
-    .repo-name {
-      font-size: 15px; font-weight: 600;
+    .row-body {
+      flex: 1;
+      min-width: 0;
+      display: flex;
+      flex-direction: column;
+      gap: 2px;
+    }
+    .row-title {
+      font-size: 16px;
+      font-weight: 500;
       letter-spacing: -0.2px;
-      white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+      color: var(--text);
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
     }
-    .repo-desc { font-size: 12px; color: var(--text2); margin-top: 2px; line-height: 1.4; }
-    .repo-tags { display: flex; gap: 6px; margin-top: 7px; flex-wrap: wrap; }
+    .row-desc {
+      font-size: 13px;
+      color: var(--text2);
+      line-height: 1.4;
+    }
+    .row-chevron {
+      font-size: 18px;
+      color: var(--text3);
+      margin-left: 8px;
+      flex-shrink: 0;
+      font-weight: 300;
+    }
+
+    /* ── REPO TAGS ── */
+    .row-tags {
+      display: flex;
+      gap: 6px;
+      margin-top: 8px;
+      flex-wrap: wrap;
+    }
     .tag {
-      font-size: 11px; font-weight: 600;
-      padding: 4px 10px; border-radius: 20px;
+      font-size: 12px;
+      font-weight: 600;
+      padding: 5px 12px;
+      border-radius: 20px;
       text-decoration: none;
       transition: opacity 0.12s;
-      display: inline-flex; align-items: center; gap: 4px;
     }
-    .tag:active { opacity: 0.6; }
-    .tag-gh     { background: rgba(0,0,0,0.08); color: var(--text2); }
+    .tag:active { opacity: 0.55; }
+    .tag-gh {
+      background: rgba(0,0,0,0.07);
+      color: var(--text2);
+    }
     @media (prefers-color-scheme: dark) {
-      .tag-gh   { background: rgba(255,255,255,0.1); color: var(--text2); }
+      .tag-gh { background: rgba(255,255,255,0.1); }
     }
-    .tag-web    { background: rgba(0,122,255,0.12); color: var(--primary); }
-    .tag-vercel { background: rgba(0,0,0,0.08); color: var(--text2); }
+    .tag-web {
+      background: rgba(0,122,255,0.12);
+      color: var(--primary);
+    }
+    .tag-vercel {
+      background: rgba(0,0,0,0.07);
+      color: var(--text2);
+    }
     @media (prefers-color-scheme: dark) {
       .tag-vercel { background: rgba(255,255,255,0.1); }
     }
-    .chevron {
-      color: var(--text2);
-      font-size: 13px;
-      opacity: 0.4;
-      flex-shrink: 0;
-    }
 
-    /* App icon background colours */
-    .ic-blue   { background: linear-gradient(145deg, #1a91ff, #0062d4); }
-    .ic-purple { background: linear-gradient(145deg, #bf5af2, #9b40d1); }
-    .ic-green  { background: linear-gradient(145deg, #30d158, #25a244); }
-    .ic-orange { background: linear-gradient(145deg, #ff9f0a, #e07a00); }
-    .ic-red    { background: linear-gradient(145deg, #ff453a, #d93025); }
-    .ic-teal   { background: linear-gradient(145deg, #5ac8fa, #3ba0d1); }
-    .ic-indigo { background: linear-gradient(145deg, #5e5ce6, #4240c4); }
-    .ic-pink   { background: linear-gradient(145deg, #ff375f, #d4234a); }
-    .ic-gray   { background: linear-gradient(145deg, #8e8e93, #636366); }
-    .ic-yellow { background: linear-gradient(145deg, #ffd60a, #d4ac00); }
+    /* The repo rows are taller so no separator overlap */
+    .row.repo-row {
+      align-items: flex-start;
+      padding-top: 14px;
+      padding-bottom: 14px;
+    }
+    .row.repo-row .row-icon { margin-top: 2px; }
+
+    /* ── GRADIENT COLOURS ── */
+    .ic-blue   { background: linear-gradient(145deg,#1a91ff,#0062d4); }
+    .ic-purple { background: linear-gradient(145deg,#bf5af2,#9b40d1); }
+    .ic-green  { background: linear-gradient(145deg,#30d158,#25a244); }
+    .ic-orange { background: linear-gradient(145deg,#ff9f0a,#e07a00); }
+    .ic-red    { background: linear-gradient(145deg,#ff453a,#d93025); }
+    .ic-teal   { background: linear-gradient(145deg,#5ac8fa,#3ba0d1); }
+    .ic-indigo { background: linear-gradient(145deg,#5e5ce6,#4240c4); }
+    .ic-pink   { background: linear-gradient(145deg,#ff375f,#d4234a); }
+    .ic-gray   { background: linear-gradient(145deg,#8e8e93,#636366); }
+    .ic-yellow { background: linear-gradient(145deg,#ffd60a,#c49b00); }
   </style>
 </head>
 <body>
+<div class="page">
 
-  <!-- HEADER -->
-  <header class="hdr">
-    <div class="hdr-bar">
-      <div class="hdr-avatar">🔖</div>
-      <div class="hdr-info">
-        <div class="hdr-name">André M. Fernandes</div>
-        <div class="hdr-sub">Repositórios e páginas pessoais</div>
-      </div>
-    </div>
-  </header>
+  <!-- HERO -->
+  <div class="hero">
+    <div class="hero-avatar">🔖</div>
+    <div class="hero-name">André M. Fernandes</div>
+    <div class="hero-sub">Repositórios e páginas pessoais</div>
+  </div>
 
-  <!-- MAIN -->
-  <main class="main">
+  <!-- PÁGINAS -->
+  <div class="section-header">Páginas do Favoritos</div>
+  <div class="section">
+    <div class="list-group">
 
-    <!-- PÁGINAS DO FAVORITOS -->
-    <div class="section-label">Páginas do Favoritos</div>
-    <div class="repo-list">
-
-      <a class="repo-card" href="https://xtvback.github.io/Favoritos/" target="_blank">
-        <div class="repo-icon-wrap ic-indigo">🖥️</div>
-        <div class="repo-body">
-          <div class="repo-name">DesktopWeb</div>
-          <div class="repo-desc">Ambiente de trabalho virtual com atalhos para as ferramentas e apps web</div>
+      <a class="row" href="https://xtvback.github.io/Favoritos/" target="_blank">
+        <div class="row-icon ic-indigo">🖥️</div>
+        <div class="row-body">
+          <div class="row-title">DesktopWeb</div>
+          <div class="row-desc">Ambiente de trabalho virtual com atalhos para as ferramentas e apps web</div>
         </div>
-        <span class="chevron">›</span>
+        <span class="row-chevron">›</span>
       </a>
 
-      <a class="repo-card" href="https://xtvback.github.io/Favoritos/app-ideas.html" target="_blank">
-        <div class="repo-icon-wrap ic-blue">💡</div>
-        <div class="repo-body">
-          <div class="repo-name">App Ideas</div>
-          <div class="repo-desc">Gestor de ideias para criação de apps, com histórico e arquivo por data</div>
+      <a class="row" href="https://xtvback.github.io/Favoritos/app-ideas.html" target="_blank">
+        <div class="row-icon ic-blue">💡</div>
+        <div class="row-body">
+          <div class="row-title">App Ideas</div>
+          <div class="row-desc">Gestor de ideias para criação de apps, com histórico e arquivo por data</div>
         </div>
-        <span class="chevron">›</span>
+        <span class="row-chevron">›</span>
       </a>
 
-      <a class="repo-card" href="https://xtvback.github.io/Favoritos/ideias-soltas.html" target="_blank">
-        <div class="repo-icon-wrap ic-purple">✨</div>
-        <div class="repo-body">
-          <div class="repo-name">Ideias Soltas</div>
-          <div class="repo-desc">Captura rápida de ideias gerais e pensamentos soltos, com arquivo</div>
+      <a class="row" href="https://xtvback.github.io/Favoritos/ideias-soltas.html" target="_blank">
+        <div class="row-icon ic-purple">✨</div>
+        <div class="row-body">
+          <div class="row-title">Ideias Soltas</div>
+          <div class="row-desc">Captura rápida de ideias gerais e pensamentos soltos, com arquivo</div>
         </div>
-        <span class="chevron">›</span>
+        <span class="row-chevron">›</span>
       </a>
 
-      <a class="repo-card" href="https://xtvback.github.io/Favoritos/ideias-livros.html" target="_blank">
-        <div class="repo-icon-wrap ic-orange">📖</div>
-        <div class="repo-body">
-          <div class="repo-name">Ideias Livros</div>
-          <div class="repo-desc">Registo de ideias para livros: título, género literário e sinopse</div>
+      <a class="row" href="https://xtvback.github.io/Favoritos/ideias-livros.html" target="_blank">
+        <div class="row-icon ic-orange">📖</div>
+        <div class="row-body">
+          <div class="row-title">Ideias Livros</div>
+          <div class="row-desc">Registo de ideias para livros: título, género literário e sinopse</div>
         </div>
-        <span class="chevron">›</span>
+        <span class="row-chevron">›</span>
       </a>
 
-      <a class="repo-card" href="https://xtvback.github.io/Favoritos/passwords.html" target="_blank">
-        <div class="repo-icon-wrap ic-green">🔐</div>
-        <div class="repo-body">
-          <div class="repo-name">Passwords</div>
-          <div class="repo-desc">Cofre de passwords protegido por PIN — serviço, utilizador, password e notas extra</div>
+      <a class="row" href="https://xtvback.github.io/Favoritos/passwords.html" target="_blank">
+        <div class="row-icon ic-green">🔐</div>
+        <div class="row-body">
+          <div class="row-title">Passwords</div>
+          <div class="row-desc">Cofre de passwords protegido por PIN com campo extra para notas</div>
         </div>
-        <span class="chevron">›</span>
+        <span class="row-chevron">›</span>
       </a>
 
-      <a class="repo-card" href="https://xtvback.github.io/Favoritos/multi-ai-search.html" target="_blank">
-        <div class="repo-icon-wrap ic-teal">🤖</div>
-        <div class="repo-body">
-          <div class="repo-name">Multi AI Search</div>
-          <div class="repo-desc">Pesquisa simultânea em várias IAs — envia a mesma pergunta a múltiplos modelos de uma vez</div>
+      <a class="row" href="https://xtvback.github.io/Favoritos/multi-ai-search.html" target="_blank">
+        <div class="row-icon ic-teal">🤖</div>
+        <div class="row-body">
+          <div class="row-title">Multi AI Search</div>
+          <div class="row-desc">Pesquisa simultânea em várias IAs com a mesma pergunta</div>
         </div>
-        <span class="chevron">›</span>
+        <span class="row-chevron">›</span>
       </a>
 
-      <a class="repo-card" href="https://xtvback.github.io/Favoritos/instagram-slides.html" target="_blank">
-        <div class="repo-icon-wrap ic-pink">📸</div>
-        <div class="repo-body">
-          <div class="repo-name">Instagram Slides</div>
-          <div class="repo-desc">Gerador de slides para carrosséis do Instagram com texto, estilos e hashtags</div>
+      <a class="row" href="https://xtvback.github.io/Favoritos/instagram-slides.html" target="_blank">
+        <div class="row-icon ic-pink">📸</div>
+        <div class="row-body">
+          <div class="row-title">Instagram Slides</div>
+          <div class="row-desc">Gerador de carrosséis para o Instagram com texto, estilos e hashtags</div>
         </div>
-        <span class="chevron">›</span>
+        <span class="row-chevron">›</span>
       </a>
 
-      <a class="repo-card" href="https://xtvback.github.io/Favoritos/frases.html" target="_blank">
-        <div class="repo-icon-wrap ic-yellow">💬</div>
-        <div class="repo-body">
-          <div class="repo-name">Frases</div>
-          <div class="repo-desc">Gerador de slides com citações filosóficas e frases para partilhar nas redes sociais</div>
+      <a class="row" href="https://xtvback.github.io/Favoritos/frases.html" target="_blank">
+        <div class="row-icon ic-yellow">💬</div>
+        <div class="row-body">
+          <div class="row-title">Frases</div>
+          <div class="row-desc">Gerador de slides com citações filosóficas para partilhar nas redes</div>
         </div>
-        <span class="chevron">›</span>
+        <span class="row-chevron">›</span>
       </a>
 
-      <a class="repo-card" href="https://xtvback.github.io/Favoritos/extras.html" target="_blank">
-        <div class="repo-icon-wrap ic-red">⚡</div>
-        <div class="repo-body">
-          <div class="repo-name">Claude Extras</div>
-          <div class="repo-desc">Centro de descoberta de ferramentas, extras e funcionalidades do Claude</div>
+      <a class="row" href="https://xtvback.github.io/Favoritos/extras.html" target="_blank">
+        <div class="row-icon ic-red">⚡</div>
+        <div class="row-body">
+          <div class="row-title">Claude Extras</div>
+          <div class="row-desc">Centro de descoberta de ferramentas e funcionalidades do Claude</div>
         </div>
-        <span class="chevron">›</span>
+        <span class="row-chevron">›</span>
       </a>
 
-      <a class="repo-card" href="https://xtvback.github.io/Favoritos/links.html" target="_blank">
-        <div class="repo-icon-wrap ic-gray">🔖</div>
-        <div class="repo-body">
-          <div class="repo-name">Links</div>
-          <div class="repo-desc">Esta página — todos os repositórios GitHub e páginas do Favoritos</div>
+      <a class="row" href="https://xtvback.github.io/Favoritos/links.html" target="_blank">
+        <div class="row-icon ic-gray">🔖</div>
+        <div class="row-body">
+          <div class="row-title">Links</div>
+          <div class="row-desc">Esta página — todos os repositórios GitHub e páginas do Favoritos</div>
         </div>
-        <span class="chevron">›</span>
+        <span class="row-chevron">›</span>
       </a>
 
     </div>
+  </div>
 
-    <!-- REPOSITÓRIOS GITHUB -->
-    <div class="section-label">Repositórios GitHub</div>
-    <div class="repo-list">
+  <!-- REPOSITÓRIOS -->
+  <div class="section-header">Repositórios GitHub</div>
+  <div class="section">
+    <div class="list-group">
 
-      <div class="repo-card">
-        <div class="repo-icon-wrap ic-indigo">🌐</div>
-        <div class="repo-body">
-          <div class="repo-name">minha-primeira-app</div>
-          <div class="repo-desc">Site do Autor André Fernandes</div>
-          <div class="repo-tags">
+      <div class="row repo-row">
+        <div class="row-icon ic-indigo">🌐</div>
+        <div class="row-body">
+          <div class="row-title">minha-primeira-app</div>
+          <div class="row-desc">Site do Autor André Fernandes</div>
+          <div class="row-tags">
             <a class="tag tag-gh" href="https://github.com/Xtvback/minha-primeira-app" target="_blank">GitHub</a>
             <a class="tag tag-vercel" href="https://andremfernandes.vercel.app" target="_blank">Vercel ↗</a>
           </div>
         </div>
       </div>
 
-      <div class="repo-card">
-        <div class="repo-icon-wrap ic-blue">📋</div>
-        <div class="repo-body">
-          <div class="repo-name">mural-textos</div>
-          <div class="repo-desc">Mural de textos</div>
-          <div class="repo-tags">
+      <div class="row repo-row">
+        <div class="row-icon ic-blue">📋</div>
+        <div class="row-body">
+          <div class="row-title">mural-textos</div>
+          <div class="row-desc">Mural de textos</div>
+          <div class="row-tags">
             <a class="tag tag-gh"  href="https://github.com/Xtvback/mural-textos" target="_blank">GitHub</a>
             <a class="tag tag-web" href="https://xtvback.github.io/mural-textos" target="_blank">Página ↗</a>
           </div>
         </div>
       </div>
 
-      <div class="repo-card">
-        <div class="repo-icon-wrap ic-pink">📸</div>
-        <div class="repo-body">
-          <div class="repo-name">insta-tool-web</div>
-          <div class="repo-desc">Ferramentas Instagram acessíveis via browser</div>
-          <div class="repo-tags">
+      <div class="row repo-row">
+        <div class="row-icon ic-pink">📸</div>
+        <div class="row-body">
+          <div class="row-title">insta-tool-web</div>
+          <div class="row-desc">Ferramentas Instagram acessíveis via browser</div>
+          <div class="row-tags">
             <a class="tag tag-gh"  href="https://github.com/Xtvback/insta-tool-web" target="_blank">GitHub</a>
             <a class="tag tag-web" href="https://xtvback.github.io/insta-tool-web" target="_blank">Página ↗</a>
           </div>
         </div>
       </div>
 
-      <div class="repo-card">
-        <div class="repo-icon-wrap ic-orange">🗂️</div>
-        <div class="repo-body">
-          <div class="repo-name">Favoritos</div>
-          <div class="repo-desc">Este repositório — ferramentas e páginas pessoais</div>
-          <div class="repo-tags">
+      <div class="row repo-row">
+        <div class="row-icon ic-orange">🗂️</div>
+        <div class="row-body">
+          <div class="row-title">Favoritos</div>
+          <div class="row-desc">Este repositório — ferramentas e páginas pessoais</div>
+          <div class="row-tags">
             <a class="tag tag-gh"  href="https://github.com/Xtvback/Favoritos" target="_blank">GitHub</a>
             <a class="tag tag-web" href="https://xtvback.github.io/Favoritos" target="_blank">Página ↗</a>
           </div>
         </div>
       </div>
 
-      <div class="repo-card">
-        <div class="repo-icon-wrap ic-purple">🧩</div>
-        <div class="repo-body">
-          <div class="repo-name">solvero</div>
-          <div class="repo-desc"></div>
-          <div class="repo-tags">
+      <div class="row repo-row">
+        <div class="row-icon ic-purple">🧩</div>
+        <div class="row-body">
+          <div class="row-title">solvero</div>
+          <div class="row-desc">Projeto em desenvolvimento</div>
+          <div class="row-tags">
             <a class="tag tag-gh"  href="https://github.com/Xtvback/solvero" target="_blank">GitHub</a>
             <a class="tag tag-web" href="https://xtvback.github.io/solvero" target="_blank">Página ↗</a>
           </div>
         </div>
       </div>
 
-      <div class="repo-card">
-        <div class="repo-icon-wrap ic-gray">📁</div>
-        <div class="repo-body">
-          <div class="repo-name">mark2016</div>
-          <div class="repo-desc">Site (2016)</div>
-          <div class="repo-tags">
+      <div class="row repo-row">
+        <div class="row-icon ic-gray">📁</div>
+        <div class="row-body">
+          <div class="row-title">mark2016</div>
+          <div class="row-desc">Site pessoal de 2016</div>
+          <div class="row-tags">
             <a class="tag tag-gh"  href="https://github.com/Xtvback/mark2016" target="_blank">GitHub</a>
             <a class="tag tag-web" href="https://xtvback.github.io/mark2016" target="_blank">Página ↗</a>
           </div>
@@ -352,7 +411,8 @@
       </div>
 
     </div>
+  </div>
 
-  </main>
+</div>
 </body>
 </html>
