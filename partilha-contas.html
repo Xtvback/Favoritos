@@ -1,0 +1,1008 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="default">
+  <meta name="apple-mobile-web-app-title" content="Partilha de Contas">
+  <title>Partilha de Contas</title>
+  <style>
+    :root {
+      --bg: #f2f2f7;
+      --card: #ffffff;
+      --card2: #f2f2f7;
+      --primary: #007aff;
+      --primary-bg: rgba(0,122,255,0.1);
+      --green: #34c759;
+      --green-bg: rgba(52,199,89,0.12);
+      --orange: #ff9500;
+      --red: #ff3b30;
+      --red-bg: rgba(255,59,48,0.12);
+      --yellow: #ffcc00;
+      --yellow-bg: rgba(255,204,0,0.12);
+      --purple: #af52de;
+      --teal: #5ac8fa;
+      --text: #1c1c1e;
+      --text2: #6d6d72;
+      --text3: #aeaeb2;
+      --sep: rgba(60,60,67,0.18);
+      --safe-t: env(safe-area-inset-top, 0px);
+      --safe-b: env(safe-area-inset-bottom, 0px);
+      --safe-l: env(safe-area-inset-left, 0px);
+      --safe-r: env(safe-area-inset-right, 0px);
+    }
+    @media (prefers-color-scheme: dark) {
+      :root {
+        --bg: #000;
+        --card: #1c1c1e;
+        --card2: #2c2c2e;
+        --primary-bg: rgba(0,122,255,0.18);
+        --green-bg: rgba(52,199,89,0.18);
+        --red-bg: rgba(255,59,48,0.18);
+        --yellow-bg: rgba(255,204,0,0.18);
+        --text: #fff;
+        --text2: #8e8e93;
+        --text3: #48484a;
+        --sep: rgba(84,84,88,0.6);
+      }
+    }
+    *, *::before, *::after {
+      box-sizing: border-box; margin: 0; padding: 0;
+      -webkit-tap-highlight-color: transparent;
+    }
+    html { height: 100%; }
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "SF Pro Text", system-ui, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      min-height: 100dvh;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    /* ── LAYOUT ── */
+    .page {
+      padding-top: calc(var(--safe-t) + 56px);
+      padding-bottom: calc(var(--safe-b) + 32px);
+      padding-left: max(16px, var(--safe-l));
+      padding-right: max(16px, var(--safe-r));
+      max-width: 540px;
+      margin: 0 auto;
+    }
+
+    /* ── HEADER ── */
+    .header {
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      z-index: 100;
+      background: rgba(242,242,247,0.85);
+      backdrop-filter: saturate(180%) blur(20px);
+      -webkit-backdrop-filter: saturate(180%) blur(20px);
+      border-bottom: 1px solid var(--sep);
+      padding-top: var(--safe-t);
+    }
+    @media (prefers-color-scheme: dark) {
+      .header { background: rgba(0,0,0,0.85); }
+    }
+    .header-inner {
+      max-width: 540px;
+      margin: 0 auto;
+      padding: 12px max(16px, var(--safe-l)) 10px;
+    }
+    .header-top {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 10px;
+    }
+    .header-title {
+      font-size: 1.05rem;
+      font-weight: 600;
+      flex: 1;
+    }
+    .header-subtitle {
+      font-size: .75rem;
+      color: var(--text2);
+      margin-top: 1px;
+    }
+
+    /* ── SEARCH BAR ── */
+    .search-wrap {
+      display: flex;
+      gap: 8px;
+      align-items: center;
+    }
+    .search-box {
+      flex: 1;
+      display: flex;
+      align-items: center;
+      background: var(--card2);
+      border-radius: 10px;
+      padding: 0 10px;
+      gap: 6px;
+      height: 36px;
+      transition: background .15s;
+    }
+    .search-icon { color: var(--text3); flex-shrink: 0; }
+    .search-input {
+      flex: 1;
+      border: none;
+      background: none;
+      font-size: .9rem;
+      color: var(--text);
+      outline: none;
+      font-family: inherit;
+      min-width: 0;
+    }
+    .search-input::placeholder { color: var(--text3); }
+    .clear-btn {
+      background: none;
+      border: none;
+      color: var(--text3);
+      cursor: pointer;
+      padding: 2px;
+      line-height: 1;
+      display: none;
+    }
+    .search-input:not(:placeholder-shown) ~ .clear-btn { display: block; }
+    .filter-btn {
+      height: 36px;
+      padding: 0 12px;
+      background: var(--card2);
+      border: none;
+      border-radius: 10px;
+      font-size: .8rem;
+      font-weight: 500;
+      color: var(--text2);
+      cursor: pointer;
+      white-space: nowrap;
+      display: flex;
+      align-items: center;
+      gap: 4px;
+      transition: background .15s, color .15s;
+    }
+    .filter-btn.active {
+      background: var(--primary-bg);
+      color: var(--primary);
+    }
+
+    /* ── SECTION HEADER ── */
+    .section-title {
+      font-size: .78rem;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: .04em;
+      color: var(--text2);
+      margin: 24px 0 8px 4px;
+    }
+
+    /* ── CARD LIST ── */
+    .card-list {
+      background: var(--card);
+      border-radius: 12px;
+      overflow: hidden;
+    }
+    .service-item {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 12px 14px;
+      border-bottom: 1px solid var(--sep);
+      text-decoration: none;
+      color: inherit;
+      position: relative;
+      transition: background .1s;
+    }
+    .service-item:last-child { border-bottom: none; }
+    .service-item:active { background: rgba(0,0,0,.04); }
+    @media (prefers-color-scheme: dark) {
+      .service-item:active { background: rgba(255,255,255,.05); }
+    }
+
+    /* ── ICON ── */
+    .svc-icon {
+      width: 44px;
+      height: 44px;
+      border-radius: 10px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.4rem;
+      flex-shrink: 0;
+      position: relative;
+      overflow: hidden;
+    }
+    .svc-icon img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      border-radius: 10px;
+    }
+    .svc-icon .fallback {
+      width: 100%;
+      height: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.3rem;
+      border-radius: 10px;
+    }
+
+    /* ── TEXT ── */
+    .svc-body { flex: 1; min-width: 0; }
+    .svc-name {
+      font-size: .95rem;
+      font-weight: 600;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+    .svc-desc {
+      font-size: .78rem;
+      color: var(--text2);
+      margin-top: 2px;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+    .svc-badge {
+      font-size: .65rem;
+      font-weight: 600;
+      padding: 2px 6px;
+      border-radius: 20px;
+      margin-left: 6px;
+      vertical-align: middle;
+      text-transform: uppercase;
+      letter-spacing: .02em;
+    }
+    .badge-pt { background: var(--green-bg); color: var(--green); }
+    .badge-fr { background: var(--primary-bg); color: var(--primary); }
+    .badge-it { background: var(--yellow-bg); color: #b08800; }
+    @media (prefers-color-scheme: dark) {
+      .badge-it { color: var(--yellow); }
+    }
+    .badge-global { background: var(--card2); color: var(--text2); }
+
+    /* ── ACTIONS ── */
+    .svc-actions {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      flex-shrink: 0;
+    }
+    .fav-btn {
+      background: none;
+      border: none;
+      cursor: pointer;
+      padding: 6px;
+      border-radius: 50%;
+      transition: transform .15s;
+      line-height: 1;
+      color: var(--text3);
+    }
+    .fav-btn.active { color: var(--yellow); }
+    .fav-btn:active { transform: scale(.85); }
+    .open-btn {
+      color: var(--primary);
+      font-size: .78rem;
+      font-weight: 500;
+      padding: 5px 8px;
+      border-radius: 7px;
+      background: var(--primary-bg);
+      border: none;
+      cursor: pointer;
+      text-decoration: none;
+      white-space: nowrap;
+    }
+
+    /* ── CHIPS (categories) ── */
+    .chips-wrap {
+      display: flex;
+      gap: 7px;
+      overflow-x: auto;
+      padding-bottom: 2px;
+      scrollbar-width: none;
+      margin-top: 8px;
+    }
+    .chips-wrap::-webkit-scrollbar { display: none; }
+    .chip {
+      height: 28px;
+      padding: 0 12px;
+      border-radius: 14px;
+      background: var(--card);
+      border: none;
+      font-size: .78rem;
+      font-weight: 500;
+      color: var(--text2);
+      cursor: pointer;
+      white-space: nowrap;
+      transition: background .15s, color .15s;
+      flex-shrink: 0;
+    }
+    .chip.active {
+      background: var(--primary);
+      color: #fff;
+    }
+
+    /* ── EMPTY ── */
+    .empty {
+      text-align: center;
+      padding: 40px 0;
+      color: var(--text2);
+      font-size: .9rem;
+    }
+    .empty-icon { font-size: 2.5rem; margin-bottom: 8px; }
+
+    /* ── DISCOVER ENGINES ── */
+    .engine-list {
+      background: var(--card);
+      border-radius: 12px;
+      overflow: hidden;
+    }
+    .engine-item {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 12px 14px;
+      border-bottom: 1px solid var(--sep);
+      text-decoration: none;
+      color: var(--primary);
+      transition: background .1s;
+    }
+    .engine-item:last-child { border-bottom: none; }
+    .engine-item:active { background: rgba(0,0,0,.04); }
+    @media (prefers-color-scheme: dark) {
+      .engine-item:active { background: rgba(255,255,255,.05); }
+    }
+    .engine-icon {
+      width: 36px;
+      height: 36px;
+      border-radius: 8px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.1rem;
+      flex-shrink: 0;
+    }
+    .engine-label { font-size: .88rem; font-weight: 500; flex: 1; }
+    .engine-arrow { color: var(--text3); font-size: .8rem; }
+
+    /* ── ADD CUSTOM ── */
+    .add-card {
+      background: var(--card);
+      border-radius: 12px;
+      padding: 16px 14px;
+    }
+    .add-row {
+      display: flex;
+      gap: 8px;
+      margin-bottom: 8px;
+    }
+    .add-input {
+      flex: 1;
+      height: 36px;
+      border-radius: 9px;
+      border: 1px solid var(--sep);
+      background: var(--bg);
+      color: var(--text);
+      font-size: .88rem;
+      padding: 0 10px;
+      font-family: inherit;
+      outline: none;
+      transition: border-color .15s;
+    }
+    .add-input:focus { border-color: var(--primary); }
+    .add-input::placeholder { color: var(--text3); }
+    .add-submit {
+      height: 36px;
+      padding: 0 14px;
+      background: var(--primary);
+      color: #fff;
+      border: none;
+      border-radius: 9px;
+      font-size: .88rem;
+      font-weight: 600;
+      cursor: pointer;
+      font-family: inherit;
+      transition: opacity .15s;
+    }
+    .add-submit:active { opacity: .75; }
+    .add-hint {
+      font-size: .73rem;
+      color: var(--text3);
+    }
+
+    /* ── TOAST ── */
+    .toast {
+      position: fixed;
+      bottom: calc(var(--safe-b) + 24px);
+      left: 50%;
+      transform: translateX(-50%) translateY(16px);
+      background: rgba(50,50,50,.94);
+      color: #fff;
+      font-size: .83rem;
+      font-weight: 500;
+      padding: 9px 18px;
+      border-radius: 20px;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity .2s, transform .2s;
+      white-space: nowrap;
+      z-index: 200;
+    }
+    .toast.show {
+      opacity: 1;
+      transform: translateX(-50%) translateY(0);
+    }
+
+    /* ── COUNT BADGE ── */
+    .count-badge {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-width: 18px;
+      height: 18px;
+      padding: 0 5px;
+      border-radius: 9px;
+      background: var(--primary);
+      color: #fff;
+      font-size: .65rem;
+      font-weight: 700;
+      margin-left: 5px;
+      vertical-align: middle;
+    }
+  </style>
+</head>
+<body>
+
+<div class="header">
+  <div class="header-inner">
+    <div class="header-top">
+      <div>
+        <div class="header-title">Partilha de Contas 🔗</div>
+        <div class="header-subtitle">Serviços de partilha de subscrições</div>
+      </div>
+    </div>
+    <div class="search-wrap">
+      <div class="search-box">
+        <svg class="search-icon" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round">
+          <circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/>
+        </svg>
+        <input class="search-input" id="searchInput" type="search" placeholder="Pesquisar serviços…" autocomplete="off" autocorrect="off" spellcheck="false">
+        <button class="clear-btn" id="clearBtn" onclick="clearSearch()">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor">
+            <circle cx="12" cy="12" r="10"/><path fill="#fff" d="M15.5 8.5 8.5 15.5M8.5 8.5l7 7" stroke="#fff" stroke-width="2" stroke-linecap="round"/>
+          </svg>
+        </button>
+      </div>
+      <button class="filter-btn" id="favFilterBtn" onclick="toggleFavFilter()">
+        ★ <span id="favFilterLabel">Fav.</span>
+      </button>
+    </div>
+    <div class="chips-wrap" id="chipsWrap"></div>
+  </div>
+</div>
+
+<div class="page" id="page">
+
+  <!-- FAVORITES -->
+  <div id="favSection">
+    <div class="section-title">⭐ Favoritos <span class="count-badge" id="favCount" style="display:none"></span></div>
+    <div class="card-list" id="favList"></div>
+    <div class="empty" id="favEmpty" style="display:none">
+      <div class="empty-icon">☆</div>
+      <div>Sem favoritos ainda</div>
+    </div>
+  </div>
+
+  <!-- ALL SERVICES -->
+  <div id="allSection">
+    <div class="section-title" id="allTitle">Todos os serviços</div>
+    <div class="card-list" id="allList"></div>
+    <div class="empty" id="allEmpty" style="display:none">
+      <div class="empty-icon">🔍</div>
+      <div>Nenhum resultado para "<span id="emptyQuery"></span>"</div>
+    </div>
+  </div>
+
+  <!-- ADICIONAR PERSONALIZADO -->
+  <div class="section-title">Adicionar serviço</div>
+  <div class="add-card">
+    <div class="add-row">
+      <input class="add-input" id="addName" placeholder="Nome" maxlength="40">
+      <input class="add-input" id="addUrl" placeholder="URL (ex: sharesub.com)" maxlength="200" style="flex:2">
+    </div>
+    <div class="add-row">
+      <input class="add-input" id="addDesc" placeholder="Descrição (opcional)" maxlength="80" style="flex:1">
+      <button class="add-submit" onclick="addCustom()">Adicionar</button>
+    </div>
+    <div class="add-hint">O serviço será adicionado à lista e marcado como favorito automaticamente.</div>
+  </div>
+
+  <!-- DESCOBRIR MAIS -->
+  <div class="section-title">Descobrir mais serviços</div>
+  <div class="engine-list">
+    <a class="engine-item" href="https://www.google.com/search?q=partilha+de+subscri%C3%A7%C3%B5es+servi%C3%A7os+2024" target="_blank" rel="noopener">
+      <div class="engine-icon" style="background:#e8f0fe">🔵</div>
+      <span class="engine-label">Google — partilha de subscrições</span>
+      <span class="engine-arrow">›</span>
+    </a>
+    <a class="engine-item" href="https://duckduckgo.com/?q=subscription+sharing+services+site" target="_blank" rel="noopener">
+      <div class="engine-icon" style="background:#fff3e0">🦆</div>
+      <span class="engine-label">DuckDuckGo — subscription sharing</span>
+      <span class="engine-arrow">›</span>
+    </a>
+    <a class="engine-item" href="https://www.reddit.com/search/?q=subscription+sharing+service" target="_blank" rel="noopener">
+      <div class="engine-icon" style="background:#fce4ec">🤖</div>
+      <span class="engine-label">Reddit — subscription sharing</span>
+      <span class="engine-arrow">›</span>
+    </a>
+    <a class="engine-item" href="https://www.producthunt.com/search?q=subscription+sharing" target="_blank" rel="noopener">
+      <div class="engine-icon" style="background:#fff8e1">🐱</div>
+      <span class="engine-label">Product Hunt — subscription sharing</span>
+      <span class="engine-arrow">›</span>
+    </a>
+    <a class="engine-item" href="https://alternativeto.net/software/togetherprice/" target="_blank" rel="noopener">
+      <div class="engine-icon" style="background:#e8f5e9">🔄</div>
+      <span class="engine-label">AlternativeTo — alternativas a Together Price</span>
+      <span class="engine-arrow">›</span>
+    </a>
+    <a class="engine-item" href="https://www.trustpilot.com/search?query=subscription+sharing" target="_blank" rel="noopener">
+      <div class="engine-icon" style="background:#e3f2fd">⭐</div>
+      <span class="engine-label">Trustpilot — avaliações de serviços</span>
+      <span class="engine-arrow">›</span>
+    </a>
+  </div>
+
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script>
+const SERVICES = [
+  {
+    id: 'sharesub',
+    name: 'ShareSub',
+    desc: 'Partilha de subscrições de streaming e software',
+    url: 'https://www.sharesub.com',
+    emoji: '🎬',
+    color: '#1a1a2e',
+    accent: '#e94560',
+    cat: 'streaming',
+    badge: 'pt',
+    badgeLabel: 'PT/FR'
+  },
+  {
+    id: 'spliiit',
+    name: 'Spliiit',
+    desc: 'Divide o custo de qualquer subscrição com outros',
+    url: 'https://www.spliiit.com',
+    emoji: '✂️',
+    color: '#6c63ff',
+    accent: '#ffffff',
+    cat: 'streaming',
+    badge: 'fr',
+    badgeLabel: 'FR'
+  },
+  {
+    id: 'togetherprice',
+    name: 'Together Price',
+    desc: 'Partilha de planos premium em grupo — Netflix, Spotify e mais',
+    url: 'https://www.togetherprice.com',
+    emoji: '👥',
+    color: '#0052d4',
+    accent: '#ffffff',
+    cat: 'streaming',
+    badge: 'it',
+    badgeLabel: 'IT'
+  },
+  {
+    id: 'kolet',
+    name: 'Kolet',
+    desc: 'Aplicação para partilhar subscrições digitais facilmente',
+    url: 'https://kolet.app',
+    emoji: '💳',
+    color: '#11998e',
+    accent: '#ffffff',
+    cat: 'apps',
+    badge: 'global',
+    badgeLabel: 'Global'
+  },
+  {
+    id: 'subscribie',
+    name: 'Subscribie',
+    desc: 'Plataforma para gerir e partilhar subscrições em grupo',
+    url: 'https://subscribie.co.uk',
+    emoji: '📦',
+    color: '#f7971e',
+    accent: '#ffffff',
+    cat: 'apps',
+    badge: 'global',
+    badgeLabel: 'Global'
+  },
+  {
+    id: 'familyplan',
+    name: 'Family Plan',
+    desc: 'Encontra companheiros para partilhar planos familiares',
+    url: 'https://familyplan.app',
+    emoji: '🏠',
+    color: '#ee0979',
+    accent: '#ffffff',
+    cat: 'streaming',
+    badge: 'global',
+    badgeLabel: 'Global'
+  },
+  {
+    id: 'cosub',
+    name: 'CoSub',
+    desc: 'Partilha de subscrições entre amigos com pagamentos integrados',
+    url: 'https://cosub.io',
+    emoji: '🤝',
+    color: '#4776e6',
+    accent: '#ffffff',
+    cat: 'apps',
+    badge: 'global',
+    badgeLabel: 'Global'
+  },
+  {
+    id: 'sharewith',
+    name: 'ShareWith',
+    desc: 'Liga pessoas para partilharem contas de serviços digitais',
+    url: 'https://www.sharewith.me',
+    emoji: '🔗',
+    color: '#43cea2',
+    accent: '#ffffff',
+    cat: 'apps',
+    badge: 'global',
+    badgeLabel: 'Global'
+  },
+  {
+    id: 'planly',
+    name: 'Planly',
+    desc: 'Gestão e partilha de planos de subscrição em equipa',
+    url: 'https://planly.com',
+    emoji: '📋',
+    color: '#7f00ff',
+    accent: '#ffffff',
+    cat: 'productivity',
+    badge: 'global',
+    badgeLabel: 'Global'
+  },
+  {
+    id: 'splitclub',
+    name: 'SplitClub',
+    desc: 'Clube de partilha de subscrições com sistema de confiança',
+    url: 'https://splitclub.app',
+    emoji: '🎟️',
+    color: '#e96c4c',
+    accent: '#ffffff',
+    cat: 'streaming',
+    badge: 'global',
+    badgeLabel: 'Global'
+  },
+  {
+    id: 'subbly',
+    name: 'Subbly',
+    desc: 'Partilha e descoberta de planos de subscrição económicos',
+    url: 'https://subbly.co',
+    emoji: '💡',
+    color: '#1db954',
+    accent: '#ffffff',
+    cat: 'apps',
+    badge: 'global',
+    badgeLabel: 'Global'
+  },
+  {
+    id: 'groupshare',
+    name: 'Group Share',
+    desc: 'Partilha de contas premium: Disney+, HBO, Paramount e mais',
+    url: 'https://www.groupshare.app',
+    emoji: '🎥',
+    color: '#2193b0',
+    accent: '#ffffff',
+    cat: 'streaming',
+    badge: 'global',
+    badgeLabel: 'Global'
+  },
+  {
+    id: 'partageabonno',
+    name: 'Partage Abonnement',
+    desc: 'Serviço francês para dividir o custo de subscrições',
+    url: 'https://www.partage-abonnement.fr',
+    emoji: '🇫🇷',
+    color: '#003399',
+    accent: '#ffffff',
+    cat: 'streaming',
+    badge: 'fr',
+    badgeLabel: 'FR'
+  },
+  {
+    id: 'joinsubscription',
+    name: 'JoinSubscription',
+    desc: 'Encontra utilizadores para partilhar qualquer plano familiar',
+    url: 'https://joinsubscription.com',
+    emoji: '➕',
+    color: '#ff6b6b',
+    accent: '#ffffff',
+    cat: 'apps',
+    badge: 'global',
+    badgeLabel: 'Global'
+  },
+  {
+    id: 'sharekey',
+    name: 'ShareKey',
+    desc: 'Partilha segura de credenciais de serviços em grupo',
+    url: 'https://sharekey.com',
+    emoji: '🔑',
+    color: '#333333',
+    accent: '#f0a500',
+    cat: 'security',
+    badge: 'global',
+    badgeLabel: 'Global'
+  },
+  {
+    id: 'flameo',
+    name: 'Flameo',
+    desc: 'Comunidade de partilha de subscrições digitais',
+    url: 'https://flameo.app',
+    emoji: '🔥',
+    color: '#f7651b',
+    accent: '#ffffff',
+    cat: 'streaming',
+    badge: 'global',
+    badgeLabel: 'Global'
+  },
+  {
+    id: 'swappit',
+    name: 'Swappit',
+    desc: 'Troca e partilha de subscrições entre a comunidade',
+    url: 'https://swappit.io',
+    emoji: '🔄',
+    color: '#764ba2',
+    accent: '#ffffff',
+    cat: 'apps',
+    badge: 'global',
+    badgeLabel: 'Global'
+  },
+  {
+    id: 'subshare',
+    name: 'SubShare',
+    desc: 'Divide subscrições de software e produtividade com colegas',
+    url: 'https://subshare.app',
+    emoji: '💼',
+    color: '#0f2027',
+    accent: '#41b3ff',
+    cat: 'productivity',
+    badge: 'global',
+    badgeLabel: 'Global'
+  }
+];
+
+const CATEGORIES = [
+  { id: 'all', label: 'Todos' },
+  { id: 'streaming', label: '🎬 Streaming' },
+  { id: 'apps', label: '📱 Apps' },
+  { id: 'productivity', label: '💼 Produtividade' },
+  { id: 'security', label: '🔑 Segurança' }
+];
+
+let favorites = JSON.parse(localStorage.getItem('sharefinder_favs') || '[]');
+let customServices = JSON.parse(localStorage.getItem('sharefinder_custom') || '[]');
+let activeCategory = 'all';
+let favFilterActive = false;
+let searchQuery = '';
+
+function saveState() {
+  localStorage.setItem('sharefinder_favs', JSON.stringify(favorites));
+  localStorage.setItem('sharefinder_custom', JSON.stringify(customServices));
+}
+
+function toggleFav(id) {
+  const idx = favorites.indexOf(id);
+  if (idx === -1) {
+    favorites.push(id);
+    showToast('Adicionado aos favoritos ⭐');
+  } else {
+    favorites.splice(idx, 1);
+    showToast('Removido dos favoritos');
+  }
+  saveState();
+  render();
+}
+
+function allServices() {
+  return [...SERVICES, ...customServices];
+}
+
+function filteredServices() {
+  let list = allServices();
+  if (favFilterActive) list = list.filter(s => favorites.includes(s.id));
+  if (activeCategory !== 'all') list = list.filter(s => s.cat === activeCategory);
+  if (searchQuery) {
+    const q = searchQuery.toLowerCase();
+    list = list.filter(s =>
+      s.name.toLowerCase().includes(q) ||
+      s.desc.toLowerCase().includes(q) ||
+      (s.url || '').toLowerCase().includes(q)
+    );
+  }
+  return list;
+}
+
+function buildItem(svc, inFavSection = false) {
+  const isFav = favorites.includes(svc.id);
+  const div = document.createElement('div');
+  div.className = 'service-item';
+
+  const iconBg = svc.color || '#888';
+  div.innerHTML = `
+    <div class="svc-icon">
+      <div class="fallback" style="background:${iconBg};color:${svc.accent||'#fff'}">${svc.emoji||'🔗'}</div>
+    </div>
+    <div class="svc-body">
+      <div class="svc-name">
+        ${escHtml(svc.name)}
+        ${svc.badge ? `<span class="svc-badge badge-${svc.badge}">${escHtml(svc.badgeLabel||svc.badge)}</span>` : ''}
+      </div>
+      <div class="svc-desc">${escHtml(svc.desc)}</div>
+    </div>
+    <div class="svc-actions">
+      <button class="fav-btn ${isFav ? 'active' : ''}" onclick="event.stopPropagation();toggleFav('${svc.id}')" title="${isFav ? 'Remover favorito' : 'Adicionar favorito'}">
+        ${isFav ? '★' : '☆'}
+      </button>
+      <a class="open-btn" href="${escHtml(svc.url)}" target="_blank" rel="noopener" onclick="event.stopPropagation()">Abrir</a>
+    </div>
+  `;
+  return div;
+}
+
+function render() {
+  const favList = document.getElementById('favList');
+  const favEmpty = document.getElementById('favEmpty');
+  const favCount = document.getElementById('favCount');
+  const allList = document.getElementById('allList');
+  const allEmpty = document.getElementById('allEmpty');
+  const allTitle = document.getElementById('allTitle');
+  const emptyQuery = document.getElementById('emptyQuery');
+
+  const favItems = allServices().filter(s => favorites.includes(s.id));
+  const visible = filteredServices();
+
+  // Favorites section
+  favList.innerHTML = '';
+  if (favItems.length === 0) {
+    favEmpty.style.display = 'block';
+    favList.style.display = 'none';
+    favCount.style.display = 'none';
+  } else {
+    favEmpty.style.display = 'none';
+    favList.style.display = 'block';
+    favCount.style.display = 'inline-flex';
+    favCount.textContent = favItems.length;
+    favItems.forEach(svc => favList.appendChild(buildItem(svc, true)));
+  }
+
+  // All section title
+  const totalVisible = visible.length;
+  if (searchQuery) {
+    allTitle.textContent = `Resultados (${totalVisible})`;
+  } else if (favFilterActive) {
+    allTitle.textContent = `Favoritos filtrados`;
+  } else if (activeCategory !== 'all') {
+    allTitle.textContent = CATEGORIES.find(c => c.id === activeCategory)?.label || 'Serviços';
+  } else {
+    allTitle.textContent = `Todos os serviços (${totalVisible})`;
+  }
+
+  // All section
+  allList.innerHTML = '';
+  if (visible.length === 0) {
+    allEmpty.style.display = 'block';
+    allList.style.display = 'none';
+    emptyQuery.textContent = searchQuery || '';
+  } else {
+    allEmpty.style.display = 'none';
+    allList.style.display = 'block';
+    visible.forEach(svc => allList.appendChild(buildItem(svc)));
+  }
+
+  // Update fav filter button
+  const btn = document.getElementById('favFilterBtn');
+  btn.classList.toggle('active', favFilterActive);
+}
+
+function buildChips() {
+  const wrap = document.getElementById('chipsWrap');
+  CATEGORIES.forEach(cat => {
+    const btn = document.createElement('button');
+    btn.className = 'chip' + (cat.id === activeCategory ? ' active' : '');
+    btn.textContent = cat.label;
+    btn.dataset.cat = cat.id;
+    btn.onclick = () => {
+      activeCategory = cat.id;
+      document.querySelectorAll('.chip').forEach(c => c.classList.toggle('active', c.dataset.cat === activeCategory));
+      render();
+    };
+    wrap.appendChild(btn);
+  });
+}
+
+function clearSearch() {
+  document.getElementById('searchInput').value = '';
+  searchQuery = '';
+  render();
+}
+
+function toggleFavFilter() {
+  favFilterActive = !favFilterActive;
+  render();
+}
+
+function addCustom() {
+  const name = document.getElementById('addName').value.trim();
+  const url = document.getElementById('addUrl').value.trim();
+  const desc = document.getElementById('addDesc').value.trim();
+
+  if (!name) { showToast('Introduz um nome ⚠️'); return; }
+  if (!url) { showToast('Introduz um URL ⚠️'); return; }
+
+  let cleanUrl = url;
+  if (!/^https?:\/\//i.test(cleanUrl)) cleanUrl = 'https://' + cleanUrl;
+
+  const id = 'custom_' + Date.now();
+  const svc = {
+    id,
+    name,
+    desc: desc || 'Serviço adicionado manualmente',
+    url: cleanUrl,
+    emoji: '🔗',
+    color: '#555',
+    accent: '#fff',
+    cat: 'apps',
+    badge: 'global',
+    badgeLabel: 'Custom'
+  };
+
+  customServices.push(svc);
+  favorites.push(id);
+  saveState();
+
+  document.getElementById('addName').value = '';
+  document.getElementById('addUrl').value = '';
+  document.getElementById('addDesc').value = '';
+
+  showToast(`${name} adicionado! ✅`);
+  activeCategory = 'all';
+  searchQuery = '';
+  document.getElementById('searchInput').value = '';
+  render();
+}
+
+function showToast(msg) {
+  const t = document.getElementById('toast');
+  t.textContent = msg;
+  t.classList.add('show');
+  clearTimeout(t._timer);
+  t._timer = setTimeout(() => t.classList.remove('show'), 2200);
+}
+
+function escHtml(str) {
+  if (!str) return '';
+  return String(str)
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;');
+}
+
+// Init
+document.getElementById('searchInput').addEventListener('input', e => {
+  searchQuery = e.target.value.trim();
+  render();
+});
+
+buildChips();
+render();
+</script>
+</body>
+</html>
