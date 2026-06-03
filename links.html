@@ -20,6 +20,9 @@
       --safe-b: env(safe-area-inset-bottom, 0px);
       --safe-l: env(safe-area-inset-left, 0px);
       --safe-r: env(safe-area-inset-right, 0px);
+      --search-h: 56px;
+      --nav-h: 48px;
+      --sticky-offset: calc(var(--search-h) + var(--nav-h));
     }
     @media (prefers-color-scheme: dark) {
       :root {
@@ -36,7 +39,7 @@
       box-sizing: border-box; margin: 0; padding: 0;
       -webkit-tap-highlight-color: transparent;
     }
-    html { height: 100%; }
+    html { height: 100%; scroll-behavior: smooth; }
     body {
       font-family: -apple-system, BlinkMacSystemFont, "SF Pro Text", "SF Pro Display", system-ui, sans-serif;
       background: var(--bg);
@@ -58,7 +61,7 @@
       display: flex;
       flex-direction: column;
       align-items: center;
-      padding: 40px 24px 32px;
+      padding: 40px 24px 24px;
       gap: 0;
     }
     .hero-avatar {
@@ -83,6 +86,96 @@
       text-align: center;
     }
 
+    /* ── STICKY SEARCH BAR ── */
+    .search-wrap {
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      background: var(--bg);
+      padding: 8px 16px;
+      height: var(--search-h);
+      display: flex;
+      align-items: center;
+      backdrop-filter: saturate(180%) blur(20px);
+      -webkit-backdrop-filter: saturate(180%) blur(20px);
+      border-bottom: 0.5px solid var(--sep);
+    }
+    .search-inner {
+      display: flex;
+      align-items: center;
+      background: var(--card);
+      border-radius: 12px;
+      padding: 0 12px;
+      gap: 8px;
+      width: 100%;
+      height: 38px;
+      box-shadow: 0 1px 4px rgba(0,0,0,0.06);
+    }
+    .search-icon { font-size: 16px; color: var(--text3); flex-shrink: 0; }
+    .search-input {
+      flex: 1;
+      border: none;
+      background: transparent;
+      font-size: 16px;
+      color: var(--text);
+      outline: none;
+      font-family: inherit;
+    }
+    .search-input::placeholder { color: var(--text3); }
+    .search-clear {
+      font-size: 16px;
+      color: var(--text3);
+      cursor: pointer;
+      flex-shrink: 0;
+      display: none;
+      background: rgba(120,120,128,0.2);
+      border: none;
+      border-radius: 50%;
+      width: 20px; height: 20px;
+      align-items: center;
+      justify-content: center;
+      font-weight: 700;
+      line-height: 1;
+    }
+    .search-clear.visible { display: flex; }
+
+    /* ── CATEGORY NAV ── */
+    .cat-nav {
+      position: sticky;
+      top: var(--search-h);
+      z-index: 99;
+      background: var(--bg);
+      backdrop-filter: saturate(180%) blur(20px);
+      -webkit-backdrop-filter: saturate(180%) blur(20px);
+      border-bottom: 0.5px solid var(--sep);
+      height: var(--nav-h);
+      display: flex;
+      align-items: center;
+      overflow-x: auto;
+      gap: 8px;
+      padding: 0 16px;
+      scrollbar-width: none;
+    }
+    .cat-nav::-webkit-scrollbar { display: none; }
+    .cat-pill {
+      flex-shrink: 0;
+      font-size: 13px;
+      font-weight: 500;
+      padding: 5px 12px;
+      border-radius: 20px;
+      background: var(--card);
+      color: var(--text2);
+      text-decoration: none;
+      border: none;
+      cursor: pointer;
+      transition: background 0.15s, color 0.15s;
+      white-space: nowrap;
+    }
+    .cat-pill:active, .cat-pill:hover {
+      background: var(--primary);
+      color: #fff;
+    }
+
     /* ── SECTION ── */
     .section {
       padding: 0 16px;
@@ -90,14 +183,41 @@
     }
     .section-header {
       font-size: 13px;
-      font-weight: 400;
+      font-weight: 600;
       color: var(--text2);
       text-transform: uppercase;
       letter-spacing: 0.5px;
       padding: 0 16px;
       margin-bottom: 8px;
       margin-top: 28px;
+      scroll-margin-top: calc(var(--sticky-offset) + 8px);
+      display: flex;
+      align-items: center;
+      gap: 8px;
     }
+    .section-header::before {
+      content: '';
+      display: inline-block;
+      width: 3px;
+      height: 14px;
+      border-radius: 2px;
+      background: var(--primary);
+      flex-shrink: 0;
+    }
+
+    /* ── SECTION BLOCK (for hiding during search) ── */
+    .section-block { transition: opacity 0.15s; }
+    .section-block.hidden { display: none; }
+
+    /* ── NO RESULTS ── */
+    .no-results {
+      display: none;
+      text-align: center;
+      padding: 48px 24px;
+      color: var(--text2);
+      font-size: 15px;
+    }
+    .no-results.visible { display: block; }
 
     /* ── LIST GROUP ── */
     .list-group {
@@ -120,8 +240,9 @@
       cursor: pointer;
     }
     .row:active { background: rgba(128,128,128,0.1); }
+    .row.search-hidden { display: none; }
 
-    /* Inset separator: starts after icon (16px padding + 46px icon + 14px gap = 76px) */
+    /* Inset separator */
     .row:not(:last-child)::after {
       content: '';
       position: absolute;
@@ -204,13 +325,40 @@
       .tag-vercel { background: rgba(255,255,255,0.1); }
     }
 
-    /* The repo rows are taller so no separator overlap */
     .row.repo-row {
       align-items: flex-start;
       padding-top: 14px;
       padding-bottom: 14px;
     }
     .row.repo-row .row-icon { margin-top: 2px; }
+
+    /* ── BACK TO TOP ── */
+    .back-top {
+      position: fixed;
+      bottom: calc(var(--safe-b) + 24px);
+      right: 20px;
+      width: 40px; height: 40px;
+      border-radius: 50%;
+      background: var(--primary);
+      color: #fff;
+      font-size: 18px;
+      border: none;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 0 4px 16px rgba(0,122,255,0.35);
+      opacity: 0;
+      transform: translateY(8px);
+      transition: opacity 0.2s, transform 0.2s;
+      pointer-events: none;
+      z-index: 200;
+    }
+    .back-top.visible {
+      opacity: 1;
+      transform: translateY(0);
+      pointer-events: auto;
+    }
 
     /* ── GRADIENT COLOURS ── */
     .ic-blue   { background: linear-gradient(145deg,#1a91ff,#0062d4); }
@@ -223,6 +371,7 @@
     .ic-pink   { background: linear-gradient(145deg,#ff375f,#d4234a); }
     .ic-gray   { background: linear-gradient(145deg,#8e8e93,#636366); }
     .ic-yellow { background: linear-gradient(145deg,#ffd60a,#c49b00); }
+
   </style>
 </head>
 <body>
@@ -235,8 +384,40 @@
     <div class="hero-sub">Repositórios e páginas pessoais</div>
   </div>
 
+
+  <!-- SEARCH BAR -->
+  <div class="search-wrap">
+    <div class="search-inner">
+      <span class="search-icon">🔍</span>
+      <input class="search-input" id="searchInput" type="search" placeholder="Pesquisar links…" autocomplete="off" autocorrect="off" spellcheck="false">
+      <button class="search-clear" id="searchClear" aria-label="Limpar">✕</button>
+    </div>
+  </div>
+
+  <!-- CATEGORY NAV -->
+  <nav class="cat-nav" id="catNav">
+    <a class="cat-pill" href="#sec-paginas">Favoritos</a>
+    <a class="cat-pill" href="#sec-ias">IAs</a>
+    <a class="cat-pill" href="#sec-suno">Suno</a>
+    <a class="cat-pill" href="#sec-rpg">RPG Maker</a>
+    <a class="cat-pill" href="#sec-claude">Claude</a>
+    <a class="cat-pill" href="#sec-gemini">Gemini</a>
+    <a class="cat-pill" href="#sec-deepseek">DeepSeek</a>
+    <a class="cat-pill" href="#sec-qwen">Qwen</a>
+    <a class="cat-pill" href="#sec-social">Social</a>
+    <a class="cat-pill" href="#sec-kdp">KDP</a>
+    <a class="cat-pill" href="#sec-comic">BD</a>
+    <a class="cat-pill" href="#sec-gems">Gems</a>
+    <a class="cat-pill" href="#sec-aistudio">AI Studio</a>
+    <a class="cat-pill" href="#sec-repos">GitHub</a>
+  </nav>
+
+  <!-- NO RESULTS -->
+  <div class="no-results" id="noResults">Nenhum resultado encontrado 🔎</div>
+
   <!-- PÁGINAS -->
-  <div class="section-header">Páginas do Favoritos</div>
+  <div class="section-block" data-section="sec-paginas">
+  <div class="section-header" id="sec-paginas">Páginas do Favoritos</div>
   <div class="section">
     <div class="list-group">
 
@@ -350,9 +531,11 @@
 
     </div>
   </div>
+  </div>
 
   <!-- IAs -->
-  <div class="section-header">Inteligências Artificiais</div>
+  <div class="section-block" data-section="sec-ias">
+  <div class="section-header" id="sec-ias">Inteligências Artificiais</div>
   <div class="section">
     <div class="list-group">
 
@@ -550,9 +733,11 @@
 
     </div>
   </div>
+  </div>
 
   <!-- SUNO -->
-  <div class="section-header">Ferramentas para Suno</div>
+  <div class="section-block" data-section="sec-suno">
+  <div class="section-header" id="sec-suno">Ferramentas para Suno</div>
   <div class="section">
     <div class="list-group">
 
@@ -684,9 +869,11 @@
 
     </div>
   </div>
+  </div>
 
   <!-- RPG MAKER -->
-  <div class="section-header">RPG Maker</div>
+  <div class="section-block" data-section="sec-rpg">
+  <div class="section-header" id="sec-rpg">RPG Maker</div>
   <div class="section">
     <div class="list-group">
 
@@ -836,9 +1023,11 @@
 
     </div>
   </div>
+  </div>
 
   <!-- CLAUDE EXTRAS -->
-  <div class="section-header">Claude — Extras & Ferramentas</div>
+  <div class="section-block" data-section="sec-claude">
+  <div class="section-header" id="sec-claude">Claude — Extras & Ferramentas</div>
   <div class="section">
     <div class="list-group">
 
@@ -952,9 +1141,11 @@
 
     </div>
   </div>
+  </div>
 
   <!-- GEMINI EXTRAS -->
-  <div class="section-header">Gemini — Extras & Ferramentas</div>
+  <div class="section-block" data-section="sec-gemini">
+  <div class="section-header" id="sec-gemini">Gemini — Extras & Ferramentas</div>
   <div class="section">
     <div class="list-group">
 
@@ -1077,9 +1268,11 @@
 
     </div>
   </div>
+  </div>
 
   <!-- DEEPSEEK EXTRAS -->
-  <div class="section-header">DeepSeek — Extras & Ferramentas</div>
+  <div class="section-block" data-section="sec-deepseek">
+  <div class="section-header" id="sec-deepseek">DeepSeek — Extras & Ferramentas</div>
   <div class="section">
     <div class="list-group">
 
@@ -1175,9 +1368,11 @@
 
     </div>
   </div>
+  </div>
 
   <!-- QWEN EXTRAS -->
-  <div class="section-header">Qwen — Extras & Ferramentas</div>
+  <div class="section-block" data-section="sec-qwen">
+  <div class="section-header" id="sec-qwen">Qwen — Extras & Ferramentas</div>
   <div class="section">
     <div class="list-group">
 
@@ -1273,9 +1468,11 @@
 
     </div>
   </div>
+  </div>
 
   <!-- AUTOMAÇÃO REDES SOCIAIS -->
-  <div class="section-header">Automação de Redes Sociais</div>
+  <div class="section-block" data-section="sec-social">
+  <div class="section-header" id="sec-social">Automação de Redes Sociais</div>
   <div class="section">
     <div class="list-group">
 
@@ -1407,9 +1604,11 @@
 
     </div>
   </div>
+  </div>
 
   <!-- KDP -->
-  <div class="section-header">Amazon KDP — Autopublicação</div>
+  <div class="section-block" data-section="sec-kdp">
+  <div class="section-header" id="sec-kdp">Amazon KDP — Autopublicação</div>
   <div class="section">
     <div class="list-group">
 
@@ -1550,9 +1749,11 @@
 
     </div>
   </div>
+  </div>
 
   <!-- BANDA DESENHADA -->
-  <div class="section-header">Criação de Banda Desenhada</div>
+  <div class="section-block" data-section="sec-comic">
+  <div class="section-header" id="sec-comic">Criação de Banda Desenhada</div>
   <div class="section">
     <div class="list-group">
 
@@ -1684,9 +1885,11 @@
 
     </div>
   </div>
+  </div>
 
   <!-- GEMINI GEMS -->
-  <div class="section-header">Gemini Gems</div>
+  <div class="section-block" data-section="sec-gems">
+  <div class="section-header" id="sec-gems">Gemini Gems</div>
   <div class="section">
     <div class="list-group">
 
@@ -1800,9 +2003,11 @@
 
     </div>
   </div>
+  </div>
 
   <!-- GOOGLE AI STUDIO + VPN -->
-  <div class="section-header">Google AI Studio + VPN (acesso EUA)</div>
+  <div class="section-block" data-section="sec-aistudio">
+  <div class="section-header" id="sec-aistudio">Google AI Studio + VPN (acesso EUA)</div>
   <div class="section">
     <div class="list-group">
 
@@ -1914,9 +2119,11 @@
 
     </div>
   </div>
+  </div>
 
   <!-- REPOSITÓRIOS -->
-  <div class="section-header">Repositórios GitHub</div>
+  <div class="section-block" data-section="sec-repos">
+  <div class="section-header" id="sec-repos">Repositórios GitHub</div>
   <div class="section">
     <div class="list-group">
 
@@ -1994,7 +2201,64 @@
 
     </div>
   </div>
+  </div>
 
 </div>
+  <!-- BACK TO TOP -->
+  <button class="back-top" id="backTop" onclick="window.scrollTo({top:0,behavior:'smooth'})">↑</button>
+
+  <script>
+    // ── Search ──
+    const input = document.getElementById('searchInput');
+    const clearBtn = document.getElementById('searchClear');
+    const noResults = document.getElementById('noResults');
+    const catNav = document.getElementById('catNav');
+
+    function normalise(str) {
+      return str.toLowerCase()
+        .normalize('NFD').replace(/[\u0300-\u036f]/g, '');
+    }
+
+    input.addEventListener('input', () => {
+      const q = normalise(input.value.trim());
+      clearBtn.classList.toggle('visible', q.length > 0);
+
+      const blocks = document.querySelectorAll('.section-block');
+      let anyVisible = false;
+
+      blocks.forEach(block => {
+        if (!q) {
+          block.classList.remove('hidden');
+          block.querySelectorAll('.row').forEach(r => r.classList.remove('search-hidden'));
+          return;
+        }
+        let blockHasMatch = false;
+        block.querySelectorAll('.row').forEach(row => {
+          const text = normalise(row.innerText || row.textContent);
+          const match = text.includes(q);
+          row.classList.toggle('search-hidden', !match);
+          if (match) blockHasMatch = true;
+        });
+        block.classList.toggle('hidden', !blockHasMatch);
+        if (blockHasMatch) anyVisible = true;
+      });
+
+      noResults.classList.toggle('visible', q.length > 0 && !anyVisible);
+      catNav.style.display = q.length > 0 ? 'none' : '';
+    });
+
+    clearBtn.addEventListener('click', () => {
+      input.value = '';
+      input.dispatchEvent(new Event('input'));
+      input.focus();
+    });
+
+    // ── Back to top ──
+    const backTop = document.getElementById('backTop');
+    window.addEventListener('scroll', () => {
+      backTop.classList.toggle('visible', window.scrollY > 300);
+    }, { passive: true });
+  </script>
+
 </body>
 </html>
