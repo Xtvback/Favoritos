@@ -163,7 +163,10 @@
     { "id": "p021", "nome": "Omogemio", "titulo": "", "raca": "", "descricao": "", "afiliacao": "", "status": "", "habilidades_chave": [], "eventos_vida": [], "imagem_cor": "#1abc9c" },
     { "id": "p022", "nome": "Facha", "titulo": "", "raca": "", "descricao": "", "afiliacao": "", "status": "", "habilidades_chave": [], "eventos_vida": [], "imagem_cor": "#e67e22" },
     { "id": "p023", "nome": "Dune", "titulo": "", "raca": "", "descricao": "", "afiliacao": "", "status": "", "habilidades_chave": [], "eventos_vida": [], "imagem_cor": "#f1c40f" },
-    { "id": "p024", "nome": "Cerebral", "titulo": "", "raca": "", "descricao": "", "afiliacao": "", "status": "", "habilidades_chave": [], "eventos_vida": [], "imagem_cor": "#00d4ff" }
+    { "id": "p024", "nome": "Cerebral", "titulo": "", "raca": "", "descricao": "", "afiliacao": "", "status": "", "habilidades_chave": [], "eventos_vida": [], "imagem_cor": "#00d4ff" },
+    { "id": "p025", "nome": "Sakura", "titulo": "", "raca": "", "descricao": "", "afiliacao": "", "status": "", "habilidades_chave": [], "eventos_vida": [], "imagem_cor": "#ff69b4" },
+    { "id": "p026", "nome": "Seth", "titulo": "", "raca": "", "descricao": "", "afiliacao": "", "status": "", "habilidades_chave": [], "eventos_vida": [], "imagem_cor": "#8b0000" },
+    { "id": "p027", "nome": "Lilith", "titulo": "", "raca": "", "descricao": "", "afiliacao": "", "status": "", "habilidades_chave": [], "eventos_vida": [], "imagem_cor": "#6c0070" }
   ],
   "lugares": [
     { "id": "l001", "nome": "Muscuta", "tipo": "Planeta", "descricao": "", "habitantes": [], "status": "", "imagem_cor": "#2ecc71" },
