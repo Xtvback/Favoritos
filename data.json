@@ -2,63 +2,16 @@
   "racas": [
     {
       "id": "r001",
-      "nome": "Uslords",
-      "subtitulo": "Os Senhores do Universo",
-      "descricao": "A raça dominante que dá nome ao universo. Seres de origem desconhecida, com capacidade cognitiva vastamente superior à maioria das espécies conhecidas. Habitam planos de existência sobrepostos e são capazes de manipular energia primordial com o pensamento.",
-      "origem": "Dimensão Alfa-Nula",
-      "esperanca_vida": "Indeterminada",
-      "habilidades": ["Manipulação de energia primordial", "Percepção multidimensional", "Transferência de consciência"],
-      "status": "Dominante",
-      "populacao": "Desconhecida",
-      "imagem_cor": "#6c63ff"
-    },
-    {
-      "id": "r002",
-      "nome": "Velhari",
-      "subtitulo": "Os Tecelões de Luz",
-      "descricao": "Seres de forma etérea compostos parcialmente de fotões condensados. Os Velhari evoluíram em estrelas binárias e desenvolveram uma civilização baseada em transmissão de luz codificada. São conhecidos por construírem artefactos de cristal que armazenam memórias.",
-      "origem": "Sistema Estellar Veh-IX",
-      "esperanca_vida": "~4.000 anos",
-      "habilidades": ["Emissão de luz controlada", "Comunicação telepática via fotões", "Construção de cristais de memória"],
-      "status": "Aliada",
-      "populacao": "~2 mil milhões",
-      "imagem_cor": "#00d4ff"
-    },
-    {
-      "id": "r003",
-      "nome": "Krath",
-      "subtitulo": "Os Filhos do Vazio",
-      "descricao": "Criaturas que evoluíram em nebulosas de matéria escura. Os Krath são quase invisíveis a sensores convencionais e movem-se entre sombras do espectro electromagnético. Possuem uma hierarquia tribal rígida e veneram o silêncio como forma suprema de poder.",
-      "origem": "Nebulosa Krath-Har",
-      "esperanca_vida": "~800 anos",
-      "habilidades": ["Camuflagem espectral", "Absorção de energia", "Ecolocação sónica avançada"],
-      "status": "Neutra/Hostil",
-      "populacao": "~500 milhões",
-      "imagem_cor": "#8b0000"
-    },
-    {
-      "id": "r004",
-      "nome": "Sorvani",
-      "subtitulo": "Os Construtores",
-      "descricao": "Humanoides de pele metálica cuja biologia integra componentes sintéticos desde o nascimento. Os Sorvani são os maiores engenheiros do universo conhecido, capazes de construir megaestruturas em décadas. A sua civilização é governada por um conselho de arquitectos chamado A Grande Planta.",
-      "origem": "Planeta Sorvanis Prime",
-      "esperanca_vida": "~300 anos (com substituições cibernéticas: ilimitada)",
-      "habilidades": ["Engenharia de megaestruturas", "Interface directa com máquinas", "Síntese de materiais exóticos"],
-      "status": "Aliada",
-      "populacao": "~50 mil milhões",
-      "imagem_cor": "#ff8c00"
-    },
-    {
-      "id": "r005",
-      "nome": "Thessari",
-      "subtitulo": "Os Errantes do Tempo",
-      "descricao": "Seres de aparência humanoide mas com percepção não-linear do tempo. Os Thessari vivenciam passado, presente e futuro de forma simultânea, o que os torna profetas infalíveis mas também socialmente isolados. Falam em estruturas gramaticais atemporais que são difíceis de compreender por outras raças.",
-      "origem": "Plano Tesseral",
-      "esperanca_vida": "Não aplicável — existência cíclica",
-      "habilidades": ["Percepção temporal não-linear", "Profecia precisa", "Viagem entre eras"],
-      "status": "Misteriosa",
-      "populacao": "Desconhecida",
-      "imagem_cor": "#9b59b6"
+      "nome": "G",
+      "subtitulo": "Men",
+      "descricao": "O arquiteto supremo da simetria perfeita, G é a figura enigmática que moldou o destino humano ao erradicar o livre-arbítrio. Raramente desce do topo imaculado da sua torre de vidro e ouro, mas à medida que as fundações começam a estalar, a sua próxima decisão ditará se o mundo permanece em silêncio ou se desmorona irremediavelmente no caos primordial.",
+      "origem": "Encephalon",
+      "esperanca_vida": "Desconhecida",
+      "habilidades": ["Mestre Estratega", "Mestre Manipulador", "Mestre Observador"],
+      "historia": "G é o governante supremo do Encephalon, uma fortaleza de vidro e ouro onde erradicou o livre-arbítrio em nome da simetria. Isolado no topo, ele acredita ser o salvador da humanidade através de um regime de silêncio e ordem absoluta. A sua ilusão desaba quando um batimento subterrâneo racha a torre, revelando que ele é apenas o carcereiro de uma força antiga prestes a libertar-se.",
+      "status": "Governante Supremo",
+      "populacao": "Único",
+      "imagem_cor": "#c0a020"
     }
   ],
   "personagens": [
