@@ -791,185 +791,1498 @@
 // ===================== DATA =====================
 const DB = {
   "racas": [
-    { "id": "r001", "nome": "Men", "subtitulo": "", "descricao": "", "habilidades": [], "imagem_cor": "#6c63ff" },
-    { "id": "r002", "nome": "C.Men", "subtitulo": "", "descricao": "", "habilidades": [], "imagem_cor": "#00d4ff" },
-    { "id": "r003", "nome": "Muslords", "subtitulo": "", "descricao": "", "habilidades": [], "imagem_cor": "#ff8c00" },
-    { "id": "r004", "nome": "Heart", "subtitulo": "", "descricao": "", "habilidades": [], "imagem_cor": "#e74c3c" },
-    { "id": "r005", "nome": "Lendas", "subtitulo": "", "descricao": "", "habilidades": [], "imagem_cor": "#f1c40f" },
-    { "id": "r006", "nome": "Anibals", "subtitulo": "", "descricao": "", "habilidades": [], "imagem_cor": "#2ecc71" },
-    { "id": "r007", "nome": "TNT", "subtitulo": "", "descricao": "", "habilidades": [], "imagem_cor": "#e67e22" },
-    { "id": "r008", "nome": "TST", "subtitulo": "", "descricao": "", "habilidades": [], "imagem_cor": "#9b59b6" },
-    { "id": "r009", "nome": "Dragon", "subtitulo": "", "descricao": "", "habilidades": [], "imagem_cor": "#c0392b" },
-    { "id": "r010", "nome": "Gigantis", "subtitulo": "", "descricao": "", "habilidades": [], "imagem_cor": "#1abc9c" }
+    {
+      "id": "r001",
+      "nome": "Men",
+      "subtitulo": "",
+      "descricao": "",
+      "habilidades": [],
+      "imagem_cor": "#6c63ff"
+    },
+    {
+      "id": "r002",
+      "nome": "C.Men",
+      "subtitulo": "",
+      "descricao": "",
+      "habilidades": [],
+      "imagem_cor": "#00d4ff"
+    },
+    {
+      "id": "r003",
+      "nome": "Muslords",
+      "subtitulo": "",
+      "descricao": "",
+      "habilidades": [],
+      "imagem_cor": "#ff8c00"
+    },
+    {
+      "id": "r004",
+      "nome": "Heart",
+      "subtitulo": "",
+      "descricao": "",
+      "habilidades": [],
+      "imagem_cor": "#e74c3c"
+    },
+    {
+      "id": "r005",
+      "nome": "Lendas",
+      "subtitulo": "",
+      "descricao": "",
+      "habilidades": [],
+      "imagem_cor": "#f1c40f"
+    },
+    {
+      "id": "r006",
+      "nome": "Anibals",
+      "subtitulo": "",
+      "descricao": "",
+      "habilidades": [],
+      "imagem_cor": "#2ecc71"
+    },
+    {
+      "id": "r007",
+      "nome": "TNT",
+      "subtitulo": "",
+      "descricao": "",
+      "habilidades": [],
+      "imagem_cor": "#e67e22"
+    },
+    {
+      "id": "r008",
+      "nome": "TST",
+      "subtitulo": "",
+      "descricao": "",
+      "habilidades": [],
+      "imagem_cor": "#9b59b6"
+    },
+    {
+      "id": "r009",
+      "nome": "Dragon",
+      "subtitulo": "",
+      "descricao": "",
+      "habilidades": [],
+      "imagem_cor": "#c0392b"
+    },
+    {
+      "id": "r010",
+      "nome": "Gigantis",
+      "subtitulo": "",
+      "descricao": "",
+      "habilidades": [],
+      "imagem_cor": "#1abc9c"
+    }
   ],
   "personagens": [
     {
       "id": "p001",
       "nome": "G",
-      "titulo": "Governante Supremo do Encephalon",
+      "titulo": "Protagonista / Governante Supremo",
       "raca": "Men",
-      "descricao": "O arquiteto supremo da simetria perfeita, G é a figura enigmática que moldou o destino humano ao erradicar o livre-arbítrio. Raramente desce do topo imaculado da sua torre de vidro e ouro, mas à medida que as fundações começam a estalar, a sua próxima decisão ditará se o mundo permanece em silêncio ou se desmorona irremediavelmente no caos primordial.",
-      "afiliacao": "Encephalon",
+      "descricao": "Protagonista e antagonista central de A Última Simetria. Filho de Lenlord, órfão desde os 8 anos. Génio estratégico de fria lógica absoluta, constrói um império de controlo total desde o orfanato até à presidência da nação Men.",
+      "afiliacao": "Nação Men / Encephalon",
       "status": "Governante Supremo",
       "ano_nascimento": "Ano 3510 (Muscuta)",
       "cronologia": "Nasce no Ano 3510. Aos 8 anos dá entrada no Orfanato Estatal da Zona Leste. Dois anos depois (Ano 3520, idade 10) faz o pacto e recruta Cole como o seu primeiro peão. No Ano 3518 governa o Encephalon.",
       "eventos_vida": [
-        { "ano": "Ano 3510", "idade": 0, "evento": "Nascimento de G." },
-        { "ano": "Ano 3518", "idade": 8, "evento": "Dá entrada no Orfanato Estatal da Zona Leste." },
-        { "ano": "Ano 3520", "idade": 10, "evento": "Faz o pacto e recruta Cole como o seu primeiro peão." },
-        { "ano": "Ano 3518 (presente narrativo)", "idade": "?", "evento": "Governa o Encephalon. Um batimento colossal vindo das profundezas faz tremer a estrutura do seu império." }
+        {
+          "ano": "Ano 3510",
+          "idade": 0,
+          "evento": "Nascimento de G."
+        },
+        {
+          "ano": "Ano 3518",
+          "idade": 8,
+          "evento": "Dá entrada no Orfanato Estatal da Zona Leste."
+        },
+        {
+          "ano": "Ano 3520",
+          "idade": 10,
+          "evento": "Faz o pacto e recruta Cole como o seu primeiro peão."
+        },
+        {
+          "ano": "Ano 3518 (presente narrativo)",
+          "idade": "?",
+          "evento": "Governa o Encephalon. Um batimento colossal vindo das profundezas faz tremer a estrutura do seu império."
+        }
       ],
-      "habilidades_chave": ["Mestre Estratega", "Mestre Manipulador", "Mestre Observador"],
+      "habilidades_chave": [
+        "Mestre Estratega",
+        "Mestre Manipulador",
+        "Mestre Observador"
+      ],
       "historia": "G é o governante supremo do Encephalon, uma fortaleza de vidro e ouro onde erradicou o livre-arbítrio em nome da simetria. Isolado no topo, ele acredita ser o salvador da humanidade através de um regime de silêncio e ordem absoluta. A sua ilusão desaba quando um batimento subterrâneo racha a torre, revelando que ele é apenas o carcereiro de uma força antiga prestes a libertar-se.",
       "imagem_cor": "#c0a020"
     },
-    { "id": "p002", "nome": "Cole", "titulo": "", "raca": "", "descricao": "", "afiliacao": "", "status": "", "habilidades_chave": [], "eventos_vida": [], "imagem_cor": "#3498db" },
-    { "id": "p003", "nome": "Sept", "titulo": "", "raca": "", "descricao": "", "afiliacao": "", "status": "", "habilidades_chave": [], "eventos_vida": [], "imagem_cor": "#e74c3c" },
-    { "id": "p004", "nome": "Pin", "titulo": "", "raca": "", "descricao": "", "afiliacao": "", "status": "", "habilidades_chave": [], "eventos_vida": [], "imagem_cor": "#2ecc71" },
-    { "id": "p005", "nome": "Omo", "titulo": "Estratega Militar", "raca": "", "descricao": "Estratega militar com papel ativo no desenvolvimento dos conflitos da história.", "afiliacao": "Núcleo de Muscuta e Viajantes", "status": "", "habilidades_chave": ["Estratégia militar"], "eventos_vida": [], "imagem_cor": "#9b59b6" },
     {
-      "id": "p006", "nome": "Lenlord", "titulo": "Líder da Nação Men", "raca": "Men",
-      "descricao": "Líder determinado e imponente da nação Men. Possui ombros largos e um olhar hipnótico, sendo movido por uma obsessão implacável em erradicar a 'Maldição' planetária e vencer a guerra contra as 'Lendas', o que o leva a ordenar a ativação de uma arma biológica proibida.",
-      "afiliacao": "Nação Men", "status": "Ativo — Ano 3518",
-      "habilidades_chave": ["Liderança militar", "Determinação implacável", "Olhar hipnótico"],
-      "eventos_vida": [{ "ano": "Ano 3518", "evento": "Ordena a ativação da arma biológica proibida para libertar Xenon, como último recurso contra as Lendas." }],
+      "id": "p002",
+      "nome": "Cole",
+      "titulo": "Primeiro Aliado de G / Assistente de Manutenção",
+      "raca": "Men",
+      "descricao": "Primeiro e mais leal aliado de G. Órfão mais velho, com força física silenciosa e idealismo ingénuo. Torna-se o 'braço executor' de G, Assistente de Manutenção e coordenador de operações de campo.",
+      "afiliacao": "Rede de G",
+      "status": "Ativo",
+      "habilidades_chave": [
+        "Força física",
+        "Lealdade absoluta",
+        "Coordenação de campo"
+      ],
+      "eventos_vida": [],
+      "imagem_cor": "#3498db"
+    },
+    {
+      "id": "p003",
+      "nome": "Sept",
+      "titulo": "Presidente Men — Raça Heart",
+      "raca": "Heart",
+      "descricao": "Presidente Men da raça Heart. Líder da 'coesão' após a catástrofe de Lenlord. Covarde, movido pelo medo do caos, colaborou com os C.Men para eliminar dissidentes.",
+      "afiliacao": "Presidência Men",
+      "status": "Presidente Men",
+      "habilidades_chave": [
+        "Liderança política",
+        "Coligações de conveniência"
+      ],
+      "eventos_vida": [],
+      "imagem_cor": "#e74c3c"
+    },
+    {
+      "id": "p004",
+      "nome": "Pin",
+      "titulo": "",
+      "raca": "",
+      "descricao": "",
+      "afiliacao": "",
+      "status": "",
+      "habilidades_chave": [],
+      "eventos_vida": [],
+      "imagem_cor": "#2ecc71"
+    },
+    {
+      "id": "p005",
+      "nome": "Omo",
+      "titulo": "Líder da Resistência Biológica",
+      "raca": "C.Men",
+      "descricao": "Jovem C.Men sem chip neural. Representa a liberdade e o caos orgânico que G teme. Remove chips de outros C.Men, criando uma família de 'anomalias' e liderando a resistência biológica.",
+      "afiliacao": "Resistência Biológica / Família de Anomalias",
+      "status": "Ativo",
+      "habilidades_chave": [
+        "Sem chip neural",
+        "Remoção de chips",
+        "Liderança da resistência"
+      ],
+      "eventos_vida": [],
+      "imagem_cor": "#9b59b6"
+    },
+    {
+      "id": "p006",
+      "nome": "Lenlord",
+      "titulo": "Líder da Nação Men",
+      "raca": "Men",
+      "descricao": "Pai de G. Líder Men consumido pela ambição de supremacia absoluta. Libertou a Xenon e foi por ela consumido. A sua falha é a lição que moldou G.",
+      "afiliacao": "Nação Men",
+      "status": "Consumido pela Xenon",
+      "habilidades_chave": [
+        "Liderança militar",
+        "Determinação implacável",
+        "Olhar hipnótico"
+      ],
+      "eventos_vida": [
+        {
+          "ano": "Ano 3518",
+          "evento": "Ordena a ativação da arma biológica proibida para libertar Xenon, como último recurso contra as Lendas."
+        }
+      ],
       "imagem_cor": "#e67e22"
     },
     {
-      "id": "p007", "nome": "O Protetor Imortal / B", "titulo": "Entidade Lendária", "raca": "",
-      "descricao": "Entidade lendária descrita como uma sombra sob uma máscara preta que encontrou o poder divino há três mil anos. É respeitado pela fação dos Muscmen, embora Lenlord considere a sua lenda uma desculpa para a passividade geral.",
-      "afiliacao": "Muscmen (respeitado)", "status": "Lendário — presença incerta",
-      "habilidades_chave": ["Poder divino", "Imortalidade", "Influência lendária"],
-      "eventos_vida": [{ "ano": "Há ~3000 anos (Ano ~518)", "evento": "Encontrou o poder divino. A sua intervenção gerou a Maldição Original que transformou Muscuta." }],
+      "id": "p007",
+      "nome": "B / Recum — O Protetor Imortal",
+      "titulo": "Entidade Lendária",
+      "raca": "",
+      "descricao": "Figura mítico-religiosa que existe há três mil anos, usa máscara preta. A sua intervenção original no planeta Muscuta deu origem à maldição genética que criou todas as raças. Nos textos sagrados de Muscuta é referenciado como 'Recum' — Deus de Tudo, origem da maldição genética.",
+      "afiliacao": "Muscmen (respeitado)",
+      "status": "Lendário — presença incerta",
+      "habilidades_chave": [
+        "Poder divino",
+        "Imortalidade",
+        "Influência lendária"
+      ],
+      "eventos_vida": [
+        {
+          "ano": "Há ~3000 anos (Ano ~518)",
+          "evento": "Encontrou o poder divino. A sua intervenção gerou a Maldição Original que transformou Muscuta."
+        }
+      ],
       "imagem_cor": "#2c3e50"
     },
     {
-      "id": "p008", "nome": "Cientista Principal", "titulo": "Especialista dos Laboratórios Men", "raca": "Men",
+      "id": "p008",
+      "nome": "Cientista Principal",
+      "titulo": "Especialista dos Laboratórios Men",
+      "raca": "Men",
       "descricao": "Especialista dos laboratórios Men que adverte diretamente Lenlord sobre o perigo e a heresia de recriar a Xenon a partir do código genético disperso dos pais de B.",
-      "afiliacao": "Laboratórios Men", "status": "Ativo — Ano 3518",
-      "habilidades_chave": ["Genética avançada", "Análise de risco", "Conhecimento proibido"],
-      "eventos_vida": [{ "ano": "Ano 3518", "evento": "Adverte Lenlord dos perigos de recriar Xenon a partir do código genético dos pais de B." }],
+      "afiliacao": "Laboratórios Men",
+      "status": "Ativo — Ano 3518",
+      "habilidades_chave": [
+        "Genética avançada",
+        "Análise de risco",
+        "Conhecimento proibido"
+      ],
+      "eventos_vida": [
+        {
+          "ano": "Ano 3518",
+          "evento": "Adverte Lenlord dos perigos de recriar Xenon a partir do código genético dos pais de B."
+        }
+      ],
       "imagem_cor": "#1abc9c"
     },
     {
-      "id": "p009", "nome": "Conselheiro Político", "titulo": "Conselheiro da Nação Men", "raca": "Men",
+      "id": "p009",
+      "nome": "Conselheiro Político",
+      "titulo": "Conselheiro da Nação Men",
+      "raca": "Men",
       "descricao": "Indivíduo pálido, exausto e apegado aos protocolos que tenta dissuadir Lenlord de avançar com o seu plano, temendo a intervenção de B e a rutura das relações diplomáticas.",
-      "afiliacao": "Nação Men", "status": "Ativo — Ano 3518",
-      "habilidades_chave": ["Diplomacia", "Conhecimento de protocolos", "Análise política"],
-      "eventos_vida": [{ "ano": "Ano 3518", "evento": "Tenta dissuadir Lenlord de ativar a arma proibida, temendo a intervenção de B e rutura diplomática." }],
+      "afiliacao": "Nação Men",
+      "status": "Ativo — Ano 3518",
+      "habilidades_chave": [
+        "Diplomacia",
+        "Conhecimento de protocolos",
+        "Análise política"
+      ],
+      "eventos_vida": [
+        {
+          "ano": "Ano 3518",
+          "evento": "Tenta dissuadir Lenlord de ativar a arma proibida, temendo a intervenção de B e rutura diplomática."
+        }
+      ],
       "imagem_cor": "#7f8c8d"
     },
     {
-      "id": "p010", "nome": "Xenon", "titulo": "A Besta Desencadeada", "raca": "",
-      "descricao": "Abominação incontrolável que resulta da junção de 'Xe' e 'Non'. Representa a materialização da força bruta da criação e o poder primordial da Maldição.",
-      "afiliacao": "Nenhuma — força primordial", "status": "Libertada — Ano 3518",
-      "habilidades_chave": ["Força bruta primordial", "Poder da Maldição", "Incontrolável"],
-      "eventos_vida": [{ "ano": "Ano 3518", "evento": "Libertada por Lenlord como arma de último recurso. Resulta da junção de Xe e Non, transcendendo ciência e magia." }],
+      "id": "p010",
+      "nome": "A Xenon (Xe e Non)",
+      "titulo": "A Besta Desencadeada",
+      "raca": "",
+      "descricao": "A Xenon (Xe e Non). Entidade biológica criada por Lenlord a partir do código genético dos 'pais do B'. Força incontrolável que destruiu 99% das Lendas e depois se autodestroiu.",
+      "afiliacao": "Nenhuma — força primordial",
+      "status": "Libertada — Ano 3518",
+      "habilidades_chave": [
+        "Força bruta primordial",
+        "Poder da Maldição",
+        "Incontrolável"
+      ],
+      "eventos_vida": [
+        {
+          "ano": "Ano 3518",
+          "evento": "Libertada por Lenlord como arma de último recurso. Resulta da junção de Xe e Non, transcendendo ciência e magia."
+        }
+      ],
       "imagem_cor": "#8b0000"
     },
     {
-      "id": "p011", "nome": "Ele", "titulo": "O Protagonista — Guardião da Biblioteca de Memórias", "raca": "",
+      "id": "p011",
+      "nome": "Ele",
+      "titulo": "O Protagonista — Guardião da Biblioteca de Memórias",
+      "raca": "",
       "descricao": "Atua como o guardião da Biblioteca de Memórias e tem a capacidade inata de encontrar objetos perdidos. É tímido e reservado, mas esconde no seu subconsciente a entidade destrutiva Anibal 1.2, despertada por emoções fortes ou pelo seu colar de pedra preta.",
-      "afiliacao": "Biblioteca de Memórias", "status": "Ativo — Ano 3518",
-      "habilidades_chave": ["Encontrar objetos perdidos", "Guardião de memórias", "Dupla personalidade (Anibal 1.2)"],
+      "afiliacao": "Biblioteca de Memórias",
+      "status": "Ativo — Ano 3518",
+      "habilidades_chave": [
+        "Encontrar objetos perdidos",
+        "Guardião de memórias",
+        "Dupla personalidade (Anibal 1.2)"
+      ],
       "eventos_vida": [],
       "imagem_cor": "#6c63ff"
     },
     {
-      "id": "p012", "nome": "Ela", "titulo": "A Protetora", "raca": "",
+      "id": "p012",
+      "nome": "Ela",
+      "titulo": "A Protetora",
+      "raca": "",
       "descricao": "Habitante com uma impureza genética rara que lhe confere coragem acrescida e capacidade de sentir emoções complexas. Vigia e protege silenciosamente o protagonista, guardando o fardo de conhecer o segredo sobre a sua dupla personalidade.",
-      "afiliacao": "", "status": "Ativa — Ano 3518",
-      "habilidades_chave": ["Coragem acrescida (impureza genética)", "Perceção emocional complexa", "Proteção silenciosa"],
+      "afiliacao": "",
+      "status": "Ativa — Ano 3518",
+      "habilidades_chave": [
+        "Coragem acrescida (impureza genética)",
+        "Perceção emocional complexa",
+        "Proteção silenciosa"
+      ],
       "eventos_vida": [],
       "imagem_cor": "#e91e8c"
     },
     {
-      "id": "p013", "nome": "Zale", "titulo": "O Original — Primeiro Anibal", "raca": "Anibals",
-      "descricao": "Ancião mais respeitado da comunidade, assume-se como o primeiríssimo Anibal a ser criado em toda a existência de Muscuta. Manipula os acontecimentos nos bastidores durante a crise do Ano 3518.",
-      "afiliacao": "Núcleo de Muscuta e Viajantes", "status": "Ativo — Ano 3518",
-      "habilidades_chave": ["Manipulação nos bastidores", "Sabedoria ancestral", "200% de sorte (modificação genética original)"],
+      "id": "p013",
+      "nome": "Zale",
+      "titulo": "O Original — Primeiro Anibal",
+      "raca": "Anibals",
+      "descricao": "Figura fundamental associada ao universo de Muscuta, ligada à jornada de Anibal. Ancião mais respeitado da comunidade, assume-se como o primeiríssimo Anibal a ser criado em toda a existência de Muscuta. Manipula os acontecimentos nos bastidores durante a crise do Ano 3518.",
+      "afiliacao": "Núcleo de Muscuta e Viajantes",
+      "status": "Ativo — Ano 3518",
+      "habilidades_chave": [
+        "Manipulação nos bastidores",
+        "Sabedoria ancestral",
+        "200% de sorte (modificação genética original)"
+      ],
       "eventos_vida": [
-        { "ano": "Antiguidade", "evento": "Criado como o primeiro Anibal pela civilização ancestral, com modificação genética de 200% de sorte." },
-        { "ano": "Ano 3518", "evento": "Manipula os acontecimentos nos bastidores durante a manifestação de Anibal 1.2 na mente do protagonista." }
+        {
+          "ano": "Antiguidade",
+          "evento": "Criado como o primeiro Anibal pela civilização ancestral, com modificação genética de 200% de sorte."
+        },
+        {
+          "ano": "Ano 3518",
+          "evento": "Manipula os acontecimentos nos bastidores durante a manifestação de Anibal 1.2 na mente do protagonista."
+        }
       ],
       "imagem_cor": "#f1c40f"
     },
     {
-      "id": "p014", "nome": "DDMB", "titulo": "O Criador Supremo", "raca": "",
+      "id": "p014",
+      "nome": "DDMB",
+      "titulo": "O Criador Supremo",
+      "raca": "",
       "descricao": "O criador supremo e autogerado na mitologia partilhada pelas criaturas de Muscuta.",
-      "afiliacao": "Mitologia de Muscuta", "status": "Mítico",
-      "habilidades_chave": ["Criação suprema", "Autogeração"],
+      "afiliacao": "Mitologia de Muscuta",
+      "status": "Mítico",
+      "habilidades_chave": [
+        "Criação suprema",
+        "Autogeração"
+      ],
       "eventos_vida": [],
       "imagem_cor": "#ffffff"
     },
     {
-      "id": "p015", "nome": "Azar Divino", "titulo": "Personificação Maléfica / Projeção de Anibal 1.2", "raca": "",
+      "id": "p015",
+      "nome": "Azar Divino",
+      "titulo": "Personificação Maléfica / Projeção de Anibal 1.2",
+      "raca": "",
       "descricao": "Personificação mitológica de uma força maléfica temida pela aldeia, manifestada como uma sombra aterrorizante que, em segredo, é a própria projeção física de Anibal 1.2.",
-      "afiliacao": "Nenhuma — entidade mítica", "status": "Lendário / Presente",
-      "habilidades_chave": ["Manifestação como sombra", "Terror psíquico", "Projeção de Anibal 1.2"],
+      "afiliacao": "Nenhuma — entidade mítica",
+      "status": "Lendário / Presente",
+      "habilidades_chave": [
+        "Manifestação como sombra",
+        "Terror psíquico",
+        "Projeção de Anibal 1.2"
+      ],
       "eventos_vida": [],
       "imagem_cor": "#2c2c2c"
     },
-    { "id": "p016", "nome": "Anibal", "titulo": "O Protagonista Central", "raca": "Anibals", "descricao": "O protagonista central da narrativa, cuja jornada e segredos guiam o rumo da história.", "afiliacao": "Núcleo de Muscuta e Viajantes", "status": "", "habilidades_chave": [], "eventos_vida": [], "imagem_cor": "#2ecc71" },
-    { "id": "p017", "nome": "Sorreno", "titulo": "O Viajante Astuto", "raca": "", "descricao": "Viajante astuto cuja interação e dinâmica com o protagonista Anibal são absolutamente centrais para o desenvolvimento da trama.", "afiliacao": "Núcleo de Muscuta e Viajantes", "status": "", "habilidades_chave": [], "eventos_vida": [], "imagem_cor": "#e67e22" },
-    { "id": "p018", "nome": "Rockford", "titulo": "", "raca": "", "descricao": "", "afiliacao": "", "status": "", "habilidades_chave": [], "eventos_vida": [], "imagem_cor": "#e74c3c" },
-    { "id": "p019", "nome": "Fiche", "titulo": "", "raca": "", "descricao": "", "afiliacao": "", "status": "", "habilidades_chave": [], "eventos_vida": [], "imagem_cor": "#3498db" },
-    { "id": "p020", "nome": "Omografos", "titulo": "", "raca": "", "descricao": "", "afiliacao": "", "status": "", "habilidades_chave": [], "eventos_vida": [], "imagem_cor": "#9b59b6" },
-    { "id": "p021", "nome": "Omogemio", "titulo": "", "raca": "", "descricao": "", "afiliacao": "", "status": "", "habilidades_chave": [], "eventos_vida": [], "imagem_cor": "#1abc9c" },
-    { "id": "p022", "nome": "Facha", "titulo": "", "raca": "", "descricao": "", "afiliacao": "", "status": "", "habilidades_chave": [], "eventos_vida": [], "imagem_cor": "#e67e22" },
-    { "id": "p023", "nome": "Dune", "titulo": "", "raca": "", "descricao": "", "afiliacao": "", "status": "", "habilidades_chave": [], "eventos_vida": [], "imagem_cor": "#f1c40f" },
-    { "id": "p024", "nome": "Cerebral", "titulo": "", "raca": "", "descricao": "", "afiliacao": "", "status": "", "habilidades_chave": [], "eventos_vida": [], "imagem_cor": "#00d4ff" },
-    { "id": "p025", "nome": "Sakura", "titulo": "", "raca": "", "descricao": "", "afiliacao": "", "status": "", "habilidades_chave": [], "eventos_vida": [], "imagem_cor": "#ff69b4" },
-    { "id": "p026", "nome": "Seth", "titulo": "Anjo Protector / Anjo Vampírico", "raca": "Vampygick", "descricao": "Protagonista de O Toque Proibido. Anjo Protector e Anjo Vampírico. Começa neutro e evolui para o Bem.", "afiliacao": "O Toque Proibido — Terra", "status": "Neutro → Bem", "habilidades_chave": ["Protecção angélica", "Poderes vampíricos"], "eventos_vida": [], "imagem_cor": "#8b0000" },
-    { "id": "p027", "nome": "Lilith", "titulo": "Vampira / Vampyre Angelical", "raca": "Vampygick", "descricao": "Protagonista de O Toque Proibido. Vampira e Vampyre Angelical. Evolui das Trevas para o Bem.", "afiliacao": "O Toque Proibido — Terra", "status": "Trevas → Neutro → Bem", "habilidades_chave": ["Poderes vampíricos", "Energia angelical"], "eventos_vida": [], "imagem_cor": "#6c0070" },
-    { "id": "p028", "nome": "Abner", "titulo": "O Pai da Luz", "raca": "", "descricao": "Líder e profeta dos humanóides vivos em Orbis Terrarum Abyssus. A personagem central da narrativa.", "afiliacao": "Conselho dos Men / Orbis Terrarum Abyssus", "status": "Ativo", "habilidades_chave": ["Liderança", "Profecia"], "eventos_vida": [], "imagem_cor": "#f1c40f" },
-    { "id": "p029", "nome": "Lúcia / Magnus", "titulo": "A Escolhida", "raca": "", "descricao": "A escolhida, nascida em Orbis Terrarum Abyssus. Filha de Ecoema e Luana. Cresce subitamente ao longo do Capítulo VI. Destrói Deathus.", "afiliacao": "Orbis Terrarum Abyssus", "status": "Ativa", "habilidades_chave": ["Crescimento súbito", "Poder da Escolhida"], "eventos_vida": [{ "ano": "Capítulo VI", "evento": "Cresce subitamente. Destrói Deathus." }], "imagem_cor": "#e91e8c" },
-    { "id": "p030", "nome": "Inceptum / Darko", "titulo": "Lord dos Vivos — Traidor de Everto", "raca": "", "descricao": "Lord de Everto especializado em sentir os vivos. Acaba por se ligar a Abner e a Lúcia. O seu verdadeiro nome é Darko.", "afiliacao": "Everto (inicialmente) → Abner e Lúcia", "status": "Ativo — mudança de lado", "habilidades_chave": ["Sentir os vivos", "Lord dos Vivos"], "eventos_vida": [], "imagem_cor": "#6c63ff" },
-    { "id": "p031", "nome": "Darci", "titulo": "Filha Adoptiva de Abner", "raca": "", "descricao": "Membro do conselho dos Men. Filha adoptiva de Abner. Analítica e racional. Papel decisivo na fuga de Abner da prisão.", "afiliacao": "Conselho dos Men", "status": "Ativa", "habilidades_chave": ["Análise racional", "Operações de fuga"], "eventos_vida": [{ "ano": "Narrativa principal", "evento": "Papel decisivo na fuga de Abner da prisão." }], "imagem_cor": "#00d4ff" },
-    { "id": "p032", "nome": "Ecoema", "titulo": "Pai de Lúcia", "raca": "", "descricao": "Pai de Lúcia. Recém-chegado a Orbis Terrarum Abyssus. Morre prematuramente envelhecido na Cidade das Almas.", "afiliacao": "Orbis Terrarum Abyssus", "status": "Falecido — Cidade das Almas", "habilidades_chave": [], "eventos_vida": [{ "ano": "Narrativa principal", "evento": "Morre prematuramente envelhecido na Cidade das Almas." }], "imagem_cor": "#3498db" },
-    { "id": "p033", "nome": "Luana", "titulo": "Mãe de Lúcia", "raca": "", "descricao": "Mãe de Lúcia. Intuitiva e perceptiva de perigos. Morre envelhecida na Cidade das Almas.", "afiliacao": "Orbis Terrarum Abyssus", "status": "Falecida — Cidade das Almas", "habilidades_chave": ["Intuição", "Perceção de perigos"], "eventos_vida": [{ "ano": "Narrativa principal", "evento": "Morre envelhecida na Cidade das Almas." }], "imagem_cor": "#e67e22" },
-    { "id": "p034", "nome": "Oleander", "titulo": "Vampiro Traidor Silencioso", "raca": "Vampygick", "descricao": "Vampiro da raça Vampygick. Aliado indirecto dos humanóides e traidor silencioso de Everto.", "afiliacao": "Everto (traidor) → Humanóides", "status": "Ativo", "habilidades_chave": ["Habilidades vampíricas", "Infiltração"], "eventos_vida": [], "imagem_cor": "#8b0000" },
-    { "id": "p035", "nome": "Dulcis", "titulo": "Ser entre a Vida e a Morte", "raca": "Onyxus", "descricao": "Ser da raça Onyxus, entre a vida e a morte. Domina o poder das pedras de Orbis Terrarum Abyssus. Aliada do conselho dos Men.", "afiliacao": "Conselho dos Men", "status": "Ativo — entre vida e morte", "habilidades_chave": ["Domínio das pedras de Orbis", "Entre vida e morte"], "eventos_vida": [], "imagem_cor": "#9b59b6" },
-    { "id": "p036", "nome": "Everto", "titulo": "Senhor Supremo de Orbis Terrarum Abyssus", "raca": "", "descricao": "Senhor supremo de Orbis Terrarum Abyssus. Figura central de poder, nunca aparece directamente na acção.", "afiliacao": "Everto (facção própria)", "status": "Ativo — ausente da acção directa", "habilidades_chave": ["Poder supremo", "Controlo de Orbis"], "eventos_vida": [], "imagem_cor": "#2c3e50" },
-    { "id": "p037", "nome": "Deathus", "titulo": "A Alma da Noite", "raca": "", "descricao": "A alma da noite. Primeira alma enviada para Orbis Terrarum Abyssus. Antagonista dos Capítulos VI e VII. Destruído por Lúcia.", "afiliacao": "Everto", "status": "Destruído por Lúcia — Capítulo VI/VII", "habilidades_chave": ["Alma da noite", "Poder das trevas"], "eventos_vida": [{ "ano": "Capítulo VI/VII", "evento": "Antagonista principal. Destruído por Lúcia." }], "imagem_cor": "#1a1a2e" },
-    { "id": "p038", "nome": "R.D.M.", "titulo": "Ser Misterioso Banido", "raca": "", "descricao": "Ser misterioso e poderoso, banido para Orbis Terrarum Abyssus. Aliado nominal de Everto, mas com motivações próprias e desconhecidas.", "afiliacao": "Everto (nominal)", "status": "Ativo — motivações incertas", "habilidades_chave": ["Poder desconhecido", "Motivações próprias"], "eventos_vida": [], "imagem_cor": "#7f8c8d" },
-    { "id": "p039", "nome": "Aetas", "titulo": "Lord do Tempo", "raca": "", "descricao": "Lord do Tempo de Everto.", "afiliacao": "Everto", "status": "Ativo", "habilidades_chave": ["Manipulação do tempo"], "eventos_vida": [], "imagem_cor": "#00b4d8" },
-    { "id": "p040", "nome": "Morsus", "titulo": "Lord da Dor", "raca": "", "descricao": "Lord da Dor de Everto.", "afiliacao": "Everto", "status": "Ativo", "habilidades_chave": ["Infligir dor"], "eventos_vida": [], "imagem_cor": "#e74c3c" },
-    { "id": "p041", "nome": "Animus", "titulo": "Lord das Almas", "raca": "", "descricao": "Lord das Almas de Everto.", "afiliacao": "Everto", "status": "Ativo", "habilidades_chave": ["Controlo de almas"], "eventos_vida": [], "imagem_cor": "#6c63ff" },
-    { "id": "p042", "nome": "Le-Gaia", "titulo": "Mensageira Divina", "raca": "", "descricao": "Mensageira divina. Aparece a Abner numa visão e revela-lhe a sua missão.", "afiliacao": "Dimensão Onírica / Transcendente", "status": "Aparição em visão", "habilidades_chave": ["Mensagem divina", "Visão profética"], "eventos_vida": [{ "ano": "Narrativa principal", "evento": "Aparece a Abner numa visão e revela a sua missão." }], "imagem_cor": "#ffffff" },
-    { "id": "p043", "nome": "Adele", "titulo": "Filha de Abner — Falecida", "raca": "", "descricao": "Filha verdadeira de Abner, falecida. Aparece na visão de Abner.", "afiliacao": "Dimensão Onírica", "status": "Falecida — aparece em visão", "habilidades_chave": [], "eventos_vida": [], "imagem_cor": "#ffd6e0" },
-    { "id": "p044", "nome": "Ciana", "titulo": "Esposa de Abner — Falecida", "raca": "", "descricao": "Esposa de Abner, falecida. Aparece na visão de Abner.", "afiliacao": "Dimensão Onírica", "status": "Falecida — aparece em visão", "habilidades_chave": [], "eventos_vida": [], "imagem_cor": "#ffd6e0" },
-    { "id": "p045", "nome": "Juscelino", "titulo": "Coordenador da Área 5583", "raca": "", "descricao": "Coordenador e chefe da Área 5583. Liderança pragmática e mais tarde revelada como traidora.", "afiliacao": "Área 5583", "status": "Traidor revelado", "habilidades_chave": ["Coordenação", "Liderança pragmática"], "eventos_vida": [{ "ano": "Narrativa principal", "evento": "Liderança revelada como traidora." }], "imagem_cor": "#e67e22" },
-    { "id": "p046", "nome": "Gabriel", "titulo": "Anjo Elite / Anjo Vampírico", "raca": "", "descricao": "Anjo Elite e Anjo Vampírico em O Toque Proibido. Bem corrompido que se torna traidor. Em Orbis Terrarum Abyssus é figura do passado de Darci.", "afiliacao": "O Toque Proibido — Terra / Passado de Darci (Orbis)", "status": "Bem corrompido → Traidor", "habilidades_chave": ["Anjo Elite", "Poderes vampíricos"], "eventos_vida": [{ "ano": "Narrativa (Orbis)", "evento": "Abandona o esconderijo voluntariamente. Não regressa." }], "imagem_cor": "#bdc3c7" },
-    { "id": "p047", "nome": "Lúcifer", "titulo": "Anjo Negro / Imortal Ancião", "raca": "", "descricao": "Anjo Negro e Imortal Ancião das Trevas em O Toque Proibido.", "afiliacao": "O Toque Proibido — Terra", "status": "Trevas", "habilidades_chave": ["Imortalidade ancestral", "Poder das trevas"], "eventos_vida": [], "imagem_cor": "#1a1a2e" },
-    { "id": "p048", "nome": "Drácula", "titulo": "Vampiro Antigo", "raca": "Vampygick", "descricao": "Vampiro Antigo. Percorre um arco de traição e redenção em O Toque Proibido.", "afiliacao": "O Toque Proibido — Terra", "status": "Neutro → Traidor → Redenção", "habilidades_chave": ["Vampirismo ancestral"], "eventos_vida": [], "imagem_cor": "#8b0000" },
-    { "id": "p049", "nome": "Belzebuh", "titulo": "Vampiro Angelical / Traidor de Todos", "raca": "Vampygick", "descricao": "Vampiro Angelical das Trevas. Traidor de todas as fações em O Toque Proibido.", "afiliacao": "Nenhuma — traidor de todos", "status": "Trevas — Traidor de todos", "habilidades_chave": ["Vampirismo angelical", "Traição estratégica"], "eventos_vida": [], "imagem_cor": "#4a0000" },
-    { "id": "p050", "nome": "Kain", "titulo": "Vampiro / Semideus / Imortal Ancião", "raca": "Vampygick", "descricao": "Vampiro, Semideus e Imortal Ancião. Evolui do neutro para o Bem em O Toque Proibido.", "afiliacao": "O Toque Proibido — Terra", "status": "Neutro → Bem", "habilidades_chave": ["Imortalidade", "Poder semidivino"], "eventos_vida": [], "imagem_cor": "#6c3483" },
-    { "id": "p051", "nome": "Angélica", "titulo": "Vampyre — Filha de Lúcifer", "raca": "Vampygick", "descricao": "Vampyre e filha de Lúcifer. Evolui do neutro para o Bem em O Toque Proibido.", "afiliacao": "O Toque Proibido — Terra", "status": "Neutro → Bem", "habilidades_chave": ["Poderes vampíricos herdados"], "eventos_vida": [], "imagem_cor": "#9b59b6" },
-    { "id": "p052", "nome": "Crystal / Medusa", "titulo": "Vampira / Demónio Vampírico Infiltrada", "raca": "Vampygick", "descricao": "Vampira e Demónio Vampírico das Trevas. Actua como infiltrada. Aliada de A Morte.", "afiliacao": "Trevas (infiltrada)", "status": "Trevas — infiltrada", "habilidades_chave": ["Infiltração", "Poderes demoníacos vampíricos"], "eventos_vida": [], "imagem_cor": "#1abc9c" },
-    { "id": "p053", "nome": "Deus", "titulo": "Ser Supremo Divino", "raca": "", "descricao": "Ser Supremo Divino. Bem corrompido pelo poder em O Toque Proibido.", "afiliacao": "Entidade Suprema", "status": "Bem corrompido pelo poder", "habilidades_chave": ["Poder divino supremo"], "eventos_vida": [], "imagem_cor": "#f1c40f" },
-    { "id": "p054", "nome": "O Diabo", "titulo": "Ser Supremo Maléfico", "raca": "", "descricao": "Ser Supremo Maléfico das Trevas em O Toque Proibido.", "afiliacao": "Entidade Suprema — Trevas", "status": "Trevas", "habilidades_chave": ["Poder maléfico supremo"], "eventos_vida": [], "imagem_cor": "#c0392b" },
-    { "id": "p055", "nome": "A Morte", "titulo": "Entidade das Trevas", "raca": "", "descricao": "Entidade das Trevas aliada de Crystal/Medusa em O Toque Proibido.", "afiliacao": "Trevas — aliada de Medusa", "status": "Trevas", "habilidades_chave": ["Poder sobre a morte"], "eventos_vida": [], "imagem_cor": "#2c2c2c" },
-    { "id": "p056", "nome": "Papyrus", "titulo": "Caçador de Vampiros", "raca": "", "descricao": "Humano e Caçador de Vampiros. Começa neutro e evolui para o Bem.", "afiliacao": "O Toque Proibido — Terra", "status": "Bem (inicialmente neutro)", "habilidades_chave": ["Caça a vampiros"], "eventos_vida": [], "imagem_cor": "#e67e22" },
-    { "id": "p057", "nome": "Zephyrus", "titulo": "Lobisomem / Imortal Ancião", "raca": "", "descricao": "Lobisomem e Imortal Ancião. Evolui do neutro para o Bem.", "afiliacao": "O Toque Proibido — Terra", "status": "Neutro → Bem", "habilidades_chave": ["Licantropia", "Imortalidade ancestral"], "eventos_vida": [], "imagem_cor": "#795548" },
-    { "id": "p058", "nome": "Atanatus", "titulo": "Lobisomem / General", "raca": "", "descricao": "Lobisomem e General do lado do Bem.", "afiliacao": "O Toque Proibido — Terra", "status": "Bem", "habilidades_chave": ["Licantropia", "Liderança militar"], "eventos_vida": [], "imagem_cor": "#6d4c41" },
-    { "id": "p059", "nome": "Hahuiah", "titulo": "Anjo General Suplente", "raca": "", "descricao": "Anjo General Suplente do lado do Bem.", "afiliacao": "O Toque Proibido — Terra", "status": "Bem", "habilidades_chave": ["Liderança angélica"], "eventos_vida": [], "imagem_cor": "#f0f0f0" },
-    { "id": "p060", "nome": "Tyra", "titulo": "Demónia Salva", "raca": "", "descricao": "Demónia que se torna do lado do Bem após ser salva.", "afiliacao": "O Toque Proibido — Terra", "status": "Bem (após ser salva)", "habilidades_chave": ["Poderes demoníacos"], "eventos_vida": [], "imagem_cor": "#e91e8c" },
-    { "id": "p061", "nome": "Chad", "titulo": "Super Vampiro", "raca": "Vampygick", "descricao": "Super Vampiro do lado do Bem.", "afiliacao": "O Toque Proibido — Terra", "status": "Bem", "habilidades_chave": ["Super vampirismo"], "eventos_vida": [], "imagem_cor": "#3498db" },
-    { "id": "p062", "nome": "Lucy", "titulo": "Vampira Ressuscitada", "raca": "Vampygick", "descricao": "Vampira ressuscitada do lado do Bem.", "afiliacao": "O Toque Proibido — Terra", "status": "Bem", "habilidades_chave": ["Ressurreição", "Poderes vampíricos"], "eventos_vida": [], "imagem_cor": "#ff69b4" },
-    { "id": "p063", "nome": "Afrodite", "titulo": "Semideusa", "raca": "", "descricao": "Semideusa do lado do Bem.", "afiliacao": "O Toque Proibido — Terra", "status": "Bem", "habilidades_chave": ["Poderes semidivinos"], "eventos_vida": [], "imagem_cor": "#f9a8d4" },
-    { "id": "p064", "nome": "Kefka", "titulo": "Bruxo", "raca": "", "descricao": "Bruxo neutro em O Toque Proibido.", "afiliacao": "O Toque Proibido — Terra", "status": "Neutro", "habilidades_chave": ["Magia"], "eventos_vida": [], "imagem_cor": "#8e44ad" },
-    { "id": "p065", "nome": "Sapien / João", "titulo": "Humano → Demónio Vampírico", "raca": "Vampygick", "descricao": "Começa como humano e torna-se Demónio Vampírico das Trevas.", "afiliacao": "O Toque Proibido — Terra", "status": "Trevas", "habilidades_chave": ["Transformação em demónio vampírico"], "eventos_vida": [], "imagem_cor": "#922b21" },
-    { "id": "p066", "nome": "Os Cavaleiros do Apocalipse", "titulo": "Guerreiros Divinos", "raca": "", "descricao": "Guerreiros Divinos a serviço de Deus em O Toque Proibido.", "afiliacao": "Deus / O Toque Proibido — Terra", "status": "A serviço de Deus", "habilidades_chave": ["Poder divino de combate"], "eventos_vida": [], "imagem_cor": "#d4ac0d" },
-    { "id": "p067", "nome": "Aurora", "titulo": "Filha de Seth e Lilith", "raca": "", "descricao": "Filha de Seth e Lilith. Aparece como consequência da narrativa, não como personagem activa.", "afiliacao": "O Toque Proibido — Terra", "status": "Mencionada — não activa", "habilidades_chave": [], "eventos_vida": [], "imagem_cor": "#fde68a" }
+    {
+      "id": "p016",
+      "nome": "Anibal",
+      "titulo": "O Protagonista Central",
+      "raca": "Anibals",
+      "descricao": "O protagonista central da narrativa, cuja jornada e segredos guiam o rumo da história.",
+      "afiliacao": "Núcleo de Muscuta e Viajantes",
+      "status": "",
+      "habilidades_chave": [],
+      "eventos_vida": [],
+      "imagem_cor": "#2ecc71"
+    },
+    {
+      "id": "p017",
+      "nome": "Sorreno",
+      "titulo": "O Viajante Astuto",
+      "raca": "",
+      "descricao": "Viajante astuto cuja interação e dinâmica com o protagonista Anibal são absolutamente centrais para o desenvolvimento da trama.",
+      "afiliacao": "Núcleo de Muscuta e Viajantes",
+      "status": "",
+      "habilidades_chave": [],
+      "eventos_vida": [],
+      "imagem_cor": "#e67e22"
+    },
+    {
+      "id": "p018",
+      "nome": "Rockford",
+      "titulo": "Oficial de Inteligência Muscmen",
+      "raca": "Muscmen",
+      "descricao": "Oficial de inteligência Muscmen. Herói ambíguo que libertou dissidentes Men e tem o dossier da traição de Sept. Protege Omo com táticas de guerrilha militar.",
+      "afiliacao": "Resistência",
+      "status": "Ativo",
+      "habilidades_chave": [
+        "Inteligência militar",
+        "Guerrilha",
+        "Espionagem"
+      ],
+      "eventos_vida": [],
+      "imagem_cor": "#e74c3c"
+    },
+    {
+      "id": "p019",
+      "nome": "Fiche",
+      "titulo": "",
+      "raca": "",
+      "descricao": "",
+      "afiliacao": "",
+      "status": "",
+      "habilidades_chave": [],
+      "eventos_vida": [],
+      "imagem_cor": "#3498db"
+    },
+    {
+      "id": "p020",
+      "nome": "Omografos",
+      "titulo": "C.Men com Corno Torto — A Alegria",
+      "raca": "C.Men",
+      "descricao": "C.Men com um corno torto. Grande mas descoordenado, infantil e alegre. A 'alegria' da família de Omo.",
+      "afiliacao": "Família de Omo",
+      "status": "Ativo",
+      "habilidades_chave": [
+        "Força física",
+        "Espírito alegre"
+      ],
+      "eventos_vida": [],
+      "imagem_cor": "#9b59b6"
+    },
+    {
+      "id": "p021",
+      "nome": "Omogemio",
+      "titulo": "C.Men Colossal — O Escudo",
+      "raca": "C.Men",
+      "descricao": "C.Men colossal, força monstruosa, pele como rinoceronte. Escudo protetor do grupo.",
+      "afiliacao": "Família de Omo",
+      "status": "Ativo",
+      "habilidades_chave": [
+        "Força monstruosa",
+        "Resistência física extrema",
+        "Proteção"
+      ],
+      "eventos_vida": [],
+      "imagem_cor": "#1abc9c"
+    },
+    {
+      "id": "p022",
+      "nome": "Facha",
+      "titulo": "",
+      "raca": "",
+      "descricao": "",
+      "afiliacao": "",
+      "status": "",
+      "habilidades_chave": [],
+      "eventos_vida": [],
+      "imagem_cor": "#e67e22"
+    },
+    {
+      "id": "p023",
+      "nome": "Dune",
+      "titulo": "Cientista Muscmen — Par Intelectual de Cerebral",
+      "raca": "Muscmen",
+      "descricao": "Cientista Muscmen, par intelectual de Cerebral. Vê a Xenon como chave da evolução e não como arma de controlo. Alerta para o desequilíbrio planetário.",
+      "afiliacao": "Programa Encephalon (rival)",
+      "status": "Ativo",
+      "habilidades_chave": [
+        "Ciência avançada",
+        "Visão evolutiva",
+        "Análise planetária"
+      ],
+      "eventos_vida": [],
+      "imagem_cor": "#f1c40f"
+    },
+    {
+      "id": "p024",
+      "nome": "Cerebral",
+      "titulo": "Diretor do Programa Encephalon / Mentor Ambíguo",
+      "raca": "Men",
+      "descricao": "Diretor do Programa Encephalon. Men de pele pálida com metade do crânio substituída por um capacete de vidro que expõe o seu cérebro pulsante. Mentor ambíguo de G, conspira em segredo com Dune.",
+      "afiliacao": "Programa Encephalon",
+      "status": "Ativo",
+      "habilidades_chave": [
+        "Liderança científica",
+        "Conspiração",
+        "Mentoria ambígua"
+      ],
+      "eventos_vida": [],
+      "imagem_cor": "#00d4ff"
+    },
+    {
+      "id": "p025",
+      "nome": "Sakura",
+      "titulo": "",
+      "raca": "",
+      "descricao": "",
+      "afiliacao": "",
+      "status": "",
+      "habilidades_chave": [],
+      "eventos_vida": [],
+      "imagem_cor": "#ff69b4"
+    },
+    {
+      "id": "p026",
+      "nome": "Seth",
+      "titulo": "Anjo Protector / Anjo Vampírico",
+      "raca": "Vampygick",
+      "descricao": "Protagonista de O Toque Proibido. Anjo Protector e Anjo Vampírico. Começa neutro e evolui para o Bem.",
+      "afiliacao": "O Toque Proibido — Terra",
+      "status": "Neutro → Bem",
+      "habilidades_chave": [
+        "Protecção angélica",
+        "Poderes vampíricos"
+      ],
+      "eventos_vida": [],
+      "imagem_cor": "#8b0000"
+    },
+    {
+      "id": "p027",
+      "nome": "Lilith",
+      "titulo": "Vampira / Vampyre Angelical",
+      "raca": "Vampygick",
+      "descricao": "Protagonista de O Toque Proibido. Vampira e Vampyre Angelical. Evolui das Trevas para o Bem.",
+      "afiliacao": "O Toque Proibido — Terra",
+      "status": "Trevas → Neutro → Bem",
+      "habilidades_chave": [
+        "Poderes vampíricos",
+        "Energia angelical"
+      ],
+      "eventos_vida": [],
+      "imagem_cor": "#6c0070"
+    },
+    {
+      "id": "p028",
+      "nome": "Abner",
+      "titulo": "O Pai da Luz",
+      "raca": "",
+      "descricao": "Líder e profeta dos humanóides vivos em Orbis Terrarum Abyssus. A personagem central da narrativa.",
+      "afiliacao": "Conselho dos Men / Orbis Terrarum Abyssus",
+      "status": "Ativo",
+      "habilidades_chave": [
+        "Liderança",
+        "Profecia"
+      ],
+      "eventos_vida": [],
+      "imagem_cor": "#f1c40f"
+    },
+    {
+      "id": "p029",
+      "nome": "Lúcia / Magnus",
+      "titulo": "A Escolhida",
+      "raca": "",
+      "descricao": "A escolhida, nascida em Orbis Terrarum Abyssus. Filha de Ecoema e Luana. Cresce subitamente ao longo do Capítulo VI. Destrói Deathus.",
+      "afiliacao": "Orbis Terrarum Abyssus",
+      "status": "Ativa",
+      "habilidades_chave": [
+        "Crescimento súbito",
+        "Poder da Escolhida"
+      ],
+      "eventos_vida": [
+        {
+          "ano": "Capítulo VI",
+          "evento": "Cresce subitamente. Destrói Deathus."
+        }
+      ],
+      "imagem_cor": "#e91e8c"
+    },
+    {
+      "id": "p030",
+      "nome": "Inceptum / Darko",
+      "titulo": "Lord dos Vivos — Traidor de Everto",
+      "raca": "",
+      "descricao": "Lord de Everto especializado em sentir os vivos. Acaba por se ligar a Abner e a Lúcia. O seu verdadeiro nome é Darko.",
+      "afiliacao": "Everto (inicialmente) → Abner e Lúcia",
+      "status": "Ativo — mudança de lado",
+      "habilidades_chave": [
+        "Sentir os vivos",
+        "Lord dos Vivos"
+      ],
+      "eventos_vida": [],
+      "imagem_cor": "#6c63ff"
+    },
+    {
+      "id": "p031",
+      "nome": "Darci",
+      "titulo": "Filha Adoptiva de Abner",
+      "raca": "",
+      "descricao": "Membro do conselho dos Men. Filha adoptiva de Abner. Analítica e racional. Papel decisivo na fuga de Abner da prisão.",
+      "afiliacao": "Conselho dos Men",
+      "status": "Ativa",
+      "habilidades_chave": [
+        "Análise racional",
+        "Operações de fuga"
+      ],
+      "eventos_vida": [
+        {
+          "ano": "Narrativa principal",
+          "evento": "Papel decisivo na fuga de Abner da prisão."
+        }
+      ],
+      "imagem_cor": "#00d4ff"
+    },
+    {
+      "id": "p032",
+      "nome": "Ecoema",
+      "titulo": "Pai de Lúcia",
+      "raca": "",
+      "descricao": "Pai de Lúcia. Recém-chegado a Orbis Terrarum Abyssus. Morre prematuramente envelhecido na Cidade das Almas.",
+      "afiliacao": "Orbis Terrarum Abyssus",
+      "status": "Falecido — Cidade das Almas",
+      "habilidades_chave": [],
+      "eventos_vida": [
+        {
+          "ano": "Narrativa principal",
+          "evento": "Morre prematuramente envelhecido na Cidade das Almas."
+        }
+      ],
+      "imagem_cor": "#3498db"
+    },
+    {
+      "id": "p033",
+      "nome": "Luana",
+      "titulo": "Mãe de Lúcia",
+      "raca": "",
+      "descricao": "Mãe de Lúcia. Intuitiva e perceptiva de perigos. Morre envelhecida na Cidade das Almas.",
+      "afiliacao": "Orbis Terrarum Abyssus",
+      "status": "Falecida — Cidade das Almas",
+      "habilidades_chave": [
+        "Intuição",
+        "Perceção de perigos"
+      ],
+      "eventos_vida": [
+        {
+          "ano": "Narrativa principal",
+          "evento": "Morre envelhecida na Cidade das Almas."
+        }
+      ],
+      "imagem_cor": "#e67e22"
+    },
+    {
+      "id": "p034",
+      "nome": "Oleander",
+      "titulo": "Vampiro Traidor Silencioso",
+      "raca": "Vampygick",
+      "descricao": "Vampiro da raça Vampygick. Aliado indirecto dos humanóides e traidor silencioso de Everto.",
+      "afiliacao": "Everto (traidor) → Humanóides",
+      "status": "Ativo",
+      "habilidades_chave": [
+        "Habilidades vampíricas",
+        "Infiltração"
+      ],
+      "eventos_vida": [],
+      "imagem_cor": "#8b0000"
+    },
+    {
+      "id": "p035",
+      "nome": "Dulcis",
+      "titulo": "Ser entre a Vida e a Morte",
+      "raca": "Onyxus",
+      "descricao": "Ser da raça Onyxus, entre a vida e a morte. Domina o poder das pedras de Orbis Terrarum Abyssus. Aliada do conselho dos Men.",
+      "afiliacao": "Conselho dos Men",
+      "status": "Ativo — entre vida e morte",
+      "habilidades_chave": [
+        "Domínio das pedras de Orbis",
+        "Entre vida e morte"
+      ],
+      "eventos_vida": [],
+      "imagem_cor": "#9b59b6"
+    },
+    {
+      "id": "p036",
+      "nome": "Everto",
+      "titulo": "Senhor Supremo de Orbis Terrarum Abyssus",
+      "raca": "",
+      "descricao": "Senhor supremo de Orbis Terrarum Abyssus. Figura central de poder, nunca aparece directamente na acção.",
+      "afiliacao": "Everto (facção própria)",
+      "status": "Ativo — ausente da acção directa",
+      "habilidades_chave": [
+        "Poder supremo",
+        "Controlo de Orbis"
+      ],
+      "eventos_vida": [],
+      "imagem_cor": "#2c3e50"
+    },
+    {
+      "id": "p037",
+      "nome": "Deathus",
+      "titulo": "A Alma da Noite",
+      "raca": "",
+      "descricao": "A alma da noite. Primeira alma enviada para Orbis Terrarum Abyssus. Antagonista dos Capítulos VI e VII. Destruído por Lúcia.",
+      "afiliacao": "Everto",
+      "status": "Destruído por Lúcia — Capítulo VI/VII",
+      "habilidades_chave": [
+        "Alma da noite",
+        "Poder das trevas"
+      ],
+      "eventos_vida": [
+        {
+          "ano": "Capítulo VI/VII",
+          "evento": "Antagonista principal. Destruído por Lúcia."
+        }
+      ],
+      "imagem_cor": "#1a1a2e"
+    },
+    {
+      "id": "p038",
+      "nome": "R.D.M.",
+      "titulo": "Ser Misterioso Banido",
+      "raca": "",
+      "descricao": "Ser misterioso e poderoso, banido para Orbis Terrarum Abyssus. Aliado nominal de Everto, mas com motivações próprias e desconhecidas.",
+      "afiliacao": "Everto (nominal) — motivações desconhecidas",
+      "status": "Ativo — motivações incertas",
+      "habilidades_chave": [
+        "Poder desconhecido",
+        "Motivações próprias"
+      ],
+      "eventos_vida": [],
+      "imagem_cor": "#7f8c8d"
+    },
+    {
+      "id": "p039",
+      "nome": "Aetas",
+      "titulo": "Lord do Tempo",
+      "raca": "",
+      "descricao": "Lord do Tempo de Everto.",
+      "afiliacao": "Everto",
+      "status": "Ativo",
+      "habilidades_chave": [
+        "Manipulação do tempo"
+      ],
+      "eventos_vida": [],
+      "imagem_cor": "#00b4d8"
+    },
+    {
+      "id": "p040",
+      "nome": "Morsus",
+      "titulo": "Lord da Dor",
+      "raca": "",
+      "descricao": "Lord da Dor de Everto.",
+      "afiliacao": "Everto",
+      "status": "Ativo",
+      "habilidades_chave": [
+        "Infligir dor"
+      ],
+      "eventos_vida": [],
+      "imagem_cor": "#e74c3c"
+    },
+    {
+      "id": "p041",
+      "nome": "Animus",
+      "titulo": "Lord das Almas",
+      "raca": "",
+      "descricao": "Lord das Almas de Everto.",
+      "afiliacao": "Everto",
+      "status": "Ativo",
+      "habilidades_chave": [
+        "Controlo de almas"
+      ],
+      "eventos_vida": [],
+      "imagem_cor": "#6c63ff"
+    },
+    {
+      "id": "p042",
+      "nome": "Le-Gaia",
+      "titulo": "Mensageira Divina",
+      "raca": "",
+      "descricao": "Mensageira divina. Aparece a Abner numa visão e revela-lhe a sua missão.",
+      "afiliacao": "Dimensão Onírica / Transcendente",
+      "status": "Aparição em visão",
+      "habilidades_chave": [
+        "Mensagem divina",
+        "Visão profética"
+      ],
+      "eventos_vida": [
+        {
+          "ano": "Narrativa principal",
+          "evento": "Aparece a Abner numa visão e revela a sua missão."
+        }
+      ],
+      "imagem_cor": "#ffffff"
+    },
+    {
+      "id": "p043",
+      "nome": "Adele",
+      "titulo": "Filha de Abner — Falecida",
+      "raca": "",
+      "descricao": "Filha verdadeira de Abner, falecida. Aparece na visão de Abner.",
+      "afiliacao": "Dimensão Onírica",
+      "status": "Falecida — aparece em visão",
+      "habilidades_chave": [],
+      "eventos_vida": [],
+      "imagem_cor": "#ffd6e0"
+    },
+    {
+      "id": "p044",
+      "nome": "Ciana",
+      "titulo": "Esposa de Abner — Falecida",
+      "raca": "",
+      "descricao": "Esposa de Abner, falecida. Aparece na visão de Abner.",
+      "afiliacao": "Dimensão Onírica",
+      "status": "Falecida — aparece em visão",
+      "habilidades_chave": [],
+      "eventos_vida": [],
+      "imagem_cor": "#ffd6e0"
+    },
+    {
+      "id": "p045",
+      "nome": "Juscelino",
+      "titulo": "Coordenador da Área 5583",
+      "raca": "",
+      "descricao": "Coordenador e chefe da Área 5583. Liderança pragmática e, mais tarde, revelada como traidora.",
+      "afiliacao": "Área 5583",
+      "status": "Traidor revelado",
+      "habilidades_chave": [
+        "Coordenação",
+        "Liderança pragmática"
+      ],
+      "eventos_vida": [
+        {
+          "ano": "Narrativa principal",
+          "evento": "Liderança revelada como traidora."
+        }
+      ],
+      "imagem_cor": "#e67e22"
+    },
+    {
+      "id": "p046",
+      "nome": "Gabriel",
+      "titulo": "Anjo Elite / Anjo Vampírico",
+      "raca": "",
+      "descricao": "Anjo Elite e Anjo Vampírico em O Toque Proibido. Bem corrompido que se torna traidor. Em Orbis Terrarum Abyssus é figura do passado de Darci, que abandona o esconderijo e não regressa.",
+      "afiliacao": "O Toque Proibido — Terra / Passado de Darci (Orbis)",
+      "status": "Bem corrompido → Traidor",
+      "habilidades_chave": [
+        "Anjo Elite",
+        "Poderes vampíricos"
+      ],
+      "eventos_vida": [
+        {
+          "ano": "Narrativa (Orbis)",
+          "evento": "Abandona o esconderijo voluntariamente. Não regressa."
+        }
+      ],
+      "imagem_cor": "#bdc3c7"
+    },
+    {
+      "id": "p047",
+      "nome": "Lúcifer",
+      "titulo": "Anjo Negro / Imortal Ancião",
+      "raca": "",
+      "descricao": "Anjo Negro e Imortal Ancião. Personagem principal das Trevas em O Toque Proibido.",
+      "afiliacao": "O Toque Proibido — Terra",
+      "status": "Trevas",
+      "habilidades_chave": [
+        "Imortalidade ancestral",
+        "Poder das trevas"
+      ],
+      "eventos_vida": [],
+      "imagem_cor": "#1a1a2e"
+    },
+    {
+      "id": "p048",
+      "nome": "Drácula",
+      "titulo": "Vampiro Antigo",
+      "raca": "Vampygick",
+      "descricao": "Vampiro Antigo. Percorre um arco de traição e redenção em O Toque Proibido.",
+      "afiliacao": "O Toque Proibido — Terra",
+      "status": "Neutro → Traidor → Redenção",
+      "habilidades_chave": [
+        "Vampirismo ancestral",
+        "Poderes de vampiro antigo"
+      ],
+      "eventos_vida": [],
+      "imagem_cor": "#8b0000"
+    },
+    {
+      "id": "p049",
+      "nome": "Belzebuh",
+      "titulo": "Vampiro Angelical / Traidor de Todos",
+      "raca": "Vampygick",
+      "descricao": "Vampiro e Vampiro Angelical das Trevas. Traidor de todas as fações em O Toque Proibido.",
+      "afiliacao": "Nenhuma — traidor de todos",
+      "status": "Trevas — Traidor de todos",
+      "habilidades_chave": [
+        "Vampirismo angelical",
+        "Traição estratégica"
+      ],
+      "eventos_vida": [],
+      "imagem_cor": "#4a0000"
+    },
+    {
+      "id": "p050",
+      "nome": "Kain",
+      "titulo": "Vampiro / Semideus / Imortal Ancião",
+      "raca": "Vampygick",
+      "descricao": "Vampiro, Semideus e Imortal Ancião. Evolui do neutro para o Bem em O Toque Proibido.",
+      "afiliacao": "O Toque Proibido — Terra",
+      "status": "Neutro → Bem",
+      "habilidades_chave": [
+        "Imortalidade",
+        "Poder semidivino"
+      ],
+      "eventos_vida": [],
+      "imagem_cor": "#6c3483"
+    },
+    {
+      "id": "p051",
+      "nome": "Angélica",
+      "titulo": "Vampyre — Filha de Lúcifer",
+      "raca": "Vampygick",
+      "descricao": "Vampyre e filha de Lúcifer. Evolui do neutro para o Bem em O Toque Proibido.",
+      "afiliacao": "O Toque Proibido — Terra",
+      "status": "Neutro → Bem",
+      "habilidades_chave": [
+        "Poderes vampíricos herdados"
+      ],
+      "eventos_vida": [],
+      "imagem_cor": "#9b59b6"
+    },
+    {
+      "id": "p052",
+      "nome": "Crystal / Medusa",
+      "titulo": "Vampira / Demónio Vampírico Infiltrada",
+      "raca": "Vampygick",
+      "descricao": "Vampira e Demónio Vampírico das Trevas. Actua como infiltrada em O Toque Proibido. Aliada de A Morte.",
+      "afiliacao": "Trevas (infiltrada)",
+      "status": "Trevas — infiltrada",
+      "habilidades_chave": [
+        "Infiltração",
+        "Poderes demoníacos vampíricos"
+      ],
+      "eventos_vida": [],
+      "imagem_cor": "#1abc9c"
+    },
+    {
+      "id": "p053",
+      "nome": "Deus",
+      "titulo": "Ser Supremo Divino",
+      "raca": "",
+      "descricao": "Ser Supremo Divino. Bem corrompido pelo poder em O Toque Proibido.",
+      "afiliacao": "Entidade Suprema",
+      "status": "Bem corrompido pelo poder",
+      "habilidades_chave": [
+        "Poder divino supremo"
+      ],
+      "eventos_vida": [],
+      "imagem_cor": "#f1c40f"
+    },
+    {
+      "id": "p054",
+      "nome": "O Diabo",
+      "titulo": "Ser Supremo Maléfico",
+      "raca": "",
+      "descricao": "Ser Supremo Maléfico das Trevas em O Toque Proibido.",
+      "afiliacao": "Entidade Suprema — Trevas",
+      "status": "Trevas",
+      "habilidades_chave": [
+        "Poder maléfico supremo"
+      ],
+      "eventos_vida": [],
+      "imagem_cor": "#c0392b"
+    },
+    {
+      "id": "p055",
+      "nome": "A Morte",
+      "titulo": "Entidade das Trevas",
+      "raca": "",
+      "descricao": "Entidade das Trevas aliada de Crystal/Medusa em O Toque Proibido.",
+      "afiliacao": "Trevas — aliada de Medusa",
+      "status": "Trevas",
+      "habilidades_chave": [
+        "Poder sobre a morte"
+      ],
+      "eventos_vida": [],
+      "imagem_cor": "#2c2c2c"
+    },
+    {
+      "id": "p056",
+      "nome": "Papyrus",
+      "titulo": "Caçador de Vampiros",
+      "raca": "",
+      "descricao": "Humano e Caçador de Vampiros. Começa neutro e evolui para o Bem em O Toque Proibido.",
+      "afiliacao": "O Toque Proibido — Terra",
+      "status": "Bem (inicialmente neutro)",
+      "habilidades_chave": [
+        "Caça a vampiros",
+        "Combate humano"
+      ],
+      "eventos_vida": [],
+      "imagem_cor": "#e67e22"
+    },
+    {
+      "id": "p057",
+      "nome": "Zephyrus",
+      "titulo": "Lobisomem / Imortal Ancião",
+      "raca": "",
+      "descricao": "Lobisomem e Imortal Ancião. Evolui do neutro para o Bem em O Toque Proibido.",
+      "afiliacao": "O Toque Proibido — Terra",
+      "status": "Neutro → Bem",
+      "habilidades_chave": [
+        "Licantropia",
+        "Imortalidade ancestral"
+      ],
+      "eventos_vida": [],
+      "imagem_cor": "#795548"
+    },
+    {
+      "id": "p058",
+      "nome": "Atanatus",
+      "titulo": "Lobisomem / General",
+      "raca": "",
+      "descricao": "Lobisomem e General do lado do Bem em O Toque Proibido.",
+      "afiliacao": "O Toque Proibido — Terra",
+      "status": "Bem",
+      "habilidades_chave": [
+        "Licantropia",
+        "Liderança militar"
+      ],
+      "eventos_vida": [],
+      "imagem_cor": "#6d4c41"
+    },
+    {
+      "id": "p059",
+      "nome": "Hahuiah",
+      "titulo": "Anjo General Suplente",
+      "raca": "",
+      "descricao": "Anjo General Suplente do lado do Bem em O Toque Proibido.",
+      "afiliacao": "O Toque Proibido — Terra",
+      "status": "Bem",
+      "habilidades_chave": [
+        "Liderança angélica",
+        "Combate celestial"
+      ],
+      "eventos_vida": [],
+      "imagem_cor": "#f0f0f0"
+    },
+    {
+      "id": "p060",
+      "nome": "Tyra",
+      "titulo": "Demónia Salva",
+      "raca": "",
+      "descricao": "Demónia que se torna do lado do Bem após ser salva em O Toque Proibido.",
+      "afiliacao": "O Toque Proibido — Terra",
+      "status": "Bem (após ser salva)",
+      "habilidades_chave": [
+        "Poderes demoníacos"
+      ],
+      "eventos_vida": [],
+      "imagem_cor": "#e91e8c"
+    },
+    {
+      "id": "p061",
+      "nome": "Chad",
+      "titulo": "Super Vampiro",
+      "raca": "Vampygick",
+      "descricao": "Super Vampiro do lado do Bem em O Toque Proibido.",
+      "afiliacao": "O Toque Proibido — Terra",
+      "status": "Bem",
+      "habilidades_chave": [
+        "Super vampirismo"
+      ],
+      "eventos_vida": [],
+      "imagem_cor": "#3498db"
+    },
+    {
+      "id": "p062",
+      "nome": "Lucy",
+      "titulo": "Vampira Ressuscitada",
+      "raca": "Vampygick",
+      "descricao": "Vampira ressuscitada do lado do Bem em O Toque Proibido.",
+      "afiliacao": "O Toque Proibido — Terra",
+      "status": "Bem",
+      "habilidades_chave": [
+        "Ressurreição",
+        "Poderes vampíricos"
+      ],
+      "eventos_vida": [],
+      "imagem_cor": "#ff69b4"
+    },
+    {
+      "id": "p063",
+      "nome": "Afrodite",
+      "titulo": "Semideusa",
+      "raca": "",
+      "descricao": "Semideusa do lado do Bem em O Toque Proibido.",
+      "afiliacao": "O Toque Proibido — Terra",
+      "status": "Bem",
+      "habilidades_chave": [
+        "Poderes semidivinos"
+      ],
+      "eventos_vida": [],
+      "imagem_cor": "#f9a8d4"
+    },
+    {
+      "id": "p064",
+      "nome": "Kefka",
+      "titulo": "Bruxo",
+      "raca": "",
+      "descricao": "Bruxo neutro em O Toque Proibido.",
+      "afiliacao": "O Toque Proibido — Terra",
+      "status": "Neutro",
+      "habilidades_chave": [
+        "Magia"
+      ],
+      "eventos_vida": [],
+      "imagem_cor": "#8e44ad"
+    },
+    {
+      "id": "p065",
+      "nome": "Sapien / João",
+      "titulo": "Humano → Demónio Vampírico",
+      "raca": "Vampygick",
+      "descricao": "Começa como humano e torna-se Demónio Vampírico das Trevas em O Toque Proibido.",
+      "afiliacao": "O Toque Proibido — Terra",
+      "status": "Trevas",
+      "habilidades_chave": [
+        "Transformação em demónio vampírico"
+      ],
+      "eventos_vida": [],
+      "imagem_cor": "#922b21"
+    },
+    {
+      "id": "p066",
+      "nome": "Os Cavaleiros do Apocalipse",
+      "titulo": "Guerreiros Divinos",
+      "raca": "",
+      "descricao": "Guerreiros Divinos a serviço de Deus em O Toque Proibido.",
+      "afiliacao": "Deus / O Toque Proibido — Terra",
+      "status": "A serviço de Deus",
+      "habilidades_chave": [
+        "Poder divino de combate"
+      ],
+      "eventos_vida": [],
+      "imagem_cor": "#d4ac0d"
+    },
+    {
+      "id": "p067",
+      "nome": "Aurora",
+      "titulo": "Filha de Seth e Lilith",
+      "raca": "",
+      "descricao": "Filha de Seth e Lilith. Aparece como consequência da narrativa, não como personagem activa.",
+      "afiliacao": "O Toque Proibido — Terra",
+      "status": "Mencionada — não activa",
+      "habilidades_chave": [],
+      "eventos_vida": [],
+      "imagem_cor": "#fde68a"
+    },
+    {
+      "id": "p068",
+      "nome": "Lara",
+      "titulo": "Mulher de G / Filha do Conselheiro Alarico",
+      "raca": "Men",
+      "descricao": "Filha do Conselheiro Alarico, mulher de G. Inteligente, elegante e perigosa. Complementa a lógica fria de G com a astúcia social e emocional. Mãe de Zeno.",
+      "afiliacao": "Rede de G",
+      "status": "Ativa",
+      "habilidades_chave": [
+        "Astúcia social",
+        "Manipulação emocional",
+        "Espionagem política"
+      ],
+      "eventos_vida": [],
+      "imagem_cor": "#e91e8c"
+    },
+    {
+      "id": "p069",
+      "nome": "Varek",
+      "titulo": "Conselheiro Men Corrupto",
+      "raca": "Men",
+      "descricao": "Conselheiro Men, um dos últimos apoiantes de Sept. Corrupto e hipócrita. Dobrado por Lara com informação comprometedora.",
+      "afiliacao": "Conselho Men (Sept)",
+      "status": "Dobrado por Lara",
+      "habilidades_chave": [
+        "Política",
+        "Corrupção"
+      ],
+      "eventos_vida": [],
+      "imagem_cor": "#7f8c8d"
+    },
+    {
+      "id": "p070",
+      "nome": "Dron",
+      "titulo": "Tenente-Coordenador / Primeiro da Rede de G",
+      "raca": "Men",
+      "descricao": "Cadete militar no Encephalon, depois Tenente-Coordenador. Primeiro membro da rede de G, ganha posição ao aplicar a lógica de G à logística do exército.",
+      "afiliacao": "Rede de G / Exército Men",
+      "status": "Tenente-Coordenador",
+      "habilidades_chave": [
+        "Logística militar",
+        "Coordenação"
+      ],
+      "eventos_vida": [],
+      "imagem_cor": "#3498db"
+    },
+    {
+      "id": "p071",
+      "nome": "Veda",
+      "titulo": "Cadete de Comunicações / Guerra Mediática",
+      "raca": "Men",
+      "descricao": "Cadete de Comunicações. Responsável pela guerra mediática contra Sept, publicando análises de 'ineficiência' que minam a sua presidência.",
+      "afiliacao": "Rede de G",
+      "status": "Ativa",
+      "habilidades_chave": [
+        "Comunicação mediática",
+        "Propaganda",
+        "Análise política"
+      ],
+      "eventos_vida": [],
+      "imagem_cor": "#00d4ff"
+    },
+    {
+      "id": "p072",
+      "nome": "Zion",
+      "titulo": "Secretário Executivo do Comité de Orçamento",
+      "raca": "Men",
+      "descricao": "Secretário Executivo do Comité de Orçamento do Conselho. Controla as finanças e emite alertas económicos para forçar a queda de Sept.",
+      "afiliacao": "Rede de G / Conselho Men",
+      "status": "Ativo",
+      "habilidades_chave": [
+        "Controlo financeiro",
+        "Pressão económica"
+      ],
+      "eventos_vida": [],
+      "imagem_cor": "#f1c40f"
+    },
+    {
+      "id": "p073",
+      "nome": "Elara",
+      "titulo": "Coordenadora de Informantes de Cole",
+      "raca": "Men",
+      "descricao": "Coordenadora de informantes de Cole. Opera nas sombras para monitorizar o pulso popular.",
+      "afiliacao": "Rede de G",
+      "status": "Ativa",
+      "habilidades_chave": [
+        "Rede de informantes",
+        "Espionagem"
+      ],
+      "eventos_vida": [],
+      "imagem_cor": "#9b59b6"
+    },
+    {
+      "id": "p074",
+      "nome": "Kai",
+      "titulo": "Mensageiro de Alta Segurança",
+      "raca": "Men",
+      "descricao": "Mensageiro de Alta Segurança. Canal de comunicação analógico, não rastreável, entre G e as operações de campo.",
+      "afiliacao": "Rede de G",
+      "status": "Ativo",
+      "habilidades_chave": [
+        "Comunicação segura",
+        "Anonimato"
+      ],
+      "eventos_vida": [],
+      "imagem_cor": "#2ecc71"
+    },
+    {
+      "id": "p075",
+      "nome": "Alarico",
+      "titulo": "Conselheiro Men — Pai de Lara",
+      "raca": "Men",
+      "descricao": "Conselheiro Men e pai de Lara. Aceita a aliança com G por interesse próprio.",
+      "afiliacao": "Conselho Men / Aliado de G",
+      "status": "Ativo",
+      "habilidades_chave": [
+        "Política",
+        "Influência no conselho"
+      ],
+      "eventos_vida": [],
+      "imagem_cor": "#e67e22"
+    },
+    {
+      "id": "p076",
+      "nome": "Nicola",
+      "titulo": "General Men Desaparecido / Treinador da Resistência",
+      "raca": "Men",
+      "descricao": "General Men que desapareceu após recusar uma ordem de purga. Treinador da resistência, acredita que a honra Men está na proteção dos fracos.",
+      "afiliacao": "Resistência",
+      "status": "Desaparecido / Ativo na resistência",
+      "habilidades_chave": [
+        "Liderança militar",
+        "Treino da resistência",
+        "Honra Men"
+      ],
+      "eventos_vida": [],
+      "imagem_cor": "#c0392b"
+    },
+    {
+      "id": "p077",
+      "nome": "Homólogos",
+      "titulo": "C.Men — A Alma do Grupo",
+      "raca": "C.Men",
+      "descricao": "C.Men com deformação cerebral severa. Incapaz de lutar, mas serve com amor absoluto. A 'alma' da família de Omo.",
+      "afiliacao": "Família de Omo",
+      "status": "Ativo",
+      "habilidades_chave": [
+        "Amor incondicional",
+        "Serviço"
+      ],
+      "eventos_vida": [],
+      "imagem_cor": "#ffd6e0"
+    },
+    {
+      "id": "p078",
+      "nome": "Naumer",
+      "titulo": "O Guardião do Abismo",
+      "raca": "",
+      "descricao": "O Guardião do Abismo. Ser de poder divino com cabelos de prata e olhos dourados. Carcereiro do terror e das fronteiras do mundo conhecido. Existe há milénios.",
+      "afiliacao": "Entidade Primordial",
+      "status": "Existente há milénios",
+      "habilidades_chave": [
+        "Poder divino",
+        "Guarda do Abismo",
+        "Imortalidade milenar"
+      ],
+      "eventos_vida": [],
+      "imagem_cor": "#00b4d8"
+    },
+    {
+      "id": "p079",
+      "nome": "Sinhe",
+      "titulo": "Génio Caótico — Mestre da Destruição",
+      "raca": "Muscmen",
+      "descricao": "Muscmen aprisionado num asteroide. Génio caótico e instável, com pele translúcida e olhos cosidos com ouro. Especialista em magia da destruição, libertado por G para completar a Xenon.",
+      "afiliacao": "Libertado por G",
+      "status": "Aprisionado → Libertado por G",
+      "habilidades_chave": [
+        "Magia da destruição",
+        "Génio científico caótico"
+      ],
+      "eventos_vida": [],
+      "imagem_cor": "#8b0000"
+    },
+    {
+      "id": "p080",
+      "nome": "A Diretora",
+      "titulo": "Diretora do Orfanato",
+      "raca": "Men",
+      "descricao": "Diretora do orfanato. Carcereira que G manipula com chantagem e recompensas.",
+      "afiliacao": "Orfanato Estatal",
+      "status": "Manipulada por G",
+      "habilidades_chave": [
+        "Administração"
+      ],
+      "eventos_vida": [],
+      "imagem_cor": "#7f8c8d"
+    },
+    {
+      "id": "p081",
+      "nome": "O Zelador",
+      "titulo": "Funcionário do Orfanato",
+      "raca": "Men",
+      "descricao": "Funcionário do orfanato, cúmplice involuntário de G.",
+      "afiliacao": "Orfanato Estatal",
+      "status": "Cúmplice involuntário",
+      "habilidades_chave": [],
+      "eventos_vida": [],
+      "imagem_cor": "#95a5a6"
+    },
+    {
+      "id": "p082",
+      "nome": "Vex",
+      "titulo": "Bully do Orfanato",
+      "raca": "Men",
+      "descricao": "Bully do orfanato, dominava pelo medo físico. Primeiro 'vencido' por G através da manipulação de informação.",
+      "afiliacao": "Orfanato Estatal",
+      "status": "Primeiro derrotado por G",
+      "habilidades_chave": [
+        "Força física"
+      ],
+      "eventos_vida": [],
+      "imagem_cor": "#e74c3c"
+    },
+    {
+      "id": "p083",
+      "nome": "Matrona Lígia",
+      "titulo": "Responsável do Orfanato — Leal a G",
+      "raca": "Men",
+      "descricao": "Responsável pelo orfanato numa fase posterior, leal a G.",
+      "afiliacao": "Orfanato Estatal / Rede de G",
+      "status": "Leal a G",
+      "habilidades_chave": [
+        "Administração"
+      ],
+      "eventos_vida": [],
+      "imagem_cor": "#8e44ad"
+    },
+    {
+      "id": "p084",
+      "nome": "General Danton",
+      "titulo": "Alto Oficial Men",
+      "raca": "Men",
+      "descricao": "Alto oficial Men conquistado pela eficiência logística de G.",
+      "afiliacao": "Exército Men / Rede de G",
+      "status": "Conquistado por G",
+      "habilidades_chave": [
+        "Liderança militar"
+      ],
+      "eventos_vida": [],
+      "imagem_cor": "#2c3e50"
+    },
+    {
+      "id": "p085",
+      "nome": "A Interface",
+      "titulo": "Entidade Tecnológica dos Techmen",
+      "raca": "Techmen",
+      "descricao": "Voz sintética dos Techmen, entidade tecnológica que observa e negoceia.",
+      "afiliacao": "Techmen",
+      "status": "Ativa",
+      "habilidades_chave": [
+        "Negociação tecnológica",
+        "Observação"
+      ],
+      "eventos_vida": [],
+      "imagem_cor": "#00d4ff"
+    },
+    {
+      "id": "p086",
+      "nome": "Elina",
+      "titulo": "Esposa do Conselheiro Varek",
+      "raca": "Men",
+      "descricao": "Esposa do Conselheiro Varek, usada por Lara como alavanca de chantagem.",
+      "afiliacao": "Conselho Men (indireta)",
+      "status": "Alavanca de chantagem",
+      "habilidades_chave": [],
+      "eventos_vida": [],
+      "imagem_cor": "#f9a8d4"
+    },
+    {
+      "id": "p087",
+      "nome": "Zeno",
+      "titulo": "Filho de G e Lara",
+      "raca": "Men",
+      "descricao": "Filho de G e Lara. Bebé que se torna o primeiro verdadeiro 'ponto de vulnerabilidade' emocional de G.",
+      "afiliacao": "Família de G",
+      "status": "Bebé — presente narrativo",
+      "habilidades_chave": [],
+      "eventos_vida": [],
+      "imagem_cor": "#c0a020"
+    }
   ],
   "lugares": [
-    { "id": "l001", "nome": "Muscuta", "tipo": "Planeta", "descricao": "", "habitantes": [], "status": "", "imagem_cor": "#2ecc71" },
-    { "id": "l002", "nome": "Terra", "tipo": "Planeta", "descricao": "", "habitantes": [], "status": "", "imagem_cor": "#3498db" },
-    { "id": "l003", "nome": "Spirat", "tipo": "Planeta", "descricao": "", "habitantes": [], "status": "", "imagem_cor": "#9b59b6" }
+    {
+      "id": "l001",
+      "nome": "Muscuta",
+      "tipo": "Planeta",
+      "descricao": "",
+      "habitantes": [],
+      "status": "",
+      "imagem_cor": "#2ecc71"
+    },
+    {
+      "id": "l002",
+      "nome": "Terra",
+      "tipo": "Planeta",
+      "descricao": "",
+      "habitantes": [],
+      "status": "",
+      "imagem_cor": "#3498db"
+    },
+    {
+      "id": "l003",
+      "nome": "Spirat",
+      "tipo": "Planeta",
+      "descricao": "",
+      "habitantes": [],
+      "status": "",
+      "imagem_cor": "#9b59b6"
+    }
   ],
   "facoes": [
-    { "id": "f001", "nome": "Núcleo de Muscuta e Viajantes", "tipo": "Grupo Central", "descricao": "O grupo central da narrativa de Muscuta. Reúne o protagonista Anibal, o viajante Sorreno, o estratega Omo e o ancião Zale — cada um com um papel único na jornada que define o destino do planeta.", "lider": "Anibal (protagonista)", "membros_estimados": "Anibal, Sorreno, Omo, Zale", "objetivo": "Seguir a jornada central da narrativa de Muscuta", "aliancas": [], "conflitos": [], "imagem_cor": "#2ecc71" }
+    {
+      "id": "f001",
+      "nome": "Núcleo de Muscuta e Viajantes",
+      "tipo": "Grupo Central",
+      "descricao": "O grupo central da narrativa de Muscuta. Reúne o protagonista Anibal, o viajante Sorreno, o estratega Omo e o ancião Zale — cada um com um papel único na jornada que define o destino do planeta.",
+      "lider": "Anibal (protagonista)",
+      "membros_estimados": "Anibal, Sorreno, Omo, Zale",
+      "objetivo": "Seguir a jornada central da narrativa de Muscuta",
+      "aliancas": [],
+      "conflitos": [],
+      "imagem_cor": "#2ecc71"
+    }
   ],
   "eventos": [
     {
@@ -979,7 +2292,10 @@ const DB = {
       "periodo": "Ano 2006 (Terra) / Ano 3518 (Muscuta)",
       "descricao": "O ponto de viragem e a fundação da história. Estabeleceu-se uma sincronia universal fixa onde os eventos da Terra e do planeta Muscuta se cruzam e avançam em paralelo, servindo Muscuta como o eixo central da narrativa.",
       "participantes": [],
-      "consequencias": ["Sincronia permanente entre Terra e Muscuta", "Muscuta torna-se o eixo central da narrativa"],
+      "consequencias": [
+        "Sincronia permanente entre Terra e Muscuta",
+        "Muscuta torna-se o eixo central da narrativa"
+      ],
       "status": "Evento fundacional confirmado",
       "imagem_cor": "#00d4ff"
     },
@@ -989,8 +2305,16 @@ const DB = {
       "tipo": "Evento Histórico / Era Ancestral",
       "periodo": "Eras Antigas (DDMB e anteriores)",
       "descricao": "O tempo em Muscuta é regido por divisões cronológicas próprias. Neste período remoto, uma civilização ancestral cria artificialmente a raça Anibal com uma modificação genética que lhes garante 200% mais sorte, destinados a cuidar dos Jusperium — a primeira raça do planeta.",
-      "participantes": ["Civilização Ancestral", "Anibals (criados)", "Jusperium (primeira raça)"],
-      "consequencias": ["Criação artificial dos Anibals", "Modificação genética de sorte (+200%)", "Estabelecimento da relação Anibal-Jusperium"],
+      "participantes": [
+        "Civilização Ancestral",
+        "Anibals (criados)",
+        "Jusperium (primeira raça)"
+      ],
+      "consequencias": [
+        "Criação artificial dos Anibals",
+        "Modificação genética de sorte (+200%)",
+        "Estabelecimento da relação Anibal-Jusperium"
+      ],
       "status": "Histórico — registado nas crónicas ancestrais",
       "imagem_cor": "#f1c40f"
     },
@@ -1000,8 +2324,15 @@ const DB = {
       "tipo": "Catástrofe / Evento Mágico",
       "periodo": "Há ~3000 anos (Ano ~518 de Muscuta)",
       "descricao": "Uma intervenção de 'B' gera uma catástrofe global que fragmenta a população de Muscuta em raças humanoides com deformações geométricas e liberta a força mágica conhecida como 'As Lendas'.",
-      "participantes": ["B (entidade interveniente)", "População de Muscuta"],
-      "consequencias": ["Fragmentação da população em raças com deformações geométricas", "Libertação da força mágica das Lendas", "Transformação irreversível do mundo"],
+      "participantes": [
+        "B (entidade interveniente)",
+        "População de Muscuta"
+      ],
+      "consequencias": [
+        "Fragmentação da população em raças com deformações geométricas",
+        "Libertação da força mágica das Lendas",
+        "Transformação irreversível do mundo"
+      ],
       "status": "Histórico — consequências ainda ativas no presente",
       "imagem_cor": "#9b59b6"
     },
@@ -1011,8 +2342,13 @@ const DB = {
       "tipo": "Colapso Político / Evento do Ano 3518",
       "periodo": "Ano 3518 (Muscuta)",
       "descricao": "G governa a partir da sua fortaleza de vidro e ouro, tendo erradicado o livre-arbítrio, até que um batimento cardíaco colossal vindo das profundezas faz tremer a estrutura do seu império. O início do fim do regime de simetria absoluta.",
-      "participantes": ["G (Governante Supremo)"],
-      "consequencias": ["Instabilidade do Encephalon", "Início do colapso do regime de G"],
+      "participantes": [
+        "G (Governante Supremo)"
+      ],
+      "consequencias": [
+        "Instabilidade do Encephalon",
+        "Início do colapso do regime de G"
+      ],
       "status": "Em curso — Ano 3518",
       "imagem_cor": "#c0a020"
     },
@@ -1022,8 +2358,14 @@ const DB = {
       "tipo": "Conflito Militar / Evento do Ano 3518",
       "periodo": "Ano 3518 (Muscuta)",
       "descricao": "Os últimos bastiões de defesa da nação Men começam a colapsar perante a força incontrolável das Lendas. Uma guerra de sobrevivência que parece impossível de vencer.",
-      "participantes": ["Nação Men", "As Lendas"],
-      "consequencias": ["Colapso progressivo das defesas Men", "Ameaça existencial à nação Men"],
+      "participantes": [
+        "Nação Men",
+        "As Lendas"
+      ],
+      "consequencias": [
+        "Colapso progressivo das defesas Men",
+        "Ameaça existencial à nação Men"
+      ],
       "status": "Em curso — Ano 3518",
       "imagem_cor": "#e74c3c"
     },
@@ -1033,8 +2375,14 @@ const DB = {
       "tipo": "Evento Crítico / Arma Genética",
       "periodo": "Ano 3518 (Muscuta)",
       "descricao": "Para evitar a derrota total no cerco à Base Men, o líder militar Lenlord ativa uma arma genética proibida, libertando Xenon — uma abominação que transcende a ciência e a magia.",
-      "participantes": ["Lenlord (líder militar)", "Xenon (abominação libertada)"],
-      "consequencias": ["Libertação de Xenon", "Consequências imprevisíveis que transcendem ciência e magia"],
+      "participantes": [
+        "Lenlord (líder militar)",
+        "Xenon (abominação libertada)"
+      ],
+      "consequencias": [
+        "Libertação de Xenon",
+        "Consequências imprevisíveis que transcendem ciência e magia"
+      ],
       "status": "Em curso — Ano 3518",
       "imagem_cor": "#8b0000"
     },
@@ -1044,8 +2392,17 @@ const DB = {
       "tipo": "Evento Psíquico / Manifestação",
       "periodo": "Ano 3518 (Muscuta)",
       "descricao": "Nos territórios dos Men, a entidade destrutiva 'Anibal 1.2' manifesta-se de forma dissociativa na mente do protagonista ('Ele'). O ancião Zale (o primeiro Anibal) manipula os acontecimentos nos bastidores enquanto 'Ela' tenta proteger o segredo.",
-      "participantes": ["Anibal 1.2 (entidade)", "Ele (protagonista)", "Zale (primeiro Anibal)", "Ela"],
-      "consequencias": ["Dissociação mental do protagonista", "Manipulação oculta de Zale", "Segredo em risco"],
+      "participantes": [
+        "Anibal 1.2 (entidade)",
+        "Ele (protagonista)",
+        "Zale (primeiro Anibal)",
+        "Ela"
+      ],
+      "consequencias": [
+        "Dissociação mental do protagonista",
+        "Manipulação oculta de Zale",
+        "Segredo em risco"
+      ],
       "status": "Em curso — Ano 3518",
       "imagem_cor": "#2ecc71"
     }
