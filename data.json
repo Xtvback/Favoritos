@@ -1,5 +1,16 @@
 {
-  "racas": [],
+  "racas": [
+    { "id": "r001", "nome": "Men", "subtitulo": "", "descricao": "", "habilidades": [], "imagem_cor": "#6c63ff" },
+    { "id": "r002", "nome": "C.Men", "subtitulo": "", "descricao": "", "habilidades": [], "imagem_cor": "#00d4ff" },
+    { "id": "r003", "nome": "Muslords", "subtitulo": "", "descricao": "", "habilidades": [], "imagem_cor": "#ff8c00" },
+    { "id": "r004", "nome": "Heart", "subtitulo": "", "descricao": "", "habilidades": [], "imagem_cor": "#e74c3c" },
+    { "id": "r005", "nome": "Lendas", "subtitulo": "", "descricao": "", "habilidades": [], "imagem_cor": "#f1c40f" },
+    { "id": "r006", "nome": "Anibals", "subtitulo": "", "descricao": "", "habilidades": [], "imagem_cor": "#2ecc71" },
+    { "id": "r007", "nome": "TNT", "subtitulo": "", "descricao": "", "habilidades": [], "imagem_cor": "#e67e22" },
+    { "id": "r008", "nome": "TST", "subtitulo": "", "descricao": "", "habilidades": [], "imagem_cor": "#9b59b6" },
+    { "id": "r009", "nome": "Dragon", "subtitulo": "", "descricao": "", "habilidades": [], "imagem_cor": "#c0392b" },
+    { "id": "r010", "nome": "Gigantis", "subtitulo": "", "descricao": "", "habilidades": [], "imagem_cor": "#1abc9c" }
+  ],
   "personagens": [
     {
       "id": "p001",
