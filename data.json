@@ -31,5 +31,83 @@
     { "id": "l003", "nome": "Spirat", "tipo": "Planeta", "descricao": "", "habitantes": [], "status": "", "imagem_cor": "#9b59b6" }
   ],
   "facoes": [],
-  "eventos": []
+  "eventos": [
+    {
+      "id": "e001",
+      "nome": "A Âncora Temporal — Sincronia entre Mundos",
+      "tipo": "Evento Fundacional / Ponto de Viragem",
+      "periodo": "Ano 2006 (Terra) / Ano 3518 (Muscuta)",
+      "descricao": "O ponto de viragem e a fundação da história. Estabeleceu-se uma sincronia universal fixa onde os eventos da Terra e do planeta Muscuta se cruzam e avançam em paralelo, servindo Muscuta como o eixo central da narrativa.",
+      "participantes": [],
+      "consequencias": ["Sincronia permanente entre Terra e Muscuta", "Muscuta torna-se o eixo central da narrativa"],
+      "status": "Evento fundacional confirmado",
+      "imagem_cor": "#00d4ff"
+    },
+    {
+      "id": "e002",
+      "nome": "Linha Temporal de Muscuta — Passado Ancestral",
+      "tipo": "Evento Histórico / Era Ancestral",
+      "periodo": "Eras Antigas (DDMB e anteriores)",
+      "descricao": "O tempo em Muscuta é regido por divisões cronológicas próprias. Neste período remoto, uma civilização ancestral cria artificialmente a raça Anibal com uma modificação genética que lhes garante 200% mais sorte, destinados a cuidar dos Jusperium — a primeira raça do planeta.",
+      "participantes": ["Civilização Ancestral", "Anibals (criados)", "Jusperium (primeira raça)"],
+      "consequencias": ["Criação artificial dos Anibals", "Modificação genética de sorte (+200%)", "Estabelecimento da relação Anibal-Jusperium"],
+      "status": "Histórico — registado nas crónicas ancestrais",
+      "imagem_cor": "#f1c40f"
+    },
+    {
+      "id": "e003",
+      "nome": "A Maldição Original",
+      "tipo": "Catástrofe / Evento Mágico",
+      "periodo": "Há ~3000 anos (Ano ~518 de Muscuta)",
+      "descricao": "Uma intervenção de 'B' gera uma catástrofe global que fragmenta a população de Muscuta em raças humanoides com deformações geométricas e liberta a força mágica conhecida como 'As Lendas'.",
+      "participantes": ["B (entidade interveniente)", "População de Muscuta"],
+      "consequencias": ["Fragmentação da população em raças com deformações geométricas", "Libertação da força mágica das Lendas", "Transformação irreversível do mundo"],
+      "status": "Histórico — consequências ainda ativas no presente",
+      "imagem_cor": "#9b59b6"
+    },
+    {
+      "id": "e004",
+      "nome": "O Declínio do Encephalon",
+      "tipo": "Colapso Político / Evento do Ano 3518",
+      "periodo": "Ano 3518 (Muscuta)",
+      "descricao": "G governa a partir da sua fortaleza de vidro e ouro, tendo erradicado o livre-arbítrio, até que um batimento cardíaco colossal vindo das profundezas faz tremer a estrutura do seu império. O início do fim do regime de simetria absoluta.",
+      "participantes": ["G (Governante Supremo)"],
+      "consequencias": ["Instabilidade do Encephalon", "Início do colapso do regime de G"],
+      "status": "Em curso — Ano 3518",
+      "imagem_cor": "#c0a020"
+    },
+    {
+      "id": "e005",
+      "nome": "O Cerco à Base Men",
+      "tipo": "Conflito Militar / Evento do Ano 3518",
+      "periodo": "Ano 3518 (Muscuta)",
+      "descricao": "Os últimos bastiões de defesa da nação Men começam a colapsar perante a força incontrolável das Lendas. Uma guerra de sobrevivência que parece impossível de vencer.",
+      "participantes": ["Nação Men", "As Lendas"],
+      "consequencias": ["Colapso progressivo das defesas Men", "Ameaça existencial à nação Men"],
+      "status": "Em curso — Ano 3518",
+      "imagem_cor": "#e74c3c"
+    },
+    {
+      "id": "e006",
+      "nome": "A Libertação de Xenon",
+      "tipo": "Evento Crítico / Arma Genética",
+      "periodo": "Ano 3518 (Muscuta)",
+      "descricao": "Para evitar a derrota total no cerco à Base Men, o líder militar Lenlord ativa uma arma genética proibida, libertando Xenon — uma abominação que transcende a ciência e a magia.",
+      "participantes": ["Lenlord (líder militar)", "Xenon (abominação libertada)"],
+      "consequencias": ["Libertação de Xenon", "Consequências imprevisíveis que transcendem ciência e magia"],
+      "status": "Em curso — Ano 3518",
+      "imagem_cor": "#8b0000"
+    },
+    {
+      "id": "e007",
+      "nome": "A Manifestação do Azar Divino",
+      "tipo": "Evento Psíquico / Manifestação",
+      "periodo": "Ano 3518 (Muscuta)",
+      "descricao": "Nos territórios dos Men, a entidade destrutiva 'Anibal 1.2' manifesta-se de forma dissociativa na mente do protagonista ('Ele'). O ancião Zale (o primeiro Anibal) manipula os acontecimentos nos bastidores enquanto 'Ela' tenta proteger o segredo.",
+      "participantes": ["Anibal 1.2 (entidade)", "Ele (protagonista)", "Zale (primeiro Anibal)", "Ela"],
+      "consequencias": ["Dissociação mental do protagonista", "Manipulação oculta de Zale", "Segredo em risco"],
+      "status": "Em curso — Ano 3518",
+      "imagem_cor": "#2ecc71"
+    }
+  ]
 }
