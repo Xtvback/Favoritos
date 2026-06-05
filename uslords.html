@@ -1,0 +1,1523 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>USLORDS — Base de Dados do Universo</title>
+<style>
+  /* ========================= RESET & BASE ========================= */
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --bg-deep:    #040608;
+    --bg-mid:     #080c12;
+    --bg-card:    #0d1520;
+    --bg-card2:   #111d2e;
+    --border:     #1a2d45;
+    --border-glow:#2a4a70;
+    --accent:     #6c63ff;
+    --accent2:    #00d4ff;
+    --text:       #c8d8e8;
+    --text-dim:   #5a7a9a;
+    --text-bright:#e8f4ff;
+    --danger:     #ff4444;
+    --success:    #00ff88;
+    --glow-purple: rgba(108,99,255,0.15);
+    --glow-cyan:   rgba(0,212,255,0.12);
+    font-size: 15px;
+  }
+
+  html, body {
+    height: 100%;
+    background: var(--bg-deep);
+    color: var(--text);
+    font-family: 'Segoe UI', system-ui, sans-serif;
+    overflow-x: hidden;
+  }
+
+  /* scrollbar */
+  ::-webkit-scrollbar { width: 6px; }
+  ::-webkit-scrollbar-track { background: var(--bg-deep); }
+  ::-webkit-scrollbar-thumb { background: var(--border-glow); border-radius: 3px; }
+
+  /* ========================= LOCK SCREEN ========================= */
+  #lockscreen {
+    position: fixed; inset: 0; z-index: 1000;
+    display: flex; flex-direction: column;
+    align-items: center; justify-content: center;
+    background: var(--bg-deep);
+    transition: opacity 0.8s ease, visibility 0.8s ease;
+  }
+  #lockscreen.hidden { opacity: 0; visibility: hidden; pointer-events: none; }
+
+  /* animated star field */
+  #lockscreen::before {
+    content: '';
+    position: absolute; inset: 0;
+    background-image:
+      radial-gradient(1px 1px at 10% 20%, rgba(200,220,255,0.5) 0%, transparent 100%),
+      radial-gradient(1px 1px at 30% 70%, rgba(200,220,255,0.4) 0%, transparent 100%),
+      radial-gradient(1px 1px at 50% 10%, rgba(200,220,255,0.6) 0%, transparent 100%),
+      radial-gradient(1px 1px at 70% 50%, rgba(200,220,255,0.3) 0%, transparent 100%),
+      radial-gradient(1px 1px at 90% 80%, rgba(200,220,255,0.5) 0%, transparent 100%),
+      radial-gradient(1px 1px at 15% 60%, rgba(200,220,255,0.4) 0%, transparent 100%),
+      radial-gradient(1px 1px at 40% 35%, rgba(200,220,255,0.3) 0%, transparent 100%),
+      radial-gradient(1px 1px at 60% 85%, rgba(200,220,255,0.5) 0%, transparent 100%),
+      radial-gradient(1px 1px at 80% 15%, rgba(200,220,255,0.4) 0%, transparent 100%),
+      radial-gradient(1px 1px at 25% 90%, rgba(200,220,255,0.3) 0%, transparent 100%),
+      radial-gradient(1.5px 1.5px at 55% 45%, rgba(108,99,255,0.7) 0%, transparent 100%),
+      radial-gradient(1.5px 1.5px at 75% 25%, rgba(0,212,255,0.6) 0%, transparent 100%),
+      radial-gradient(2px 2px at 20% 40%, rgba(108,99,255,0.5) 0%, transparent 100%);
+    animation: twinkle 4s ease-in-out infinite alternate;
+  }
+  @keyframes twinkle {
+    from { opacity: 0.6; }
+    to   { opacity: 1; }
+  }
+
+  /* nebula glow background */
+  #lockscreen::after {
+    content: '';
+    position: absolute; inset: 0;
+    background:
+      radial-gradient(ellipse 60% 50% at 30% 40%, rgba(108,99,255,0.06) 0%, transparent 70%),
+      radial-gradient(ellipse 50% 60% at 70% 60%, rgba(0,212,255,0.04) 0%, transparent 70%);
+    pointer-events: none;
+  }
+
+  .lock-container {
+    position: relative; z-index: 2;
+    display: flex; flex-direction: column; align-items: center;
+    gap: 2rem;
+    animation: lockAppear 1s ease forwards;
+  }
+  @keyframes lockAppear {
+    from { opacity: 0; transform: translateY(30px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+
+  .lock-logo {
+    text-align: center;
+  }
+  .lock-logo .logo-title {
+    font-size: clamp(2.5rem, 8vw, 5rem);
+    font-weight: 900;
+    letter-spacing: 0.3em;
+    text-transform: uppercase;
+    background: linear-gradient(135deg, var(--accent) 0%, var(--accent2) 50%, var(--accent) 100%);
+    background-size: 200% 200%;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    animation: gradientShift 4s ease infinite;
+    filter: drop-shadow(0 0 30px rgba(108,99,255,0.5));
+  }
+  @keyframes gradientShift {
+    0%   { background-position: 0% 50%; }
+    50%  { background-position: 100% 50%; }
+    100% { background-position: 0% 50%; }
+  }
+  .lock-logo .logo-sub {
+    font-size: 0.7rem;
+    letter-spacing: 0.5em;
+    color: var(--text-dim);
+    text-transform: uppercase;
+    margin-top: 0.3rem;
+  }
+
+  .lock-panel {
+    background: rgba(13, 21, 32, 0.9);
+    border: 1px solid var(--border-glow);
+    border-radius: 16px;
+    padding: 2.5rem 3rem;
+    width: min(380px, 90vw);
+    backdrop-filter: blur(20px);
+    box-shadow:
+      0 0 0 1px rgba(108,99,255,0.1),
+      0 0 60px rgba(108,99,255,0.1),
+      inset 0 1px 0 rgba(255,255,255,0.05);
+    display: flex; flex-direction: column; align-items: center; gap: 1.5rem;
+  }
+
+  .lock-label {
+    font-size: 0.7rem;
+    letter-spacing: 0.4em;
+    color: var(--text-dim);
+    text-transform: uppercase;
+  }
+
+  /* PIN dots display */
+  .pin-display {
+    display: flex; gap: 1rem; align-items: center;
+  }
+  .pin-dot {
+    width: 14px; height: 14px;
+    border-radius: 50%;
+    border: 2px solid var(--border-glow);
+    background: transparent;
+    transition: all 0.2s ease;
+  }
+  .pin-dot.filled {
+    background: var(--accent);
+    border-color: var(--accent);
+    box-shadow: 0 0 10px var(--accent), 0 0 20px rgba(108,99,255,0.5);
+  }
+  .pin-dot.error {
+    background: var(--danger);
+    border-color: var(--danger);
+    box-shadow: 0 0 10px var(--danger);
+    animation: shake 0.4s ease;
+  }
+  @keyframes shake {
+    0%,100% { transform: translateX(0); }
+    20%      { transform: translateX(-6px); }
+    40%      { transform: translateX(6px); }
+    60%      { transform: translateX(-4px); }
+    80%      { transform: translateX(4px); }
+  }
+
+  /* numpad */
+  .numpad {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 0.75rem;
+    width: 100%;
+  }
+  .numpad-btn {
+    aspect-ratio: 1;
+    background: rgba(255,255,255,0.03);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    color: var(--text-bright);
+    font-size: 1.3rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.15s ease;
+    display: flex; align-items: center; justify-content: center;
+    position: relative; overflow: hidden;
+    user-select: none;
+  }
+  .numpad-btn::after {
+    content: '';
+    position: absolute; inset: 0;
+    background: radial-gradient(circle at center, rgba(108,99,255,0.3), transparent 70%);
+    opacity: 0; transition: opacity 0.2s ease;
+  }
+  .numpad-btn:hover {
+    border-color: var(--accent);
+    background: rgba(108,99,255,0.1);
+    box-shadow: 0 0 15px rgba(108,99,255,0.2);
+  }
+  .numpad-btn:active { transform: scale(0.94); }
+  .numpad-btn:active::after { opacity: 1; }
+  .numpad-btn.del { color: var(--text-dim); font-size: 1rem; }
+  .numpad-btn.zero { grid-column: 2; }
+
+  .lock-error-msg {
+    font-size: 0.75rem;
+    color: var(--danger);
+    letter-spacing: 0.15em;
+    text-align: center;
+    min-height: 1em;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+  }
+  .lock-error-msg.visible { opacity: 1; }
+
+  /* ========================= MAIN APP ========================= */
+  #app {
+    display: none;
+    min-height: 100vh;
+  }
+  #app.visible { display: flex; flex-direction: column; animation: fadeInApp 0.8s ease; }
+  @keyframes fadeInApp {
+    from { opacity: 0; }
+    to   { opacity: 1; }
+  }
+
+  /* top bar */
+  .topbar {
+    position: sticky; top: 0; z-index: 100;
+    height: 60px;
+    background: rgba(4,6,8,0.95);
+    border-bottom: 1px solid var(--border);
+    backdrop-filter: blur(20px);
+    display: flex; align-items: center;
+    padding: 0 1.5rem;
+    gap: 1rem;
+    box-shadow: 0 2px 20px rgba(0,0,0,0.5);
+  }
+  .topbar-logo {
+    font-size: 1.2rem;
+    font-weight: 900;
+    letter-spacing: 0.2em;
+    background: linear-gradient(90deg, var(--accent), var(--accent2));
+    -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+    background-clip: text;
+    flex-shrink: 0;
+  }
+  .topbar-divider { width: 1px; height: 24px; background: var(--border); flex-shrink: 0; }
+  .topbar-subtitle {
+    font-size: 0.65rem;
+    letter-spacing: 0.3em;
+    color: var(--text-dim);
+    text-transform: uppercase;
+    flex-shrink: 0;
+  }
+  .topbar-spacer { flex: 1; }
+
+  /* search */
+  .search-wrap {
+    position: relative;
+    flex: 1; max-width: 400px;
+  }
+  .search-wrap svg {
+    position: absolute; left: 12px; top: 50%; transform: translateY(-50%);
+    width: 15px; height: 15px; color: var(--text-dim); pointer-events: none;
+  }
+  #search-input {
+    width: 100%;
+    background: rgba(255,255,255,0.04);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    color: var(--text);
+    font-size: 0.85rem;
+    padding: 0.5rem 0.75rem 0.5rem 2.5rem;
+    outline: none;
+    transition: border-color 0.2s, box-shadow 0.2s;
+  }
+  #search-input:focus {
+    border-color: var(--accent);
+    box-shadow: 0 0 0 3px rgba(108,99,255,0.15);
+  }
+  #search-input::placeholder { color: var(--text-dim); }
+  #search-count {
+    font-size: 0.7rem; color: var(--text-dim);
+    background: rgba(255,255,255,0.04);
+    border: 1px solid var(--border);
+    border-radius: 20px;
+    padding: 0.3rem 0.75rem;
+    white-space: nowrap;
+    flex-shrink: 0;
+  }
+
+  /* lock btn */
+  .lock-btn {
+    background: none; border: 1px solid var(--border); border-radius: 8px;
+    color: var(--text-dim); cursor: pointer; padding: 0.5rem;
+    display: flex; align-items: center; gap: 0.4rem;
+    font-size: 0.75rem; transition: all 0.2s ease;
+    flex-shrink: 0;
+  }
+  .lock-btn:hover { border-color: var(--accent); color: var(--accent); }
+  .lock-btn svg { width: 14px; height: 14px; }
+
+  /* layout */
+  .layout { display: flex; flex: 1; min-height: calc(100vh - 60px); }
+
+  /* ========================= SIDEBAR ========================= */
+  .sidebar {
+    width: 220px;
+    flex-shrink: 0;
+    background: var(--bg-mid);
+    border-right: 1px solid var(--border);
+    padding: 1.5rem 0;
+    position: sticky; top: 60px;
+    height: calc(100vh - 60px);
+    overflow-y: auto;
+  }
+  .sidebar-section-label {
+    font-size: 0.6rem;
+    letter-spacing: 0.4em;
+    color: var(--text-dim);
+    text-transform: uppercase;
+    padding: 0 1.25rem 0.75rem;
+  }
+  .nav-item {
+    display: flex; align-items: center; gap: 0.75rem;
+    padding: 0.75rem 1.25rem;
+    cursor: pointer;
+    border-left: 3px solid transparent;
+    transition: all 0.2s ease;
+    position: relative;
+  }
+  .nav-item:hover { background: rgba(255,255,255,0.03); }
+  .nav-item.active {
+    background: rgba(108,99,255,0.08);
+    border-left-color: var(--accent);
+  }
+  .nav-item.active .nav-label { color: var(--text-bright); }
+  .nav-icon {
+    width: 32px; height: 32px;
+    border-radius: 8px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 1rem;
+    flex-shrink: 0;
+  }
+  .nav-label { font-size: 0.85rem; color: var(--text); }
+  .nav-count {
+    margin-left: auto;
+    font-size: 0.65rem;
+    background: rgba(255,255,255,0.06);
+    border-radius: 20px;
+    padding: 0.15rem 0.5rem;
+    color: var(--text-dim);
+  }
+  .nav-item.active .nav-count { background: rgba(108,99,255,0.2); color: var(--accent); }
+
+  /* ========================= CONTENT AREA ========================= */
+  .content {
+    flex: 1;
+    padding: 2rem;
+    overflow-x: hidden;
+  }
+
+  .section-header {
+    display: flex; align-items: flex-end; gap: 1rem;
+    margin-bottom: 2rem;
+    flex-wrap: wrap; gap: 0.75rem;
+  }
+  .section-title {
+    font-size: clamp(1.5rem, 4vw, 2rem);
+    font-weight: 800;
+    color: var(--text-bright);
+    letter-spacing: 0.05em;
+  }
+  .section-title span {
+    background: linear-gradient(90deg, var(--accent), var(--accent2));
+    -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+  .section-desc {
+    font-size: 0.8rem;
+    color: var(--text-dim);
+    line-height: 1.5;
+    max-width: 600px;
+  }
+  .section-line {
+    width: 60px; height: 3px;
+    background: linear-gradient(90deg, var(--accent), var(--accent2));
+    border-radius: 2px;
+    margin-top: 0.5rem;
+  }
+
+  /* cards grid */
+  .cards-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 1.25rem;
+  }
+
+  /* card */
+  .card {
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    overflow: hidden;
+    cursor: pointer;
+    transition: all 0.25s ease;
+    position: relative;
+  }
+  .card::before {
+    content: '';
+    position: absolute; top: 0; left: 0; right: 0; height: 3px;
+    background: linear-gradient(90deg, var(--card-color, var(--accent)), transparent);
+    opacity: 0.8;
+  }
+  .card:hover {
+    border-color: var(--card-color, var(--accent));
+    transform: translateY(-3px);
+    box-shadow: 0 8px 30px rgba(0,0,0,0.4), 0 0 20px rgba(108,99,255,0.08);
+  }
+
+  .card-header {
+    padding: 1.25rem 1.25rem 0.75rem;
+    display: flex; align-items: flex-start; gap: 0.75rem;
+  }
+  .card-icon {
+    width: 40px; height: 40px;
+    border-radius: 10px;
+    flex-shrink: 0;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 1.2rem;
+    background: rgba(255,255,255,0.04);
+    border: 1px solid rgba(255,255,255,0.06);
+  }
+  .card-titles { flex: 1; min-width: 0; }
+  .card-name {
+    font-size: 1rem; font-weight: 700;
+    color: var(--text-bright);
+    white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+  }
+  .card-sub {
+    font-size: 0.7rem; color: var(--text-dim);
+    margin-top: 0.15rem;
+    white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+  }
+  .card-badge {
+    font-size: 0.6rem;
+    letter-spacing: 0.1em;
+    border-radius: 20px;
+    padding: 0.2rem 0.6rem;
+    border: 1px solid;
+    white-space: nowrap; flex-shrink: 0;
+  }
+
+  .card-body {
+    padding: 0 1.25rem 1.25rem;
+  }
+  .card-desc {
+    font-size: 0.8rem;
+    color: var(--text-dim);
+    line-height: 1.6;
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
+
+  .card-footer {
+    padding: 0.75rem 1.25rem;
+    border-top: 1px solid var(--border);
+    display: flex; align-items: center; gap: 0.5rem;
+    flex-wrap: wrap;
+  }
+  .tag {
+    font-size: 0.65rem;
+    background: rgba(255,255,255,0.04);
+    border: 1px solid var(--border);
+    border-radius: 20px;
+    padding: 0.2rem 0.6rem;
+    color: var(--text-dim);
+    white-space: nowrap;
+  }
+  .card-arrow {
+    margin-left: auto;
+    color: var(--text-dim); font-size: 0.8rem;
+    transition: transform 0.2s;
+  }
+  .card:hover .card-arrow { transform: translateX(4px); color: var(--accent); }
+
+  /* no results */
+  .empty-state {
+    display: flex; flex-direction: column; align-items: center; justify-content: center;
+    padding: 4rem 2rem; text-align: center; gap: 1rem;
+    grid-column: 1 / -1;
+  }
+  .empty-icon { font-size: 3rem; opacity: 0.3; }
+  .empty-title { font-size: 1rem; color: var(--text-dim); }
+  .empty-sub { font-size: 0.8rem; color: var(--text-dim); opacity: 0.6; }
+
+  /* ========================= MODAL ========================= */
+  .modal-overlay {
+    position: fixed; inset: 0; z-index: 500;
+    background: rgba(4,6,8,0.85);
+    backdrop-filter: blur(10px);
+    display: flex; align-items: center; justify-content: center;
+    padding: 1rem;
+    opacity: 0; visibility: hidden;
+    transition: opacity 0.3s ease, visibility 0.3s ease;
+  }
+  .modal-overlay.open { opacity: 1; visibility: visible; }
+
+  .modal {
+    background: var(--bg-card);
+    border: 1px solid var(--border-glow);
+    border-radius: 18px;
+    width: min(680px, 100%);
+    max-height: 88vh;
+    overflow-y: auto;
+    position: relative;
+    box-shadow: 0 30px 80px rgba(0,0,0,0.6), 0 0 0 1px rgba(108,99,255,0.1);
+    transform: scale(0.95) translateY(10px);
+    transition: transform 0.3s ease;
+  }
+  .modal-overlay.open .modal { transform: scale(1) translateY(0); }
+
+  .modal-accent-bar {
+    height: 4px;
+    border-radius: 18px 18px 0 0;
+    background: linear-gradient(90deg, var(--modal-color, var(--accent)), var(--accent2));
+  }
+
+  .modal-close {
+    position: absolute; top: 1.25rem; right: 1.25rem;
+    width: 32px; height: 32px;
+    background: rgba(255,255,255,0.05);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    cursor: pointer;
+    display: flex; align-items: center; justify-content: center;
+    color: var(--text-dim);
+    font-size: 1.1rem; line-height: 1;
+    transition: all 0.2s;
+    z-index: 1;
+  }
+  .modal-close:hover { background: rgba(255,0,0,0.1); border-color: var(--danger); color: var(--danger); }
+
+  .modal-content { padding: 2rem; }
+
+  .modal-header { margin-bottom: 1.5rem; }
+  .modal-icon-row {
+    display: flex; align-items: center; gap: 1rem;
+    margin-bottom: 1rem;
+  }
+  .modal-icon {
+    width: 56px; height: 56px;
+    border-radius: 14px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 1.8rem;
+    border: 1px solid rgba(255,255,255,0.08);
+    background: rgba(255,255,255,0.04);
+    flex-shrink: 0;
+  }
+  .modal-title { font-size: 1.5rem; font-weight: 800; color: var(--text-bright); }
+  .modal-subtitle { font-size: 0.8rem; color: var(--text-dim); margin-top: 0.25rem; }
+
+  .modal-desc {
+    font-size: 0.9rem; line-height: 1.7; color: var(--text);
+    margin-bottom: 1.5rem;
+    padding: 1rem;
+    background: rgba(255,255,255,0.02);
+    border-radius: 10px;
+    border-left: 3px solid var(--modal-color, var(--accent));
+  }
+
+  .modal-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    gap: 0.75rem;
+    margin-bottom: 1.5rem;
+  }
+  .modal-field {
+    background: rgba(255,255,255,0.02);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 0.75rem;
+  }
+  .modal-field-label {
+    font-size: 0.6rem;
+    letter-spacing: 0.3em;
+    color: var(--text-dim);
+    text-transform: uppercase;
+    margin-bottom: 0.35rem;
+  }
+  .modal-field-value {
+    font-size: 0.85rem;
+    color: var(--text-bright);
+    font-weight: 500;
+  }
+
+  .modal-list-title {
+    font-size: 0.65rem;
+    letter-spacing: 0.3em;
+    color: var(--text-dim);
+    text-transform: uppercase;
+    margin-bottom: 0.6rem;
+  }
+  .modal-tags {
+    display: flex; flex-wrap: wrap; gap: 0.5rem;
+    margin-bottom: 1.25rem;
+  }
+  .modal-tag {
+    font-size: 0.75rem;
+    background: rgba(255,255,255,0.04);
+    border: 1px solid var(--border-glow);
+    border-radius: 20px;
+    padding: 0.3rem 0.8rem;
+    color: var(--text);
+  }
+  .modal-tag.accent {
+    background: rgba(108,99,255,0.1);
+    border-color: rgba(108,99,255,0.3);
+    color: var(--accent);
+  }
+
+  .modal-id {
+    font-size: 0.65rem;
+    color: var(--text-dim);
+    font-family: monospace;
+    opacity: 0.5;
+    text-align: right;
+    margin-top: 1rem;
+  }
+
+  /* ========================= STATUS BADGES ========================= */
+  .status-badge {
+    display: inline-flex;
+    align-items: center; gap: 0.35rem;
+    font-size: 0.65rem;
+    letter-spacing: 0.08em;
+  }
+  .status-badge::before {
+    content: '';
+    width: 6px; height: 6px;
+    border-radius: 50%;
+    flex-shrink: 0;
+  }
+  .status-active::before   { background: var(--success); box-shadow: 0 0 6px var(--success); }
+  .status-danger::before   { background: var(--danger);  box-shadow: 0 0 6px var(--danger); }
+  .status-neutral::before  { background: #f39c12;        box-shadow: 0 0 6px #f39c12; }
+  .status-unknown::before  { background: var(--text-dim); }
+
+  /* ========================= RESPONSIVE ========================= */
+  @media (max-width: 768px) {
+    .sidebar {
+      width: 60px; padding: 1rem 0;
+    }
+    .nav-label, .nav-count, .sidebar-section-label { display: none; }
+    .nav-item { justify-content: center; padding: 0.75rem; }
+    .content { padding: 1rem; }
+    .topbar-subtitle { display: none; }
+    .topbar-divider { display: none; }
+    #search-count { display: none; }
+  }
+  @media (max-width: 480px) {
+    .lock-panel { padding: 2rem 1.5rem; }
+    .cards-grid { grid-template-columns: 1fr; }
+  }
+</style>
+</head>
+<body>
+
+<!-- ==================== LOCK SCREEN ==================== -->
+<div id="lockscreen">
+  <div class="lock-container">
+    <div class="lock-logo">
+      <div class="logo-title">USLORDS</div>
+      <div class="logo-sub">Arquivo Universal &bull; Nível Classificado</div>
+    </div>
+
+    <div class="lock-panel">
+      <div class="lock-label">&#128274; Insira o código de acesso</div>
+
+      <div class="pin-display" id="pin-display">
+        <div class="pin-dot" id="dot-0"></div>
+        <div class="pin-dot" id="dot-1"></div>
+        <div class="pin-dot" id="dot-2"></div>
+        <div class="pin-dot" id="dot-3"></div>
+      </div>
+
+      <div class="numpad" id="numpad">
+        <button class="numpad-btn" data-n="1">1</button>
+        <button class="numpad-btn" data-n="2">2</button>
+        <button class="numpad-btn" data-n="3">3</button>
+        <button class="numpad-btn" data-n="4">4</button>
+        <button class="numpad-btn" data-n="5">5</button>
+        <button class="numpad-btn" data-n="6">6</button>
+        <button class="numpad-btn" data-n="7">7</button>
+        <button class="numpad-btn" data-n="8">8</button>
+        <button class="numpad-btn" data-n="9">9</button>
+        <button class="numpad-btn del" id="del-btn" title="Apagar">&#9003;</button>
+        <button class="numpad-btn zero" data-n="0">0</button>
+      </div>
+
+      <div class="lock-error-msg" id="lock-error">Código incorreto. Acesso negado.</div>
+    </div>
+  </div>
+</div>
+
+<!-- ==================== MAIN APP ==================== -->
+<div id="app">
+  <header class="topbar">
+    <div class="topbar-logo">USLORDS</div>
+    <div class="topbar-divider"></div>
+    <div class="topbar-subtitle">Base de Dados Universal</div>
+    <div class="topbar-spacer"></div>
+    <div class="search-wrap">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/>
+      </svg>
+      <input type="text" id="search-input" placeholder="Pesquisar no universo..." autocomplete="off">
+    </div>
+    <div id="search-count"></div>
+    <button class="lock-btn" id="lock-again-btn" title="Bloquear">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <rect x="3" y="11" width="18" height="11" rx="2" ry="2"/>
+        <path d="M7 11V7a5 5 0 0 1 10 0v4"/>
+      </svg>
+      <span>Bloquear</span>
+    </button>
+  </header>
+
+  <div class="layout">
+    <!-- Sidebar -->
+    <nav class="sidebar">
+      <div class="sidebar-section-label">Categorias</div>
+      <div class="nav-item active" data-section="racas">
+        <div class="nav-icon" style="background:rgba(108,99,255,0.12);">&#129422;</div>
+        <span class="nav-label">Raças</span>
+        <span class="nav-count" id="count-racas">0</span>
+      </div>
+      <div class="nav-item" data-section="personagens">
+        <div class="nav-icon" style="background:rgba(0,212,255,0.10);">&#128100;</div>
+        <span class="nav-label">Personagens</span>
+        <span class="nav-count" id="count-personagens">0</span>
+      </div>
+      <div class="nav-item" data-section="lugares">
+        <div class="nav-icon" style="background:rgba(255,140,0,0.10);">&#127759;</div>
+        <span class="nav-label">Lugares/Mundos</span>
+        <span class="nav-count" id="count-lugares">0</span>
+      </div>
+      <div class="nav-item" data-section="facoes">
+        <div class="nav-icon" style="background:rgba(231,76,60,0.10);">&#9876;</div>
+        <span class="nav-label">Facções/Grupos</span>
+        <span class="nav-count" id="count-facoes">0</span>
+      </div>
+      <div class="nav-item" data-section="eventos">
+        <div class="nav-icon" style="background:rgba(155,89,182,0.12);">&#128336;</div>
+        <span class="nav-label">Eventos/História</span>
+        <span class="nav-count" id="count-eventos">0</span>
+      </div>
+    </nav>
+
+    <!-- Content -->
+    <main class="content" id="main-content">
+      <!-- rendered by JS -->
+    </main>
+  </div>
+</div>
+
+<!-- ==================== MODAL ==================== -->
+<div class="modal-overlay" id="modal-overlay">
+  <div class="modal" id="modal">
+    <div class="modal-accent-bar" id="modal-accent"></div>
+    <button class="modal-close" id="modal-close">&#10005;</button>
+    <div class="modal-content" id="modal-body"></div>
+  </div>
+</div>
+
+<script>
+// ===================== DATA =====================
+const DB = {
+  "racas": [
+    {
+      "id": "r001",
+      "nome": "Uslords",
+      "subtitulo": "Os Senhores do Universo",
+      "descricao": "A raça dominante que dá nome ao universo. Seres de origem desconhecida, com capacidade cognitiva vastamente superior à maioria das espécies conhecidas. Habitam planos de existência sobrepostos e são capazes de manipular energia primordial com o pensamento.",
+      "origem": "Dimensão Alfa-Nula",
+      "esperanca_vida": "Indeterminada",
+      "habilidades": ["Manipulação de energia primordial", "Percepção multidimensional", "Transferência de consciência"],
+      "status": "Dominante",
+      "populacao": "Desconhecida",
+      "imagem_cor": "#6c63ff"
+    },
+    {
+      "id": "r002",
+      "nome": "Velhari",
+      "subtitulo": "Os Tecelões de Luz",
+      "descricao": "Seres de forma etérea compostos parcialmente de fotões condensados. Os Velhari evoluíram em estrelas binárias e desenvolveram uma civilização baseada em transmissão de luz codificada. São conhecidos por construírem artefactos de cristal que armazenam memórias.",
+      "origem": "Sistema Estelar Veh-IX",
+      "esperanca_vida": "~4.000 anos",
+      "habilidades": ["Emissão de luz controlada", "Comunicação telepática via fotões", "Construção de cristais de memória"],
+      "status": "Aliada",
+      "populacao": "~2 mil milhões",
+      "imagem_cor": "#00d4ff"
+    },
+    {
+      "id": "r003",
+      "nome": "Krath",
+      "subtitulo": "Os Filhos do Vazio",
+      "descricao": "Criaturas que evoluíram em nebulosas de matéria escura. Os Krath são quase invisíveis a sensores convencionais e movem-se entre sombras do espectro electromagnético. Possuem uma hierarquia tribal rígida e veneram o silêncio como forma suprema de poder.",
+      "origem": "Nebulosa Krath-Har",
+      "esperanca_vida": "~800 anos",
+      "habilidades": ["Camuflagem espectral", "Absorção de energia", "Ecolocação sónica avançada"],
+      "status": "Neutra/Hostil",
+      "populacao": "~500 milhões",
+      "imagem_cor": "#8b0000"
+    },
+    {
+      "id": "r004",
+      "nome": "Sorvani",
+      "subtitulo": "Os Construtores",
+      "descricao": "Humanoides de pele metálica cuja biologia integra componentes sintéticos desde o nascimento. Os Sorvani são os maiores engenheiros do universo conhecido, capazes de construir megaestruturas em décadas. A sua civilização é governada por um conselho de arquitectos chamado A Grande Planta.",
+      "origem": "Planeta Sorvanis Prime",
+      "esperanca_vida": "~300 anos (com substituições cibernéticas: ilimitada)",
+      "habilidades": ["Engenharia de megaestruturas", "Interface directa com máquinas", "Síntese de materiais exóticos"],
+      "status": "Aliada",
+      "populacao": "~50 mil milhões",
+      "imagem_cor": "#ff8c00"
+    },
+    {
+      "id": "r005",
+      "nome": "Thessari",
+      "subtitulo": "Os Errantes do Tempo",
+      "descricao": "Seres de aparência humanoide mas com percepção não-linear do tempo. Os Thessari vivenciam passado, presente e futuro de forma simultânea, o que os torna profetas infalíveis mas também socialmente isolados. Falam em estruturas gramaticais atemporais que são difíceis de compreender por outras raças.",
+      "origem": "Plano Tesseral",
+      "esperanca_vida": "Não aplicável — existência cíclica",
+      "habilidades": ["Percepção temporal não-linear", "Profecia precisa", "Viagem entre eras"],
+      "status": "Misteriosa",
+      "populacao": "Desconhecida",
+      "imagem_cor": "#9b59b6"
+    }
+  ],
+  "personagens": [
+    {
+      "id": "p001",
+      "nome": "Auren Vael",
+      "titulo": "O Primeiro Senhor",
+      "descricao": "O mais antigo dos Uslords conhecidos, Auren Vael é uma figura lendária cuja existência é documentada nos registos mais antigos do universo. Raramente intervém directamente, mas quando o faz, o curso da história muda irremediavelmente.",
+      "raca": "Uslords",
+      "afiliacao": "Conselho dos Senhores",
+      "status": "Activo — localização desconhecida",
+      "habilidades_chave": ["Manipulação temporal limitada", "Criação de dimensões de bolso", "Imortalidade"],
+      "historia": "Surgiu antes da Grande Fragmentação. Dizem que foi Auren quem estabeleceu as Leis do Vazio que regulam o uso de energia primordial. Desapareceu após o Evento de Convergência e reapareceu milénios depois sem envelhecer.",
+      "imagem_cor": "#6c63ff"
+    },
+    {
+      "id": "p002",
+      "nome": "Lyss Tharren",
+      "titulo": "A Tecelã de Véus",
+      "descricao": "Uma Velhari de extraordinário poder que aprendeu a tecer véus de luz capazes de ocultar estrelas inteiras. Actualmente serve como embaixadora entre os Velhari e os Uslords, mas suspeita-se que tenha agenda própria.",
+      "raca": "Velhari",
+      "afiliacao": "Embaixada Velhari / Ordem dos Véus",
+      "status": "Activa — Estação Orbital Velha-7",
+      "habilidades_chave": ["Tecelagem de véus de luz", "Diplomacia avançada", "Leitura de intenções"],
+      "historia": "Nascida durante um eclipse duplo no sistema Veh-IX, considerado presságio de grandeza. Treinou durante 200 anos antes de ser aceite na Ordem dos Véus. O seu papel na Guerra dos Espelhos foi decisivo para a aliança atual.",
+      "imagem_cor": "#00d4ff"
+    },
+    {
+      "id": "p003",
+      "nome": "Drak Vel-Horum",
+      "titulo": "O Devorador de Sistemas",
+      "descricao": "Líder Krath de renome e terror universal. Drak comanda a maior frota Krath já reunida e é responsável pela destruição de pelo menos três sistemas habitados. Paradoxalmente, é conhecido por poupar civis quando lhe é conveniente — o que o torna ainda mais temido.",
+      "raca": "Krath",
+      "afiliacao": "Clã Vel-Horum / Frota das Sombras",
+      "status": "Activo — ameaça de Nível Vermelho",
+      "habilidades_chave": ["Táctica de guerra no vácuo", "Camuflagem avançada", "Manipulação psíquica"],
+      "historia": "Ascendeu ao poder depois de consumir a energia do seu próprio pai num ritual de liderança. A sua campanha contra a Aliança Sorvani durou 40 anos e terminou num impasse que ainda hoje é estudado nas academias militares.",
+      "imagem_cor": "#8b0000"
+    },
+    {
+      "id": "p004",
+      "nome": "Cael Miross",
+      "titulo": "A Arquitecta da Estrela Oca",
+      "descricao": "A mais célebre engenheira Sorvani da era moderna. Cael projetou e supervisionou a construção da Estrela Oca, uma megaestrutura que alberga 12 mil milhões de habitantes. O seu trabalho redefiniu o que se entendia como possível em engenharia estrutural cósmica.",
+      "raca": "Sorvani",
+      "afiliacao": "Grande Planta / Instituto de Megaestruturas",
+      "status": "Activa — Estrela Oca",
+      "habilidades_chave": ["Engenharia de estrelas artificiais", "Liderança de projectos multi-espécie", "Síntese de matéria escura estabilizada"],
+      "historia": "Começou como aprendiz aos 12 anos. Publicou a sua teoria sobre estabilização de matéria escura aos 40, mudando o campo para sempre. A construção da Estrela Oca levou 80 anos e ela esteve presente em cada fase.",
+      "imagem_cor": "#ff8c00"
+    },
+    {
+      "id": "p005",
+      "nome": "Verath",
+      "titulo": "O Que Vê o Fim",
+      "descricao": "Um Thessari que afirma ter visto o fim do universo atual. Vaga pelos planos de existência a recolher fragmentos de profecias que, segundo ele, quando reunidas, darão a qualquer raça o poder de alterar o destino cósmico.",
+      "raca": "Thessari",
+      "afiliacao": "Nenhuma — errante",
+      "status": "Activo — localização variável",
+      "habilidades_chave": ["Visão do fim dos tempos", "Transposição entre planos", "Codificação profética"],
+      "historia": "Surgiu pela primeira vez registado há 5.000 anos. A mesma entidade — confirmada por assinatura de consciência — reapareceu em múltiplos pontos da história em crises de nível existencial. Nunca intervém directamente. Sempre observa.",
+      "imagem_cor": "#9b59b6"
+    },
+    {
+      "id": "p006",
+      "nome": "Nara Selk",
+      "titulo": "A Voz do Silêncio",
+      "descricao": "Uma Krath que abandonou o seu clã após testemunhar a destruição de um mundo habitado pelas suas próprias mãos. Desde então percorre a galáxia como mercenária e informante, trabalhando para quem paga mais — mas com uma linha ética que nunca cruza.",
+      "raca": "Krath",
+      "afiliacao": "Independente / Rede de Sombras",
+      "status": "Activa — localização variável",
+      "habilidades_chave": ["Infiltração e espionagem", "Combate corpo-a-corpo no vácuo", "Negociação em ambientes hostis"],
+      "historia": "A sua traição ao Clã Vel-Horum colocou um preço na sua cabeça que aumenta a cada ano. Dizem que foi ela quem forneceu os planos da Frota das Sombras à Aliança Sorvani durante a Segunda Guerra dos Véus.",
+      "imagem_cor": "#c0392b"
+    }
+  ],
+  "lugares": [
+    {
+      "id": "l001",
+      "nome": "Alfa-Nula",
+      "tipo": "Dimensão / Ponto de Origem",
+      "descricao": "A dimensão primordial de onde os Uslords afirmam ter surgido. Não é um lugar físico no sentido convencional — é uma sobreposição de todos os estados de existência possíveis. Apenas os Uslords e raças de poder comparável conseguem aceder e sobreviver à sua natureza paradoxal.",
+      "sistema": "Extradimensional",
+      "habitantes": ["Uslords", "Entidades não catalogadas"],
+      "status": "Acessível apenas a entidades de alto poder",
+      "importancia": "Crítica — origem de toda a energia primordial conhecida",
+      "imagem_cor": "#6c63ff"
+    },
+    {
+      "id": "l002",
+      "nome": "Estrela Oca",
+      "tipo": "Megaestrutura / Habitat",
+      "descricao": "A maior construção artificial do universo conhecido. Uma estrela artificial escavada e estabilizada que alberga no seu interior uma ecosfera completa para 12 mil milhões de habitantes de múltiplas espécies. Possui gravidade artificial gerada por rotação e uma estrela artificial miniatura no núcleo para simular o dia.",
+      "sistema": "Sistema Vaeran",
+      "habitantes": ["Sorvani", "Velhari", "Humanos (migrantes)", "Outras espécies aliadas"],
+      "status": "Habitada e activa",
+      "importancia": "Alta — maior centro político e comercial da Aliança",
+      "imagem_cor": "#ff8c00"
+    },
+    {
+      "id": "l003",
+      "nome": "Nebulosa Krath-Har",
+      "tipo": "Nebulosa / Território",
+      "descricao": "Uma vasta nebulosa de matéria escura que serve de lar ancestral aos Krath. A radiação electromagnética no seu interior é quase nula, tornando-a ideal para os sentidos dos Krath mas letal para a maioria das outras espécies sem equipamento especializado. Inúmeros destroços de naves exploradoras flutuam nas suas margens.",
+      "sistema": "Braço Exterior da Galáxia",
+      "habitantes": ["Krath (estimativa: vários clãs)"],
+      "status": "Zona de exclusão — nível de perigo máximo",
+      "importancia": "Alta — base de operações da Frota das Sombras",
+      "imagem_cor": "#8b0000"
+    },
+    {
+      "id": "l004",
+      "nome": "Plano Tesseral",
+      "tipo": "Dimensão / Plano de Existência",
+      "descricao": "O plano de existência nativo dos Thessari. O tempo flui de forma não-linear aqui — diferentes zonas do Plano Tesseral correspondem a diferentes eras do universo físico simultaneamente. Visitantes que conseguem entrar relatam ver o passado e futuro da galáxia a coexistir em paisagens impossíveis.",
+      "sistema": "Extradimensional",
+      "habitantes": ["Thessari"],
+      "status": "Inacessível para a maioria das raças",
+      "importancia": "Alta — fonte de todas as profecias conhecidas",
+      "imagem_cor": "#9b59b6"
+    },
+    {
+      "id": "l005",
+      "nome": "Sorvanis Prime",
+      "tipo": "Planeta / Capital",
+      "descricao": "O planeta natal dos Sorvani. Uma vez um mundo orgânico, Sorvanis Prime foi ao longo de milénios completamente remodelado pela engenharia Sorvani até se tornar um planeta-máquina. A sua superfície é uma intrincada rede de fábricas, institutos e cidades verticais que se estendem desde o núcleo até à atmosfera.",
+      "sistema": "Sistema Sorvanis",
+      "habitantes": ["Sorvani (maioritariamente)", "Trabalhadores de outras espécies"],
+      "status": "Capital da Grande Planta",
+      "importancia": "Crítica — centro industrial e político dos Sorvani",
+      "imagem_cor": "#e67e22"
+    },
+    {
+      "id": "l006",
+      "nome": "Sistema Veh-IX",
+      "tipo": "Sistema Estelar / Território",
+      "descricao": "Um sistema de estrelas binárias que serve de berço aos Velhari. A dança constante de luz das duas estrelas criou condições únicas para a evolução de seres fotónicos. As luas dos planetas interiores são cobertas por vastas florestas de cristal que crescem alimentadas pela luz dual.",
+      "sistema": "Braço Central da Galáxia",
+      "habitantes": ["Velhari"],
+      "status": "Território soberano Velhari",
+      "importancia": "Alta — centro cultural e espiritual dos Velhari",
+      "imagem_cor": "#00d4ff"
+    },
+    {
+      "id": "l007",
+      "nome": "Estação Ponto-Zero",
+      "tipo": "Estação Espacial / Local Neutro",
+      "descricao": "A maior estação espacial neutra do universo conhecido. Construída num ponto gravitacional entre quatro sistemas, Ponto-Zero é território de ninguém e de todos simultaneamente. Serve como mercado, porto, casino, arquivo de conhecimento e cemitério para as naves que nunca mais deixaram o seu espaço.",
+      "sistema": "Ponto de Lagrange Quadrisistemático",
+      "habitantes": ["Todas as espécies conhecidas"],
+      "status": "Neutra — governada pelo Consórcio dos Sem-Bandeira",
+      "importancia": "Alta — único ponto de encontro garantido entre facções hostis",
+      "imagem_cor": "#1abc9c"
+    }
+  ],
+  "facoes": [
+    {
+      "id": "f001",
+      "nome": "Conselho dos Senhores",
+      "tipo": "Governo / Autoridade Suprema",
+      "descricao": "O órgão governante dos Uslords. Composto pelos mais antigos e poderosos da sua raça, o Conselho toma decisões que afectam a totalidade do universo conhecido — muitas vezes sem consultar as outras raças. A sua sede é em Alfa-Nula e as suas deliberações são transmitidas como decretos inquestionáveis.",
+      "lider": "Auren Vael (presumido)",
+      "membros_estimados": "Desconhecido",
+      "objetivo": "Manter a ordem cósmica conforme a visão dos Uslords",
+      "aliancas": ["Ordem dos Véus (cooperação selectiva)"],
+      "conflitos": ["Clã Vel-Horum", "Facções separatistas"],
+      "imagem_cor": "#6c63ff"
+    },
+    {
+      "id": "f002",
+      "nome": "Grande Planta",
+      "tipo": "Governo / República Tecnocrática",
+      "descricao": "O conselho governante dos Sorvani. Composto pelos maiores arquitectos e engenheiros da raça, a Grande Planta toma decisões baseadas em mérito técnico e eficiência. É simultaneamente um órgão legislativo, executivo e de investigação. O seu lema é: 'Nada é impossível, apenas inacabado.'",
+      "lider": "Cael Miross (Arquitecta-Chefe)",
+      "membros_estimados": "144 membros titulares",
+      "objetivo": "Expandir as capacidades construtivas da civilização Sorvani e aliadas",
+      "aliancas": ["Embaixada Velhari", "Estação Ponto-Zero"],
+      "conflitos": ["Clã Vel-Horum", "Extractores independentes"],
+      "imagem_cor": "#ff8c00"
+    },
+    {
+      "id": "f003",
+      "nome": "Frota das Sombras",
+      "tipo": "Força Militar / Organização de Guerra",
+      "descricao": "A maior e mais temida armada Krath. Composta por milhares de naves camufladas em matéria escura, a Frota das Sombras é um instrumento de terror e conquista. Os seus ataques raramente são detectados antes de já terem acontecido.",
+      "lider": "Drak Vel-Horum",
+      "membros_estimados": "~200.000 combatentes activos",
+      "objetivo": "Expansão do território Krath e eliminação de espécies 'inferiores'",
+      "aliancas": ["Clãs Krath aliados", "Mercenários independentes"],
+      "conflitos": ["Grande Planta", "Embaixada Velhari", "Conselho dos Senhores"],
+      "imagem_cor": "#8b0000"
+    },
+    {
+      "id": "f004",
+      "nome": "Ordem dos Véus",
+      "tipo": "Ordem Religiosa / Militar",
+      "descricao": "Uma ordem Velhari dedicada à arte de tecer véus de luz para proteção e ocultação. Os membros da Ordem dos Véus são simultaneamente monges, guerreiros e diplomatas. Crêem que a luz é a expressão mais pura da consciência e que manipulá-la é um acto sagrado.",
+      "lider": "Lyss Tharren",
+      "membros_estimados": "~50.000 membros activos",
+      "objetivo": "Proteger os Velhari e preservar o equilíbrio cósmico através da luz",
+      "aliancas": ["Grande Planta", "Conselho dos Senhores (cooperação selectiva)"],
+      "conflitos": ["Frota das Sombras", "Krath em geral"],
+      "imagem_cor": "#00d4ff"
+    },
+    {
+      "id": "f005",
+      "nome": "Consórcio dos Sem-Bandeira",
+      "tipo": "Organização Comercial / Governo Neutro",
+      "descricao": "A organização que governa a Estação Ponto-Zero e muitas rotas comerciais intergalácticas. Os Sem-Bandeira não têm lealdade racial ou política declarada — a sua única ideologia é o lucro e a manutenção de rotas abertas. São, paradoxalmente, uma das forças mais estabilizadoras do universo.",
+      "lider": "Conselho de Directores (anónimos)",
+      "membros_estimados": "~5 milhões de associados em toda a galáxia",
+      "objetivo": "Lucro, neutralidade e manutenção do comércio intergaláctico livre",
+      "aliancas": ["Todas as facções (por interesse)"],
+      "conflitos": ["Qualquer facção que bloqueie rotas comerciais"],
+      "imagem_cor": "#1abc9c"
+    },
+    {
+      "id": "f006",
+      "nome": "Rede de Sombras",
+      "tipo": "Organização de Inteligência / Rede de Espiões",
+      "descricao": "Uma rede clandestina de informantes, espiões e mercenários que opera em todas as facções e territórios. Ninguém sabe quem a fundou ou quem a dirige verdadeiramente. Os seus agentes vendem informação a quem paga mais e com frequência detêm o equilíbrio de poder entre facções sem que estas o saibam.",
+      "lider": "Desconhecido",
+      "membros_estimados": "Desconhecido",
+      "objetivo": "Desconhecido — especula-se que seja a manutenção de um equilíbrio específico de poder",
+      "aliancas": ["Nenhuma permanente"],
+      "conflitos": ["Nenhuma declarada"],
+      "imagem_cor": "#7f8c8d"
+    }
+  ],
+  "eventos": [
+    {
+      "id": "e001",
+      "nome": "A Grande Fragmentação",
+      "tipo": "Evento Cósmico / Era",
+      "descricao": "O evento mais antigo registado na história do universo Uslords. A Grande Fragmentação refere-se ao momento em que o universo primordial se dividiu em múltiplas dimensões e planos de existência, criando a complexa tapeçaria de realidades que existe hoje. Os Uslords afirmam ter sido testemunhas — ou possivelmente causadores — deste evento.",
+      "periodo": "Antes do calendário — Era Primordial",
+      "participantes": ["Uslords", "Entidades Primordiais (extintas)"],
+      "consequencias": ["Criação de múltiplos planos de existência", "Surgimento das primeiras raças inteligentes", "Estabelecimento das Leis do Vazio"],
+      "status": "Evento histórico confirmado",
+      "imagem_cor": "#6c63ff"
+    },
+    {
+      "id": "e002",
+      "nome": "Guerra dos Espelhos",
+      "tipo": "Conflito / Guerra",
+      "descricao": "Um conflito de 300 anos entre os Velhari e os Krath, desencadeado quando a Frota das Sombras destruiu o primeiro arquivo de cristais de memória Velhari. A guerra foi travada principalmente em domínios de luz vs. escuridão — literalmente batalhas em que a luz e a sombra eram armas. Terminou com o Tratado de Ponto-Zero.",
+      "periodo": "Era 4 — Anos 1200 a 1500",
+      "participantes": ["Ordem dos Véus", "Frota das Sombras", "Embaixada Velhari", "Mediadores Sorvani"],
+      "consequencias": ["Tratado de Ponto-Zero", "Fundação da Estação Ponto-Zero como território neutro", "Reforço da aliança Velhari-Sorvani"],
+      "status": "Concluída — paz frágil mantida",
+      "imagem_cor": "#e74c3c"
+    },
+    {
+      "id": "e003",
+      "nome": "Construção da Estrela Oca",
+      "tipo": "Evento Tecnológico / Marco Civilizacional",
+      "descricao": "O projecto de construção mais ambicioso da história conhecida. Iniciado por Cael Miross e a Grande Planta, a Estrela Oca demorou 80 anos a construir e envolveu colaboração entre Sorvani, Velhari e dezenas de outras espécies. A sua conclusão marcou o início de uma nova era de cooperação e expansão para as raças aliadas.",
+      "periodo": "Era 7 — Anos 340 a 420",
+      "participantes": ["Grande Planta", "Instituto de Megaestruturas", "Engenheiros de múltiplas espécies"],
+      "consequencias": ["Criação do maior habitat artificial", "Novo centro político da Aliança", "Avanços tecnológicos que se espalharam por toda a galáxia"],
+      "status": "Concluída — Estrela Oca em plena operação",
+      "imagem_cor": "#ff8c00"
+    },
+    {
+      "id": "e004",
+      "nome": "O Evento de Convergência",
+      "tipo": "Evento Misterioso / Ponto de Inflexão",
+      "descricao": "Um evento de dimensões cósmicas em que múltiplos planos de existência se sobrepuseram brevemente, criando zonas de realidade instável em toda a galáxia. Auren Vael desapareceu durante este evento e não foi visto durante três mil anos. A causa permanece desconhecida, embora alguns Thessari afirmem ter previsto o evento.",
+      "periodo": "Era 2 — Ano 0 (Ponto de referência do calendário actual)",
+      "participantes": ["Uslords (afectados)", "Thessari (observadores)", "Todas as raças (afectadas secundariamente)"],
+      "consequencias": ["Desaparecimento de Auren Vael", "Instabilidade dimensional durante 50 anos", "Revisão das Leis do Vazio"],
+      "status": "Historicamente documentado — causa desconhecida",
+      "imagem_cor": "#9b59b6"
+    },
+    {
+      "id": "e005",
+      "nome": "Segunda Guerra dos Véus",
+      "tipo": "Conflito / Guerra",
+      "descricao": "Uma ressurgência do conflito Velhari-Krath, desta vez instigada por Drak Vel-Horum com o objectivo declarado de destruir a Estrela Oca e quebrar a aliança entre Sorvani e Velhari. A guerra durou 15 anos e foi decidida em parte pela informação fornecida por Nara Selk sobre os planos da Frota das Sombras.",
+      "periodo": "Era 7 — Anos 580 a 595",
+      "participantes": ["Frota das Sombras", "Ordem dos Véus", "Grande Planta", "Nara Selk (agente duplo)"],
+      "consequencias": ["Retirada temporária de Drak Vel-Horum", "Fortalecimento da aliança Velhari-Sorvani", "Criação do tratado de defesa mútua"],
+      "status": "Concluída — tensões persistem",
+      "imagem_cor": "#e74c3c"
+    },
+    {
+      "id": "e006",
+      "nome": "O Regresso de Auren Vael",
+      "tipo": "Evento Histórico / Mistério",
+      "descricao": "Três mil anos após o Evento de Convergência, Auren Vael reapareceu na Estação Ponto-Zero sem explicação. Não envelhecera um dia. Recusou-se a falar sobre onde estivera. A sua presença causou imediata reconfiguração das alianças políticas, com o Conselho dos Senhores convocando uma sessão de emergência pela primeira vez em mil anos.",
+      "periodo": "Era 9 — Ano 47 (era actual)",
+      "participantes": ["Auren Vael", "Conselho dos Senhores", "Representantes de todas as raças principais"],
+      "consequencias": ["Sessão de emergência do Conselho dos Senhores", "Desestabilização política temporária", "Verath (Thessari) desapareceu no mesmo dia"],
+      "status": "Recente — consequências ainda em desenvolvimento",
+      "imagem_cor": "#6c63ff"
+    }
+  ]
+};
+
+// ===================== SECTION CONFIG =====================
+const SECTIONS = {
+  racas: {
+    label: 'Raças',
+    icon: '&#129422;',
+    desc: 'As espécies inteligentes que habitam o universo Uslords — desde as mais antigas divindades cósmicas até aos construtores de estrelas.',
+    getSubtitle: e => e.subtitulo || e.tipo || '',
+    getIcon: e => ({ 'Uslords':'&#10024;', 'Velhari':'&#128161;', 'Krath':'&#128480;', 'Sorvani':'&#9881;', 'Thessari':'&#8987;' }[e.nome] || '&#129422;'),
+    getTags: e => e.habilidades ? e.habilidades.slice(0,2) : [],
+    getBadge: e => e.status,
+    getBadgeClass: e => ({ 'Dominante':'status-active', 'Aliada':'status-active', 'Neutra/Hostil':'status-danger', 'Misteriosa':'status-neutral' }[e.status] || 'status-unknown'),
+    renderModal: renderRacaModal
+  },
+  personagens: {
+    label: 'Personagens',
+    icon: '&#128100;',
+    desc: 'Os indivíduos que moldaram e continuam a moldar o destino do universo — heróis, vilões, e enigmas vivos.',
+    getSubtitle: e => e.titulo || '',
+    getIcon: e => ({ 'Uslords':'&#10024;', 'Velhari':'&#128161;', 'Krath':'&#128480;', 'Sorvani':'&#9881;', 'Thessari':'&#8987;' }[e.raca] || '&#128100;'),
+    getTags: e => e.habilidades_chave ? e.habilidades_chave.slice(0,2) : [],
+    getBadge: e => e.raca,
+    getBadgeClass: () => 'status-neutral',
+    renderModal: renderPersonagemModal
+  },
+  lugares: {
+    label: 'Lugares/Mundos',
+    icon: '&#127759;',
+    desc: 'Os mundos, dimensões e megaestruturas que compõem o tecido físico e extrafísico do universo Uslords.',
+    getSubtitle: e => e.tipo || '',
+    getIcon: e => {
+      const m = { 'Dimensão':'&#127300;', 'Planeta':'&#127760;', 'Nebulosa':'&#10024;', 'Estação':'&#128752;', 'Megaestrutura':'&#127968;', 'Sistema':'&#11088;' };
+      const key = Object.keys(m).find(k => (e.tipo||'').includes(k));
+      return key ? m[key] : '&#127759;';
+    },
+    getTags: e => e.habitantes ? e.habitantes.slice(0,2) : [],
+    getBadge: e => e.importancia ? e.importancia.split('—')[0].trim() : e.status,
+    getBadgeClass: e => e.importancia && e.importancia.startsWith('Crítica') ? 'status-danger' : 'status-active',
+    renderModal: renderLugarModal
+  },
+  facoes: {
+    label: 'Facções/Grupos',
+    icon: '&#9876;',
+    desc: 'As organizações, governos, ordens e conspirações que disputam poder e influência através das galáxias.',
+    getSubtitle: e => e.tipo || '',
+    getIcon: e => ({ 'Governo':'&#127959;', 'Força Militar':'&#9876;', 'Ordem':'&#9764;', 'Organização Comercial':'&#128176;', 'Organização de Inteligência':'&#128065;' }[Object.keys({'Governo':'','Força Militar':'','Ordem':'','Organização Comercial':'','Organização de Inteligência':''}).find(k => (e.tipo||'').includes(k))] || '&#9873;'),
+    getTags: e => e.aliancas ? e.aliancas.slice(0,1) : [],
+    getBadge: e => e.tipo ? e.tipo.split('/')[0].trim() : '',
+    getBadgeClass: e => (e.tipo||'').includes('Militar') || (e.tipo||'').includes('Inteligência') ? 'status-danger' : 'status-neutral',
+    renderModal: renderFacaoModal
+  },
+  eventos: {
+    label: 'Eventos/História',
+    icon: '&#128336;',
+    desc: 'Os acontecimentos que definiram eras, desencadearam guerras e alteraram para sempre o equilíbrio do universo.',
+    getSubtitle: e => e.periodo || '',
+    getIcon: e => ({ 'Conflito':'&#9876;', 'Cósmico':'&#10024;', 'Tecnológico':'&#9881;', 'Misterioso':'&#10067;', 'Histórico':'&#128214;' }[Object.keys({'Conflito':'','Cósmico':'','Tecnológico':'','Misterioso':'','Histórico':''}).find(k => (e.tipo||'').includes(k))] || '&#128336;'),
+    getTags: e => e.consequencias ? e.consequencias.slice(0,1) : [],
+    getBadge: e => e.status ? e.status.split('—')[0].trim() : '',
+    getBadgeClass: e => (e.status||'').includes('Concluída') ? 'status-active' : (e.status||'').includes('Recente') ? 'status-neutral' : 'status-unknown',
+    renderModal: renderEventoModal
+  }
+};
+
+// ===================== STATE =====================
+let currentSection = 'racas';
+let searchQuery = '';
+
+// ===================== LOCK LOGIC =====================
+const CORRECT_CODE = '2387';
+let pinBuffer = '';
+
+function updateDots(error = false) {
+  for (let i = 0; i < 4; i++) {
+    const d = document.getElementById('dot-' + i);
+    d.classList.remove('filled', 'error');
+    if (error) d.classList.add('error');
+    else if (i < pinBuffer.length) d.classList.add('filled');
+  }
+}
+
+function handlePin(digit) {
+  if (pinBuffer.length >= 4) return;
+  pinBuffer += digit;
+  updateDots();
+  if (pinBuffer.length === 4) {
+    if (pinBuffer === CORRECT_CODE) {
+      unlock();
+    } else {
+      updateDots(true);
+      document.getElementById('lock-error').classList.add('visible');
+      setTimeout(() => {
+        pinBuffer = '';
+        updateDots();
+        document.getElementById('lock-error').classList.remove('visible');
+      }, 1200);
+    }
+  }
+}
+
+function handleDel() {
+  if (pinBuffer.length > 0) {
+    pinBuffer = pinBuffer.slice(0, -1);
+    updateDots();
+  }
+}
+
+function unlock() {
+  const ls = document.getElementById('lockscreen');
+  const app = document.getElementById('app');
+  ls.classList.add('hidden');
+  setTimeout(() => {
+    app.classList.add('visible');
+    initApp();
+  }, 600);
+}
+
+function lock() {
+  pinBuffer = '';
+  updateDots();
+  document.getElementById('lock-error').classList.remove('visible');
+  const app = document.getElementById('app');
+  const ls = document.getElementById('lockscreen');
+  app.classList.remove('visible');
+  app.style.display = 'none';
+  ls.classList.remove('hidden');
+  ls.style.opacity = '';
+  ls.style.visibility = '';
+}
+
+document.getElementById('numpad').addEventListener('click', e => {
+  const btn = e.target.closest('.numpad-btn');
+  if (!btn) return;
+  if (btn.id === 'del-btn') handleDel();
+  else if (btn.dataset.n !== undefined) handlePin(btn.dataset.n);
+});
+
+document.addEventListener('keydown', e => {
+  if (document.getElementById('lockscreen').classList.contains('hidden')) return;
+  if (e.key >= '0' && e.key <= '9') handlePin(e.key);
+  else if (e.key === 'Backspace') handleDel();
+});
+
+document.getElementById('lock-again-btn').addEventListener('click', lock);
+
+// ===================== APP INIT =====================
+function initApp() {
+  // update counts
+  Object.keys(SECTIONS).forEach(sec => {
+    document.getElementById('count-' + sec).textContent = DB[sec].length;
+  });
+
+  // nav clicks
+  document.querySelectorAll('.nav-item').forEach(item => {
+    item.addEventListener('click', () => {
+      currentSection = item.dataset.section;
+      document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
+      item.classList.add('active');
+      searchQuery = '';
+      document.getElementById('search-input').value = '';
+      renderSection();
+    });
+  });
+
+  // search
+  document.getElementById('search-input').addEventListener('input', e => {
+    searchQuery = e.target.value.toLowerCase().trim();
+    renderSection();
+  });
+
+  // modal close
+  document.getElementById('modal-close').addEventListener('click', closeModal);
+  document.getElementById('modal-overlay').addEventListener('click', e => {
+    if (e.target === document.getElementById('modal-overlay')) closeModal();
+  });
+  document.addEventListener('keydown', e => {
+    if (e.key === 'Escape') closeModal();
+  });
+
+  renderSection();
+}
+
+// ===================== RENDER =====================
+function renderSection() {
+  const conf = SECTIONS[currentSection];
+  const data = DB[currentSection];
+  const filtered = searchQuery
+    ? data.filter(e => JSON.stringify(e).toLowerCase().includes(searchQuery))
+    : data;
+
+  // update search count
+  const countEl = document.getElementById('search-count');
+  if (searchQuery) {
+    countEl.textContent = filtered.length + ' resultado' + (filtered.length !== 1 ? 's' : '');
+    countEl.style.display = '';
+  } else {
+    countEl.style.display = 'none';
+  }
+
+  let html = `
+    <div class="section-header">
+      <div>
+        <div class="section-title"><span>${conf.label}</span></div>
+        <div class="section-line"></div>
+        <div class="section-desc" style="margin-top:0.5rem">${conf.desc}</div>
+      </div>
+    </div>
+    <div class="cards-grid">
+  `;
+
+  if (filtered.length === 0) {
+    html += `
+      <div class="empty-state">
+        <div class="empty-icon">&#128269;</div>
+        <div class="empty-title">Nenhum resultado encontrado</div>
+        <div class="empty-sub">Tente uma pesquisa diferente</div>
+      </div>
+    `;
+  } else {
+    filtered.forEach(entry => {
+      const color = entry.imagem_cor || '#6c63ff';
+      const tags = conf.getTags(entry);
+      const badge = conf.getBadge(entry);
+      const badgeClass = conf.getBadgeClass(entry);
+      const icon = conf.getIcon(entry);
+      const sub = conf.getSubtitle(entry);
+
+      html += `
+        <div class="card" style="--card-color:${color}" data-id="${entry.id}" data-section="${currentSection}">
+          <div class="card-header">
+            <div class="card-icon" style="border-color:${color}22;color:${color}">${icon}</div>
+            <div class="card-titles">
+              <div class="card-name">${entry.nome}</div>
+              <div class="card-sub">${sub}</div>
+            </div>
+            ${badge ? `<span class="card-badge status-badge ${badgeClass}" style="border-color:currentColor;opacity:0.8">${badge}</span>` : ''}
+          </div>
+          <div class="card-body">
+            <div class="card-desc">${entry.descricao}</div>
+          </div>
+          ${tags.length ? `
+          <div class="card-footer">
+            ${tags.map(t => `<span class="tag">${t}</span>`).join('')}
+            <span class="card-arrow">&#8594;</span>
+          </div>` : `<div class="card-footer"><span class="card-arrow" style="margin-left:auto">&#8594;</span></div>`}
+        </div>
+      `;
+    });
+  }
+
+  html += '</div>';
+  document.getElementById('main-content').innerHTML = html;
+
+  // attach card click
+  document.querySelectorAll('.card').forEach(card => {
+    card.addEventListener('click', () => {
+      const id = card.dataset.id;
+      const sec = card.dataset.section;
+      const entry = DB[sec].find(e => e.id === id);
+      if (entry) openModal(entry, sec);
+    });
+  });
+}
+
+// ===================== MODAL =====================
+function openModal(entry, section) {
+  const conf = SECTIONS[section];
+  const color = entry.imagem_cor || '#6c63ff';
+  document.getElementById('modal-accent').style.background = `linear-gradient(90deg, ${color}, #00d4ff)`;
+  document.getElementById('modal').style.setProperty('--modal-color', color);
+  document.getElementById('modal-body').innerHTML = conf.renderModal(entry, color);
+  document.getElementById('modal-overlay').classList.add('open');
+  document.body.style.overflow = 'hidden';
+}
+
+function closeModal() {
+  document.getElementById('modal-overlay').classList.remove('open');
+  document.body.style.overflow = '';
+}
+
+// ===================== MODAL RENDERERS =====================
+function fieldHtml(label, value) {
+  if (!value) return '';
+  return `<div class="modal-field"><div class="modal-field-label">${label}</div><div class="modal-field-value">${value}</div></div>`;
+}
+function listHtml(label, arr) {
+  if (!arr || !arr.length) return '';
+  return `<div class="modal-list-title">${label}</div><div class="modal-tags">${arr.map(t => `<span class="modal-tag">${t}</span>`).join('')}</div>`;
+}
+
+function modalHeader(entry, icon, subtitle, color) {
+  return `
+    <div class="modal-header">
+      <div class="modal-icon-row">
+        <div class="modal-icon" style="border-color:${color}44;color:${color}">${icon}</div>
+        <div>
+          <div class="modal-title">${entry.nome}</div>
+          <div class="modal-subtitle">${subtitle || ''}</div>
+        </div>
+      </div>
+    </div>
+    <div class="modal-desc">${entry.descricao}</div>
+  `;
+}
+
+function renderRacaModal(entry, color) {
+  const icon = ({ 'Uslords':'&#10024;', 'Velhari':'&#128161;', 'Krath':'&#128480;', 'Sorvani':'&#9881;', 'Thessari':'&#8987;' }[entry.nome] || '&#129422;');
+  return modalHeader(entry, icon, entry.subtitulo, color)
+    + `<div class="modal-grid">`
+    + fieldHtml('Origem', entry.origem)
+    + fieldHtml('Esperança de Vida', entry.esperanca_vida)
+    + fieldHtml('Populacao', entry.populacao)
+    + fieldHtml('Status', entry.status)
+    + `</div>`
+    + listHtml('Habilidades', entry.habilidades)
+    + `<div class="modal-id">ID: ${entry.id}</div>`;
+}
+
+function renderPersonagemModal(entry, color) {
+  const icon = ({ 'Uslords':'&#10024;', 'Velhari':'&#128161;', 'Krath':'&#128480;', 'Sorvani':'&#9881;', 'Thessari':'&#8987;' }[entry.raca] || '&#128100;');
+  return modalHeader(entry, icon, entry.titulo, color)
+    + `<div class="modal-grid">`
+    + fieldHtml('Raça', entry.raca)
+    + fieldHtml('Afiliação', entry.afiliacao)
+    + fieldHtml('Status', entry.status)
+    + `</div>`
+    + listHtml('Habilidades-Chave', entry.habilidades_chave)
+    + (entry.historia ? `<div class="modal-list-title">Historia</div><div class="modal-desc" style="display:block;margin-bottom:1rem;font-size:0.85rem;color:var(--text)">${entry.historia}</div>` : '')
+    + `<div class="modal-id">ID: ${entry.id}</div>`;
+}
+
+function renderLugarModal(entry, color) {
+  const icons = { 'Dimensão':'&#127300;', 'Planeta':'&#127760;', 'Nebulosa':'&#10024;', 'Estação':'&#128752;', 'Megaestrutura':'&#127968;', 'Sistema':'&#11088;' };
+  const key = Object.keys(icons).find(k => (entry.tipo||'').includes(k));
+  const icon = key ? icons[key] : '&#127759;';
+  return modalHeader(entry, icon, entry.tipo, color)
+    + `<div class="modal-grid">`
+    + fieldHtml('Sistema', entry.sistema)
+    + fieldHtml('Status', entry.status)
+    + fieldHtml('Importancia', entry.importancia)
+    + `</div>`
+    + listHtml('Habitantes', entry.habitantes)
+    + `<div class="modal-id">ID: ${entry.id}</div>`;
+}
+
+function renderFacaoModal(entry, color) {
+  return modalHeader(entry, '&#9873;', entry.tipo, color)
+    + `<div class="modal-grid">`
+    + fieldHtml('Lider', entry.lider)
+    + fieldHtml('Membros Estimados', entry.membros_estimados)
+    + `</div>`
+    + (entry.objetivo ? `<div class="modal-list-title">Objetivo</div><div class="modal-desc" style="display:block;margin-bottom:1rem;font-size:0.85rem;color:var(--text)">${entry.objetivo}</div>` : '')
+    + listHtml('Aliancas', entry.aliancas)
+    + listHtml('Conflitos', entry.conflitos)
+    + `<div class="modal-id">ID: ${entry.id}</div>`;
+}
+
+function renderEventoModal(entry, color) {
+  const icons = { 'Conflito':'&#9876;', 'Cósmico':'&#10024;', 'Tecnológico':'&#9881;', 'Misterioso':'&#10067;', 'Histórico':'&#128214;' };
+  const key = Object.keys(icons).find(k => (entry.tipo||'').includes(k));
+  const icon = key ? icons[key] : '&#128336;';
+  return modalHeader(entry, icon, entry.tipo, color)
+    + `<div class="modal-grid">`
+    + fieldHtml('Periodo', entry.periodo)
+    + fieldHtml('Status', entry.status)
+    + `</div>`
+    + listHtml('Participantes', entry.participantes)
+    + listHtml('Consequencias', entry.consequencias)
+    + `<div class="modal-id">ID: ${entry.id}</div>`;
+}
+</script>
+</body>
+</html>
