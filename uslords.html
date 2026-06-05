@@ -790,93 +790,19 @@
 <script>
 // ===================== DATA =====================
 const DB = {
-  "racas": [
-    {
-      "id": "r001",
-      "nome": "G",
-      "subtitulo": "Men",
-      "descricao": "O arquiteto supremo da simetria perfeita, G é a figura enigmática que moldou o destino humano ao erradicar o livre-arbítrio. Raramente desce do topo imaculado da sua torre de vidro e ouro, mas à medida que as fundações começam a estalar, a sua próxima decisão ditará se o mundo permanece em silêncio ou se desmorona irremediavelmente no caos primordial.",
-      "origem": "Encephalon",
-      "esperanca_vida": "Desconhecida",
-      "habilidades": ["Mestre Estratega", "Mestre Manipulador", "Mestre Observador"],
-      "historia": "G é o governante supremo do Encephalon, uma fortaleza de vidro e ouro onde erradicou o livre-arbítrio em nome da simetria. Isolado no topo, ele acredita ser o salvador da humanidade através de um regime de silêncio e ordem absoluta. A sua ilusão desaba quando um batimento subterrâneo racha a torre, revelando que ele é apenas o carcereiro de uma força antiga prestes a libertar-se.",
-      "status": "Governante Supremo",
-      "populacao": "Único",
-      "imagem_cor": "#c0a020"
-    }
-  ],
+  "racas": [],
   "personagens": [
     {
       "id": "p001",
-      "nome": "Auren Vael",
-      "titulo": "O Primeiro Senhor",
-      "descricao": "O mais antigo dos Uslords conhecidos, Auren Vael é uma figura lendária cuja existência é documentada nos registos mais antigos do universo. Raramente intervém directamente, mas quando o faz, o curso da história muda irremediavelmente.",
-      "raca": "Uslords",
-      "afiliacao": "Conselho dos Senhores",
-      "status": "Activo — localização desconhecida",
-      "habilidades_chave": ["Manipulação temporal limitada", "Criação de dimensões de bolso", "Imortalidade"],
-      "historia": "Surgiu antes da Grande Fragmentação. Dizem que foi Auren quem estabeleceu as Leis do Vazio que regulam o uso de energia primordial. Desapareceu após o Evento de Convergência e reapareceu milénios depois sem envelhecer.",
-      "imagem_cor": "#6c63ff"
-    },
-    {
-      "id": "p002",
-      "nome": "Lyss Tharren",
-      "titulo": "A Tecelã de Véus",
-      "descricao": "Uma Velhari de extraordinário poder que aprendeu a tecer véus de luz capazes de ocultar estrelas inteiras. Actualmente serve como embaixadora entre os Velhari e os Uslords, mas suspeita-se que tenha agenda própria.",
-      "raca": "Velhari",
-      "afiliacao": "Embaixada Velhari / Ordem dos Véus",
-      "status": "Activa — Estação Orbital Velha-7",
-      "habilidades_chave": ["Tecelagem de véus de luz", "Diplomacia avançada", "Leitura de intenções"],
-      "historia": "Nascida durante um eclipse duplo no sistema Veh-IX, considerado presságio de grandeza. Treinou durante 200 anos antes de ser aceite na Ordem dos Véus. O seu papel na Guerra dos Espelhos foi decisivo para a aliança atual.",
-      "imagem_cor": "#00d4ff"
-    },
-    {
-      "id": "p003",
-      "nome": "Drak Vel-Horum",
-      "titulo": "O Devorador de Sistemas",
-      "descricao": "Líder Krath de renome e terror universal. Drak comanda a maior frota Krath já reunida e é responsável pela destruição de pelo menos três sistemas habitados. Paradoxalmente, é conhecido por poupar civis quando lhe é conveniente — o que o torna ainda mais temido.",
-      "raca": "Krath",
-      "afiliacao": "Clã Vel-Horum / Frota das Sombras",
-      "status": "Activo — ameaça de Nível Vermelho",
-      "habilidades_chave": ["Táctica de guerra no vácuo", "Camuflagem avançada", "Manipulação psíquica"],
-      "historia": "Ascendeu ao poder depois de consumir a energia do seu próprio pai num ritual de liderança. A sua campanha contra a Aliança Sorvani durou 40 anos e terminou num impasse que ainda hoje é estudado nas academias militares.",
-      "imagem_cor": "#8b0000"
-    },
-    {
-      "id": "p004",
-      "nome": "Cael Miross",
-      "titulo": "A Arquitecta da Estrela Oca",
-      "descricao": "A mais célebre engenheira Sorvani da era moderna. Cael projetou e supervisionou a construção da Estrela Oca, uma megaestrutura que alberga 12 mil milhões de habitantes. O seu trabalho redefiniu o que se entendia como possível em engenharia estrutural cósmica.",
-      "raca": "Sorvani",
-      "afiliacao": "Grande Planta / Instituto de Megaestruturas",
-      "status": "Activa — Estrela Oca",
-      "habilidades_chave": ["Engenharia de estrelas artificiais", "Liderança de projectos multi-espécie", "Síntese de matéria escura estabilizada"],
-      "historia": "Começou como aprendiz aos 12 anos. Publicou a sua teoria sobre estabilização de matéria escura aos 40, mudando o campo para sempre. A construção da Estrela Oca levou 80 anos e ela esteve presente em cada fase.",
-      "imagem_cor": "#ff8c00"
-    },
-    {
-      "id": "p005",
-      "nome": "Verath",
-      "titulo": "O Que Vê o Fim",
-      "descricao": "Um Thessari que afirma ter visto o fim do universo atual. Vaga pelos planos de existência a recolher fragmentos de profecias que, segundo ele, quando reunidas, darão a qualquer raça o poder de alterar o destino cósmico.",
-      "raca": "Thessari",
-      "afiliacao": "Nenhuma — errante",
-      "status": "Activo — localização variável",
-      "habilidades_chave": ["Visão do fim dos tempos", "Transposição entre planos", "Codificação profética"],
-      "historia": "Surgiu pela primeira vez registado há 5.000 anos. A mesma entidade — confirmada por assinatura de consciência — reapareceu em múltiplos pontos da história em crises de nível existencial. Nunca intervém directamente. Sempre observa.",
-      "imagem_cor": "#9b59b6"
-    },
-    {
-      "id": "p006",
-      "nome": "Nara Selk",
-      "titulo": "A Voz do Silêncio",
-      "descricao": "Uma Krath que abandonou o seu clã após testemunhar a destruição de um mundo habitado pelas suas próprias mãos. Desde então percorre a galáxia como mercenária e informante, trabalhando para quem paga mais — mas com uma linha ética que nunca cruza.",
-      "raca": "Krath",
-      "afiliacao": "Independente / Rede de Sombras",
-      "status": "Activa — localização variável",
-      "habilidades_chave": ["Infiltração e espionagem", "Combate corpo-a-corpo no vácuo", "Negociação em ambientes hostis"],
-      "historia": "A sua traição ao Clã Vel-Horum colocou um preço na sua cabeça que aumenta a cada ano. Dizem que foi ela quem forneceu os planos da Frota das Sombras à Aliança Sorvani durante a Segunda Guerra dos Véus.",
-      "imagem_cor": "#c0392b"
+      "nome": "G",
+      "titulo": "Governante Supremo do Encephalon",
+      "raca": "Men",
+      "descricao": "O arquiteto supremo da simetria perfeita, G é a figura enigmática que moldou o destino humano ao erradicar o livre-arbítrio. Raramente desce do topo imaculado da sua torre de vidro e ouro, mas à medida que as fundações começam a estalar, a sua próxima decisão ditará se o mundo permanece em silêncio ou se desmorona irremediavelmente no caos primordial.",
+      "afiliacao": "Encephalon",
+      "status": "Governante Supremo",
+      "habilidades_chave": ["Mestre Estratega", "Mestre Manipulador", "Mestre Observador"],
+      "historia": "G é o governante supremo do Encephalon, uma fortaleza de vidro e ouro onde erradicou o livre-arbítrio em nome da simetria. Isolado no topo, ele acredita ser o salvador da humanidade através de um regime de silêncio e ordem absoluta. A sua ilusão desaba quando um batimento subterrâneo racha a torre, revelando que ele é apenas o carcereiro de uma força antiga prestes a libertar-se.",
+      "imagem_cor": "#c0a020"
     }
   ],
   "lugares": [
