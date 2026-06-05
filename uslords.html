@@ -826,7 +826,7 @@ const DB = {
     { "id": "p002", "nome": "Cole", "titulo": "", "raca": "", "descricao": "", "afiliacao": "", "status": "", "habilidades_chave": [], "eventos_vida": [], "imagem_cor": "#3498db" },
     { "id": "p003", "nome": "Sept", "titulo": "", "raca": "", "descricao": "", "afiliacao": "", "status": "", "habilidades_chave": [], "eventos_vida": [], "imagem_cor": "#e74c3c" },
     { "id": "p004", "nome": "Pin", "titulo": "", "raca": "", "descricao": "", "afiliacao": "", "status": "", "habilidades_chave": [], "eventos_vida": [], "imagem_cor": "#2ecc71" },
-    { "id": "p005", "nome": "Omo", "titulo": "", "raca": "", "descricao": "", "afiliacao": "", "status": "", "habilidades_chave": [], "eventos_vida": [], "imagem_cor": "#9b59b6" },
+    { "id": "p005", "nome": "Omo", "titulo": "Estratega Militar", "raca": "", "descricao": "Estratega militar com papel ativo no desenvolvimento dos conflitos da história.", "afiliacao": "Núcleo de Muscuta e Viajantes", "status": "", "habilidades_chave": ["Estratégia militar"], "eventos_vida": [], "imagem_cor": "#9b59b6" },
     {
       "id": "p006", "nome": "Lenlord", "titulo": "Líder da Nação Men", "raca": "Men",
       "descricao": "Líder determinado e imponente da nação Men. Possui ombros largos e um olhar hipnótico, sendo movido por uma obsessão implacável em erradicar a 'Maldição' planetária e vencer a guerra contra as 'Lendas', o que o leva a ordenar a ativação de uma arma biológica proibida.",
@@ -886,7 +886,7 @@ const DB = {
     {
       "id": "p013", "nome": "Zale", "titulo": "O Original — Primeiro Anibal", "raca": "Anibals",
       "descricao": "Ancião mais respeitado da comunidade, assume-se como o primeiríssimo Anibal a ser criado em toda a existência de Muscuta. Manipula os acontecimentos nos bastidores durante a crise do Ano 3518.",
-      "afiliacao": "Comunidade Anibal", "status": "Ativo — Ano 3518",
+      "afiliacao": "Núcleo de Muscuta e Viajantes", "status": "Ativo — Ano 3518",
       "habilidades_chave": ["Manipulação nos bastidores", "Sabedoria ancestral", "200% de sorte (modificação genética original)"],
       "eventos_vida": [
         { "ano": "Antiguidade", "evento": "Criado como o primeiro Anibal pela civilização ancestral, com modificação genética de 200% de sorte." },
@@ -909,14 +909,18 @@ const DB = {
       "habilidades_chave": ["Manifestação como sombra", "Terror psíquico", "Projeção de Anibal 1.2"],
       "eventos_vida": [],
       "imagem_cor": "#2c2c2c"
-    }
+    },
+    { "id": "p016", "nome": "Anibal", "titulo": "O Protagonista Central", "raca": "Anibals", "descricao": "O protagonista central da narrativa, cuja jornada e segredos guiam o rumo da história.", "afiliacao": "Núcleo de Muscuta e Viajantes", "status": "", "habilidades_chave": [], "eventos_vida": [], "imagem_cor": "#2ecc71" },
+    { "id": "p017", "nome": "Sorreno", "titulo": "O Viajante Astuto", "raca": "", "descricao": "Viajante astuto cuja interação e dinâmica com o protagonista Anibal são absolutamente centrais para o desenvolvimento da trama.", "afiliacao": "Núcleo de Muscuta e Viajantes", "status": "", "habilidades_chave": [], "eventos_vida": [], "imagem_cor": "#e67e22" }
   ],
   "lugares": [
     { "id": "l001", "nome": "Muscuta", "tipo": "Planeta", "descricao": "", "habitantes": [], "status": "", "imagem_cor": "#2ecc71" },
     { "id": "l002", "nome": "Terra", "tipo": "Planeta", "descricao": "", "habitantes": [], "status": "", "imagem_cor": "#3498db" },
     { "id": "l003", "nome": "Spirat", "tipo": "Planeta", "descricao": "", "habitantes": [], "status": "", "imagem_cor": "#9b59b6" }
   ],
-  "facoes": [],
+  "facoes": [
+    { "id": "f001", "nome": "Núcleo de Muscuta e Viajantes", "tipo": "Grupo Central", "descricao": "O grupo central da narrativa de Muscuta. Reúne o protagonista Anibal, o viajante Sorreno, o estratega Omo e o ancião Zale — cada um com um papel único na jornada que define o destino do planeta.", "lider": "Anibal (protagonista)", "membros_estimados": "Anibal, Sorreno, Omo, Zale", "objetivo": "Seguir a jornada central da narrativa de Muscuta", "aliancas": [], "conflitos": [], "imagem_cor": "#2ecc71" }
+  ],
   "eventos": [
     {
       "id": "e001",
