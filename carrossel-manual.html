@@ -51,6 +51,11 @@
     }
     @media(max-width:900px){ .form{max-height:none;} }
 
+    /* Mode tabs */
+    .mode-tabs { display:flex; gap:0; border-bottom:1px solid var(--bd); }
+    .mode-tab { flex:1; padding:13px; background:none; border:none; border-bottom:2px solid transparent; color:var(--mu); font-family:inherit; font-size:13px; font-weight:600; cursor:pointer; transition:color .15s,border-color .15s; margin-bottom:-1px; }
+    .mode-tab.on { color:var(--tx); border-bottom-color:var(--acc); }
+
     .fsec { padding:22px 22px 20px; border-bottom:1px solid var(--bd); }
     .fsec:last-child { border-bottom:none; }
 
@@ -219,17 +224,23 @@
 
   <section class="form">
 
+    <!-- MODE TABS -->
+    <div class="mode-tabs">
+      <button class="mode-tab on" id="tabCarrossel">📊 Carrossel</button>
+      <button class="mode-tab" id="tabHistoria">📖 História</button>
+    </div>
+
     <!-- CONTEÚDO -->
     <div class="fsec">
-      <div class="sec-ttl">Capa</div>
+      <div class="sec-ttl" id="secCapaTtl">Capa</div>
 
       <div class="fld">
-        <label>Título</label>
+        <label id="lblTitle">Título</label>
         <input type="text" id="titleIn" placeholder="Ex: 5 Razões Para Começar Hoje">
       </div>
 
       <div class="fld">
-        <label>Subtítulo <span class="opt-lbl">(opcional)</span></label>
+        <label id="lblSub">Subtítulo <span class="opt-lbl">(opcional)</span></label>
         <input type="text" id="subIn" placeholder="Uma frase de contextualização">
       </div>
 
@@ -248,12 +259,12 @@
       <div class="sec-ttl">Texto</div>
 
       <div class="fld">
-        <label>Texto completo</label>
+        <label id="lblContent">Texto completo</label>
         <textarea id="contentIn" rows="9" placeholder="Cola aqui todo o texto. A ferramenta divide automaticamente em slides — não precisas de fazer nada."></textarea>
       </div>
 
       <div class="fld">
-        <label>Call-to-action no slide final <span class="opt-lbl">(opcional)</span></label>
+        <label id="lblCta">Call-to-action no slide final <span class="opt-lbl">(opcional)</span></label>
         <textarea id="ctaIn" rows="2" placeholder="Ex: Segue para mais conteúdo! ✦"></textarea>
       </div>
 
@@ -265,7 +276,7 @@
 
     <!-- DIVISÃO -->
     <div class="fsec">
-      <div class="sec-ttl">Tamanho dos slides</div>
+      <div class="sec-ttl" id="secSlidesTtl">Tamanho dos slides</div>
       <div class="fld">
         <label>Palavras por slide</label>
         <div class="slider-row">
@@ -360,6 +371,15 @@ const THEMES = {
   ivory:    { n:'Ivory',    i:'🤍', g1:'#faf9f4', g2:'#ede8e0', ac:'#18181a', tx:'#18181a', su:'#686260', ov:'rgba(248,246,240,.52)', nb:'rgba(24,24,26,.034)'   }
 };
 
+const STORY_THEMES = {
+  sepia:    { n:'Sépia',    i:'📜', g1:'#180e04', g2:'#251508', ac:'#c8a050', tx:'#f5e8c8', su:'#9a7840', ov:'rgba(24,14,4,.72)',  nb:'rgba(200,160,80,.04)'  },
+  obsidian: { n:'Obsidian', i:'⬛', g1:'#050505', g2:'#111111', ac:'#d8d8d8', tx:'#f8f8f8', su:'#888888', ov:'rgba(5,5,5,.8)',    nb:'rgba(216,216,216,.03)' },
+  abismo:   { n:'Abismo',   i:'🌊', g1:'#02080e', g2:'#050f1a', ac:'#4888cc', tx:'#cce0ff', su:'#4868a0', ov:'rgba(2,8,14,.78)',  nb:'rgba(72,136,204,.04)'  },
+  brasa:    { n:'Brasa',    i:'🔥', g1:'#110404', g2:'#1c0808', ac:'#cc5030', tx:'#ffe8e0', su:'#a04030', ov:'rgba(17,4,4,.74)',  nb:'rgba(204,80,48,.04)'   },
+  salvia:   { n:'Sálvia',   i:'🌿', g1:'#060c06', g2:'#0c1510', ac:'#70a870', tx:'#e0f0e0', su:'#508050', ov:'rgba(6,12,6,.74)', nb:'rgba(112,168,112,.04)' },
+  crepusc:  { n:'Crepusc.', i:'🌅', g1:'#100618', g2:'#180b22', ac:'#d09040', tx:'#f8efd8', su:'#a07030', ov:'rgba(16,6,24,.74)',nb:'rgba(208,144,64,.04)'  }
+};
+
 const FP = {
   tt: "'Playfair Display',Georgia,serif",
   tb: "'Inter',system-ui,sans-serif",
@@ -367,20 +387,66 @@ const FP = {
 };
 
 let TK = 'midnight';
+let MODE = 'carrossel';
 let coverImg = null, genSlides = [], slideData = [], mIdx = 0;
 
 // ─── Temas ───────────────────────────────
-(function() {
+function buildThemeGrid() {
   const tg = document.getElementById('themeGrid');
-  for (const [k, t] of Object.entries(THEMES)) {
+  tg.innerHTML = '';
+  const themes = MODE === 'historia' ? STORY_THEMES : THEMES;
+  // ensure TK is valid for current mode
+  if (!themes[TK]) TK = Object.keys(themes)[0];
+  for (const [k, t] of Object.entries(themes)) {
     const b = document.createElement('button');
     b.className = 'tbtn' + (k === TK ? ' on' : '');
     b.style.cssText = `background:linear-gradient(150deg,${t.g1},${t.g2});color:${t.tx}`;
     b.innerHTML = `<em>${t.i}</em>${t.n}`;
-    b.onclick = () => { document.querySelectorAll('.tbtn').forEach(x => x.classList.remove('on')); b.classList.add('on'); TK = k; };
+    b.onclick = () => {
+      document.querySelectorAll('.tbtn').forEach(x => x.classList.remove('on'));
+      b.classList.add('on'); TK = k;
+    };
     tg.appendChild(b);
   }
-})();
+}
+buildThemeGrid();
+
+// ─── Mode tabs ───────────────────────────
+document.getElementById('tabCarrossel').onclick = () => {
+  if (MODE === 'carrossel') return;
+  MODE = 'carrossel';
+  document.getElementById('tabCarrossel').classList.add('on');
+  document.getElementById('tabHistoria').classList.remove('on');
+  // restore carousel defaults
+  document.getElementById('wordsSlider').value = 30;
+  document.getElementById('wordsVal').textContent = '30';
+  document.getElementById('genBtn').textContent = '✨  Gerar Carrossel';
+  document.getElementById('contentIn').placeholder = 'Cola aqui todo o texto. A ferramenta divide automaticamente em slides — não precisas de fazer nada.';
+  document.getElementById('lblContent').textContent = 'Texto completo';
+  document.getElementById('lblCta').innerHTML = 'Call-to-action no slide final <span class="opt-lbl">(opcional)</span>';
+  document.getElementById('lblTitle').textContent = 'Título';
+  document.getElementById('lblSub').innerHTML = 'Subtítulo <span class="opt-lbl">(opcional)</span>';
+  buildThemeGrid();
+  updatePreview();
+};
+
+document.getElementById('tabHistoria').onclick = () => {
+  if (MODE === 'historia') return;
+  MODE = 'historia';
+  document.getElementById('tabHistoria').classList.add('on');
+  document.getElementById('tabCarrossel').classList.remove('on');
+  // update to story defaults
+  document.getElementById('wordsSlider').value = 40;
+  document.getElementById('wordsVal').textContent = '40';
+  document.getElementById('genBtn').textContent = '✨  Gerar História';
+  document.getElementById('contentIn').placeholder = 'Escreve ou cola aqui a tua história. Será dividida automaticamente em slides narrativos.';
+  document.getElementById('lblContent').textContent = 'Texto da história';
+  document.getElementById('lblCta').innerHTML = 'Fecho narrativo <span class="opt-lbl">(opcional)</span>';
+  document.getElementById('lblTitle').textContent = 'Título da história';
+  document.getElementById('lblSub').innerHTML = 'Epígrafe / subtítulo <span class="opt-lbl">(opcional)</span>';
+  buildThemeGrid();
+  updatePreview();
+};
 
 // ─── Upload ──────────────────────────────
 (function() {
@@ -541,7 +607,20 @@ function drawTopBar(ctx, handle, num, total, t, onImg) {
   ctx.fillText(p2(num) + ' / ' + p2(total), S - P, P + 2); ctx.restore();
 }
 
-// ─── Slide de Capa ───────────────────────
+// ─── Ornament helper (história) ──────────
+function drawOrnament(ctx, cx, y, t) {
+  ctx.save();
+  ctx.font = `400 28px 'Playfair Display',Georgia,serif`;
+  ctx.fillStyle = t.ac; ctx.globalAlpha = .65;
+  ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
+  ctx.fillText('✦', cx, y);
+  ctx.globalAlpha = .28; ctx.strokeStyle = t.ac; ctx.lineWidth = .8;
+  ctx.beginPath(); ctx.moveTo(cx - 110, y); ctx.lineTo(cx - 24, y); ctx.stroke();
+  ctx.beginPath(); ctx.moveTo(cx + 24, y); ctx.lineTo(cx + 110, y); ctx.stroke();
+  ctx.restore();
+}
+
+// ─── Slide de Capa (Carrossel) ───────────
 function makeCover(title, subtitle, handle, total, t) {
   const c = mkC(), ctx = c.getContext('2d');
   if (coverImg) {
@@ -592,7 +671,7 @@ function makeCover(title, subtitle, handle, total, t) {
   return c;
 }
 
-// ─── Slides de Conteúdo ──────────────────
+// ─── Slides de Conteúdo (Carrossel) ──────
 function makeContent(text, num, title, handle, total, t) {
   const c = mkC(), ctx = c.getContext('2d');
   gradBg(ctx, t);
@@ -616,7 +695,7 @@ function makeContent(text, num, title, handle, total, t) {
   return c;
 }
 
-// ─── Slide Final ─────────────────────────
+// ─── Slide Final (Carrossel) ─────────────
 function makeLast(cta, handle, total, t) {
   const c = mkC(), ctx = c.getContext('2d');
   gradBg(ctx, t);
@@ -655,6 +734,221 @@ function makeLast(cta, handle, total, t) {
     ctx.textAlign = 'center'; ctx.textBaseline = 'middle'; ctx.fillText(h, S / 2, S * .75); ctx.restore();
   }
   drawDots(ctx, total, total, t);
+  return c;
+}
+
+// ─── Story: Capa ─────────────────────────
+function makeCoverStory(title, subtitle, handle, total, t) {
+  const c = mkC(), ctx = c.getContext('2d');
+  if (coverImg) {
+    coverFit(ctx, coverImg);
+    const vig = ctx.createRadialGradient(S/2, S/2, S*.1, S/2, S/2, S*.9);
+    vig.addColorStop(0, 'rgba(0,0,0,0)'); vig.addColorStop(1, 'rgba(0,0,0,.55)');
+    ctx.fillStyle = vig; ctx.fillRect(0, 0, S, S);
+    const bot = ctx.createLinearGradient(0, S * .3, 0, S);
+    bot.addColorStop(0, 'rgba(0,0,0,0)'); bot.addColorStop(.4, t.ov); bot.addColorStop(1, 'rgba(0,0,0,.95)');
+    ctx.fillStyle = bot; ctx.fillRect(0, 0, S, S);
+    const top = ctx.createLinearGradient(0, 0, 0, S * .25);
+    top.addColorStop(0, 'rgba(0,0,0,.5)'); top.addColorStop(1, 'rgba(0,0,0,0)');
+    ctx.fillStyle = top; ctx.fillRect(0, 0, S, S * .25);
+  } else {
+    gradBg(ctx, t);
+    // subtle texture circles
+    ctx.save(); ctx.globalAlpha = .04;
+    ctx.beginPath(); ctx.arc(S * .5, S * .35, 420, 0, Math.PI * 2); ctx.fillStyle = t.ac; ctx.fill();
+    ctx.restore();
+  }
+
+  // Top: elegant "1 / N" at top-right in Playfair italic
+  ctx.save();
+  ctx.font = `italic 400 28px 'Playfair Display',Georgia,serif`;
+  ctx.fillStyle = 'rgba(255,255,255,.6)';
+  ctx.textAlign = 'right'; ctx.textBaseline = 'top';
+  ctx.fillText('1 / ' + total, S - P, P);
+  ctx.restore();
+
+  // Handle at top-left
+  if (handle) {
+    const h = handle.startsWith('@') ? handle : '@' + handle;
+    ctx.save();
+    ctx.font = `500 26px ${FP.tb}`;
+    ctx.fillStyle = 'rgba(255,255,255,.72)';
+    ctx.textAlign = 'left'; ctx.textBaseline = 'top';
+    ctx.fillText(h, P, P + 2);
+    ctx.restore();
+  }
+
+  // Decorative ornament near top center
+  drawOrnament(ctx, S / 2, 160, t);
+
+  // Title — big Playfair 900, centered, around y=420-480
+  const titleMaxW = S - P * 2;
+  const titleFS = autoFS(ctx, title || 'História', titleMaxW, 340, 96, 52, '900', `'Playfair Display',Georgia,serif`);
+  const titleLH = titleFS * 1.22;
+  ctx.save();
+  ctx.font = `900 ${titleFS}px 'Playfair Display',Georgia,serif`;
+  ctx.fillStyle = '#fff';
+  ctx.textAlign = 'center'; ctx.textBaseline = 'alphabetic';
+  ctx.shadowColor = 'rgba(0,0,0,.7)'; ctx.shadowBlur = 28;
+  drawCentered(ctx, title || 'História', S / 2, S * .43, titleMaxW, titleLH);
+  ctx.restore();
+
+  // Subtitle: italic Playfair 400, centered, ~34px, below title
+  if (subtitle) {
+    const lines = [];
+    ctx.save();
+    ctx.font = `italic 400 34px 'Playfair Display',Georgia,serif`;
+    const subLines = wrapText(ctx, subtitle, S - P * 2.5);
+    const titleTop = S * .43 - (wrapText(ctx, title || 'História', titleMaxW).length * titleLH) / 2;
+    const titleBottom = titleTop + wrapText(ctx, title || 'História', titleMaxW).length * titleLH;
+    let subY = titleBottom + 28;
+    ctx.fillStyle = 'rgba(255,255,255,.68)';
+    ctx.textAlign = 'center'; ctx.textBaseline = 'top';
+    ctx.shadowColor = 'rgba(0,0,0,.5)'; ctx.shadowBlur = 12;
+    subLines.forEach((l, i) => ctx.fillText(l, S / 2, subY + i * 44));
+    ctx.restore();
+  }
+
+  // Bottom: "desliza para ler →" right-aligned
+  ctx.save();
+  ctx.font = `300 20px ${FP.tb}`;
+  ctx.fillStyle = 'rgba(255,255,255,.38)';
+  ctx.textAlign = 'right'; ctx.textBaseline = 'bottom';
+  ctx.fillText('desliza para ler  →', S - P, S - P);
+  ctx.restore();
+
+  return c;
+}
+
+// ─── Story: Conteúdo ─────────────────────
+function makeContentStory(text, num, title, handle, total, t) {
+  const c = mkC(), ctx = c.getContext('2d');
+  gradBg(ctx, t);
+
+  const cx = S / 2;
+  const FP_STORY_FONT = `'Playfair Display',Georgia,serif`;
+
+  // Top: elegant "num / total" Playfair italic centered
+  ctx.save();
+  ctx.font = `italic 400 26px ${FP_STORY_FONT}`;
+  ctx.fillStyle = t.ac;
+  ctx.textAlign = 'center'; ctx.textBaseline = 'top';
+  ctx.fillText(num + ' / ' + total, cx, P + 10);
+  ctx.restore();
+
+  // Thin horizontal line below counter
+  ctx.save();
+  ctx.strokeStyle = t.ac; ctx.lineWidth = .8; ctx.globalAlpha = .3;
+  ctx.beginPath();
+  ctx.moveTo(cx - 100, P + 60);
+  ctx.lineTo(cx + 100, P + 60);
+  ctx.stroke();
+  ctx.restore();
+
+  // Centered body text — italic Playfair
+  const maxW = S - P * 3;
+  const contentH = 700;
+  const fs = text ? autoFS(ctx, text, maxW, contentH, 56, 28, 'italic 400', FP_STORY_FONT) : 48;
+  const lh = fs * 1.62;
+  ctx.save();
+  ctx.font = `italic 400 ${fs}px ${FP_STORY_FONT}`;
+  ctx.fillStyle = t.tx;
+  ctx.textAlign = 'center'; ctx.textBaseline = 'alphabetic';
+  drawCentered(ctx, text || '', cx, S * .5, maxW, lh);
+  ctx.restore();
+
+  // Thin line below text area
+  ctx.save();
+  ctx.strokeStyle = t.ac; ctx.lineWidth = .8; ctx.globalAlpha = .2;
+  ctx.beginPath();
+  ctx.moveTo(cx - 100, S - P - 80);
+  ctx.lineTo(cx + 100, S - P - 80);
+  ctx.stroke();
+  ctx.restore();
+
+  // Title reference at bottom center, tiny italic
+  if (title) {
+    ctx.save();
+    ctx.font = `italic 400 20px ${FP_STORY_FONT}`;
+    ctx.fillStyle = t.su;
+    ctx.globalAlpha = .55;
+    ctx.textAlign = 'center'; ctx.textBaseline = 'bottom';
+    ctx.fillText(title, cx, S - P - 20);
+    ctx.restore();
+  }
+
+  // Handle bottom-left subtle
+  if (handle) {
+    const h = handle.startsWith('@') ? handle : '@' + handle;
+    ctx.save();
+    ctx.font = `400 22px ${FP.tb}`;
+    ctx.fillStyle = t.su; ctx.globalAlpha = .5;
+    ctx.textAlign = 'left'; ctx.textBaseline = 'bottom';
+    ctx.fillText(h, P, S - P);
+    ctx.restore();
+  }
+
+  return c;
+}
+
+// ─── Story: Final ────────────────────────
+function makeLastStory(cta, handle, total, t) {
+  const c = mkC(), ctx = c.getContext('2d');
+  gradBg(ctx, t);
+
+  const cx = S / 2;
+  const FP_STORY_FONT = `'Playfair Display',Georgia,serif`;
+
+  // Top: "num / total"
+  ctx.save();
+  ctx.font = `italic 400 26px ${FP_STORY_FONT}`;
+  ctx.fillStyle = t.ac;
+  ctx.textAlign = 'center'; ctx.textBaseline = 'top';
+  ctx.fillText(total + ' / ' + total, cx, P + 10);
+  ctx.restore();
+
+  // Large decorative ✦ at ~S*0.35
+  ctx.save();
+  ctx.font = `400 72px ${FP_STORY_FONT}`;
+  ctx.fillStyle = t.ac; ctx.globalAlpha = .8;
+  ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
+  ctx.fillText('✦', cx, S * .35);
+  ctx.restore();
+
+  if (cta) {
+    // CTA in Playfair italic centered
+    const fs = autoFS(ctx, cta, S - P * 2, 380, 62, 30, 'italic 400', FP_STORY_FONT);
+    const lh = fs * 1.52;
+    ctx.save();
+    ctx.font = `italic 400 ${fs}px ${FP_STORY_FONT}`;
+    ctx.fillStyle = t.tx;
+    ctx.textAlign = 'center'; ctx.textBaseline = 'alphabetic';
+    drawCentered(ctx, cta, cx, S * .57, S - P * 2, lh);
+    ctx.restore();
+  } else {
+    // "Fim." in huge Playfair 900
+    ctx.save();
+    ctx.font = `900 88px ${FP_STORY_FONT}`;
+    ctx.fillStyle = t.tx;
+    ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
+    ctx.fillText('Fim.', cx, S * .55);
+    ctx.restore();
+  }
+
+  // Closing ornament below CTA/Fim
+  drawOrnament(ctx, cx, S * .72, t);
+
+  // Handle in t.ac
+  if (handle) {
+    const h = handle.startsWith('@') ? handle : '@' + handle;
+    ctx.save();
+    ctx.font = `600 32px ${FP.tb}`;
+    ctx.fillStyle = t.ac;
+    ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
+    ctx.fillText(h, cx, S * .82);
+    ctx.restore();
+  }
+
   return c;
 }
 
@@ -699,7 +993,9 @@ async function generate() {
   const cta    = document.getElementById('ctaIn').value.trim();
   const handle = document.getElementById('handleIn').value.trim();
   const maxW   = parseInt(slider.value, 10);
-  const t      = THEMES[TK];
+  const isStory = MODE === 'historia';
+  const themes = isStory ? STORY_THEMES : THEMES;
+  const t      = themes[TK] || themes[Object.keys(themes)[0]];
 
   if (!title && !raw) { alert('Preenche o título ou o texto.'); return; }
 
@@ -713,20 +1009,35 @@ async function generate() {
   document.getElementById('hashBox').classList.remove('show');
   genSlides = []; slideData = [];
 
+  await document.fonts.load(`900 80px 'Playfair Display'`);
+  await document.fonts.load(`400 80px 'Playfair Display'`);
+  await document.fonts.load(`italic 400 80px 'Playfair Display'`);
   await document.fonts.load(`${FP.tw} 80px ${FP.tt}`);
   await document.fonts.load(`${FP.bw} 50px ${FP.tb}`);
   await document.fonts.ready;
   await new Promise(r => setTimeout(r, 60));
 
-  // Build slideData
-  slideData.push({ type:'cover',   title, subtitle:sub, handle, total, t });
-  blocks.forEach((b, i) => slideData.push({ type:'content', text:b, num:i+2, title, handle, total, t }));
-  slideData.push({ type:'last', cta, handle, total, t });
+  if (isStory) {
+    // Build slideData for story
+    slideData.push({ type:'cover',   title, subtitle:sub, handle, total, t, mode:'historia' });
+    blocks.forEach((b, i) => slideData.push({ type:'content', text:b, num:i+2, title, handle, total, t, mode:'historia' }));
+    slideData.push({ type:'last', cta, handle, total, t, mode:'historia' });
 
-  // Render canvases
-  genSlides.push(makeCover(title, sub, handle, total, t));
-  blocks.forEach((b, i) => genSlides.push(makeContent(b, i + 2, title, handle, total, t)));
-  genSlides.push(makeLast(cta, handle, total, t));
+    // Render story canvases
+    genSlides.push(makeCoverStory(title, sub, handle, total, t));
+    blocks.forEach((b, i) => genSlides.push(makeContentStory(b, i + 2, title, handle, total, t)));
+    genSlides.push(makeLastStory(cta, handle, total, t));
+  } else {
+    // Build slideData for carrossel
+    slideData.push({ type:'cover',   title, subtitle:sub, handle, total, t, mode:'carrossel' });
+    blocks.forEach((b, i) => slideData.push({ type:'content', text:b, num:i+2, title, handle, total, t, mode:'carrossel' }));
+    slideData.push({ type:'last', cta, handle, total, t, mode:'carrossel' });
+
+    // Render carousel canvases
+    genSlides.push(makeCover(title, sub, handle, total, t));
+    blocks.forEach((b, i) => genSlides.push(makeContent(b, i + 2, title, handle, total, t)));
+    genSlides.push(makeLast(cta, handle, total, t));
+  }
 
   document.getElementById('loadEl').style.display = 'none';
   const grid = document.getElementById('sgrid');
@@ -750,20 +1061,29 @@ let editIdx = -1;
 function openEdit(i) {
   editIdx = i;
   const d   = slideData[i];
-  const lbl = i === 0 ? 'Editar Capa' : i === slideData.length - 1 ? 'Editar Slide Final' : `Editar Slide ${i + 1}`;
+  const isStory = d.mode === 'historia';
+  const lbl = i === 0
+    ? (isStory ? 'Editar Capa da História' : 'Editar Capa')
+    : i === slideData.length - 1
+      ? (isStory ? 'Editar Fecho' : 'Editar Slide Final')
+      : `Editar Slide ${i + 1}`;
   document.getElementById('editLabel').textContent = lbl;
 
   const fields = document.getElementById('editFields');
   fields.innerHTML = '';
 
   if (d.type === 'cover') {
+    const titleLbl = isStory ? 'Título da história' : 'Título';
+    const subLbl   = isStory ? 'Epígrafe / subtítulo' : 'Subtítulo';
     fields.innerHTML = `
-      <div><label>Título</label><input type="text" id="ef_title" value="${escH(d.title)}"></div>
-      <div><label>Subtítulo</label><input type="text" id="ef_sub" value="${escH(d.subtitle || '')}"></div>`;
+      <div><label>${titleLbl}</label><input type="text" id="ef_title" value="${escH(d.title)}"></div>
+      <div><label>${subLbl}</label><input type="text" id="ef_sub" value="${escH(d.subtitle || '')}"></div>`;
   } else if (d.type === 'content') {
-    fields.innerHTML = `<div><label>Texto do slide</label><textarea id="ef_text" rows="6">${escH(d.text)}</textarea></div>`;
+    const textLbl = isStory ? 'Texto narrativo do slide' : 'Texto do slide';
+    fields.innerHTML = `<div><label>${textLbl}</label><textarea id="ef_text" rows="6">${escH(d.text)}</textarea></div>`;
   } else {
-    fields.innerHTML = `<div><label>Call-to-action (deixa vazio para design padrão)</label><textarea id="ef_cta" rows="4">${escH(d.cta || '')}</textarea></div>`;
+    const ctaLbl = isStory ? 'Fecho narrativo (deixa vazio para "Fim.")' : 'Call-to-action (deixa vazio para design padrão)';
+    fields.innerHTML = `<div><label>${ctaLbl}</label><textarea id="ef_cta" rows="4">${escH(d.cta || '')}</textarea></div>`;
   }
 
   document.getElementById('emodal').classList.add('open');
@@ -772,17 +1092,24 @@ function openEdit(i) {
 function applyEdit() {
   const d = slideData[editIdx];
   const t = d.t;
+  const isStory = d.mode === 'historia';
 
   if (d.type === 'cover') {
     d.title    = document.getElementById('ef_title').value.trim();
     d.subtitle = document.getElementById('ef_sub').value.trim();
-    genSlides[editIdx] = makeCover(d.title, d.subtitle, d.handle, d.total, t);
+    genSlides[editIdx] = isStory
+      ? makeCoverStory(d.title, d.subtitle, d.handle, d.total, t)
+      : makeCover(d.title, d.subtitle, d.handle, d.total, t);
   } else if (d.type === 'content') {
     d.text = document.getElementById('ef_text').value.trim();
-    genSlides[editIdx] = makeContent(d.text, d.num, d.title, d.handle, d.total, t);
+    genSlides[editIdx] = isStory
+      ? makeContentStory(d.text, d.num, d.title, d.handle, d.total, t)
+      : makeContent(d.text, d.num, d.title, d.handle, d.total, t);
   } else {
     d.cta = document.getElementById('ef_cta').value.trim();
-    genSlides[editIdx] = makeLast(d.cta, d.handle, d.total, t);
+    genSlides[editIdx] = isStory
+      ? makeLastStory(d.cta, d.handle, d.total, t)
+      : makeLast(d.cta, d.handle, d.total, t);
   }
 
   // Atualiza thumbnail
