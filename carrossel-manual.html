@@ -9,18 +9,17 @@
   <style>
     *, *::before, *::after { margin:0; padding:0; box-sizing:border-box; }
     :root {
-      --app:   #06060f;
-      --panel: #0b0b18;
-      --card:  #11111e;
-      --bd:    rgba(255,255,255,.065);
-      --acc:   #7c3aed;
-      --acc2:  #ec4899;
-      --tx:    #eeeef8;
-      --mu:    #50506a;
-      --gr:    #10b981;
-      --rd:    #ef4444;
-      --r:     12px;
-      --rs:    8px;
+      --app:  #06060f;
+      --panel:#0b0b18;
+      --card: #11111e;
+      --bd:   rgba(255,255,255,.065);
+      --acc:  #7c3aed;
+      --acc2: #ec4899;
+      --tx:   #eeeef8;
+      --mu:   #50506a;
+      --gr:   #10b981;
+      --r:    12px;
+      --rs:   8px;
     }
     body { font-family:'Inter',system-ui,sans-serif; background:var(--app); color:var(--tx); min-height:100dvh; }
     ::-webkit-scrollbar { width:4px; }
@@ -30,8 +29,7 @@
       position:sticky; top:0; z-index:300;
       display:flex; align-items:center; gap:14px;
       padding:14px 28px;
-      background:rgba(6,6,15,.9);
-      backdrop-filter:blur(20px);
+      background:rgba(6,6,15,.92); backdrop-filter:blur(20px);
       border-bottom:1px solid var(--bd);
     }
     .hdr-logo {
@@ -43,13 +41,13 @@
     .hdr h1 { font-size:15px; font-weight:700; }
     .hdr small { font-size:11px; color:var(--mu); display:block; margin-top:2px; }
 
-    .wrap { display:grid; grid-template-columns:440px 1fr; min-height:calc(100dvh - 65px); }
+    .wrap { display:grid; grid-template-columns:420px 1fr; min-height:calc(100dvh - 65px); }
     @media(max-width:900px){ .wrap{grid-template-columns:1fr;} }
 
     .form {
       background:var(--panel); border-right:1px solid var(--bd);
       overflow-y:auto; max-height:calc(100dvh - 65px);
-      display:flex; flex-direction:column; gap:0;
+      display:flex; flex-direction:column;
     }
     @media(max-width:900px){ .form{max-height:none;} }
 
@@ -74,30 +72,35 @@
       outline:none; width:100%; transition:border-color .18s, box-shadow .18s;
     }
     input[type=text]:focus, textarea:focus {
-      border-color:rgba(124,58,237,.5);
-      box-shadow:0 0 0 3px rgba(124,58,237,.1);
+      border-color:rgba(124,58,237,.5); box-shadow:0 0 0 3px rgba(124,58,237,.1);
     }
-    textarea { resize:vertical; line-height:1.6; }
+    textarea { resize:vertical; line-height:1.65; }
 
-    .content-area {
-      min-height:260px; font-size:13.5px;
-      font-family:'Inter',system-ui,sans-serif;
+    /* Upload */
+    .upbox {
+      position:relative; border:1.5px dashed rgba(255,255,255,.1);
+      border-radius:var(--r); min-height:90px;
+      display:flex; flex-direction:column; align-items:center; justify-content:center;
+      gap:6px; cursor:pointer; overflow:hidden;
+      background:var(--card); transition:border-color .2s, background .2s;
+    }
+    .upbox:hover, .upbox.drag { border-color:var(--acc); background:rgba(124,58,237,.06); }
+    .upbox input { position:absolute; inset:0; opacity:0; cursor:pointer; width:100%; height:100%; }
+    .up-ico { font-size:22px; pointer-events:none; }
+    .up-txt { font-size:12px; color:var(--mu); pointer-events:none; }
+    #imgPrev { max-width:100%; max-height:130px; border-radius:8px; object-fit:cover; display:none; }
+
+    /* Slider */
+    .slider-row { display:flex; align-items:center; gap:10px; }
+    input[type=range] {
+      flex:1; accent-color:var(--acc); height:4px; cursor:pointer;
+    }
+    .slider-val {
+      font-size:12px; font-weight:700; color:var(--acc);
+      min-width:28px; text-align:right;
     }
 
-    .hint {
-      font-size:11px; color:var(--mu); line-height:1.6;
-      background:rgba(124,58,237,.06); border:1px solid rgba(124,58,237,.12);
-      border-radius:var(--rs); padding:10px 13px; margin-top:8px;
-    }
-    .hint strong { color:rgba(124,58,237,.9); }
-
-    .slide-count {
-      font-size:11px; color:var(--mu); margin-top:6px;
-      display:flex; align-items:center; gap:6px;
-    }
-    .slide-count span { color:var(--acc); font-weight:700; }
-
-    /* Tema rápido */
+    /* Temas */
     .trow { display:grid; grid-template-columns:repeat(3,1fr); gap:8px; }
     .tbtn {
       border:2px solid transparent; border-radius:var(--rs);
@@ -108,10 +111,11 @@
     .tbtn em { display:block; font-style:normal; font-size:18px; margin-bottom:3px; }
     .tbtn.on { border-color:rgba(255,255,255,.72); transform:scale(1.06); box-shadow:0 6px 18px rgba(0,0,0,.4); }
 
+    /* Gerar */
     .gen-wrap { padding:20px 22px; }
     .gen {
       width:100%; display:flex; align-items:center; justify-content:center; gap:10px;
-      padding:15px 20px; background:linear-gradient(135deg,var(--acc),var(--acc2));
+      padding:16px 20px; background:linear-gradient(135deg,var(--acc),var(--acc2));
       color:#fff; font-family:inherit; font-size:15px; font-weight:700;
       border:none; border-radius:var(--r); cursor:pointer;
       position:relative; overflow:hidden; transition:transform .15s, box-shadow .2s;
@@ -176,13 +180,12 @@
   <div class="hdr-logo">🎠</div>
   <div>
     <h1>Gerador de Carrossel Manual</h1>
-    <small>Escreve o texto — os slides são criados automaticamente</small>
+    <small>Cola o texto — os slides são criados automaticamente</small>
   </div>
 </header>
 
 <div class="wrap">
 
-  <!-- FORMULÁRIO -->
   <section class="form">
 
     <!-- CONTEÚDO -->
@@ -190,29 +193,39 @@
       <div class="sec-ttl">Conteúdo</div>
 
       <div class="fld">
-        <label>Título do carrossel</label>
+        <label>Título da capa</label>
         <input type="text" id="titleIn" placeholder="Ex: 5 Razões Para Começar Hoje">
       </div>
 
       <div class="fld">
-        <label>Texto dos slides <span class="opt-lbl">(linha em branco = novo slide)</span></label>
-        <textarea id="contentIn" class="content-area" placeholder="Escreve o primeiro ponto aqui. Podes ter mais do que uma linha no mesmo slide.
-
-Linha em branco separa para o próximo slide. Escreve o segundo ponto aqui.
-
-E assim sucessivamente para cada slide adicional."></textarea>
-        <div class="hint">
-          Cada parágrafo separado por uma <strong>linha em branco</strong> torna-se um slide.<br>
-          Serão gerados automaticamente: capa + os teus slides + slide final.
+        <label>Imagem de capa <span class="opt-lbl">(opcional)</span></label>
+        <div class="upbox" id="upbox">
+          <input type="file" accept="image/*" id="fileIn">
+          <div id="upPH"><div class="up-ico">🖼️</div><div class="up-txt">Clica ou arrasta a imagem aqui</div></div>
+          <img id="imgPrev" alt="">
         </div>
-        <div class="slide-count" id="slideCount">
-          <span id="slideNum">0</span> slide(s) de conteúdo detetado(s)
-        </div>
+      </div>
+
+      <div class="fld">
+        <label>Texto completo</label>
+        <textarea id="contentIn" rows="9" placeholder="Cola aqui todo o texto que queres transformar em carrossel. Não precisas de fazer nada — a ferramenta divide automaticamente em slides com o tamanho certo."></textarea>
       </div>
 
       <div class="fld">
         <label>@Username <span class="opt-lbl">(opcional)</span></label>
         <input type="text" id="handleIn" placeholder="@teuinstagram">
+      </div>
+    </div>
+
+    <!-- DIVISÃO -->
+    <div class="fsec">
+      <div class="sec-ttl">Tamanho dos slides</div>
+      <div class="fld">
+        <label>Palavras por slide</label>
+        <div class="slider-row">
+          <input type="range" id="wordsSlider" min="15" max="60" value="30" step="5">
+          <span class="slider-val" id="wordsVal">30</span>
+        </div>
       </div>
     </div>
 
@@ -238,7 +251,7 @@ E assim sucessivamente para cada slide adicional."></textarea>
       <div class="empty-ico">🎠</div>
       <div>
         <strong>O carrossel aparece aqui</strong>
-        <p>Escreve o título e o texto à esquerda,<br>separa os slides com <strong style="color:#a78bfa">---</strong><br>e clica em Gerar Carrossel.</p>
+        <p>Cola o texto à esquerda e clica<br>em <strong style="color:#a78bfa">Gerar Carrossel</strong>.</p>
       </div>
     </div>
     <div class="loading" id="loadEl"><div class="spin"></div><span>A gerar…</span></div>
@@ -283,7 +296,7 @@ const FP = {
 };
 
 let TK = 'midnight';
-let genSlides = [], mIdx = 0;
+let coverImg = null, genSlides = [], mIdx = 0;
 
 // Temas
 (function() {
@@ -298,21 +311,67 @@ let genSlides = [], mIdx = 0;
   }
 })();
 
-// Contagem de slides em tempo real
-document.getElementById('contentIn').addEventListener('input', function() {
-  const blocks = parseBlocks(this.value);
-  const el = document.getElementById('slideNum');
-  el.textContent = blocks.length;
-});
+// Slider
+const slider = document.getElementById('wordsSlider');
+const sliderVal = document.getElementById('wordsVal');
+slider.oninput = () => { sliderVal.textContent = slider.value; };
 
-function parseBlocks(raw) {
-  return raw.replace(/\r\n/g, '\n').replace(/\r/g, '\n')
-    .split(/\n\n+/)
-    .map(b => b.trim())
-    .filter(b => b.length > 0);
+// Upload
+(function() {
+  const box = document.getElementById('upbox');
+  const inp = document.getElementById('fileIn');
+  const prv = document.getElementById('imgPrev');
+  const ph  = document.getElementById('upPH');
+
+  function load(f) {
+    if (!f?.type.startsWith('image/')) return;
+    const r = new FileReader();
+    r.onload = e => {
+      const img = new Image();
+      img.onload = () => { coverImg = img; prv.src = e.target.result; prv.style.display = 'block'; ph.style.display = 'none'; };
+      img.src = e.target.result;
+    };
+    r.readAsDataURL(f);
+  }
+
+  inp.addEventListener('change', e => load(e.target.files[0]));
+  box.addEventListener('dragover', e => { e.preventDefault(); box.classList.add('drag'); });
+  box.addEventListener('dragleave', () => box.classList.remove('drag'));
+  box.addEventListener('drop', e => { e.preventDefault(); box.classList.remove('drag'); load(e.dataTransfer.files[0]); });
+})();
+
+// ═══════════════════════════════════════
+//  AUTO-SPLIT
+// ═══════════════════════════════════════
+function autoSplit(text, maxWords) {
+  // Normaliza espaços e quebras de linha
+  const clean = text.replace(/\r\n/g, ' ').replace(/\r/g, ' ').replace(/\n/g, ' ').replace(/\s+/g, ' ').trim();
+
+  // Divide em frases usando pontuação como guia
+  const sentences = clean.match(/[^.!?…]+[.!?…]+/g) || [clean];
+
+  const blocks = [];
+  let current = [];
+  let wordCount = 0;
+
+  for (const sentence of sentences) {
+    const words = sentence.trim().split(/\s+/);
+    if (wordCount + words.length > maxWords && current.length > 0) {
+      blocks.push(current.join(' ').trim());
+      current = words;
+      wordCount = words.length;
+    } else {
+      current.push(...words);
+      wordCount += words.length;
+    }
+  }
+  if (current.length > 0) blocks.push(current.join(' ').trim());
+  return blocks.filter(b => b.length > 0);
 }
 
-// Canvas helpers
+// ═══════════════════════════════════════
+//  CANVAS HELPERS
+// ═══════════════════════════════════════
 const mkC = () => { const c = document.createElement('canvas'); c.width = S; c.height = S; return c; };
 const p2  = n => String(n).padStart(2, '0');
 
@@ -320,6 +379,14 @@ function gradBg(ctx, t) {
   const g = ctx.createLinearGradient(0, 0, S * .22, S);
   g.addColorStop(0, t.g1); g.addColorStop(1, t.g2);
   ctx.fillStyle = g; ctx.fillRect(0, 0, S, S);
+}
+
+function coverFit(ctx, img) {
+  const ia = img.width / img.height;
+  let sw, sh, sx, sy;
+  if (ia >= 1) { sh = S; sw = S * ia; sx = -(sw - S) / 2; sy = 0; }
+  else          { sw = S; sh = S / ia; sx = 0; sy = -(sh - S) / 2; }
+  ctx.drawImage(img, sx, sy, sw, sh);
 }
 
 function wrapText(ctx, text, maxW) {
@@ -379,19 +446,19 @@ function drawDots(ctx, active, total, t) {
   }
 }
 
-function drawTopBar(ctx, handle, num, total, t) {
+function drawTopBar(ctx, handle, num, total, t, onImg) {
   if (handle) {
     const h = handle.startsWith('@') ? handle : '@' + handle;
     ctx.save();
     ctx.font = `500 28px ${FP.tb}`;
-    ctx.fillStyle = t.su + 'bb';
+    ctx.fillStyle = onImg ? 'rgba(255,255,255,.82)' : t.su + 'bb';
     ctx.textAlign = 'left'; ctx.textBaseline = 'top';
     ctx.fillText(h, P, P + 2);
     ctx.restore();
   }
   ctx.save();
   ctx.font = `600 25px ${FP.tb}`;
-  ctx.fillStyle = t.ac;
+  ctx.fillStyle = onImg ? 'rgba(255,255,255,.72)' : t.ac;
   ctx.textAlign = 'right'; ctx.textBaseline = 'top';
   ctx.fillText(p2(num) + ' / ' + p2(total), S - P, P + 2);
   ctx.restore();
@@ -400,27 +467,39 @@ function drawTopBar(ctx, handle, num, total, t) {
 // Slide de Capa
 function makeCover(title, handle, total, t) {
   const c = mkC(), ctx = c.getContext('2d');
-  gradBg(ctx, t);
 
-  ctx.save(); ctx.globalAlpha = .06;
-  ctx.beginPath(); ctx.arc(S * .86, S * .13, 390, 0, Math.PI * 2); ctx.fillStyle = t.ac; ctx.fill();
-  ctx.beginPath(); ctx.arc(S * .08, S * .82, 260, 0, Math.PI * 2); ctx.fillStyle = t.ac; ctx.fill();
-  ctx.restore();
+  if (coverImg) {
+    coverFit(ctx, coverImg);
+    const vig = ctx.createRadialGradient(S/2, S/2, S*.16, S/2, S/2, S*.88);
+    vig.addColorStop(0, 'rgba(0,0,0,0)'); vig.addColorStop(1, 'rgba(0,0,0,.44)');
+    ctx.fillStyle = vig; ctx.fillRect(0, 0, S, S);
+    const bot = ctx.createLinearGradient(0, S * .28, 0, S);
+    bot.addColorStop(0, 'rgba(0,0,0,0)'); bot.addColorStop(.35, t.ov); bot.addColorStop(1, 'rgba(0,0,0,.92)');
+    ctx.fillStyle = bot; ctx.fillRect(0, 0, S, S);
+    const top = ctx.createLinearGradient(0, 0, 0, S * .2);
+    top.addColorStop(0, 'rgba(0,0,0,.46)'); top.addColorStop(1, 'rgba(0,0,0,0)');
+    ctx.fillStyle = top; ctx.fillRect(0, 0, S, S * .2);
+  } else {
+    gradBg(ctx, t);
+    ctx.save(); ctx.globalAlpha = .06;
+    ctx.beginPath(); ctx.arc(S * .86, S * .13, 390, 0, Math.PI * 2); ctx.fillStyle = t.ac; ctx.fill();
+    ctx.beginPath(); ctx.arc(S * .08, S * .82, 260, 0, Math.PI * 2); ctx.fillStyle = t.ac; ctx.fill();
+    ctx.restore();
+  }
 
-  drawTopBar(ctx, handle, 1, total, t);
+  drawTopBar(ctx, handle, 1, total, t, !!coverImg);
 
   let y = S - P;
-
   ctx.save(); ctx.font = `300 20px ${FP.tb}`;
-  ctx.fillStyle = t.tx + '55';
+  ctx.fillStyle = 'rgba(255,255,255,.38)';
   ctx.textAlign = 'right'; ctx.textBaseline = 'bottom';
   ctx.fillText('desliza para ler  →', S - P, y);
   ctx.restore(); y -= 44;
 
   ctx.save(); ctx.font = `${FP.tw} 76px ${FP.tt}`;
-  ctx.fillStyle = t.tx;
+  ctx.fillStyle = '#fff';
   ctx.textAlign = 'left'; ctx.textBaseline = 'bottom';
-  ctx.shadowColor = 'rgba(0,0,0,.45)'; ctx.shadowBlur = 18;
+  ctx.shadowColor = 'rgba(0,0,0,.65)'; ctx.shadowBlur = 22;
   const tl = wrapText(ctx, title || 'Título', S - P * 2);
   y -= (tl.length - 1) * 88;
   tl.forEach((l, i) => ctx.fillText(l, P, y + i * 88));
@@ -446,7 +525,7 @@ function makeContent(text, num, title, handle, total, t) {
 
   ctx.save(); ctx.fillStyle = t.ac; ctx.fillRect(P, P + 60, 4, 110); ctx.restore();
 
-  drawTopBar(ctx, handle, num, total, t);
+  drawTopBar(ctx, handle, num, total, t, false);
 
   const maxW = S - P * 2.5, contentH = 640;
   const fs = text ? autoFS(ctx, text, maxW, contentH, 52, 26, FP.bw, FP.tb) : 48;
@@ -486,7 +565,7 @@ function makeLast(handle, total, t) {
     ctx.beginPath(); ctx.arc(cx, cy, r, 0, Math.PI * 2); ctx.stroke(); ctx.restore();
   });
 
-  drawTopBar(ctx, handle, total, total, t);
+  drawTopBar(ctx, handle, total, total, t, false);
 
   ctx.save(); ctx.font = `${FP.tw} 54px ${FP.tt}`;
   ctx.fillStyle = t.tx; ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
@@ -514,22 +593,30 @@ function makeLast(handle, total, t) {
   return c;
 }
 
-// Gerar
+// ═══════════════════════════════════════
+//  GERAR
+// ═══════════════════════════════════════
 async function generate() {
-  const title   = document.getElementById('titleIn').value.trim();
-  const raw     = document.getElementById('contentIn').value;
-  const handle  = document.getElementById('handleIn').value.trim();
-  const blocks  = parseBlocks(raw);
-  const t       = THEMES[TK];
+  const title    = document.getElementById('titleIn').value.trim();
+  const raw      = document.getElementById('contentIn').value.trim();
+  const handle   = document.getElementById('handleIn').value.trim();
+  const maxWords = parseInt(slider.value, 10);
+  const t        = THEMES[TK];
 
-  if (!title && blocks.length === 0) {
-    alert('Preenche o título ou escreve pelo menos um bloco de texto.'); return;
+  if (!title && !raw) {
+    alert('Preenche o título ou o texto.'); return;
   }
 
-  document.getElementById('emptyEl').style.display    = 'none';
-  document.getElementById('loadEl').style.display     = 'flex';
-  document.getElementById('sgrid').innerHTML          = '';
-  document.getElementById('dlAllBtn').style.display   = 'none';
+  const blocks = raw ? autoSplit(raw, maxWords) : [];
+
+  if (blocks.length === 0 && !title) {
+    alert('Não foi possível dividir o texto. Adiciona um título ou mais conteúdo.'); return;
+  }
+
+  document.getElementById('emptyEl').style.display  = 'none';
+  document.getElementById('loadEl').style.display   = 'flex';
+  document.getElementById('sgrid').innerHTML        = '';
+  document.getElementById('dlAllBtn').style.display = 'none';
   genSlides = [];
 
   await document.fonts.load(`${FP.tw} 80px ${FP.tt}`);
@@ -566,6 +653,9 @@ async function generate() {
   document.getElementById('dlAllBtn').style.display = 'flex';
 }
 
+// ═══════════════════════════════════════
+//  DOWNLOAD
+// ═══════════════════════════════════════
 function dlOne(cv, n) {
   cv.toBlob(blob => {
     const a = document.createElement('a');
@@ -584,6 +674,9 @@ async function dlAll() {
   }
 }
 
+// ═══════════════════════════════════════
+//  MODAL
+// ═══════════════════════════════════════
 function openM(i) { mIdx = i; renderM(); document.getElementById('modal').classList.add('open'); }
 function closeM()  { document.getElementById('modal').classList.remove('open'); }
 
