@@ -195,18 +195,14 @@
       </div>
 
       <div class="fld">
-        <label>Texto dos slides <span class="opt-lbl">(separa cada slide com <strong style="color:#a78bfa">---</strong>)</span></label>
-        <textarea id="contentIn" class="content-area" placeholder="Slide 2: escreve aqui o primeiro ponto...
+        <label>Texto dos slides <span class="opt-lbl">(linha em branco = novo slide)</span></label>
+        <textarea id="contentIn" class="content-area" placeholder="Escreve o primeiro ponto aqui. Podes ter mais do que uma linha no mesmo slide.
 
----
+Linha em branco separa para o próximo slide. Escreve o segundo ponto aqui.
 
-Slide 3: o segundo ponto vai aqui. Podes escrever mais do que uma linha, o texto ajusta-se automaticamente.
-
----
-
-Slide 4: continua assim para cada slide adicional."></textarea>
+E assim sucessivamente para cada slide adicional."></textarea>
         <div class="hint">
-          Separa cada bloco de texto com <strong>---</strong> numa linha só.<br>
+          Cada parágrafo separado por uma <strong>linha em branco</strong> torna-se um slide.<br>
           Serão gerados automaticamente: capa + os teus slides + slide final.
         </div>
         <div class="slide-count" id="slideCount">
@@ -310,7 +306,7 @@ document.getElementById('contentIn').addEventListener('input', function() {
 });
 
 function parseBlocks(raw) {
-  return raw.split(/\n\s*---\s*\n/)
+  return raw.split(/\n{2,}/)
     .map(b => b.trim())
     .filter(b => b.length > 0);
 }
