@@ -673,10 +673,17 @@ function renderCard(cv, i, label) {
   const editBtn = document.createElement('button'); editBtn.className = 'dl1'; editBtn.title = 'Editar'; editBtn.textContent = '✏️';
   editBtn.onclick = e => { e.stopPropagation(); openEdit(i); };
 
-  const dlBtn = document.createElement('button'); dlBtn.className = 'dl1'; dlBtn.title = 'Download'; dlBtn.textContent = '⬇';
-  dlBtn.onclick = e => { e.stopPropagation(); dlOne(cv, i + 1); };
+  const canShare = navigator.canShare && navigator.canShare({ files: [new File([], 'test.png', { type: 'image/png' })] });
+  const actionBtn = document.createElement('button'); actionBtn.className = 'dl1';
+  if (canShare) {
+    actionBtn.title = 'Partilhar'; actionBtn.textContent = '📲';
+    actionBtn.onclick = e => { e.stopPropagation(); shareOne(cv, i + 1); };
+  } else {
+    actionBtn.title = 'Download'; actionBtn.textContent = '⬇';
+    actionBtn.onclick = e => { e.stopPropagation(); dlOne(cv, i + 1); };
+  }
 
-  acts.append(editBtn, dlBtn);
+  acts.append(editBtn, actionBtn);
   ft.append(badge, acts);
   card.append(thumb, ft);
 
@@ -792,6 +799,16 @@ function closeEdit() { document.getElementById('emodal').classList.remove('open'
 function escH(s) { return s.replace(/&/g,'&amp;').replace(/"/g,'&quot;').replace(/</g,'&lt;').replace(/>/g,'&gt;'); }
 
 // ─── Partilhar (mobile) / Download (desktop) ─
+async function shareOne(cv, n) {
+  const blob = await new Promise(res => cv.toBlob(res, 'image/png'));
+  const file = new File([blob], `slide_${p2(n)}.png`, { type: 'image/png' });
+  try {
+    await navigator.share({ files: [file], title: `Slide ${n}` });
+  } catch (err) {
+    if (err.name !== 'AbortError') showToast('Erro ao partilhar. Tenta o download.');
+  }
+}
+
 async function shareAll() {
   showToast('A preparar ficheiros…');
   const blobs = await Promise.all(genSlides.map(cv => new Promise(res => cv.toBlob(res, 'image/png'))));
