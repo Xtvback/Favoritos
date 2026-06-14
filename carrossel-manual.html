@@ -306,7 +306,8 @@ document.getElementById('contentIn').addEventListener('input', function() {
 });
 
 function parseBlocks(raw) {
-  return raw.split(/\n{2,}/)
+  return raw.replace(/\r\n/g, '\n').replace(/\r/g, '\n')
+    .split(/\n\n+/)
     .map(b => b.trim())
     .filter(b => b.length > 0);
 }
