@@ -128,6 +128,7 @@
     .prev { padding:22px 20px; overflow-y:auto; }
     .prev-hdr { display:flex; align-items:center; justify-content:space-between; margin-bottom:20px; }
     .prev-hdr h2 { font-size:15px; font-weight:700; }
+    .hdr-btns { display:flex; gap:8px; }
     .dl-all {
       display:none; align-items:center; gap:7px; padding:8px 16px;
       background:rgba(16,185,129,.1); color:var(--gr);
@@ -136,6 +137,14 @@
       cursor:pointer; transition:background .15s;
     }
     .dl-all:hover { background:rgba(16,185,129,.2); }
+    .share-btn {
+      display:none; align-items:center; gap:7px; padding:8px 16px;
+      background:rgba(37,211,102,.1); color:#25d366;
+      border:1px solid rgba(37,211,102,.2); border-radius:var(--rs);
+      font-family:inherit; font-size:13px; font-weight:600;
+      cursor:pointer; transition:background .15s;
+    }
+    .share-btn:hover { background:rgba(37,211,102,.2); }
 
     .empty { display:flex; flex-direction:column; align-items:center; justify-content:center; gap:12px; height:400px; text-align:center; color:var(--mu); }
     .empty-ico { font-size:44px; opacity:.18; }
@@ -283,7 +292,10 @@
   <section class="prev">
     <div class="prev-hdr">
       <h2>Preview</h2>
-      <button class="dl-all" id="dlAllBtn">⬇ Download Todos</button>
+      <div class="hdr-btns">
+        <button class="share-btn" id="shareBtn">📲 Partilhar</button>
+        <button class="dl-all" id="dlAllBtn">⬇ Download Todos</button>
+      </div>
     </div>
     <div class="empty" id="emptyEl">
       <div class="empty-ico">🎠</div>
@@ -717,7 +729,10 @@ async function generate() {
     grid.appendChild(renderCard(cv, i, lbl));
   });
 
-  document.getElementById('dlAllBtn').style.display = 'flex';
+  const canShareFiles = navigator.canShare && navigator.canShare({ files: [new File([], 'test.png', { type: 'image/png' })] });
+  document.getElementById('shareBtn').style.display  = canShareFiles ? 'flex' : 'none';
+  document.getElementById('dlAllBtn').style.display  = canShareFiles ? 'none' : 'flex';
+
   const tags = extractHashtags(title, raw);
   if (tags.length > 0) showHashtags(tags);
 }
@@ -776,6 +791,18 @@ function closeEdit() { document.getElementById('emodal').classList.remove('open'
 
 function escH(s) { return s.replace(/&/g,'&amp;').replace(/"/g,'&quot;').replace(/</g,'&lt;').replace(/>/g,'&gt;'); }
 
+// ─── Partilhar (mobile) / Download (desktop) ─
+async function shareAll() {
+  showToast('A preparar ficheiros…');
+  const blobs = await Promise.all(genSlides.map(cv => new Promise(res => cv.toBlob(res, 'image/png'))));
+  const files = blobs.map((b, i) => new File([b], `slide_${p2(i + 1)}.png`, { type: 'image/png' }));
+  try {
+    await navigator.share({ files, title: 'Carrossel Instagram' });
+  } catch (err) {
+    if (err.name !== 'AbortError') showToast('Erro ao partilhar. Tenta o download.');
+  }
+}
+
 // ─── Download ────────────────────────────
 function dlOne(cv, n) {
   cv.toBlob(blob => {
@@ -811,6 +838,7 @@ function showToast(msg) {
 
 // ─── Eventos ─────────────────────────────
 document.getElementById('genBtn').onclick    = generate;
+document.getElementById('shareBtn').onclick  = shareAll;
 document.getElementById('dlAllBtn').onclick  = dlAll;
 document.getElementById('eApplyBtn').onclick = applyEdit;
 document.getElementById('eCancelBtn').onclick = closeEdit;
