@@ -92,13 +92,13 @@
 
     /* Slider */
     .slider-row { display:flex; align-items:center; gap:10px; }
-    input[type=range] {
-      flex:1; accent-color:var(--acc); height:4px; cursor:pointer;
+    input[type=range] { flex:1; accent-color:var(--acc); height:4px; cursor:pointer; }
+    .slider-val { font-size:12px; font-weight:700; color:var(--acc); min-width:28px; text-align:right; }
+    .slide-preview {
+      margin-top:8px; font-size:11px; color:var(--mu);
+      display:flex; align-items:center; gap:6px;
     }
-    .slider-val {
-      font-size:12px; font-weight:700; color:var(--acc);
-      min-width:28px; text-align:right;
-    }
+    .slide-preview strong { color:var(--acc); }
 
     /* Temas */
     .trow { display:grid; grid-template-columns:repeat(3,1fr); gap:8px; }
@@ -128,7 +128,6 @@
     .prev { padding:22px 20px; overflow-y:auto; }
     .prev-hdr { display:flex; align-items:center; justify-content:space-between; margin-bottom:20px; }
     .prev-hdr h2 { font-size:15px; font-weight:700; }
-
     .dl-all {
       display:none; align-items:center; gap:7px; padding:8px 16px;
       background:rgba(16,185,129,.1); color:var(--gr);
@@ -147,15 +146,26 @@
     .spin { width:20px; height:20px; border:2px solid rgba(255,255,255,.07); border-top-color:var(--acc); border-radius:50%; animation:spin .65s linear infinite; }
     @keyframes spin { to{transform:rotate(360deg);} }
 
+    /* Cards */
     .sgrid { display:grid; grid-template-columns:repeat(auto-fill,minmax(175px,1fr)); gap:12px; }
-    .scard { position:relative; border-radius:var(--r); overflow:hidden; border:1px solid var(--bd); background:#000; cursor:pointer; aspect-ratio:1/1; transition:transform .2s,box-shadow .2s; }
-    .scard:hover { transform:translateY(-5px); box-shadow:0 16px 40px rgba(0,0,0,.6); }
-    .scard canvas { width:100%; height:100%; display:block; }
+    .scard { position:relative; border-radius:var(--r); overflow:hidden; border:1px solid var(--bd); background:#000; aspect-ratio:1/1; transition:transform .2s,box-shadow .2s; }
+    .scard:hover { transform:translateY(-4px); box-shadow:0 16px 40px rgba(0,0,0,.6); }
+    .scard canvas { width:100%; height:100%; display:block; cursor:pointer; }
     .scard-ft { position:absolute; bottom:0; left:0; right:0; padding:7px 10px; background:rgba(0,0,0,.75); backdrop-filter:blur(8px); font-size:12px; font-weight:600; display:flex; align-items:center; justify-content:space-between; }
     .scard-badge { background:rgba(255,255,255,.09); border-radius:4px; padding:2px 7px; font-size:10px; font-weight:700; letter-spacing:.5px; text-transform:uppercase; color:rgba(255,255,255,.5); }
-    .dl1 { background:none; border:none; color:#fff; font-size:13px; cursor:pointer; opacity:.55; padding:3px 4px; transition:opacity .15s; }
-    .dl1:hover { opacity:1; }
+    .card-actions { display:flex; gap:2px; }
+    .dl1 { background:none; border:none; color:#fff; font-size:13px; cursor:pointer; opacity:.5; padding:3px 5px; border-radius:4px; transition:opacity .15s, background .15s; }
+    .dl1:hover { opacity:1; background:rgba(255,255,255,.1); }
 
+    /* Hashtags */
+    .hash-box { display:none; margin-top:16px; background:var(--card); border:1px solid var(--bd); border-radius:var(--r); padding:14px 16px; }
+    .hash-box.show { display:block; }
+    .hash-tags { display:flex; flex-wrap:wrap; gap:8px; margin-bottom:10px; }
+    .hash-tag { background:rgba(124,58,237,.12); border:1px solid rgba(124,58,237,.22); color:#a78bfa; border-radius:99px; padding:5px 13px; font-size:13px; font-weight:600; }
+    .hash-copy { width:100%; padding:8px; background:rgba(255,255,255,.04); border:1px solid var(--bd); border-radius:var(--rs); color:var(--mu); font-family:inherit; font-size:12px; font-weight:600; cursor:pointer; transition:background .15s, color .15s; }
+    .hash-copy:hover { background:rgba(255,255,255,.08); color:var(--tx); }
+
+    /* Preview modal */
     .modal { display:none; position:fixed; inset:0; background:rgba(0,0,0,.93); z-index:500; align-items:center; justify-content:center; padding:20px; }
     .modal.open { display:flex; }
     .mbox { position:relative; width:min(520px,100%); }
@@ -170,12 +180,17 @@
     .mbtn.g:hover { background:rgba(16,185,129,.22); }
     .mctr { font-size:12px; color:var(--mu); }
 
-    .hash-box { display:none; margin-top:16px; background:var(--card); border:1px solid var(--bd); border-radius:var(--r); padding:14px 16px; }
-    .hash-box.show { display:block; }
-    .hash-tags { display:flex; flex-wrap:wrap; gap:8px; margin-bottom:10px; }
-    .hash-tag { background:rgba(124,58,237,.12); border:1px solid rgba(124,58,237,.22); color:#a78bfa; border-radius:99px; padding:5px 13px; font-size:13px; font-weight:600; }
-    .hash-copy { width:100%; padding:8px; background:rgba(255,255,255,.04); border:1px solid var(--bd); border-radius:var(--rs); color:var(--mu); font-family:inherit; font-size:12px; font-weight:600; cursor:pointer; transition:background .15s, color .15s; }
-    .hash-copy:hover { background:rgba(255,255,255,.08); color:var(--tx); }
+    /* Edit modal */
+    .emodal { display:none; position:fixed; inset:0; background:rgba(0,0,0,.88); z-index:600; align-items:center; justify-content:center; padding:20px; }
+    .emodal.open { display:flex; }
+    .ebox { background:var(--panel); border:1px solid var(--bd); border-radius:var(--r); width:min(440px,100%); overflow:hidden; }
+    .ebox-hdr { display:flex; align-items:center; justify-content:space-between; padding:16px 20px; border-bottom:1px solid var(--bd); }
+    .ebox-hdr span { font-size:14px; font-weight:700; }
+    .ebox-body { padding:20px; display:flex; flex-direction:column; gap:12px; }
+    .ebox-body label { font-size:11px; color:#777; display:block; margin-bottom:4px; }
+    .ebox-ft { display:flex; gap:10px; padding:16px 20px; border-top:1px solid var(--bd); }
+    .ebox-ft .mbtn { flex:0 0 auto; }
+    .ebox-ft .gen { padding:10px 20px; font-size:13px; flex:1; }
 
     .toast { position:fixed; bottom:24px; left:50%; transform:translateX(-50%) translateY(10px); background:rgba(16,185,129,.12); color:var(--gr); border:1px solid rgba(16,185,129,.25); border-radius:var(--rs); padding:9px 18px; font-size:13px; font-weight:600; backdrop-filter:blur(12px); opacity:0; pointer-events:none; transition:opacity .22s,transform .22s; z-index:999; white-space:nowrap; }
     .toast.show { opacity:1; transform:translateX(-50%) translateY(0); }
@@ -197,25 +212,40 @@
 
     <!-- CONTEÚDO -->
     <div class="fsec">
-      <div class="sec-ttl">Conteúdo</div>
+      <div class="sec-ttl">Capa</div>
 
       <div class="fld">
-        <label>Título da capa</label>
+        <label>Título</label>
         <input type="text" id="titleIn" placeholder="Ex: 5 Razões Para Começar Hoje">
       </div>
 
       <div class="fld">
-        <label>Imagem de capa <span class="opt-lbl">(opcional)</span></label>
+        <label>Subtítulo <span class="opt-lbl">(opcional)</span></label>
+        <input type="text" id="subIn" placeholder="Uma frase de contextualização">
+      </div>
+
+      <div class="fld">
+        <label>Imagem de fundo <span class="opt-lbl">(opcional)</span></label>
         <div class="upbox" id="upbox">
           <input type="file" accept="image/*" id="fileIn">
           <div id="upPH"><div class="up-ico">🖼️</div><div class="up-txt">Clica ou arrasta a imagem aqui</div></div>
           <img id="imgPrev" alt="">
         </div>
       </div>
+    </div>
+
+    <!-- TEXTO -->
+    <div class="fsec">
+      <div class="sec-ttl">Texto</div>
 
       <div class="fld">
         <label>Texto completo</label>
-        <textarea id="contentIn" rows="9" placeholder="Cola aqui todo o texto que queres transformar em carrossel. Não precisas de fazer nada — a ferramenta divide automaticamente em slides com o tamanho certo."></textarea>
+        <textarea id="contentIn" rows="9" placeholder="Cola aqui todo o texto. A ferramenta divide automaticamente em slides — não precisas de fazer nada."></textarea>
+      </div>
+
+      <div class="fld">
+        <label>Call-to-action no slide final <span class="opt-lbl">(opcional)</span></label>
+        <textarea id="ctaIn" rows="2" placeholder="Ex: Segue para mais conteúdo! ✦"></textarea>
       </div>
 
       <div class="fld">
@@ -233,6 +263,7 @@
           <input type="range" id="wordsSlider" min="15" max="60" value="30" step="5">
           <span class="slider-val" id="wordsVal">30</span>
         </div>
+        <div class="slide-preview" id="slidePreview">Escreve o texto para ver a previsão</div>
       </div>
     </div>
 
@@ -273,7 +304,7 @@
 
 </div>
 
-<!-- MODAL -->
+<!-- MODAL PREVIEW -->
 <div class="modal" id="modal">
   <div class="mbox">
     <button class="mclose" id="mClose">✕</button>
@@ -283,6 +314,21 @@
       <span class="mctr" id="mCtr">1 / 1</span>
       <button class="mbtn g" id="mDl">⬇ Download</button>
       <button class="mbtn" id="mNext">Próximo →</button>
+    </div>
+  </div>
+</div>
+
+<!-- MODAL EDIÇÃO -->
+<div class="emodal" id="emodal">
+  <div class="ebox">
+    <div class="ebox-hdr">
+      <span id="editLabel">Editar Slide</span>
+      <button class="mclose" style="position:static;top:auto;right:auto" id="eClose">✕</button>
+    </div>
+    <div class="ebox-body" id="editFields"></div>
+    <div class="ebox-ft">
+      <button class="mbtn" id="eCancelBtn">Cancelar</button>
+      <button class="gen" id="eApplyBtn">Aplicar</button>
     </div>
   </div>
 </div>
@@ -309,9 +355,9 @@ const FP = {
 };
 
 let TK = 'midnight';
-let coverImg = null, genSlides = [], mIdx = 0;
+let coverImg = null, genSlides = [], slideData = [], mIdx = 0;
 
-// Temas
+// ─── Temas ───────────────────────────────
 (function() {
   const tg = document.getElementById('themeGrid');
   for (const [k, t] of Object.entries(THEMES)) {
@@ -324,18 +370,12 @@ let coverImg = null, genSlides = [], mIdx = 0;
   }
 })();
 
-// Slider
-const slider = document.getElementById('wordsSlider');
-const sliderVal = document.getElementById('wordsVal');
-slider.oninput = () => { sliderVal.textContent = slider.value; };
-
-// Upload
+// ─── Upload ──────────────────────────────
 (function() {
   const box = document.getElementById('upbox');
   const inp = document.getElementById('fileIn');
   const prv = document.getElementById('imgPrev');
   const ph  = document.getElementById('upPH');
-
   function load(f) {
     if (!f?.type.startsWith('image/')) return;
     const r = new FileReader();
@@ -346,31 +386,40 @@ slider.oninput = () => { sliderVal.textContent = slider.value; };
     };
     r.readAsDataURL(f);
   }
-
   inp.addEventListener('change', e => load(e.target.files[0]));
   box.addEventListener('dragover', e => { e.preventDefault(); box.classList.add('drag'); });
   box.addEventListener('dragleave', () => box.classList.remove('drag'));
   box.addEventListener('drop', e => { e.preventDefault(); box.classList.remove('drag'); load(e.dataTransfer.files[0]); });
 })();
 
-// ═══════════════════════════════════════
-//  HASHTAGS
-// ═══════════════════════════════════════
-const STOP = new Set(['a','ao','aos','as','com','da','das','de','do','dos','e','em','eu','lhe','lhes','me','meu','meus','minha','minhas','na','nas','no','nos','num','numa','o','os','ou','para','pela','pelas','pelo','pelos','por','que','se','sem','seu','seus','sua','suas','te','tu','um','uma','uns','umas','é','não','mais','mas','como','bem','também','já','foi','ser','ter','ele','ela','eles','elas','isso','este','esta','estes','estas','esse','essa','esses','essas','isto','aqui','ali','há','muito','pouco','só','até','depois','antes','quando','onde','quem','qual','quais','todo','toda','todos','todas','cada','outro','outra','outros','outras','mesmo','mesma','então','assim','ainda','sobre','entre','desde','sempre','nunca','pode','fazer','feito','vai','tem','têm','vez','vezes','grande','novo','nova','num','neste','nesta','nesse','nessa','pelo','pela','com','tudo','nada','sendo','tendo','caso','tipo','forma','modo','vez','vezes','coisa','coisas','pessoa','pessoas','ano','anos','dia','dias']);
+// ─── Slider + contagem em tempo real ─────
+const slider    = document.getElementById('wordsSlider');
+const sliderVal = document.getElementById('wordsVal');
+const previewEl = document.getElementById('slidePreview');
+
+function updatePreview() {
+  const raw = document.getElementById('contentIn').value.trim();
+  const n   = parseInt(slider.value, 10);
+  sliderVal.textContent = n;
+  if (!raw) { previewEl.innerHTML = 'Escreve o texto para ver a previsão'; return; }
+  const count = autoSplit(raw, n).length;
+  previewEl.innerHTML = `→ <strong>${count + 2}</strong> slides no total (capa + ${count} conteúdo + final)`;
+}
+
+slider.oninput = updatePreview;
+document.getElementById('contentIn').addEventListener('input', updatePreview);
+
+// ─── Hashtags ────────────────────────────
+const STOP = new Set(['a','ao','aos','as','com','da','das','de','do','dos','e','em','eu','lhe','lhes','me','meu','meus','minha','minhas','na','nas','no','nos','num','numa','o','os','ou','para','pela','pelas','pelo','pelos','por','que','se','sem','seu','seus','sua','suas','te','tu','um','uma','uns','umas','nao','mais','mas','como','bem','tambem','ja','foi','ser','ter','ele','ela','eles','elas','isso','este','esta','estes','estas','esse','essa','esses','essas','isto','aqui','ali','muito','pouco','ate','depois','antes','quando','onde','quem','qual','quais','todo','toda','todos','todas','cada','outro','outra','outros','outras','mesmo','mesma','entao','assim','ainda','sobre','entre','desde','sempre','nunca','pode','fazer','feito','vai','tem','vez','vezes','grande','novo','nova','tudo','nada','sendo','tendo','caso','tipo','forma','modo','coisa','coisas','pessoa','pessoas','ano','anos','dia','dias','neste','nesta','nesse','nessa']);
 
 function extractHashtags(title, text) {
-  const source = (title + ' ' + text).toLowerCase()
+  const src = (title + ' ' + text).toLowerCase()
     .normalize('NFD').replace(/[̀-ͯ]/g, '')
-    .replace(/[^a-z\s]/g, ' ')
-    .split(/\s+/)
+    .replace(/[^a-z\s]/g, ' ').split(/\s+/)
     .filter(w => w.length > 4 && !STOP.has(w));
-
   const freq = {};
-  for (const w of source) freq[w] = (freq[w] || 0) + 1;
-
-  return Object.entries(freq)
-    .sort((a, b) => b[1] - a[1])
-    .slice(0, 3)
+  for (const w of src) freq[w] = (freq[w] || 0) + 1;
+  return Object.entries(freq).sort((a, b) => b[1] - a[1]).slice(0, 3)
     .map(([w]) => '#' + w.charAt(0).toUpperCase() + w.slice(1));
 }
 
@@ -378,56 +427,31 @@ function showHashtags(tags) {
   const box  = document.getElementById('hashBox');
   const wrap = document.getElementById('hashTags');
   wrap.innerHTML = '';
-  tags.forEach(t => {
-    const el = document.createElement('span');
-    el.className = 'hash-tag'; el.textContent = t;
-    wrap.appendChild(el);
-  });
+  tags.forEach(t => { const el = document.createElement('span'); el.className = 'hash-tag'; el.textContent = t; wrap.appendChild(el); });
   box.classList.add('show');
-
   document.getElementById('hashCopy').onclick = () => {
     const str = tags.join(' ');
-    navigator.clipboard.writeText(str).catch(() => {
-      const ta = document.createElement('textarea');
-      ta.value = str; document.body.appendChild(ta); ta.select();
-      document.execCommand('copy'); document.body.removeChild(ta);
-    });
+    navigator.clipboard.writeText(str).catch(() => { const ta = document.createElement('textarea'); ta.value = str; document.body.appendChild(ta); ta.select(); document.execCommand('copy'); document.body.removeChild(ta); });
     showToast('✓ Hashtags copiadas!');
   };
 }
 
-// ═══════════════════════════════════════
-//  AUTO-SPLIT
-// ═══════════════════════════════════════
+// ─── Auto-split ──────────────────────────
 function autoSplit(text, maxWords) {
-  // Normaliza espaços e quebras de linha
-  const clean = text.replace(/\r\n/g, ' ').replace(/\r/g, ' ').replace(/\n/g, ' ').replace(/\s+/g, ' ').trim();
-
-  // Divide em frases usando pontuação como guia
+  const clean = text.replace(/\r\n/g, ' ').replace(/[\r\n]/g, ' ').replace(/\s+/g, ' ').trim();
   const sentences = clean.match(/[^.!?…]+[.!?…]+/g) || [clean];
-
-  const blocks = [];
-  let current = [];
-  let wordCount = 0;
-
+  const blocks = []; let current = [], wordCount = 0;
   for (const sentence of sentences) {
     const words = sentence.trim().split(/\s+/);
     if (wordCount + words.length > maxWords && current.length > 0) {
-      blocks.push(current.join(' ').trim());
-      current = words;
-      wordCount = words.length;
-    } else {
-      current.push(...words);
-      wordCount += words.length;
-    }
+      blocks.push(current.join(' ').trim()); current = words; wordCount = words.length;
+    } else { current.push(...words); wordCount += words.length; }
   }
   if (current.length > 0) blocks.push(current.join(' ').trim());
   return blocks.filter(b => b.length > 0);
 }
 
-// ═══════════════════════════════════════
-//  CANVAS HELPERS
-// ═══════════════════════════════════════
+// ─── Canvas helpers ──────────────────────
 const mkC = () => { const c = document.createElement('canvas'); c.width = S; c.height = S; return c; };
 const p2  = n => String(n).padStart(2, '0');
 
@@ -446,12 +470,10 @@ function coverFit(ctx, img) {
 }
 
 function wrapText(ctx, text, maxW) {
-  const words = text.split(' '), lines = [];
-  let line = '';
+  const words = text.split(' '), lines = []; let line = '';
   for (const w of words) {
     const t = line ? line + ' ' + w : w;
-    if (ctx.measureText(t).width > maxW && line) { lines.push(line); line = w; }
-    else line = t;
+    if (ctx.measureText(t).width > maxW && line) { lines.push(line); line = w; } else line = t;
   }
   if (line) lines.push(line);
   return lines;
@@ -460,14 +482,12 @@ function wrapText(ctx, text, maxW) {
 function autoFS(ctx, text, maxW, maxH, hi, lo, wt, fam) {
   let fs = hi;
   while (fs > lo) {
-    ctx.font = `${wt} ${fs}px ${fam}`;
-    let h = 0;
+    ctx.font = `${wt} ${fs}px ${fam}`; let h = 0;
     for (const para of text.split('\n')) {
       if (!para.trim()) { h += fs * .5; continue; }
       h += wrapText(ctx, para, maxW).length * fs * 1.56;
     }
-    if (h <= maxH) break;
-    fs -= 2;
+    if (h <= maxH) break; fs -= 2;
   }
   return Math.max(fs, lo);
 }
@@ -483,47 +503,35 @@ function drawCentered(ctx, text, cx, cy, maxW, lh) {
   if (!rows.length) return;
   const totalH = rows.reduce((a, r) => a + (r === null ? lh * .45 : lh), 0);
   let y = cy - totalH / 2;
-  for (const row of rows) {
-    if (row === null) { y += lh * .45; continue; }
-    ctx.fillText(row, cx, y + lh * .74); y += lh;
-  }
+  for (const row of rows) { if (row === null) { y += lh * .45; continue; } ctx.fillText(row, cx, y + lh * .74); y += lh; }
 }
 
 function drawDots(ctx, active, total, t) {
-  const r = 7, gap = 14;
-  const tw = total * (r * 2) + (total - 1) * gap;
+  const r = 7, gap = 14, tw = total * (r * 2) + (total - 1) * gap;
   const sx = (S - tw) / 2, y = S - 54;
   for (let i = 0; i < total; i++) {
     const x = sx + i * (r * 2 + gap) + r, cur = i === active - 1;
-    ctx.beginPath();
-    ctx.arc(x, y, cur ? r : r * .5, 0, Math.PI * 2);
-    ctx.fillStyle = cur ? t.ac : t.tx + '22';
-    ctx.fill();
+    ctx.beginPath(); ctx.arc(x, y, cur ? r : r * .5, 0, Math.PI * 2);
+    ctx.fillStyle = cur ? t.ac : t.tx + '22'; ctx.fill();
   }
 }
 
 function drawTopBar(ctx, handle, num, total, t, onImg) {
   if (handle) {
     const h = handle.startsWith('@') ? handle : '@' + handle;
-    ctx.save();
-    ctx.font = `500 28px ${FP.tb}`;
+    ctx.save(); ctx.font = `500 28px ${FP.tb}`;
     ctx.fillStyle = onImg ? 'rgba(255,255,255,.82)' : t.su + 'bb';
-    ctx.textAlign = 'left'; ctx.textBaseline = 'top';
-    ctx.fillText(h, P, P + 2);
-    ctx.restore();
+    ctx.textAlign = 'left'; ctx.textBaseline = 'top'; ctx.fillText(h, P, P + 2); ctx.restore();
   }
-  ctx.save();
-  ctx.font = `600 25px ${FP.tb}`;
+  ctx.save(); ctx.font = `600 25px ${FP.tb}`;
   ctx.fillStyle = onImg ? 'rgba(255,255,255,.72)' : t.ac;
   ctx.textAlign = 'right'; ctx.textBaseline = 'top';
-  ctx.fillText(p2(num) + ' / ' + p2(total), S - P, P + 2);
-  ctx.restore();
+  ctx.fillText(p2(num) + ' / ' + p2(total), S - P, P + 2); ctx.restore();
 }
 
-// Slide de Capa
-function makeCover(title, handle, total, t) {
+// ─── Slide de Capa ───────────────────────
+function makeCover(title, subtitle, handle, total, t) {
   const c = mkC(), ctx = c.getContext('2d');
-
   if (coverImg) {
     coverFit(ctx, coverImg);
     const vig = ctx.createRadialGradient(S/2, S/2, S*.16, S/2, S/2, S*.88);
@@ -542,18 +550,24 @@ function makeCover(title, handle, total, t) {
     ctx.beginPath(); ctx.arc(S * .08, S * .82, 260, 0, Math.PI * 2); ctx.fillStyle = t.ac; ctx.fill();
     ctx.restore();
   }
-
   drawTopBar(ctx, handle, 1, total, t, !!coverImg);
 
   let y = S - P;
-  ctx.save(); ctx.font = `300 20px ${FP.tb}`;
-  ctx.fillStyle = 'rgba(255,255,255,.38)';
+  ctx.save(); ctx.font = `300 20px ${FP.tb}`; ctx.fillStyle = 'rgba(255,255,255,.38)';
   ctx.textAlign = 'right'; ctx.textBaseline = 'bottom';
-  ctx.fillText('desliza para ler  →', S - P, y);
-  ctx.restore(); y -= 44;
+  ctx.fillText('desliza para ler  →', S - P, y); ctx.restore(); y -= 44;
 
-  ctx.save(); ctx.font = `${FP.tw} 76px ${FP.tt}`;
-  ctx.fillStyle = '#fff';
+  if (subtitle) {
+    ctx.save(); ctx.font = `300 30px ${FP.tb}`; ctx.fillStyle = 'rgba(255,255,255,.65)';
+    ctx.textAlign = 'left'; ctx.textBaseline = 'bottom';
+    ctx.shadowColor = 'rgba(0,0,0,.5)'; ctx.shadowBlur = 10;
+    const sl = wrapText(ctx, subtitle, S - P * 2);
+    y -= (sl.length - 1) * 38;
+    sl.forEach((l, i) => ctx.fillText(l, P, y + i * 38));
+    y -= 38 + 14; ctx.restore();
+  }
+
+  ctx.save(); ctx.font = `${FP.tw} 76px ${FP.tt}`; ctx.fillStyle = '#fff';
   ctx.textAlign = 'left'; ctx.textBaseline = 'bottom';
   ctx.shadowColor = 'rgba(0,0,0,.65)'; ctx.shadowBlur = 22;
   const tl = wrapText(ctx, title || 'Título', S - P * 2);
@@ -562,183 +576,222 @@ function makeCover(title, handle, total, t) {
   y -= 88 + 20; ctx.restore();
 
   ctx.save(); ctx.fillStyle = t.ac; ctx.fillRect(P, y - 2, 100, 5); ctx.restore();
-
   drawDots(ctx, 1, total, t);
   return c;
 }
 
-// Slides de Conteúdo
+// ─── Slides de Conteúdo ──────────────────
 function makeContent(text, num, title, handle, total, t) {
   const c = mkC(), ctx = c.getContext('2d');
   gradBg(ctx, t);
-
-  ctx.save();
-  ctx.font = `700 290px ${FP.tb}`;
-  ctx.fillStyle = t.nb;
+  ctx.save(); ctx.font = `700 290px ${FP.tb}`; ctx.fillStyle = t.nb;
   ctx.textAlign = 'right'; ctx.textBaseline = 'middle';
-  ctx.fillText(p2(num), S - P + 22, S * .52);
-  ctx.restore();
-
+  ctx.fillText(p2(num), S - P + 22, S * .52); ctx.restore();
   ctx.save(); ctx.fillStyle = t.ac; ctx.fillRect(P, P + 60, 4, 110); ctx.restore();
-
   drawTopBar(ctx, handle, num, total, t, false);
-
   const maxW = S - P * 2.5, contentH = 640;
   const fs = text ? autoFS(ctx, text, maxW, contentH, 52, 26, FP.bw, FP.tb) : 48;
   const lh = fs * 1.56;
-
-  ctx.save();
-  ctx.font = `${FP.bw} ${fs}px ${FP.tb}`;
-  ctx.fillStyle = t.tx;
+  ctx.save(); ctx.font = `${FP.bw} ${fs}px ${FP.tb}`; ctx.fillStyle = t.tx;
   ctx.textAlign = 'center'; ctx.textBaseline = 'alphabetic';
-  drawCentered(ctx, text || '', S / 2, S * .47, maxW, lh);
-  ctx.restore();
-
+  drawCentered(ctx, text || '', S / 2, S * .47, maxW, lh); ctx.restore();
   if (title) {
-    ctx.save();
-    ctx.font = `italic 400 22px ${FP.tt}`;
-    ctx.fillStyle = t.su; ctx.globalAlpha = .38;
+    ctx.save(); ctx.font = `italic 400 22px ${FP.tt}`; ctx.fillStyle = t.su; ctx.globalAlpha = .38;
     ctx.textAlign = 'center'; ctx.textBaseline = 'bottom';
-    ctx.fillText(title, S / 2, S - P - 28);
-    ctx.restore();
+    ctx.fillText(title, S / 2, S - P - 28); ctx.restore();
   }
-
   drawDots(ctx, num, total, t);
   return c;
 }
 
-// Slide Final
-function makeLast(handle, total, t) {
+// ─── Slide Final ─────────────────────────
+function makeLast(cta, handle, total, t) {
   const c = mkC(), ctx = c.getContext('2d');
   gradBg(ctx, t);
-
   const cx = S / 2, cy = S * .42;
   ctx.save(); ctx.globalAlpha = .09;
-  ctx.beginPath(); ctx.arc(cx, cy, 340, 0, Math.PI * 2); ctx.fillStyle = t.ac; ctx.fill();
-  ctx.restore();
+  ctx.beginPath(); ctx.arc(cx, cy, 340, 0, Math.PI * 2); ctx.fillStyle = t.ac; ctx.fill(); ctx.restore();
   [[280, .06, 1.5], [220, .04, 1]].forEach(([r, op, lw]) => {
     ctx.save(); ctx.globalAlpha = op; ctx.strokeStyle = t.ac; ctx.lineWidth = lw;
     ctx.beginPath(); ctx.arc(cx, cy, r, 0, Math.PI * 2); ctx.stroke(); ctx.restore();
   });
-
   drawTopBar(ctx, handle, total, total, t, false);
 
-  ctx.save(); ctx.font = `${FP.tw} 54px ${FP.tt}`;
-  ctx.fillStyle = t.tx; ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
-  ctx.fillText('Gostaste?', S / 2, cy - 76); ctx.restore();
-
-  const actions = ['♥  Deixa um Like', '►  Partilha com alguém', '◎  Segue para não perder'];
-  ctx.save(); ctx.font = `400 33px ${FP.tb}`;
-  ctx.fillStyle = t.su; ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
-  actions.forEach((a, i) => ctx.fillText(a, S / 2, cy + 10 + i * 62));
-  ctx.restore();
+  if (cta) {
+    const fs = autoFS(ctx, cta, S - P * 2, 480, 62, 28, FP.tw, FP.tt);
+    const lh = fs * 1.52;
+    ctx.save(); ctx.font = `${FP.tw} ${fs}px ${FP.tt}`; ctx.fillStyle = t.tx;
+    ctx.textAlign = 'center'; ctx.textBaseline = 'alphabetic';
+    drawCentered(ctx, cta, S / 2, cy, S - P * 2, lh); ctx.restore();
+  } else {
+    ctx.save(); ctx.font = `${FP.tw} 54px ${FP.tt}`; ctx.fillStyle = t.tx;
+    ctx.textAlign = 'center'; ctx.textBaseline = 'middle'; ctx.fillText('Gostaste?', S / 2, cy - 76); ctx.restore();
+    const actions = ['♥  Deixa um Like', '►  Partilha com alguém', '◎  Segue para não perder'];
+    ctx.save(); ctx.font = `400 33px ${FP.tb}`; ctx.fillStyle = t.su;
+    ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
+    actions.forEach((a, i) => ctx.fillText(a, S / 2, cy + 10 + i * 62)); ctx.restore();
+  }
 
   const dg = ctx.createLinearGradient(S/2 - 90, 0, S/2 + 90, 0);
   dg.addColorStop(0, 'transparent'); dg.addColorStop(.5, t.ac); dg.addColorStop(1, 'transparent');
   ctx.save(); ctx.strokeStyle = dg; ctx.lineWidth = 1.5; ctx.globalAlpha = .4;
-  ctx.beginPath(); ctx.moveTo(S / 2 - 90, S * .67); ctx.lineTo(S / 2 + 90, S * .67); ctx.stroke(); ctx.restore();
+  ctx.beginPath(); ctx.moveTo(S/2 - 90, S * .67); ctx.lineTo(S/2 + 90, S * .67); ctx.stroke(); ctx.restore();
 
   if (handle) {
     const h = handle.startsWith('@') ? handle : '@' + handle;
-    ctx.save(); ctx.font = `600 36px ${FP.tb}`;
-    ctx.fillStyle = t.ac; ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
-    ctx.fillText(h, S / 2, S * .75); ctx.restore();
+    ctx.save(); ctx.font = `600 36px ${FP.tb}`; ctx.fillStyle = t.ac;
+    ctx.textAlign = 'center'; ctx.textBaseline = 'middle'; ctx.fillText(h, S / 2, S * .75); ctx.restore();
   }
-
   drawDots(ctx, total, total, t);
   return c;
 }
 
-// ═══════════════════════════════════════
-//  GERAR
-// ═══════════════════════════════════════
+// ─── Renderizar card ─────────────────────
+function renderCard(cv, i, label) {
+  const card   = document.createElement('div'); card.className = 'scard';
+  const thumb  = document.createElement('canvas');
+  thumb.width  = cv.width; thumb.height = cv.height;
+  thumb.getContext('2d').drawImage(cv, 0, 0);
+  thumb.onclick = () => openM(i);
+
+  const ft   = document.createElement('div'); ft.className = 'scard-ft';
+  const badge = document.createElement('span'); badge.className = 'scard-badge'; badge.textContent = label;
+  const acts  = document.createElement('div'); acts.className = 'card-actions';
+
+  const editBtn = document.createElement('button'); editBtn.className = 'dl1'; editBtn.title = 'Editar'; editBtn.textContent = '✏️';
+  editBtn.onclick = e => { e.stopPropagation(); openEdit(i); };
+
+  const dlBtn = document.createElement('button'); dlBtn.className = 'dl1'; dlBtn.title = 'Download'; dlBtn.textContent = '⬇';
+  dlBtn.onclick = e => { e.stopPropagation(); dlOne(cv, i + 1); };
+
+  acts.append(editBtn, dlBtn);
+  ft.append(badge, acts);
+  card.append(thumb, ft);
+
+  slideData[i].thumbEl = thumb;
+  return card;
+}
+
+// ─── Gerar ───────────────────────────────
 async function generate() {
-  const title    = document.getElementById('titleIn').value.trim();
-  const raw      = document.getElementById('contentIn').value.trim();
-  const handle   = document.getElementById('handleIn').value.trim();
-  const maxWords = parseInt(slider.value, 10);
-  const t        = THEMES[TK];
+  const title  = document.getElementById('titleIn').value.trim();
+  const sub    = document.getElementById('subIn').value.trim();
+  const raw    = document.getElementById('contentIn').value.trim();
+  const cta    = document.getElementById('ctaIn').value.trim();
+  const handle = document.getElementById('handleIn').value.trim();
+  const maxW   = parseInt(slider.value, 10);
+  const t      = THEMES[TK];
 
-  if (!title && !raw) {
-    alert('Preenche o título ou o texto.'); return;
-  }
+  if (!title && !raw) { alert('Preenche o título ou o texto.'); return; }
 
-  const blocks = raw ? autoSplit(raw, maxWords) : [];
-
-  if (blocks.length === 0 && !title) {
-    alert('Não foi possível dividir o texto. Adiciona um título ou mais conteúdo.'); return;
-  }
+  const blocks = raw ? autoSplit(raw, maxW) : [];
+  const total  = blocks.length + 2;
 
   document.getElementById('emptyEl').style.display  = 'none';
   document.getElementById('loadEl').style.display   = 'flex';
   document.getElementById('sgrid').innerHTML        = '';
   document.getElementById('dlAllBtn').style.display = 'none';
-  genSlides = [];
+  document.getElementById('hashBox').classList.remove('show');
+  genSlides = []; slideData = [];
 
   await document.fonts.load(`${FP.tw} 80px ${FP.tt}`);
   await document.fonts.load(`${FP.bw} 50px ${FP.tb}`);
   await document.fonts.ready;
   await new Promise(r => setTimeout(r, 60));
 
-  const total = blocks.length + 2;
+  // Build slideData
+  slideData.push({ type:'cover',   title, subtitle:sub, handle, total, t });
+  blocks.forEach((b, i) => slideData.push({ type:'content', text:b, num:i+2, title, handle, total, t }));
+  slideData.push({ type:'last', cta, handle, total, t });
 
-  genSlides.push(makeCover(title, handle, total, t));
+  // Render canvases
+  genSlides.push(makeCover(title, sub, handle, total, t));
   blocks.forEach((b, i) => genSlides.push(makeContent(b, i + 2, title, handle, total, t)));
-  genSlides.push(makeLast(handle, total, t));
+  genSlides.push(makeLast(cta, handle, total, t));
 
   document.getElementById('loadEl').style.display = 'none';
   const grid = document.getElementById('sgrid');
 
   genSlides.forEach((cv, i) => {
-    const card = document.createElement('div'); card.className = 'scard';
-    const th = document.createElement('canvas');
-    th.width = cv.width; th.height = cv.height;
-    th.getContext('2d').drawImage(cv, 0, 0);
-    card.appendChild(th);
-
-    const ft = document.createElement('div'); ft.className = 'scard-ft';
-    const lbl = i === 0 ? 'Capa' : i === genSlides.length - 1 ? 'Final' : `Slide ${i + 1}`;
-    ft.innerHTML = `<span class="scard-badge">${lbl}</span>`;
-    const dl = document.createElement('button'); dl.className = 'dl1'; dl.innerHTML = '⬇';
-    dl.onclick = e => { e.stopPropagation(); dlOne(cv, i + 1); };
-    ft.appendChild(dl); card.appendChild(ft);
-    card.onclick = () => openM(i);
-    grid.appendChild(card);
+    const lbl  = i === 0 ? 'Capa' : i === genSlides.length - 1 ? 'Final' : `Slide ${i + 1}`;
+    grid.appendChild(renderCard(cv, i, lbl));
   });
 
   document.getElementById('dlAllBtn').style.display = 'flex';
-
   const tags = extractHashtags(title, raw);
   if (tags.length > 0) showHashtags(tags);
 }
 
-// ═══════════════════════════════════════
-//  DOWNLOAD
-// ═══════════════════════════════════════
+// ─── Edição inline ───────────────────────
+let editIdx = -1;
+
+function openEdit(i) {
+  editIdx = i;
+  const d   = slideData[i];
+  const lbl = i === 0 ? 'Editar Capa' : i === slideData.length - 1 ? 'Editar Slide Final' : `Editar Slide ${i + 1}`;
+  document.getElementById('editLabel').textContent = lbl;
+
+  const fields = document.getElementById('editFields');
+  fields.innerHTML = '';
+
+  if (d.type === 'cover') {
+    fields.innerHTML = `
+      <div><label>Título</label><input type="text" id="ef_title" value="${escH(d.title)}"></div>
+      <div><label>Subtítulo</label><input type="text" id="ef_sub" value="${escH(d.subtitle || '')}"></div>`;
+  } else if (d.type === 'content') {
+    fields.innerHTML = `<div><label>Texto do slide</label><textarea id="ef_text" rows="6">${escH(d.text)}</textarea></div>`;
+  } else {
+    fields.innerHTML = `<div><label>Call-to-action (deixa vazio para design padrão)</label><textarea id="ef_cta" rows="4">${escH(d.cta || '')}</textarea></div>`;
+  }
+
+  document.getElementById('emodal').classList.add('open');
+}
+
+function applyEdit() {
+  const d = slideData[editIdx];
+  const t = d.t;
+
+  if (d.type === 'cover') {
+    d.title    = document.getElementById('ef_title').value.trim();
+    d.subtitle = document.getElementById('ef_sub').value.trim();
+    genSlides[editIdx] = makeCover(d.title, d.subtitle, d.handle, d.total, t);
+  } else if (d.type === 'content') {
+    d.text = document.getElementById('ef_text').value.trim();
+    genSlides[editIdx] = makeContent(d.text, d.num, d.title, d.handle, d.total, t);
+  } else {
+    d.cta = document.getElementById('ef_cta').value.trim();
+    genSlides[editIdx] = makeLast(d.cta, d.handle, d.total, t);
+  }
+
+  // Atualiza thumbnail
+  const th = d.thumbEl;
+  th.getContext('2d').clearRect(0, 0, th.width, th.height);
+  th.getContext('2d').drawImage(genSlides[editIdx], 0, 0);
+
+  closeEdit();
+  showToast('✓ Slide atualizado');
+}
+
+function closeEdit() { document.getElementById('emodal').classList.remove('open'); editIdx = -1; }
+
+function escH(s) { return s.replace(/&/g,'&amp;').replace(/"/g,'&quot;').replace(/</g,'&lt;').replace(/>/g,'&gt;'); }
+
+// ─── Download ────────────────────────────
 function dlOne(cv, n) {
   cv.toBlob(blob => {
     const a = document.createElement('a');
-    a.href = URL.createObjectURL(blob);
-    a.download = `carrossel_${p2(n)}.png`;
-    document.body.appendChild(a); a.click();
-    document.body.removeChild(a); URL.revokeObjectURL(a.href);
+    a.href = URL.createObjectURL(blob); a.download = `carrossel_${p2(n)}.png`;
+    document.body.appendChild(a); a.click(); document.body.removeChild(a); URL.revokeObjectURL(a.href);
     showToast(`✓ carrossel_${p2(n)}.png descarregado`);
   }, 'image/png');
 }
-
 async function dlAll() {
-  for (let i = 0; i < genSlides.length; i++) {
-    await new Promise(r => setTimeout(r, i * 340));
-    dlOne(genSlides[i], i + 1);
-  }
+  for (let i = 0; i < genSlides.length; i++) { await new Promise(r => setTimeout(r, i * 340)); dlOne(genSlides[i], i + 1); }
 }
 
-// ═══════════════════════════════════════
-//  MODAL
-// ═══════════════════════════════════════
+// ─── Modal preview ───────────────────────
 function openM(i) { mIdx = i; renderM(); document.getElementById('modal').classList.add('open'); }
 function closeM()  { document.getElementById('modal').classList.remove('open'); }
-
 function renderM() {
   const mc = document.getElementById('mCv'), src = genSlides[mIdx];
   mc.width = src.width; mc.height = src.height;
@@ -748,6 +801,7 @@ function renderM() {
   document.getElementById('mNext').disabled = mIdx === genSlides.length - 1;
 }
 
+// ─── Toast ───────────────────────────────
 let _tt = null;
 function showToast(msg) {
   const el = document.getElementById('toast');
@@ -755,15 +809,23 @@ function showToast(msg) {
   clearTimeout(_tt); _tt = setTimeout(() => el.classList.remove('show'), 2600);
 }
 
-document.getElementById('genBtn').onclick   = generate;
-document.getElementById('dlAllBtn').onclick = dlAll;
-document.getElementById('mClose').onclick   = closeM;
-document.getElementById('modal').onclick    = e => { if (e.target.id === 'modal') closeM(); };
-document.getElementById('mPrev').onclick    = () => { if (mIdx > 0) { mIdx--; renderM(); } };
-document.getElementById('mNext').onclick    = () => { if (mIdx < genSlides.length - 1) { mIdx++; renderM(); } };
-document.getElementById('mDl').onclick      = () => dlOne(genSlides[mIdx], mIdx + 1);
+// ─── Eventos ─────────────────────────────
+document.getElementById('genBtn').onclick    = generate;
+document.getElementById('dlAllBtn').onclick  = dlAll;
+document.getElementById('eApplyBtn').onclick = applyEdit;
+document.getElementById('eCancelBtn').onclick = closeEdit;
+document.getElementById('eClose').onclick    = closeEdit;
+document.getElementById('emodal').onclick    = e => { if (e.target.id === 'emodal') closeEdit(); };
+document.getElementById('mClose').onclick    = closeM;
+document.getElementById('modal').onclick     = e => { if (e.target.id === 'modal') closeM(); };
+document.getElementById('mPrev').onclick     = () => { if (mIdx > 0) { mIdx--; renderM(); } };
+document.getElementById('mNext').onclick     = () => { if (mIdx < genSlides.length - 1) { mIdx++; renderM(); } };
+document.getElementById('mDl').onclick       = () => dlOne(genSlides[mIdx], mIdx + 1);
 
 document.addEventListener('keydown', e => {
+  if (document.getElementById('emodal').classList.contains('open')) {
+    if (e.key === 'Escape') closeEdit(); return;
+  }
   if (!document.getElementById('modal').classList.contains('open')) return;
   if (e.key === 'ArrowLeft')  document.getElementById('mPrev').click();
   if (e.key === 'ArrowRight') document.getElementById('mNext').click();
