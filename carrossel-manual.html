@@ -170,6 +170,13 @@
     .mbtn.g:hover { background:rgba(16,185,129,.22); }
     .mctr { font-size:12px; color:var(--mu); }
 
+    .hash-box { display:none; margin-top:16px; background:var(--card); border:1px solid var(--bd); border-radius:var(--r); padding:14px 16px; }
+    .hash-box.show { display:block; }
+    .hash-tags { display:flex; flex-wrap:wrap; gap:8px; margin-bottom:10px; }
+    .hash-tag { background:rgba(124,58,237,.12); border:1px solid rgba(124,58,237,.22); color:#a78bfa; border-radius:99px; padding:5px 13px; font-size:13px; font-weight:600; }
+    .hash-copy { width:100%; padding:8px; background:rgba(255,255,255,.04); border:1px solid var(--bd); border-radius:var(--rs); color:var(--mu); font-family:inherit; font-size:12px; font-weight:600; cursor:pointer; transition:background .15s, color .15s; }
+    .hash-copy:hover { background:rgba(255,255,255,.08); color:var(--tx); }
+
     .toast { position:fixed; bottom:24px; left:50%; transform:translateX(-50%) translateY(10px); background:rgba(16,185,129,.12); color:var(--gr); border:1px solid rgba(16,185,129,.25); border-radius:var(--rs); padding:9px 18px; font-size:13px; font-weight:600; backdrop-filter:blur(12px); opacity:0; pointer-events:none; transition:opacity .22s,transform .22s; z-index:999; white-space:nowrap; }
     .toast.show { opacity:1; transform:translateX(-50%) translateY(0); }
   </style>
@@ -256,6 +263,12 @@
     </div>
     <div class="loading" id="loadEl"><div class="spin"></div><span>A gerar…</span></div>
     <div class="sgrid" id="sgrid"></div>
+
+    <div class="hash-box" id="hashBox">
+      <div class="sec-ttl" style="margin-bottom:10px">Hashtags sugeridas</div>
+      <div class="hash-tags" id="hashTags"></div>
+      <button class="hash-copy" id="hashCopy">📋 Copiar hashtags</button>
+    </div>
   </section>
 
 </div>
@@ -339,6 +352,49 @@ slider.oninput = () => { sliderVal.textContent = slider.value; };
   box.addEventListener('dragleave', () => box.classList.remove('drag'));
   box.addEventListener('drop', e => { e.preventDefault(); box.classList.remove('drag'); load(e.dataTransfer.files[0]); });
 })();
+
+// ═══════════════════════════════════════
+//  HASHTAGS
+// ═══════════════════════════════════════
+const STOP = new Set(['a','ao','aos','as','com','da','das','de','do','dos','e','em','eu','lhe','lhes','me','meu','meus','minha','minhas','na','nas','no','nos','num','numa','o','os','ou','para','pela','pelas','pelo','pelos','por','que','se','sem','seu','seus','sua','suas','te','tu','um','uma','uns','umas','é','não','mais','mas','como','bem','também','já','foi','ser','ter','ele','ela','eles','elas','isso','este','esta','estes','estas','esse','essa','esses','essas','isto','aqui','ali','há','muito','pouco','só','até','depois','antes','quando','onde','quem','qual','quais','todo','toda','todos','todas','cada','outro','outra','outros','outras','mesmo','mesma','então','assim','ainda','sobre','entre','desde','sempre','nunca','pode','fazer','feito','vai','tem','têm','vez','vezes','grande','novo','nova','num','neste','nesta','nesse','nessa','pelo','pela','com','tudo','nada','sendo','tendo','caso','tipo','forma','modo','vez','vezes','coisa','coisas','pessoa','pessoas','ano','anos','dia','dias']);
+
+function extractHashtags(title, text) {
+  const source = (title + ' ' + text).toLowerCase()
+    .normalize('NFD').replace(/[̀-ͯ]/g, '')
+    .replace(/[^a-z\s]/g, ' ')
+    .split(/\s+/)
+    .filter(w => w.length > 4 && !STOP.has(w));
+
+  const freq = {};
+  for (const w of source) freq[w] = (freq[w] || 0) + 1;
+
+  return Object.entries(freq)
+    .sort((a, b) => b[1] - a[1])
+    .slice(0, 3)
+    .map(([w]) => '#' + w.charAt(0).toUpperCase() + w.slice(1));
+}
+
+function showHashtags(tags) {
+  const box  = document.getElementById('hashBox');
+  const wrap = document.getElementById('hashTags');
+  wrap.innerHTML = '';
+  tags.forEach(t => {
+    const el = document.createElement('span');
+    el.className = 'hash-tag'; el.textContent = t;
+    wrap.appendChild(el);
+  });
+  box.classList.add('show');
+
+  document.getElementById('hashCopy').onclick = () => {
+    const str = tags.join(' ');
+    navigator.clipboard.writeText(str).catch(() => {
+      const ta = document.createElement('textarea');
+      ta.value = str; document.body.appendChild(ta); ta.select();
+      document.execCommand('copy'); document.body.removeChild(ta);
+    });
+    showToast('✓ Hashtags copiadas!');
+  };
+}
 
 // ═══════════════════════════════════════
 //  AUTO-SPLIT
@@ -651,6 +707,9 @@ async function generate() {
   });
 
   document.getElementById('dlAllBtn').style.display = 'flex';
+
+  const tags = extractHashtags(title, raw);
+  if (tags.length > 0) showHashtags(tags);
 }
 
 // ═══════════════════════════════════════
