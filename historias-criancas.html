@@ -1,0 +1,1704 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Histórias para Crianças</title>
+  <style>
+    :root {
+      --bg: #0d0d12;
+      --bg2: #13120f;
+      --bg3: #1c1a14;
+      --bg4: #252218;
+      --border: #2e2a1e;
+      --accent: #f59e0b;
+      --accent2: #d97706;
+      --accent3: #fbbf24;
+      --text: #f0ead8;
+      --muted: #9a9070;
+      --paper: #1e1b14;
+      --paper2: #252218;
+      --green: #4ade80;
+      --red: #f87171;
+      --blue: #60a5fa;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Georgia, serif;
+      min-height: 100vh;
+    }
+
+    /* ─── HEADER ─── */
+    header {
+      background: var(--bg2);
+      border-bottom: 1px solid var(--border);
+      padding: 14px 20px;
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      position: sticky;
+      top: 0;
+      z-index: 100;
+    }
+    .btn-voltar {
+      background: var(--bg3);
+      border: 1px solid var(--border);
+      color: var(--muted);
+      padding: 7px 14px;
+      border-radius: 8px;
+      font-size: 13px;
+      cursor: pointer;
+      text-decoration: none;
+      transition: all .2s;
+      white-space: nowrap;
+    }
+    .btn-voltar:hover { border-color: var(--accent); color: var(--accent); }
+    header .logo { font-size: 26px; }
+    header h1 { font-size: 17px; font-weight: 700; color: var(--accent3); }
+    header p { font-size: 12px; color: var(--muted); }
+
+    /* ─── MAIN ─── */
+    main { max-width: 780px; margin: 0 auto; padding: 28px 16px 60px; }
+
+    /* ─── SECTION TITLE ─── */
+    .section-title {
+      font-size: 13px;
+      font-weight: 600;
+      color: var(--muted);
+      text-transform: uppercase;
+      letter-spacing: .08em;
+      margin-bottom: 12px;
+    }
+
+    /* ─── AGE TABS ─── */
+    .age-tabs {
+      display: flex;
+      gap: 8px;
+      margin-bottom: 24px;
+      flex-wrap: wrap;
+    }
+    .age-tab {
+      flex: 1;
+      min-width: 90px;
+      padding: 14px 8px;
+      border-radius: 12px;
+      border: 1px solid var(--border);
+      background: var(--bg3);
+      color: var(--muted);
+      font-size: 13px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all .2s;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 4px;
+    }
+    .age-tab .tab-num { font-size: 22px; font-weight: 700; }
+    .age-tab .tab-label { font-size: 11px; }
+    .age-tab:hover { border-color: var(--accent); color: var(--text); }
+    .age-tab.active {
+      background: linear-gradient(135deg, var(--accent), var(--accent2));
+      border-color: var(--accent);
+      color: #000;
+      box-shadow: 0 4px 20px rgba(245,158,11,.3);
+    }
+
+    /* ─── GERAR BUTTON ─── */
+    .gerar-section { text-align: center; margin: 24px 0; }
+    .btn-gerar {
+      background: linear-gradient(135deg, var(--accent), var(--accent2));
+      color: #000;
+      border: none;
+      padding: 16px 40px;
+      border-radius: 50px;
+      font-size: 16px;
+      font-weight: 700;
+      cursor: pointer;
+      transition: all .2s;
+      box-shadow: 0 4px 24px rgba(245,158,11,.35);
+      letter-spacing: .3px;
+    }
+    .btn-gerar:hover { filter: brightness(1.1); transform: translateY(-1px); box-shadow: 0 6px 32px rgba(245,158,11,.45); }
+    .btn-gerar:active { transform: translateY(0); }
+    .btn-gerar.loading { opacity: .7; cursor: wait; }
+
+    /* ─── STORY CARD ─── */
+    #historia-card {
+      background: var(--paper);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 32px;
+      margin: 28px 0;
+      display: none;
+      animation: fadeIn .4s ease;
+      position: relative;
+      overflow: hidden;
+    }
+    #historia-card::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 0; right: 0;
+      height: 3px;
+      background: linear-gradient(90deg, var(--accent), var(--accent3));
+    }
+    @keyframes fadeIn { from { opacity:0; transform: translateY(10px); } to { opacity:1; transform: translateY(0); } }
+
+    .historia-meta {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 20px;
+    }
+    .badge-idade {
+      background: linear-gradient(135deg, var(--accent), var(--accent2));
+      color: #000;
+      font-size: 11px;
+      font-weight: 700;
+      padding: 4px 10px;
+      border-radius: 20px;
+    }
+    .badge-tema {
+      background: var(--bg4);
+      color: var(--muted);
+      font-size: 11px;
+      padding: 4px 10px;
+      border-radius: 20px;
+      border: 1px solid var(--border);
+    }
+    #historia-titulo {
+      font-size: 22px;
+      font-weight: 700;
+      color: var(--accent3);
+      margin-bottom: 20px;
+      line-height: 1.3;
+    }
+    #historia-texto {
+      font-size: 15.5px;
+      line-height: 1.85;
+      color: var(--text);
+      white-space: pre-wrap;
+      font-family: Georgia, 'Times New Roman', serif;
+    }
+    #historia-moral {
+      margin-top: 24px;
+      padding: 14px 18px;
+      background: var(--bg4);
+      border-left: 3px solid var(--accent);
+      border-radius: 0 8px 8px 0;
+      font-size: 13.5px;
+      color: var(--accent3);
+      font-style: italic;
+      display: none;
+    }
+    .historia-actions {
+      display: flex;
+      gap: 10px;
+      margin-top: 24px;
+      flex-wrap: wrap;
+    }
+    .btn-action {
+      padding: 10px 18px;
+      border-radius: 8px;
+      border: 1px solid var(--border);
+      background: var(--bg4);
+      color: var(--text);
+      font-size: 13px;
+      cursor: pointer;
+      transition: all .2s;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+    .btn-action:hover { border-color: var(--accent); color: var(--accent); }
+    .btn-action.primary {
+      background: linear-gradient(135deg, var(--accent), var(--accent2));
+      color: #000;
+      border-color: transparent;
+      font-weight: 600;
+    }
+    .btn-action.primary:hover { filter: brightness(1.1); color: #000; }
+
+    /* ─── SAVE TOAST ─── */
+    #toast {
+      position: fixed;
+      bottom: 28px;
+      left: 50%;
+      transform: translateX(-50%) translateY(80px);
+      background: var(--green);
+      color: #000;
+      padding: 12px 24px;
+      border-radius: 50px;
+      font-size: 13px;
+      font-weight: 600;
+      z-index: 9000;
+      transition: transform .3s ease;
+      white-space: nowrap;
+    }
+    #toast.show { transform: translateX(-50%) translateY(0); }
+
+    /* ─── LIBRARY ─── */
+    .biblioteca-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin: 40px 0 16px;
+      padding-top: 32px;
+      border-top: 1px solid var(--border);
+    }
+    .biblioteca-header h2 { font-size: 18px; font-weight: 700; color: var(--accent3); }
+    .biblioteca-count {
+      background: var(--bg4);
+      border: 1px solid var(--border);
+      color: var(--muted);
+      font-size: 12px;
+      padding: 4px 12px;
+      border-radius: 20px;
+    }
+    #biblioteca-vazia {
+      text-align: center;
+      color: var(--muted);
+      font-size: 14px;
+      padding: 40px 20px;
+      border: 1px dashed var(--border);
+      border-radius: 12px;
+    }
+    #biblioteca-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+      gap: 12px;
+    }
+    .story-book-card {
+      background: var(--paper);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 16px;
+      cursor: pointer;
+      transition: all .2s;
+      position: relative;
+      overflow: hidden;
+    }
+    .story-book-card:hover { border-color: var(--accent); transform: translateY(-2px); box-shadow: 0 6px 24px rgba(0,0,0,.4); }
+    .story-book-card::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 0;
+      width: 4px; height: 100%;
+      background: linear-gradient(180deg, var(--accent), var(--accent2));
+    }
+    .card-titulo {
+      font-size: 14px;
+      font-weight: 600;
+      color: var(--text);
+      margin-bottom: 8px;
+      padding-left: 8px;
+      display: -webkit-box;
+      -webkit-line-clamp: 2;
+      -webkit-box-orient: vertical;
+      overflow: hidden;
+    }
+    .card-meta {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      padding-left: 8px;
+      flex-wrap: wrap;
+    }
+    .card-badge {
+      background: rgba(245,158,11,.15);
+      color: var(--accent);
+      font-size: 10px;
+      font-weight: 600;
+      padding: 2px 8px;
+      border-radius: 10px;
+    }
+    .card-date {
+      color: var(--muted);
+      font-size: 11px;
+    }
+    .card-actions {
+      display: flex;
+      gap: 6px;
+      margin-top: 12px;
+      padding-left: 8px;
+    }
+    .card-btn {
+      flex: 1;
+      padding: 7px 4px;
+      border-radius: 6px;
+      border: 1px solid var(--border);
+      background: var(--bg4);
+      color: var(--muted);
+      font-size: 11px;
+      cursor: pointer;
+      transition: all .15s;
+      text-align: center;
+    }
+    .card-btn:hover { border-color: var(--accent); color: var(--accent); }
+    .card-btn.del:hover { border-color: var(--red); color: var(--red); }
+
+    /* ─── MODAL ─── */
+    #modal {
+      display: none;
+      position: fixed;
+      inset: 0;
+      z-index: 5000;
+      background: rgba(0,0,0,.75);
+      backdrop-filter: blur(6px);
+      padding: 20px;
+      overflow-y: auto;
+      align-items: flex-start;
+      justify-content: center;
+    }
+    #modal.open { display: flex; }
+    .modal-box {
+      background: var(--paper);
+      border: 1px solid var(--border);
+      border-radius: 18px;
+      max-width: 680px;
+      width: 100%;
+      margin: auto;
+      padding: 36px;
+      position: relative;
+      animation: fadeIn .3s ease;
+      overflow: hidden;
+    }
+    .modal-box::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 0; right: 0;
+      height: 3px;
+      background: linear-gradient(90deg, var(--accent), var(--accent3));
+    }
+    .modal-close {
+      position: absolute;
+      top: 16px;
+      right: 16px;
+      background: var(--bg4);
+      border: 1px solid var(--border);
+      color: var(--muted);
+      width: 32px; height: 32px;
+      border-radius: 50%;
+      cursor: pointer;
+      font-size: 14px;
+      display: flex; align-items: center; justify-content: center;
+      transition: all .2s;
+    }
+    .modal-close:hover { border-color: var(--red); color: var(--red); }
+    #modal-meta { display: flex; gap: 8px; margin-bottom: 16px; flex-wrap: wrap; }
+    #modal-titulo { font-size: 22px; font-weight: 700; color: var(--accent3); margin-bottom: 22px; line-height: 1.3; }
+    #modal-texto {
+      font-size: 15px;
+      line-height: 1.85;
+      white-space: pre-wrap;
+      font-family: Georgia, serif;
+      color: var(--text);
+    }
+    #modal-moral {
+      margin-top: 22px;
+      padding: 14px 18px;
+      background: var(--bg4);
+      border-left: 3px solid var(--accent);
+      border-radius: 0 8px 8px 0;
+      font-size: 13.5px;
+      color: var(--accent3);
+      font-style: italic;
+      display: none;
+    }
+    .modal-actions {
+      display: flex;
+      gap: 10px;
+      margin-top: 24px;
+      flex-wrap: wrap;
+    }
+
+    /* ─── RESPONSIVE ─── */
+    @media (max-width: 520px) {
+      main { padding: 20px 12px 48px; }
+      #historia-card { padding: 22px 18px; }
+      .modal-box { padding: 24px 18px; }
+      #historia-titulo { font-size: 19px; }
+    }
+  </style>
+</head>
+<body>
+
+<header>
+  <a class="btn-voltar" href="index.html">← Voltar</a>
+  <div class="logo">📖</div>
+  <div>
+    <h1>Histórias para Crianças</h1>
+    <p>Gera histórias únicas e guarda-as para ler quando quiseres</p>
+  </div>
+</header>
+
+<main>
+  <!-- AGE TABS -->
+  <div class="section-title">Escolhe a idade</div>
+  <div class="age-tabs">
+    <button class="age-tab active" data-age="3" onclick="selectAge(3)">
+      <span class="tab-num">3</span>
+      <span class="tab-label">anos</span>
+    </button>
+    <button class="age-tab" data-age="5" onclick="selectAge(5)">
+      <span class="tab-num">5</span>
+      <span class="tab-label">anos</span>
+    </button>
+    <button class="age-tab" data-age="8" onclick="selectAge(8)">
+      <span class="tab-num">8</span>
+      <span class="tab-label">anos</span>
+    </button>
+    <button class="age-tab" data-age="11" onclick="selectAge(11)">
+      <span class="tab-num">11</span>
+      <span class="tab-label">anos</span>
+    </button>
+  </div>
+
+  <!-- GENERATE BUTTON -->
+  <div class="gerar-section">
+    <button class="btn-gerar" id="btn-gerar" onclick="gerarHistoria()">✨ Gerar História</button>
+  </div>
+
+  <!-- STORY CARD -->
+  <div id="historia-card">
+    <div class="historia-meta">
+      <span class="badge-idade" id="badge-idade"></span>
+    </div>
+    <h2 id="historia-titulo"></h2>
+    <div id="historia-texto"></div>
+    <div id="historia-moral"></div>
+    <div class="historia-actions">
+      <button class="btn-action primary" onclick="guardarHistoria()">💾 Guardar na Biblioteca</button>
+      <button class="btn-action" onclick="downloadHistoria()">📥 Descarregar .txt</button>
+      <button class="btn-action" onclick="gerarHistoria()">🔄 Nova História</button>
+    </div>
+  </div>
+
+  <!-- LIBRARY -->
+  <div class="biblioteca-header">
+    <h2>📚 A Minha Biblioteca</h2>
+    <span class="biblioteca-count" id="biblioteca-count">0 histórias</span>
+  </div>
+  <div id="biblioteca-vazia">
+    <p>📖</p>
+    <p style="margin-top:8px">Ainda não guardaste nenhuma história.<br>Gera uma e clica em "Guardar na Biblioteca"!</p>
+  </div>
+  <div id="biblioteca-grid"></div>
+</main>
+
+<!-- MODAL -->
+<div id="modal">
+  <div class="modal-box">
+    <button class="modal-close" onclick="fecharModal()">✕</button>
+    <div id="modal-meta"></div>
+    <h2 id="modal-titulo"></h2>
+    <div id="modal-texto"></div>
+    <div id="modal-moral"></div>
+    <div class="modal-actions">
+      <button class="btn-action primary" onclick="downloadModalHistoria()">📥 Descarregar .txt</button>
+      <button class="btn-action" onclick="fecharModal()">Fechar</button>
+    </div>
+  </div>
+</div>
+
+<!-- TOAST -->
+<div id="toast"></div>
+
+<script>
+'use strict';
+
+// ─── UTILITIES ───
+const pick = a => a[Math.floor(Math.random() * a.length)];
+const STORAGE_KEY = 'historias_criancas_v1';
+let idadeAtual = 3;
+let historiaAtual = null;
+let modalHistoria = null;
+
+// ─── STORY GENERATORS ───
+
+// Pools comuns
+const NOMES_M = ['Tito','Pipo','Rui','Leo','Marco','Dino','Bruno','Alex','Gil','Nuno'];
+const NOMES_F = ['Luna','Mia','Bela','Lena','Ada','Zara','Bia','Iris','Eva','Nora'];
+const ANIMAIS_SIMPLES = ['coelhinho','gatinho','cãozinho','ursinho','pintainho','ouriçinho','ratinho','patoinho'];
+const CORES = ['azul','verde','amarela','cor-de-rosa','laranja','roxa','dourada'];
+const FLORES = ['margaridas','rosas','malmequeres','violetas','girassóis'];
+const ALIMENTOS = ['mel','frutos silvestres','cenouras','maçãs','bolachas de aveia'];
+
+// ─── IDADE 3 ───
+const g3 = [
+
+  () => {
+    const nome = pick([...NOMES_M, ...NOMES_F]);
+    const animal = pick(ANIMAIS_SIMPLES);
+    const local = pick(['jardim cheio de flores','floresta acolhedora','prado verde']);
+    const amigo = pick(['uma joaninha','uma borboleta colorida','um grilo pequenino','uma lesma simpática']);
+    const objeto = pick(['uma bola mágica','uma flor especial','uma maçã vermelha','um cogumelo encantado']);
+    return {
+      titulo: `${nome} e o Presente Inesperado`,
+      texto: `Era uma vez um ${animal} chamado ${nome} que vivia num ${local}.
+
+Um dia, enquanto brincava, ${nome} encontrou ${objeto} no chão.
+
+— Que bonito! — disse ${nome}, todo contente.
+
+Mas então apareceu ${amigo}, com os olhos muito tristes.
+
+— O que aconteceu? — perguntou ${nome}.
+
+— Perdi o meu brinquedo favorito — respondeu ${amigo} com um suspiro.
+
+${nome} olhou para ${objeto} e depois para o amigo. Pensou um momento.
+
+— Acho que isto é teu! — disse ${nome} com um sorriso, e entregou ${objeto}.
+
+${amigo} ficou tão feliz que deu um abraço enorme a ${nome}.
+
+E os dois amigos foram brincar juntos até o sol se pôr.`,
+      moral: 'Ajudar os amigos faz-nos muito mais felizes do que ficar com as coisas para nós.'
+    };
+  },
+
+  () => {
+    const nome = pick([...NOMES_M, ...NOMES_F]);
+    const animal = pick(ANIMAIS_SIMPLES);
+    const local = pick(['floresta','jardim','prado','quinta']);
+    const amigo = pick(['uma tartaruga velha e sábia','um pássaro azul','uma raposa gentil','um rato esperto']);
+    return {
+      titulo: `${nome} Estava Perdido`,
+      texto: `${nome} era um ${animal} muito curioso que adorava explorar.
+
+Um dia, foi tão longe que ficou perdido no ${local}.
+
+— Ui! Onde estou? — exclamou ${nome}, assustado.
+
+Começou a ficar com medo. O coração batia muito depressa.
+
+Mas então apareceu ${amigo}.
+
+— Pareces perdido! Posso ajudar-te — disse o amigo com voz calma.
+
+— S-sim, por favor — respondeu ${nome}, muito aliviado.
+
+Juntos, foram pelo caminho certo. O amigo conhecia todos os trilhos.
+
+Em pouco tempo, ${nome} chegou a casa!
+
+A mãe abraçou-o muito forte.
+
+— Pedi ajuda e consegui! — disse ${nome}, orgulhoso.`,
+      moral: 'Pedir ajuda quando precisamos é uma coisa muito corajosa e inteligente.'
+    };
+  },
+
+  () => {
+    const nome = pick([...NOMES_M, ...NOMES_F]);
+    const animal = pick(ANIMAIS_SIMPLES);
+    const medo = pick(['do trovão','do escuro','da chuva forte','do vento']);
+    const pessoa = pick(['a avó','a mamã','o papá','a irmã mais velha']);
+    return {
+      titulo: `${nome} e o Grande Medo`,
+      texto: `${nome} era um ${animal} muito meigo.
+
+Mas ${nome} tinha um segredo: tinha muito medo ${medo}.
+
+Uma noite, o medo chegou mesmo aí.
+
+${nome} começou a tremer. Puxou o cobertor até ao nariz.
+
+Então ${pessoa} entrou no quarto.
+
+— Estás bem? — perguntou com voz suave.
+
+— Tenho muito medo ${medo} — disse ${nome} baixinho.
+
+${pessoa} sentou-se ao lado dele e pegou na sua pãozinha.
+
+— Eu estou aqui. E sabes? Os medos ficam mais pequenos quando não estamos sozinhos.
+
+${nome} encostou-se a ${pessoa} e respirou fundo.
+
+Aos poucos, o coração acalmou.
+
+— Já passou — murmurou ${nome}.
+
+— Sempre passa — respondeu ${pessoa} com um sorriso.
+
+E ${nome} adormeceu, muito, muito seguro.`,
+      moral: 'Falar dos nossos medos faz com que eles pareçam muito menores.'
+    };
+  },
+
+  () => {
+    const nomeA = pick(NOMES_M);
+    const nomeB = pick(NOMES_F);
+    const animalA = pick(['coelhinho','ursinho','raposo']);
+    const animalB = pick(['tartaruga','ouriço','pato']);
+    const local = pick(['lagoa','prado','jardim encantado']);
+    return {
+      titulo: `${nomeA} e ${nomeB} São Diferentes`,
+      texto: `${nomeA} era um ${animalA} que corria muito depressa.
+
+${nomeB} era uma ${animalB} que andava muito devagar.
+
+Um dia, encontraram-se junto à ${local}.
+
+— Queres brincar comigo? — perguntou ${nomeA}.
+
+— Mas... eu sou muito lenta — disse ${nomeB} com vergonha.
+
+— E daí? — respondeu ${nomeA}, encolhendo os ombros. — Eu ensino-te a correr e tu ensinas-me a ir devagar e ver as coisas bonitas!
+
+${nomeB} sorriu.
+
+Brincaram o dia todo.
+
+${nomeA} aprendeu a parar e a olhar para as flores.
+
+${nomeB} aprendeu a dar passadas um pouco maiores.
+
+E quando chegou a hora de ir para casa, os dois eram os melhores amigos.
+
+— Que bom que somos diferentes! — disse ${nomeA}.
+
+— Porque assim aprendemos um com o outro — respondeu ${nomeB}.`,
+      moral: 'Ser diferente é uma coisa maravilhosa. Os amigos diferentes ensinam-nos coisas novas.'
+    };
+  },
+
+  () => {
+    const nome = pick([...NOMES_M, ...NOMES_F]);
+    const animal = pick(ANIMAIS_SIMPLES);
+    const amigo = pick(['um grilo cantor','uma borboleta','um pisco-de-peito-vermelho','uma rã']);
+    const dom = pick(['canção muito bonita','dança engraçada','história de embalar','abraço muito quentinho']);
+    return {
+      titulo: `O Presente de ${nome}`,
+      texto: `Era o aniversário do melhor amigo de ${nome}, ${amigo}.
+
+— Quero dar-lhe um presente muito especial — disse ${nome} para si mesmo.
+
+Mas ${nome} não tinha dinheiro nenhum.
+
+Ficou triste. Pensou e pensou.
+
+De repente, teve uma ideia!
+
+No dia do aniversário, ${nome} chegou junto ao amigo.
+
+— Não tenho nada para te dar... a não ser uma ${dom}.
+
+E ${nome} começou.
+
+O amigo ficou de boca aberta, com os olhos cheios de brilho.
+
+Quando acabou, ${amigo} abraçou ${nome} muito forte.
+
+— Foi o melhor presente que alguma vez recebi! — disse ${amigo}.
+
+${nome} percebeu: os presentes do coração são os mais preciosos de todos.`,
+      moral: 'Os melhores presentes não se compram — vêm do coração.'
+    };
+  },
+
+  () => {
+    const nome = pick([...NOMES_M, ...NOMES_F]);
+    const animal = pick(ANIMAIS_SIMPLES);
+    const comida = pick(ALIMENTOS);
+    const amigo = pick(['um passarinho pequeno','um ouriço com fome','um rato perdido','uma formiga cansada']);
+    return {
+      titulo: `${nome} Partilha o Seu Lanche`,
+      texto: `${nome} era um ${animal} que adorava ${comida}.
+
+Uma tarde, foi ao jardim com o seu lanche favorito.
+
+— Que bom! — disse ${nome}, pronto para comer.
+
+Mas então viu ${amigo} a olhar para ele com olhos tristes.
+
+— Tens fome? — perguntou ${nome}.
+
+— Sim — respondeu o amigo baixinho. — Hoje não encontrei nada para comer.
+
+${nome} olhou para o seu lanche. Depois olhou para o amigo.
+
+— Toma. — E partiu o lanche em dois. — A metade é para ti!
+
+O amigo sorriu tão, tão grande!
+
+Comeram juntos ao sol.
+
+E ${nome} notou uma coisa estranha: a sua metade parecia saber muito melhor do que quando era a parte inteira.
+
+— Partilhar faz tudo ficar mais saboroso! — pensou ${nome}.`,
+      moral: 'Partilhar com quem precisa é uma das coisas mais belas que podemos fazer.'
+    };
+  }
+
+];
+
+// ─── IDADE 5 ───
+const g5 = [
+
+  () => {
+    const nome = pick([...NOMES_F, ...NOMES_M]);
+    const tipo = pick(['fada','duende','gnomo','feiticeira boa']);
+    const local = pick(['floresta encantada','jardim mágico','vale das flores','ilha dos sonhos']);
+    const poder = pick(['fazer crescer flores','falar com animais','criar arco-íris','curar feridas']);
+    return {
+      titulo: `${nome} e a Magia Perdida`,
+      texto: `${nome} era uma ${tipo} que vivia na ${local} e tinha um dom especial: conseguia ${poder}.
+
+Um dia, ao acordar, percebeu que a sua magia tinha desaparecido!
+
+— A minha magia! Onde está a minha magia? — exclamou ${nome}, em pânico.
+
+Saiu à procura, mas não encontrou nada.
+
+Desanimada, sentou-se junto a uma pedra. Uma lagarta passou por ela.
+
+— Olá, estás triste? — perguntou a lagarta.
+
+— Perdi a minha magia — respondeu ${nome}.
+
+— Mas tu ainda tens os teus olhos e as tuas mãos — disse a lagarta.
+
+${nome} olhou para as próprias mãos e teve uma ideia.
+
+Ajudou um pássaro que tinha caído do ninho. Ajudou uma flor que estava dobrada. Ficou junto a uma abelhinha que estava perdida até ela encontrar o caminho.
+
+E então, algo de incrível aconteceu!
+
+Um brilho suave voltou às suas mãos.
+
+— A minha magia voltou! — gritou ${nome}, emocionada.
+
+A lagarta sorriu: — Ela nunca foi embora. A bondade é sempre a tua maior magia.`,
+      moral: 'A bondade é a magia mais poderosa que existe, e está sempre dentro de nós.'
+    };
+  },
+
+  () => {
+    const nome = pick([...NOMES_M, ...NOMES_F]);
+    const local = pick(['floresta encantada','montanha dos ecos','praia das estrelas','vale de cristal']);
+    const animal = pick(['corça branca','raposa de calda dourada','lobo cinzento de olhos azuis','águia de penas prateadas']);
+    const tesouro = pick(['pedra que brilha como o sol','flor que canta','cristal que mostra sonhos','fruto dourado']);
+    return {
+      titulo: `${nome} e a Trilha Mágica`,
+      texto: `Numa tarde de primavera, ${nome} encontrou uma trilha que nunca tinha visto antes.
+
+As pedras brilhavam suavemente. As flores inclinavam-se como a dizer "olá".
+
+— Para onde vai isto? — murmurou ${nome}.
+
+Decidiu seguir.
+
+No caminho, encontrou uma ${animal} com a pata presa numa raiz.
+
+— Posso ajudar! — disse ${nome}, e libertou-a com cuidado.
+
+A ${animal} olhou para ele com olhos dourados.
+
+— Segue-me — disse ela, para espanto de ${nome}. — Vou mostrar-te algo especial.
+
+Seguiram a trilha até chegarem a uma clareira escondida.
+
+No centro, havia ${tesouro}.
+
+— É para ti — disse a ${animal}. — Só quem tem coração bondoso consegue encontrar este lugar.
+
+${nome} pegou no tesouro com cuidado.
+
+Voltou a casa ao entardecer, com o coração cheio.
+
+Naquela noite, antes de adormecer, sorriu para o teto.
+
+Sabia que tinha vivido algo que nunca esqueceria.`,
+      moral: 'Quando ajudamos os outros, a vida oferece-nos as mais belas surpresas.'
+    };
+  },
+
+  () => {
+    const nome = pick(['Fogo','Faísca','Bruma','Nuvem','Cinzas']);
+    const local = pick(['montanha dos dragões','vale de fogo','ilha de pedra negra']);
+    const amigo1 = pick(['uma coruja sábia','um rato esperto','um elfo jovem','uma fada corajosa']);
+    const amigo2 = pick(['um gnomo simpático','uma sereia','um unicórnio','um duende']);
+    return {
+      titulo: `${nome}, o Dragão que Queria Voar`,
+      texto: `${nome} era um dragão bebé que vivia na ${local}.
+
+Todos os dragões conseguiam voar. Todos, menos ${nome}.
+
+— As minhas asas são pequenas demais — dizia ele, olhando para o chão com tristeza.
+
+Os outros dragões subiam alto, alto no céu. ${nome} ficava em baixo, a ver.
+
+Um dia, apareceu ${amigo1} com um sorriso.
+
+— Tens medo de tentar, não tens? — perguntou.
+
+— E se cair? — respondeu ${nome}.
+
+— E se voares? — disse ${amigo1}.
+
+Apareceu também ${amigo2}:
+
+— Eu seguro-te se tombares. Não estás sozinho.
+
+${nome} respirou fundo. Abriu as asas pequeninas. Correu. Saltou.
+
+E... voou!
+
+Apenas um pouquinho. Mas voou!
+
+— CONSEGUI! — rugiu ${nome}, cheio de alegria.
+
+Os amigos aplaudiram e saltaram de felicidade.
+
+Cada dia, ${nome} voava um pouco mais alto.
+
+Porque o segredo não estava nas asas — estava em tentar.`,
+      moral: 'Nunca desistas de tentar. Com coragem e bons amigos, conseguimos coisas que julgávamos impossíveis.'
+    };
+  },
+
+  () => {
+    const nome = pick([...NOMES_F]);
+    const local = pick(['lagoa encantada','fonte dos desejos','jardim secreto atrás da escola','gruta das fadas']);
+    const ser = pick(['fada aquática','espírito da natureza','duende guarda-florestal','gnomo guardião']);
+    const tarefa = pick(['regar todas as flores da floresta com água de luar','recolher pétalas de três flores diferentes','soprar sementes ao vento por toda a colina','cantar uma canção para cada árvore']);
+    return {
+      titulo: `O Segredo de ${nome}`,
+      texto: `${nome} descobriu por acidente a ${local} escondida atrás da sua casa.
+
+Ao entrar, encontrou ${ser} a sentar-se numa pedra coberta de musgo.
+
+— Olá — disse ${nome} em voz baixa, com o coração acelerado.
+
+— Olá, ${nome}. Estávamos à tua espera — respondeu o ser com uma voz como água a correr.
+
+— À minha espera?
+
+— Sim. Cada geração, uma criança é escolhida para guardar este lugar. Dessa vez és tu.
+
+— O que tenho de fazer? — perguntou ${nome}.
+
+— Apenas uma coisa: ${tarefa}.
+
+${nome} aceitou. Todos os dias, depois da escola, vinha cumprir a sua missão.
+
+E a natureza em volta da sua casa foi ficando cada vez mais bonita, mais viva, mais feliz.
+
+Ninguém sabia porquê.
+
+Só ${nome} sabia o segredo.
+
+E guardou-o com muito amor no coração.`,
+      moral: 'Cuidar da natureza é uma das missões mais importantes e mais belas que podemos ter.'
+    };
+  },
+
+  () => {
+    const nome = pick(NOMES_F);
+    const local = pick(['fundo do mar','lago cristalino','rio encantado']);
+    const coisa = pick(['conchas multicoloridas','estrelas-do-mar a dançar','ilhas flutuantes','montanhas de areia dourada']);
+    return {
+      titulo: `${nome} Quer Ver o Mundo`,
+      texto: `${nome} era uma sereia que vivia no ${local}.
+
+Lá, havia ${coisa} e coral de mil cores. Era muito bonito.
+
+Mas ${nome} sempre quis ver o que havia acima da água.
+
+— Não é seguro — dizia a mãe.
+
+— Mas e se for maravilhoso? — respondia ${nome}.
+
+Um dia, ${nome} nadou até à superfície devagar, devagar.
+
+Pôs a cabeça fora de água.
+
+E ficou de boca aberta!
+
+O céu era enorme. O sol era quente. As nuvens pareciam flocos de espuma.
+
+À beira do mar, brincavam crianças. Risos e gritos alegres enchiam o ar.
+
+${nome} ficou a observar por um longo tempo.
+
+Quando mergulhou de volta, o coração estava cheio.
+
+— Que foi? — perguntou a mãe.
+
+— O mundo lá cima também é bonito, mãe. Mas o nosso cá baixo também é — disse ${nome} com um sorriso.
+
+— Tenho dois mundos para amar.`,
+      moral: 'O mundo está cheio de coisas maravilhosas para descobrir — e as nossas raízes são sempre um lar a que adoramos voltar.'
+    };
+  },
+
+  () => {
+    const nome = pick(['Arco','Brilho','Nuvem','Magia','Prata']);
+    const local = pick(['vale dos unicórnios','floresta mágica','montanha das estrelas']);
+    const objeto = pick(['a pedra do coração','a flor da amizade','a fonte da luz','o cristal da esperança']);
+    return {
+      titulo: `${nome} e a Jornada da Magia`,
+      texto: `${nome} era um unicórnio que vivia no ${local}.
+
+O seu corno dourado tinha a magia de iluminar a escuridão.
+
+Mas um dia, ao acordar, o corno já não brilhava.
+
+— Perdi a minha magia! — disse ${nome}, muito assustado.
+
+Um sábio ancião da floresta disse-lhe: — A tua magia está guardada em ${objeto}. Mas só podes encontrá-la através de três atos de bondade.
+
+${nome} partiu em jornada.
+
+Primeiro, ajudou um poldro preso num atoleiro.
+
+Segundo, levou um velho coelho à sua toca quando começou a chover.
+
+Terceiro, ficou junto a um pássaro ferido até ter forças para voar.
+
+Após cada ato, o corno ganhou um pouco mais de brilho.
+
+Quando chegou a ${objeto}, o corno iluminava como nunca antes!
+
+— A minha magia era a bondade — percebeu ${nome}.
+
+E voltou para casa, o coração e o corno a brilharem juntos.`,
+      moral: 'A verdadeira magia vive dentro de nós e cresce cada vez que fazemos algo bom.'
+    };
+  }
+
+];
+
+// ─── IDADE 8 ───
+const g8 = [
+
+  () => {
+    const nome = pick([...NOMES_M, ...NOMES_F]);
+    const local = pick(['Floresta de Pinheiros','Mata de Sintra','Floresta de Bussaco','Mata Nacional']);
+    const animal = pick(['veado de chifres prateados','lince de olhos dourados','mocho de penas de cor de musgo','lobo de pelagem escura com uma estrela branca na testa']);
+    const segredo = pick(['uma aldeia escondida de seres que nunca tinham visto humanos','uma nascente com propriedades curativas','um cemitério de árvores centenárias','uma colónia de animais que construíam casas']);
+    return {
+      titulo: `O Segredo da ${local}`,
+      texto: `${nome} nunca devia ter saído do trilho marcado.
+
+Mas a borboleta era demasiado bonita para não seguir.
+
+Quando deu por si, as marcas nos pinheiros já tinham desaparecido e o sol inclinava-se perigosamente para o horizonte.
+
+— Muito bem, ${nome} — murmurou para si mesmo. — Estás perdido.
+
+Enquanto pesquisava o telemóvel sem sinal, ouviu um som estranho. Como uma respiração suave entre as folhas.
+
+Voltou-se devagar.
+
+Ali estava um ${animal}, a observá-lo com olhos enormes e inteligentes.
+
+Os dois ficaram imóveis durante um longo momento.
+
+Depois o animal virou-se e caminhou devagar, parando para olhar para trás.
+
+— Queres que eu siga? — sussurrou ${nome}.
+
+Como resposta, o animal avançou mais um passo.
+
+${nome} seguiu.
+
+Depois de vinte minutos de caminhada silenciosa, chegaram a ${segredo}.
+
+${nome} ficou sem fôlego.
+
+O animal olhou para ele como a dizer: "Vês? Existem coisas que poucas pessoas conhecem."
+
+Quando chegou a casa ao entardecer, os pais abraçaram-no com alívio.
+
+— Perdeste-te? — perguntou o pai.
+
+— Não — respondeu ${nome}, com um sorriso secreto. — Encontrei algo.
+
+Guardou o segredo da floresta para sempre. Algumas coisas são demasiado preciosas para se partilhar com o mundo inteiro.`,
+      moral: 'A natureza guarda segredos para quem a respeita. Nem tudo o que encontramos precisa de ser partilhado.'
+    };
+  },
+
+  () => {
+    const nome = pick([...NOMES_M, ...NOMES_F]);
+    const alcunha = pick(['"O Medricas"','"O Tímido"','"O Fraco"']);
+    const situacao = pick(['o barco de uns miúdos mais novos partiu-se e foram ficando à deriva no lago','um cão ficou preso numa vala profunda e a dona idosa não conseguia ajudar','dois irmãos pequenos perderam-se na feira']);
+    const habilidade = pick(['sabia nadar muito bem desde pequeno','tinha aprendido nós marinhos com o avô','conhecia todos os caminhos daquela zona de cor']);
+    return {
+      titulo: `Mais Corajoso do que Parecia`,
+      texto: `Toda a gente chamava ${nome} de ${alcunha}.
+
+Não era de propósito, ou pelo menos não achavam que fosse mau. Era apenas o apelido que ficou desde aquele episódio de terceiro ano em que fugiu de uma aranha.
+
+${nome} tinha aprendido a encolher os ombros quando ouviam o alcunha. Por dentro, porém, doía sempre um pouco.
+
+Numa tarde de setembro, estava no parque com os outros da turma quando aconteceu o inesperado: ${situacao}.
+
+Toda a gente ficou a olhar. Alguns pegaram nos telemóveis. Outros gritavam sem saber o quê.
+
+${nome} não pensou.
+
+Agiu.
+
+Porque ${habilidade}, e isso era algo que ninguém sabia.
+
+Quando tudo ficou resolvido e a situação estava controlada, toda a gente ficou em silêncio a olhar para ${nome}.
+
+— Não sabia que sabias fazer isso — disse a Marta, a mais popular da turma.
+
+— Nunca perguntaste — respondeu ${nome} com calma.
+
+Nessa noite, deitado na cama, ${nome} percebeu uma coisa importante: a coragem não é a ausência de medo. É fazer o que tens de fazer mesmo quando tens medo.
+
+E quanto ao alcunha? Nunca mais o ouviu.`,
+      moral: 'A coragem não é não ter medo — é agir mesmo quando o medo está lá.'
+    };
+  },
+
+  () => {
+    const nomeA = pick(NOMES_M);
+    const nomeB = pick(NOMES_F);
+    const pais = pick(['de outro país','de uma família muito diferente','de uma cultura diferente','de uma cidade muito longe']);
+    const diferenca = pick(['não sabia falar muito bem a língua','não conhecia os costumes locais','tinha hábitos que pareciam estranhos','ouvia músicas que ninguém conhecia']);
+    const ligacao = pick(['descobriram que adoravam o mesmo jogo','perceberam que tinham o mesmo sentido de humor','encontraram um livro favorito em comum','partilharam algo que ninguém mais entendia']);
+    return {
+      titulo: `A Nova Colega`,
+      texto: `${nomeB} chegou à turma de ${nomeA} num chuvoso mês de outubro.
+
+Era ${pais} e ${diferenca}.
+
+Na hora do almoço, ${nomeB} sentou-se sozinha. Alguns riam baixinho. Outros simplesmente ignoravam.
+
+${nomeA} observou tudo isto com desconforto. Ele também sabia o que era não se sentir encaixado — no primeiro ano tinha sido assim.
+
+— Posso sentar-me aqui? — perguntou, pondo a bandeja em frente a ${nomeB}.
+
+Ela olhou para cima, surpresa. — Claro.
+
+Nos primeiros minutos, o silêncio foi estranho. Mas depois ${ligacao} e a conversa não parou mais.
+
+As semanas seguintes foram difíceis para ${nomeB}. Ainda havia dias em que alguém dizia algo cruel.
+
+Mas tinha um aliado.
+
+E um aliado muda tudo.
+
+Antes do Natal, ${nomeB} disse a ${nomeA}: — Sabes, quando cheguei pensava que este sítio era horrível. Agora já não.
+
+— O quê é que mudou? — perguntou ${nomeA}.
+
+— Uma pessoa — respondeu ela simplesmente.
+
+${nomeA} não disse nada. Mas sentiu que tinha feito algo que valia muito mais do que qualquer nota de exame.`,
+      moral: 'Uma pessoa que decide ser amiga de quem está sozinho pode mudar tudo para essa pessoa.'
+    };
+  },
+
+  () => {
+    const nome = pick([...NOMES_M, ...NOMES_F]);
+    const animal = pick(['raposa com a pata partida','mocho com uma asa torcida','ouriço com um espinho de vidro','veado novo com uma ferida no pescoço']);
+    const local = pick(['o fundo do jardim','o pinheiro mais velho da quinta','o galinheiro abandonado dos avós','debaixo da ponte velha']);
+    const licao = pick(['a paciência que nunca tinha tido','a leveza de não esperar nada em troca','o que significa cuidar de verdade','o que é confiar em alguém pela primeira vez']);
+    return {
+      titulo: `O Animal que Ninguém Viu`,
+      texto: `${nome} encontrou o ${animal} escondido em ${local} numa manhã de domingo.
+
+— Não o podes trazer para dentro — disse a mãe. — É selvagem.
+
+— Não o vou trazer. Vou cuidar dele lá.
+
+A mãe franziu o sobrolho mas acabou por assentir.
+
+Durante quatro semanas, ${nome} levou água, comida e ligaduras improvisadas todas as manhãs antes da escola. E todas as tardes.
+
+A princípio, o animal fugia para o canto mais escuro quando ${nome} se aproximava.
+
+Mas com os dias, foi ficando mais perto.
+
+Um dia, deixou ${nome} tocar-lhe suavemente.
+
+${nome} aprendeu ${licao}.
+
+Quando o animal ficou bom e voltou para a natureza, ${nome} ficou sentado num tronco durante um longo tempo.
+
+Não estava triste. Estava cheio.
+
+Cheio de algo que não tinha nome certo, mas que era um dos melhores sentimentos que alguma vez tinha tido.
+
+Às vezes, cuidar de algo que não é seu e deixá-lo ir quando está bem... é o maior amor que existe.`,
+      moral: 'Cuidar de alguém sem esperar nada em troca é uma das formas mais puras de amor.'
+    };
+  },
+
+  () => {
+    const nomes = [pick(NOMES_M), pick(NOMES_F), pick(NOMES_M)];
+    const missao = pick(['reconstruir a horta comunitária que a tempestade tinha destruído','organizar uma festa surpresa para o professor que estava doente','recolher dinheiro para salvar a biblioteca da aldeia','limpar o rio antes da inspeção ambiental']);
+    const obstaculos = pick(['uma semana de chuva intensa, materiais em falta e um mal-entendido que os separou durante três dias','diferenças de opinião sobre como fazer, falta de recursos e uma data impossível','três ideias completamente diferentes que pareciam impossíveis de juntar']);
+    return {
+      titulo: `A Missão dos Três`,
+      texto: `${nomes[0]}, ${nomes[1]} e ${nomes[2]} não eram o grupo mais improvável da escola — eram simplesmente três pessoas que raramente se cruzavam.
+
+Mas o projeto de grupo tinha mudado isso.
+
+A missão: ${missao}.
+
+Os desafios: ${obstaculos}.
+
+— Isto não vai funcionar — disse ${nomes[2]} na segunda semana.
+
+— Vai funcionar — respondeu ${nomes[1]} com uma calma que surpreendeu os outros dois. — Mas temos de deixar de fazer as coisas como cada um quer e começar a fazer como os três juntos conseguem.
+
+Houve discussões. Houve dias em que nenhum dos três queria continuar.
+
+Mas algo foi mudando.
+
+${nomes[0]} era bom a planear, ${nomes[1]} era boa a falar com as pessoas, e ${nomes[2]} conseguia arranjar os materiais que precisavam.
+
+Sozinhos, cada um era bom numa coisa.
+
+Juntos, eram completos.
+
+No último dia, quando terminaram, os três ficaram a olhar para o trabalho feito em silêncio.
+
+— Nunca teria conseguido fazer isto sozinho — admitiu ${nomes[0]}.
+
+— Nenhum de nós teria — disse ${nomes[1]}.
+
+Foram para casa com uma amizade que não estava prevista no enunciado do projeto.`,
+      moral: 'As nossas diferenças, quando bem combinadas, tornam-nos muito mais fortes do que qualquer um de nós seria sozinho.'
+    };
+  },
+
+  () => {
+    const nome = pick([...NOMES_M, ...NOMES_F]);
+    const livro = pick(['encadernado em couro vermelho','com letras douradas na capa','que parecia muito mais velho do que qualquer livro que alguma vez tinha visto','tão pesado que precisou das duas mãos para o levantar']);
+    const aventura = pick(['a cidade de uma civilização antiga que desapareceu','o barco de um navegador que nunca chegou ao destino','o diário de uma criança que viveu há duzentos anos naquela mesma casa','o mundo de uma história que nunca tinha tido fim escrito']);
+    return {
+      titulo: `O Livro Proibido`,
+      texto: `${nome} encontrou-o numa prateleira da biblioteca da escola: um livro ${livro}.
+
+Não havia título. Não havia autor.
+
+A bibliotecária estava em pausa. ${nome} levou-o para a mesa do canto.
+
+Na primeira página, uma única frase: "Só quem realmente precisa de ver encontra este livro."
+
+${nome} virou a página.
+
+E deixou de estar na biblioteca.
+
+Estava em ${aventura}.
+
+Não era um sonho. Sentia o cheiro do ar. Sentia a textura das coisas.
+
+Viveu horas que pareceram dias.
+
+Resolveu um problema que alguém tinha deixado por resolver.
+
+Percebeu algo sobre si próprio que nunca tinha visto antes.
+
+Quando voltou, o relógio na parede tinha avançado apenas três minutos.
+
+O livro estava fechado. A capa em branco.
+
+${nome} devolveu-o à prateleira com mãos a tremer ligeiramente.
+
+Às vezes perguntava-se se tinha sido real.
+
+Mas aquilo que aprendera sobre si mesmo — isso era definitivamente real.`,
+      moral: 'Os melhores livros não nos levam a outros mundos apenas para entretenimento — levam-nos de volta a nós mesmos, transformados.'
+    };
+  }
+
+];
+
+// ─── IDADE 11 ───
+const g11 = [
+
+  () => {
+    const nome = pick([...NOMES_M, ...NOMES_F]);
+    const avo = pick(['avô','avó']);
+    const objeto = pick(['um mapa antigo com anotações a lápis','um diário com a capa de couro gasta','uma caixa de madeira com objetos estranhos','um conjunto de fotografias com pessoas desconhecidas']);
+    const descoberta = pick(['que o seu avô tinha salvado pessoas durante um período difícil da história, em segredo','que havia um tesouro escondido — não de ouro, mas de cartas que nunca foram enviadas','que a família tinha raízes numa aldeia que já não existe','que o avô tinha uma segunda família que nunca mencionou']);
+    return {
+      titulo: `O Mapa do ${avo === 'avô' ? 'Avô' : 'Avó'}`,
+      texto: `O sótão da casa dos avós cheirava a papel velho e madeira quente.
+
+${nome} estava lá porque não havia mais nada para fazer numa tarde de agosto sem telemóvel (a avó tinha tirado-o "para ele/ela descansar dos ecrãs").
+
+Atrás de uma velha mala de viagem, encontrou ${objeto}.
+
+A princípio pareceu apenas uma coisa velha. Mas ao olhar mais de perto, ${nome} percebeu que havia algo ali que não estava certo.
+
+Há marcas. Há códigos. Há uma sequência que fazia sentido.
+
+Passou o resto da tarde e parte da noite a seguir as pistas, usando apenas o que tinha à sua volta: a casa, a aldeia, e as histórias que tinha ouvido sem prestar atenção.
+
+O que descobriu foi ${descoberta}.
+
+${nome} ficou sentado no escuro durante um longo tempo.
+
+Quando desceu para jantar, o ${avo} estava sentado à mesa, com o mesmo ar tranquilo de sempre.
+
+— Encontraste alguma coisa? — perguntou ele/ela, sem olhar para cima.
+
+${nome} percebeu que sabia.
+
+— Sim — respondeu ${nome} finalmente. — Encontrei.
+
+O ${avo} pôs a colher de sopa de lado e sorriu.
+
+— Estava à espera que chegasses a essa altura.
+
+Jantaram. E depois, pela primeira vez, o ${avo} contou a história completa.
+
+E ${nome} ouviu cada palavra.`,
+      moral: 'As histórias das pessoas que amamos guardam partes de nós que ainda não conhecemos.'
+    };
+  },
+
+  () => {
+    const nome = pick([...NOMES_M, ...NOMES_F]);
+    const escola = pick(['Escola Secundária de Monsanto','Colégio das Pedras Negras','Academia Nova Esperança','Escola Básica do Pinheiro']);
+    const estranheza = pick([
+      'todos os professores tinham o hábito peculiar de nunca responderem a certas perguntas com um ligeiro sorriso',
+      'havia uma ala do edifício que estava sempre fechada com um cadeado diferente de todos os outros',
+      'às 14h17 todos os dias, todos na escola paravam durante exactamente doze segundos sem razão aparente',
+      'nenhuma fotografia tirada dentro do edifício mostrava o corredor norte'
+    ]);
+    const amigos = `${pick(NOMES_F)} e ${pick(NOMES_M)}`;
+    return {
+      titulo: `A Escola que Guardava Segredos`,
+      texto: `Ser novo numa escola a meio do ano letivo já é mau o suficiente.
+
+Ser novo numa escola onde ${estranheza} — isso é outra coisa.
+
+${nome} reparou no terceiro dia.
+
+Os outros ou não tinham reparado ou tinham decidido não mencionar. A escola tinha a sua lógica estranha e toda a gente parecia ter aceite.
+
+Menos ${amigos}, que ${nome} encontrou casualmente a fazer anotações num caderno numa hora de almoço.
+
+— Também reparaste? — perguntou ${nome} diretamente.
+
+Os dois olharam para cima. Depois um para o outro.
+
+— Desde o primeiro dia — disse um deles.
+
+Os três começaram a investigar.
+
+Havia registos. Havia padrões. Havia uma explicação que foi gradualmente tomando forma ao longo de semanas de pesquisa cuidadosa.
+
+A verdade, quando a encontraram, não era sobrenatural.
+
+Era humana. E por isso, era ao mesmo tempo mais simples e mais complicada.
+
+Decidiram o que fazer com ela juntos, pesando as consequências, discutindo até tarde por mensagens.
+
+Quando finalmente agiram, não foi com heroísmo dramático.
+
+Foi com uma carta bem escrita e a coragem de a entregar.
+
+Às vezes, as coisas mais corajosas não parecem corajosas de fora.`,
+      moral: 'Investigar a verdade com calma e responsabilidade é mais difícil — e mais poderoso — do que agir por impulso.'
+    };
+  },
+
+  () => {
+    const nome = pick([...NOMES_M, ...NOMES_F]);
+    const familiar = pick(['bisavó','trisavô','tia-avó','bisavô']);
+    const epoca = pick(['durante a Segunda Guerra','nos anos 60 em Portugal','no início do século XX','nos anos 40']);
+    const ligacao = pick([
+      'tinha o mesmo medo de alturas que nunca tinha contado a ninguém',
+      'tinha escrito sobre um sonho recorrente que ${nome} também tinha',
+      'tinha tomado uma decisão difícil que ${nome} estava agora também a enfrentar',
+      'descrevia um lugar que ${nome} visitava nos sonhos há anos'
+    ]);
+    return {
+      titulo: `As Palavras que Não Chegaram`,
+      texto: `A caixa estava no sótão com uma etiqueta: "Não abrir."
+
+${nome} devia ter respeitado.
+
+Mas a etiqueta estava tão velha que as palavras mal se liam, e a curiosidade foi mais forte.
+
+Dentro, havia cartas. Dezenas de cartas escritas à mão, ${epoca}.
+
+Eram do/da ${familiar}.
+
+${nome} começou a ler apenas para perceber de quem eram.
+
+Uma hora depois, continuava a ler, incapaz de parar.
+
+O/A ${familiar} escrevia como ninguém que ${nome} alguma vez tinha conhecido: com honestidade absoluta, com humor inesperado, com uma inteligência que saltava de cada frase.
+
+Mas havia mais: ${ligacao.replace('${nome}', nome)}.
+
+A última carta era diferente das outras. Era endereçada "Para quem um dia encontrar estas palavras."
+
+Era para ${nome}, escrita décadas antes de ${nome} nascer.
+
+Dizia: "Se chegaste até aqui, és do meu sangue. E se és do meu sangue, sabes que o mais difícil é sempre começar. Começa."
+
+${nome} fechou a caixa devagar.
+
+Depois foi buscar o caderno onde tinha estado a adiar escrever qualquer coisa durante meses.
+
+E começou.`,
+      moral: 'As pessoas que vieram antes de nós deixam mais do que memórias — deixam coragem para herdar.'
+    };
+  },
+
+  () => {
+    const nome = pick([...NOMES_M, ...NOMES_F]);
+    const ilha = pick(['Ilha do Corvo','Ilha das Flores','Ilha do Faial','uma ilha pequena do Douro']);
+    const misterio = pick([
+      'as luzes que apareciam no pico da montanha todas as noites às onze horas em ponto',
+      'o barco que ninguém usava mas que aparecia sempre amarrado noutro sítio de manhã',
+      'a casa abandonada cujas janelas se iluminavam quando havia nevoeiro',
+      'o nome que aparecia escrito na areia todas as manhãs, sempre apagado pela maré'
+    ]);
+    const novos_amigos = `${pick(NOMES_F)} e os irmãos ${pick(NOMES_M)}`;
+    return {
+      titulo: `O Verão na ${ilha}`,
+      texto: `${nome} não queria passar o verão na ${ilha}.
+
+Queria ficar em Lisboa com os amigos, com o telemóvel, com a rotina que conhecia.
+
+Mas os pais tinham decidido e não havia negociação.
+
+A ilha era pequena. Não havia muito para fazer. A internet era fraca.
+
+No terceiro dia de tédio absoluto, ${nome} reparou em ${misterio}.
+
+Nessa noite não conseguiu dormir.
+
+De manhã, foi investigar. E lá encontrou ${novos_amigos}, que moravam na ilha e também tinham reparado.
+
+— Há anos que ninguém chega a uma conclusão — disse um deles.
+
+— Talvez seja porque nunca ninguém tentou a sério — respondeu ${nome}.
+
+Passaram o verão a investigar. Usaram mapas, fotografias, entrevistas com os mais velhos, noites acordados com binóculos.
+
+A solução, quando chegou, era simples mas surpreendente — como as melhores soluções sempre são.
+
+No último dia de agosto, na despedida, ${nome} percebeu que não estava triste por ir embora.
+
+Estava triste por deixar pessoas.
+
+Que é uma tristeza completamente diferente. E muito melhor.`,
+      moral: 'Os melhores verões não são os que planeamos — são os que acontecem quando largamos o controlo.'
+    };
+  },
+
+  () => {
+    const nome = pick([...NOMES_M, ...NOMES_F]);
+    const portal = pick(['uma porta velha no fundo de uma biblioteca','um espelho emoldurado encontrado no mercado de usados','uma passagem entre dois pinheiros centenários que nunca tinha reparado','um túnel sob as ruínas da aldeia velha']);
+    const outro_mundo = pick(['um mundo onde o tempo corria ao contrário','um lugar onde as emoções tinham cor e forma','uma versão da mesma cidade de cem anos atrás','um mundo paralelo onde as escolhas tomadas diferiam']);
+    const licao = pick([
+      'que a vida que tinha não era por acaso — era por escolha',
+      'que o que considerava defeitos eram as coisas que mais o/a tornavam único/a',
+      'que as pessoas que havia em casa importavam mais do que imaginava',
+      'que havia uma versão de si mesmo que ainda não conhecia e que estava à espera'
+    ]);
+    return {
+      titulo: `Do Outro Lado`,
+      texto: `${nome} descobriu ${portal} numa tarde comum.
+
+Não havia nada de especial nesse dia. Não estava à procura de nada em particular.
+
+Mas a porta estava ali. E abriu.
+
+Do outro lado, havia ${outro_mundo}.
+
+As regras eram diferentes. A lógica era diferente. ${nome} demorou tempo a perceber como tudo funcionava.
+
+Mas foi percebendo.
+
+Cometeu erros. Aprendeu. Encontrou pessoas — ou versões de pessoas — que o/a fizeram pensar.
+
+Houve um momento, a certa altura, em que pensou: posso ficar aqui.
+
+E nesse momento percebeu que não queria.
+
+Percebeu ${licao}.
+
+Voltou pela mesma porta.
+
+Do outro lado, tudo era exatamente igual a como tinha deixado.
+
+Exceto ${nome}.
+
+Esse/Essa tinha mudado.
+
+Não de forma visível. Não de forma que alguém notasse.
+
+Mas internamente, havia agora algo mais sólido. Algo mais claro.
+
+Uma certeza que antes não tinha nome.`,
+      moral: 'Às vezes precisamos de sair do nosso mundo por um momento para perceber o que realmente nos pertence nele.'
+    };
+  },
+
+  () => {
+    const nome = pick([...NOMES_M, ...NOMES_F]);
+    const turma = pick(['de música','de teatro','de astronomia','de escrita criativa','de robótica']);
+    const talento = pick([
+      'uma memória absolutamente fotográfica para padrões',
+      'a capacidade de ouvir algo uma vez e reproduzir perfeitamente',
+      'um dom para desenhar o que imaginava com precisão perfeita',
+      'a habilidade de criar histórias em segundos que prendiam toda a gente'
+    ]);
+    const prof = pick(['professora Beatriz','professor Ramos','professora Inês','professor Carneiro']);
+    return {
+      titulo: `O Dom que Não Sabia que Tinha`,
+      texto: `${nome} entrou na turma de ${turma} por engano.
+
+Sério — havia uma confusão nos horários e ele/ela foi parar ali sem querer.
+
+Devia ter saído.
+
+Mas a ${prof} já tinha começado e seria muito embaraçoso interromper.
+
+E então ficou.
+
+A primeira sessão foi estranha. ${nome} não percebeu metade do que se passava.
+
+Mas havia qualquer coisa.
+
+Uma semana depois, voltou. Não por engano desta vez.
+
+Foram-se seguindo semanas. E numa delas, aconteceu algo que a ${prof} notou antes de ${nome} notar:
+
+${nome} tinha ${talento}.
+
+— Sabes que isso não é normal? — disse a ${prof} depois de uma das sessões.
+
+— O quê? — perguntou ${nome}, genuinamente confuso/a.
+
+A conversa que se seguiu durou uma hora e mudou a perspetiva de ${nome} sobre si mesmo/a.
+
+Não foi uma revelação dramática. Não foi um ponto de viragem cinematográfico.
+
+Foi apenas alguém dizendo: "Vejo em ti algo que tu ainda não consegues ver."
+
+E ${nome} decidir acreditar, só para ver o que acontecia.
+
+O que aconteceu foi mais do que esperava.`,
+      moral: 'Às vezes precisamos que alguém de fora nos mostre o que carregamos dentro — e depois, de termos a coragem de acreditar.'
+    };
+  }
+
+];
+
+const GERADORES = { 3: g3, 5: g5, 8: g8, 11: g11 };
+const LABELS = { 3: '3 anos', 5: '5 anos', 8: '8 anos', 11: '11 anos' };
+
+// ─── UI STATE ───
+
+function selectAge(idade) {
+  idadeAtual = idade;
+  document.querySelectorAll('.age-tab').forEach(t => {
+    t.classList.toggle('active', parseInt(t.dataset.age) === idade);
+  });
+}
+
+function gerarHistoria() {
+  const lista = GERADORES[idadeAtual];
+  const gerador = pick(lista);
+  historiaAtual = { ...gerador(), idade: idadeAtual, data: new Date().toISOString() };
+
+  document.getElementById('historia-titulo').textContent = historiaAtual.titulo;
+  document.getElementById('historia-texto').textContent = historiaAtual.texto;
+
+  const moralEl = document.getElementById('historia-moral');
+  if (historiaAtual.moral) {
+    moralEl.textContent = '✦ ' + historiaAtual.moral;
+    moralEl.style.display = 'block';
+  } else {
+    moralEl.style.display = 'none';
+  }
+
+  document.getElementById('badge-idade').textContent = LABELS[idadeAtual];
+
+  const card = document.getElementById('historia-card');
+  card.style.display = 'block';
+  card.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+}
+
+// ─── SAVE / LIBRARY ───
+
+function carregarBiblioteca() {
+  try { return JSON.parse(localStorage.getItem(STORAGE_KEY) || '[]'); }
+  catch { return []; }
+}
+
+function guardarBiblioteca(lista) {
+  localStorage.setItem(STORAGE_KEY, JSON.stringify(lista));
+}
+
+function guardarHistoria() {
+  if (!historiaAtual) return;
+  const lista = carregarBiblioteca();
+  const entrada = { ...historiaAtual, id: Date.now() };
+  lista.unshift(entrada);
+  guardarBiblioteca(lista);
+  renderBiblioteca();
+  mostrarToast('📚 História guardada na biblioteca!');
+}
+
+function apagarHistoria(id) {
+  if (!confirm('Apagar esta história?')) return;
+  const lista = carregarBiblioteca().filter(h => h.id !== id);
+  guardarBiblioteca(lista);
+  renderBiblioteca();
+  mostrarToast('🗑️ História apagada.');
+}
+
+function renderBiblioteca() {
+  const lista = carregarBiblioteca();
+  const grid = document.getElementById('biblioteca-grid');
+  const vazia = document.getElementById('biblioteca-vazia');
+  const count = document.getElementById('biblioteca-count');
+
+  count.textContent = lista.length + (lista.length === 1 ? ' história' : ' histórias');
+
+  if (lista.length === 0) {
+    vazia.style.display = 'block';
+    grid.innerHTML = '';
+    return;
+  }
+
+  vazia.style.display = 'none';
+  grid.innerHTML = lista.map(h => {
+    const d = new Date(h.data);
+    const data = d.toLocaleDateString('pt-PT', { day:'2-digit', month:'short', year:'numeric' });
+    return `<div class="story-book-card">
+      <div class="card-titulo">${esc(h.titulo)}</div>
+      <div class="card-meta">
+        <span class="card-badge">${LABELS[h.idade]}</span>
+        <span class="card-date">${data}</span>
+      </div>
+      <div class="card-actions">
+        <button class="card-btn" onclick="lerHistoria(${h.id})">📖 Ler</button>
+        <button class="card-btn" onclick="downloadHistoriaSalva(${h.id})">📥</button>
+        <button class="card-btn del" onclick="apagarHistoria(${h.id})">🗑️</button>
+      </div>
+    </div>`;
+  }).join('');
+}
+
+function lerHistoria(id) {
+  const lista = carregarBiblioteca();
+  const h = lista.find(x => x.id === id);
+  if (!h) return;
+  modalHistoria = h;
+
+  const d = new Date(h.data);
+  const data = d.toLocaleDateString('pt-PT', { day:'2-digit', month:'long', year:'numeric' });
+
+  document.getElementById('modal-meta').innerHTML =
+    `<span class="badge-idade">${LABELS[h.idade]}</span> <span class="badge-tema">${data}</span>`;
+  document.getElementById('modal-titulo').textContent = h.titulo;
+  document.getElementById('modal-texto').textContent = h.texto;
+
+  const moralEl = document.getElementById('modal-moral');
+  if (h.moral) {
+    moralEl.textContent = '✦ ' + h.moral;
+    moralEl.style.display = 'block';
+  } else {
+    moralEl.style.display = 'none';
+  }
+
+  document.getElementById('modal').classList.add('open');
+  document.body.style.overflow = 'hidden';
+}
+
+function fecharModal() {
+  document.getElementById('modal').classList.remove('open');
+  document.body.style.overflow = '';
+  modalHistoria = null;
+}
+
+// ─── DOWNLOAD ───
+
+function buildTxt(h) {
+  const linhas = [
+    `HISTÓRIA PARA ${LABELS[h.idade].toUpperCase()}`,
+    '═'.repeat(50),
+    '',
+    h.titulo,
+    '',
+    '─'.repeat(50),
+    '',
+    h.texto,
+    '',
+  ];
+  if (h.moral) {
+    linhas.push('─'.repeat(50));
+    linhas.push('');
+    linhas.push('Moral: ' + h.moral);
+    linhas.push('');
+  }
+  const d = new Date(h.data);
+  linhas.push('─'.repeat(50));
+  linhas.push(`Gerada em: ${d.toLocaleDateString('pt-PT')} às ${d.toLocaleTimeString('pt-PT', {hour:'2-digit',minute:'2-digit'})}`);
+  return linhas.join('\n');
+}
+
+function downloadTxt(h) {
+  const blob = new Blob([buildTxt(h)], { type: 'text/plain;charset=utf-8' });
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url;
+  a.download = h.titulo.replace(/[^a-zA-ZÀ-ÿ0-9\s]/g, '').trim().replace(/\s+/g, '_') + '.txt';
+  a.click();
+  URL.revokeObjectURL(url);
+}
+
+function downloadHistoria() {
+  if (historiaAtual) downloadTxt(historiaAtual);
+}
+
+function downloadModalHistoria() {
+  if (modalHistoria) downloadTxt(modalHistoria);
+}
+
+function downloadHistoriaSalva(id) {
+  const h = carregarBiblioteca().find(x => x.id === id);
+  if (h) downloadTxt(h);
+}
+
+// ─── TOAST ───
+
+let toastTimer;
+function mostrarToast(msg) {
+  const t = document.getElementById('toast');
+  t.textContent = msg;
+  t.classList.add('show');
+  clearTimeout(toastTimer);
+  toastTimer = setTimeout(() => t.classList.remove('show'), 2800);
+}
+
+// ─── ESCAPE HELPER ───
+function esc(s) {
+  return s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+}
+
+// ─── MODAL CLOSE ON BACKDROP ───
+document.getElementById('modal').addEventListener('click', function(e) {
+  if (e.target === this) fecharModal();
+});
+
+// ─── INIT ───
+renderBiblioteca();
+</script>
+</body>
+</html>
