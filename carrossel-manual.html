@@ -228,6 +228,7 @@
     <div class="mode-tabs">
       <button class="mode-tab on" id="tabCarrossel">📊 Carrossel</button>
       <button class="mode-tab" id="tabHistoria">📖 História</button>
+      <button class="mode-tab" id="tabFrases">✦ Frases</button>
     </div>
 
     <!-- CONTEÚDO -->
@@ -268,6 +269,11 @@
         <textarea id="ctaIn" rows="2" placeholder="Ex: Segue para mais conteúdo! ✦"></textarea>
       </div>
 
+      <div class="fld" id="fldAuthor" style="display:none">
+        <label>Autor / Fonte <span class="opt-lbl">(opcional — aparece em todas as frases)</span></label>
+        <input type="text" id="authorIn" placeholder="Ex: Victor Hugo, Livro das Sombras…">
+      </div>
+
       <div class="fld">
         <label>@Username <span class="opt-lbl">(opcional)</span></label>
         <input type="text" id="handleIn" placeholder="@teuinstagram">
@@ -275,7 +281,7 @@
     </div>
 
     <!-- DIVISÃO -->
-    <div class="fsec">
+    <div class="fsec" id="secSlider">
       <div class="sec-ttl" id="secSlidesTtl">Tamanho dos slides</div>
       <div class="fld">
         <label>Palavras por slide</label>
@@ -395,7 +401,6 @@ function buildThemeGrid() {
   const tg = document.getElementById('themeGrid');
   tg.innerHTML = '';
   const themes = MODE === 'historia' ? STORY_THEMES : THEMES;
-  // ensure TK is valid for current mode
   if (!themes[TK]) TK = Object.keys(themes)[0];
   for (const [k, t] of Object.entries(themes)) {
     const b = document.createElement('button');
@@ -412,41 +417,34 @@ function buildThemeGrid() {
 buildThemeGrid();
 
 // ─── Mode tabs ───────────────────────────
-document.getElementById('tabCarrossel').onclick = () => {
-  if (MODE === 'carrossel') return;
-  MODE = 'carrossel';
-  document.getElementById('tabCarrossel').classList.add('on');
-  document.getElementById('tabHistoria').classList.remove('on');
-  // restore carousel defaults
-  document.getElementById('wordsSlider').value = 30;
-  document.getElementById('wordsVal').textContent = '30';
-  document.getElementById('genBtn').textContent = '✨  Gerar Carrossel';
-  document.getElementById('contentIn').placeholder = 'Cola aqui todo o texto. A ferramenta divide automaticamente em slides — não precisas de fazer nada.';
-  document.getElementById('lblContent').textContent = 'Texto completo';
-  document.getElementById('lblCta').innerHTML = 'Call-to-action no slide final <span class="opt-lbl">(opcional)</span>';
-  document.getElementById('lblTitle').textContent = 'Título';
-  document.getElementById('lblSub').innerHTML = 'Subtítulo <span class="opt-lbl">(opcional)</span>';
+function setMode(m) {
+  MODE = m;
+  document.getElementById('tabCarrossel').classList.toggle('on', m === 'carrossel');
+  document.getElementById('tabHistoria').classList.toggle('on',  m === 'historia');
+  document.getElementById('tabFrases').classList.toggle('on',    m === 'frases');
+  document.getElementById('secSlider').style.display  = m === 'frases' ? 'none' : '';
+  document.getElementById('fldAuthor').style.display  = m === 'frases' ? 'flex' : 'none';
+  const labels = {
+    carrossel: { btn:'✨  Gerar Carrossel', content:'Texto completo', cta:'Call-to-action no slide final <span class="opt-lbl">(opcional)</span>', title:'Título', sub:'Subtítulo <span class="opt-lbl">(opcional)</span>', ph:'Cola aqui todo o texto. A ferramenta divide automaticamente em slides — não precisas de fazer nada.', words:30 },
+    historia:  { btn:'✨  Gerar História',  content:'Texto da história', cta:'Fecho narrativo <span class="opt-lbl">(opcional)</span>', title:'Título da história', sub:'Epígrafe / subtítulo <span class="opt-lbl">(opcional)</span>', ph:'Escreve ou cola aqui a tua história. Será dividida automaticamente em slides narrativos.', words:40 },
+    frases:    { btn:'✨  Gerar Frases',    content:'Frases (uma por parágrafo)', cta:'Call-to-action no slide final <span class="opt-lbl">(opcional)</span>', title:'Título da coleção', sub:'Subtítulo <span class="opt-lbl">(opcional)</span>', ph:'Escreve uma frase por parágrafo.\nPodes adicionar o autor na linha seguinte começando com —\n\nEx:\nA vida é bela.\n— Autor', words:30 }
+  };
+  const l = labels[m];
+  document.getElementById('wordsSlider').value = l.words;
+  document.getElementById('wordsVal').textContent = l.words;
+  document.getElementById('genBtn').textContent      = l.btn;
+  document.getElementById('contentIn').placeholder   = l.ph;
+  document.getElementById('lblContent').textContent  = l.content;
+  document.getElementById('lblCta').innerHTML        = l.cta;
+  document.getElementById('lblTitle').textContent    = l.title;
+  document.getElementById('lblSub').innerHTML        = l.sub;
   buildThemeGrid();
   updatePreview();
-};
+}
 
-document.getElementById('tabHistoria').onclick = () => {
-  if (MODE === 'historia') return;
-  MODE = 'historia';
-  document.getElementById('tabHistoria').classList.add('on');
-  document.getElementById('tabCarrossel').classList.remove('on');
-  // update to story defaults
-  document.getElementById('wordsSlider').value = 40;
-  document.getElementById('wordsVal').textContent = '40';
-  document.getElementById('genBtn').textContent = '✨  Gerar História';
-  document.getElementById('contentIn').placeholder = 'Escreve ou cola aqui a tua história. Será dividida automaticamente em slides narrativos.';
-  document.getElementById('lblContent').textContent = 'Texto da história';
-  document.getElementById('lblCta').innerHTML = 'Fecho narrativo <span class="opt-lbl">(opcional)</span>';
-  document.getElementById('lblTitle').textContent = 'Título da história';
-  document.getElementById('lblSub').innerHTML = 'Epígrafe / subtítulo <span class="opt-lbl">(opcional)</span>';
-  buildThemeGrid();
-  updatePreview();
-};
+document.getElementById('tabCarrossel').onclick = () => { if (MODE !== 'carrossel') setMode('carrossel'); };
+document.getElementById('tabHistoria').onclick  = () => { if (MODE !== 'historia')  setMode('historia');  };
+document.getElementById('tabFrases').onclick    = () => { if (MODE !== 'frases')    setMode('frases');    };
 
 // ─── Upload ──────────────────────────────
 (function() {
@@ -480,8 +478,13 @@ function updatePreview() {
   const n   = parseInt(slider.value, 10);
   sliderVal.textContent = n;
   if (!raw) { previewEl.innerHTML = 'Escreve o texto para ver a previsão'; return; }
-  const count = autoSplit(raw, n).length;
-  previewEl.innerHTML = `→ <strong>${count + 2}</strong> slides no total (capa + ${count} conteúdo + final)`;
+  if (MODE === 'frases') {
+    const count = parseQuotes(raw).length;
+    previewEl.innerHTML = `→ <strong>${count + 2}</strong> slides no total (capa + ${count} frases + final)`;
+  } else {
+    const count = autoSplit(raw, n).length;
+    previewEl.innerHTML = `→ <strong>${count + 2}</strong> slides no total (capa + ${count} conteúdo + final)`;
+  }
 }
 
 slider.oninput = updatePreview;
@@ -952,6 +955,161 @@ function makeLastStory(cta, handle, total, t) {
   return c;
 }
 
+// ─── Parser de frases ────────────────────
+function parseQuotes(raw) {
+  return raw.replace(/\r\n/g, '\n').replace(/\r/g, '\n')
+    .split(/\n\n+/)
+    .map(b => {
+      const lines = b.trim().split('\n');
+      const attrIdx = lines.findIndex(l => /^[-—]/.test(l.trim()));
+      if (attrIdx > 0) {
+        return { text: lines.slice(0, attrIdx).join(' ').trim(), author: lines[attrIdx].trim().replace(/^[-—]+\s*/, '') };
+      }
+      return { text: b.trim(), author: '' };
+    })
+    .filter(q => q.text.length > 0);
+}
+
+// ─── Canvas Frases ───────────────────────
+function makeCoverQuotes(title, subtitle, handle, total, t) {
+  const c = mkC(), ctx = c.getContext('2d');
+  if (coverImg) {
+    coverFit(ctx, coverImg);
+    const vig = ctx.createRadialGradient(S/2,S/2,S*.16,S/2,S/2,S*.88);
+    vig.addColorStop(0,'rgba(0,0,0,0)'); vig.addColorStop(1,'rgba(0,0,0,.44)');
+    ctx.fillStyle=vig; ctx.fillRect(0,0,S,S);
+    const bot = ctx.createLinearGradient(0,S*.28,0,S);
+    bot.addColorStop(0,'rgba(0,0,0,0)'); bot.addColorStop(.35,t.ov); bot.addColorStop(1,'rgba(0,0,0,.92)');
+    ctx.fillStyle=bot; ctx.fillRect(0,0,S,S);
+  } else {
+    gradBg(ctx, t);
+  }
+
+  // Giant decorative opening quote in background
+  ctx.save();
+  ctx.font = `900 480px 'Playfair Display',Georgia,serif`;
+  ctx.fillStyle = t.ac; ctx.globalAlpha = .055;
+  ctx.textAlign = 'left'; ctx.textBaseline = 'top';
+  ctx.fillText('“', P - 30, -60);
+  ctx.restore();
+
+  if (handle) {
+    const h = handle.startsWith('@') ? handle : '@' + handle;
+    ctx.save(); ctx.font = `500 28px ${FP.tb}`;
+    ctx.fillStyle = 'rgba(255,255,255,.72)'; ctx.textAlign = 'left'; ctx.textBaseline = 'top';
+    ctx.fillText(h, P, P + 2); ctx.restore();
+  }
+  ctx.save(); ctx.font = `600 25px ${FP.tb}`; ctx.fillStyle = t.ac;
+  ctx.textAlign = 'right'; ctx.textBaseline = 'top';
+  ctx.fillText('01 / ' + p2(total), S - P, P + 2); ctx.restore();
+
+  let y = S - P;
+  ctx.save(); ctx.font = `300 20px ${FP.tb}`; ctx.fillStyle = 'rgba(255,255,255,.38)';
+  ctx.textAlign = 'right'; ctx.textBaseline = 'bottom';
+  ctx.fillText('desliza para ler  →', S - P, y); ctx.restore(); y -= 44;
+
+  if (subtitle) {
+    ctx.save(); ctx.font = `italic 400 30px 'Playfair Display',Georgia,serif`; ctx.fillStyle = 'rgba(255,255,255,.6)';
+    ctx.textAlign = 'left'; ctx.textBaseline = 'bottom'; ctx.shadowColor='rgba(0,0,0,.5)'; ctx.shadowBlur=10;
+    const sl = wrapText(ctx, subtitle, S - P*2);
+    y -= (sl.length-1)*38; sl.forEach((l,i) => ctx.fillText(l, P, y + i*38)); y -= 38+14; ctx.restore();
+  }
+
+  ctx.save(); ctx.font = `900 72px 'Playfair Display',Georgia,serif`; ctx.fillStyle = '#fff';
+  ctx.textAlign = 'left'; ctx.textBaseline = 'bottom';
+  ctx.shadowColor='rgba(0,0,0,.65)'; ctx.shadowBlur=22;
+  const tl = wrapText(ctx, title || 'Frases', S - P*2);
+  y -= (tl.length-1)*86; tl.forEach((l,i) => ctx.fillText(l, P, y + i*86)); y -= 86+20; ctx.restore();
+
+  ctx.save(); ctx.fillStyle = t.ac; ctx.fillRect(P, y - 2, 100, 5); ctx.restore();
+  drawDots(ctx, 1, total, t);
+  return c;
+}
+
+function makeContentQuote(text, author, num, total, t) {
+  const c = mkC(), ctx = c.getContext('2d');
+  gradBg(ctx, t);
+
+  // Faded giant quote mark
+  ctx.save();
+  ctx.font = `900 360px 'Playfair Display',Georgia,serif`;
+  ctx.fillStyle = t.ac; ctx.globalAlpha = .06;
+  ctx.textAlign = 'left'; ctx.textBaseline = 'top';
+  ctx.fillText('“', P - 18, P + 20);
+  ctx.restore();
+
+  drawTopBar(ctx, '', num, total, t, false);
+
+  // Quote text — italic Playfair, centered
+  const maxW = S - P*3, contentH = 580;
+  const fs = text ? autoFS(ctx, text, maxW, contentH, 60, 28, '400', "'Playfair Display',Georgia,serif") : 52;
+  const lh = fs * 1.62;
+  ctx.save();
+  ctx.font = `italic 400 ${fs}px 'Playfair Display',Georgia,serif`;
+  ctx.fillStyle = t.tx; ctx.textAlign = 'center'; ctx.textBaseline = 'alphabetic';
+  drawCentered(ctx, text || '', S/2, S * .46, maxW, lh);
+  ctx.restore();
+
+  // Thin divider line
+  const lineY = S * .72;
+  ctx.save(); ctx.strokeStyle = t.ac; ctx.lineWidth = 1; ctx.globalAlpha = .3;
+  ctx.beginPath(); ctx.moveTo(S/2-60, lineY); ctx.lineTo(S/2+60, lineY); ctx.stroke(); ctx.restore();
+
+  // Attribution
+  if (author) {
+    ctx.save(); ctx.font = `500 26px 'Playfair Display',Georgia,serif`;
+    ctx.fillStyle = t.ac; ctx.globalAlpha = .8;
+    ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
+    ctx.fillText('— ' + author, S/2, lineY + 38); ctx.restore();
+  }
+
+  drawDots(ctx, num, total, t);
+  return c;
+}
+
+function makeLastQuotes(cta, handle, total, t) {
+  const c = mkC(), ctx = c.getContext('2d');
+  gradBg(ctx, t);
+
+  // Faded closing quote
+  ctx.save();
+  ctx.font = `900 360px 'Playfair Display',Georgia,serif`;
+  ctx.fillStyle = t.ac; ctx.globalAlpha = .06;
+  ctx.textAlign = 'right'; ctx.textBaseline = 'bottom';
+  ctx.fillText('”', S - P + 18, S - P + 60);
+  ctx.restore();
+
+  drawTopBar(ctx, handle, total, total, t, false);
+
+  const cx = S/2, cy = S*.42;
+  if (cta) {
+    const fs = autoFS(ctx, cta, S-P*2, 480, 62, 28, '900', "'Playfair Display',Georgia,serif");
+    ctx.save(); ctx.font = `italic 400 ${fs}px 'Playfair Display',Georgia,serif`; ctx.fillStyle = t.tx;
+    ctx.textAlign = 'center'; ctx.textBaseline = 'alphabetic';
+    drawCentered(ctx, cta, cx, cy, S-P*2, fs*1.52); ctx.restore();
+  } else {
+    ctx.save(); ctx.font = `900 58px 'Playfair Display',Georgia,serif`; ctx.fillStyle = t.tx;
+    ctx.textAlign = 'center'; ctx.textBaseline = 'middle'; ctx.fillText('Guarda estas frases.', cx, cy - 60); ctx.restore();
+    const actions = ['♥  Deixa um Like', '►  Partilha com alguém', '◎  Segue para mais'];
+    ctx.save(); ctx.font = `400 30px ${FP.tb}`; ctx.fillStyle = t.su;
+    ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
+    actions.forEach((a, i) => ctx.fillText(a, cx, cy + 30 + i*58)); ctx.restore();
+  }
+
+  const dg = ctx.createLinearGradient(cx-90,0,cx+90,0);
+  dg.addColorStop(0,'transparent'); dg.addColorStop(.5,t.ac); dg.addColorStop(1,'transparent');
+  ctx.save(); ctx.strokeStyle=dg; ctx.lineWidth=1.5; ctx.globalAlpha=.4;
+  ctx.beginPath(); ctx.moveTo(cx-90,S*.72); ctx.lineTo(cx+90,S*.72); ctx.stroke(); ctx.restore();
+
+  if (handle) {
+    const h = handle.startsWith('@') ? handle : '@'+handle;
+    ctx.save(); ctx.font=`600 36px ${FP.tb}`; ctx.fillStyle=t.ac;
+    ctx.textAlign='center'; ctx.textBaseline='middle'; ctx.fillText(h, cx, S*.8); ctx.restore();
+  }
+  drawDots(ctx, total, total, t);
+  return c;
+}
+
 // ─── Renderizar card ─────────────────────
 function renderCard(cv, i, label) {
   const card   = document.createElement('div'); card.className = 'scard';
@@ -993,14 +1151,17 @@ async function generate() {
   const cta    = document.getElementById('ctaIn').value.trim();
   const handle = document.getElementById('handleIn').value.trim();
   const maxW   = parseInt(slider.value, 10);
-  const isStory = MODE === 'historia';
-  const themes = isStory ? STORY_THEMES : THEMES;
-  const t      = themes[TK] || themes[Object.keys(themes)[0]];
+  const isStory  = MODE === 'historia';
+  const isFrases = MODE === 'frases';
+  const themes   = isStory ? STORY_THEMES : THEMES;
+  const t        = themes[TK] || themes[Object.keys(themes)[0]];
+  const globalAuthor = isFrases ? (document.getElementById('authorIn').value.trim()) : '';
 
   if (!title && !raw) { alert('Preenche o título ou o texto.'); return; }
 
-  const blocks = raw ? autoSplit(raw, maxW) : [];
-  const total  = blocks.length + 2;
+  const quotes = isFrases ? parseQuotes(raw) : [];
+  const blocks = isFrases ? [] : (raw ? autoSplit(raw, maxW) : []);
+  const total  = (isFrases ? quotes.length : blocks.length) + 2;
 
   document.getElementById('emptyEl').style.display  = 'none';
   document.getElementById('loadEl').style.display   = 'flex';
@@ -1017,23 +1178,24 @@ async function generate() {
   await document.fonts.ready;
   await new Promise(r => setTimeout(r, 60));
 
-  if (isStory) {
-    // Build slideData for story
+  if (isFrases) {
+    slideData.push({ type:'cover', title, subtitle:sub, handle, total, t, mode:'frases' });
+    quotes.forEach((q, i) => slideData.push({ type:'content', text:q.text, author: q.author || globalAuthor, num:i+2, title, handle, total, t, mode:'frases' }));
+    slideData.push({ type:'last', cta, handle, total, t, mode:'frases' });
+    genSlides.push(makeCoverQuotes(title, sub, handle, total, t));
+    quotes.forEach((q, i) => genSlides.push(makeContentQuote(q.text, q.author || globalAuthor, i+2, total, t)));
+    genSlides.push(makeLastQuotes(cta, handle, total, t));
+  } else if (isStory) {
     slideData.push({ type:'cover',   title, subtitle:sub, handle, total, t, mode:'historia' });
     blocks.forEach((b, i) => slideData.push({ type:'content', text:b, num:i+2, title, handle, total, t, mode:'historia' }));
     slideData.push({ type:'last', cta, handle, total, t, mode:'historia' });
-
-    // Render story canvases
     genSlides.push(makeCoverStory(title, sub, handle, total, t));
     blocks.forEach((b, i) => genSlides.push(makeContentStory(b, i + 2, title, handle, total, t)));
     genSlides.push(makeLastStory(cta, handle, total, t));
   } else {
-    // Build slideData for carrossel
     slideData.push({ type:'cover',   title, subtitle:sub, handle, total, t, mode:'carrossel' });
     blocks.forEach((b, i) => slideData.push({ type:'content', text:b, num:i+2, title, handle, total, t, mode:'carrossel' }));
     slideData.push({ type:'last', cta, handle, total, t, mode:'carrossel' });
-
-    // Render carousel canvases
     genSlides.push(makeCover(title, sub, handle, total, t));
     blocks.forEach((b, i) => genSlides.push(makeContent(b, i + 2, title, handle, total, t)));
     genSlides.push(makeLast(cta, handle, total, t));
@@ -1061,28 +1223,30 @@ let editIdx = -1;
 function openEdit(i) {
   editIdx = i;
   const d   = slideData[i];
-  const isStory = d.mode === 'historia';
+  const isStory  = d.mode === 'historia';
+  const isFrases = d.mode === 'frases';
   const lbl = i === 0
-    ? (isStory ? 'Editar Capa da História' : 'Editar Capa')
+    ? (isStory ? 'Editar Capa da História' : isFrases ? 'Editar Capa da Coleção' : 'Editar Capa')
     : i === slideData.length - 1
-      ? (isStory ? 'Editar Fecho' : 'Editar Slide Final')
-      : `Editar Slide ${i + 1}`;
+      ? (isStory ? 'Editar Fecho' : isFrases ? 'Editar Slide Final' : 'Editar Slide Final')
+      : (isFrases ? `Editar Frase ${i + 1}` : `Editar Slide ${i + 1}`);
   document.getElementById('editLabel').textContent = lbl;
 
   const fields = document.getElementById('editFields');
   fields.innerHTML = '';
 
   if (d.type === 'cover') {
-    const titleLbl = isStory ? 'Título da história' : 'Título';
+    const titleLbl = isStory ? 'Título da história' : isFrases ? 'Título da coleção' : 'Título';
     const subLbl   = isStory ? 'Epígrafe / subtítulo' : 'Subtítulo';
     fields.innerHTML = `
       <div><label>${titleLbl}</label><input type="text" id="ef_title" value="${escH(d.title)}"></div>
       <div><label>${subLbl}</label><input type="text" id="ef_sub" value="${escH(d.subtitle || '')}"></div>`;
   } else if (d.type === 'content') {
-    const textLbl = isStory ? 'Texto narrativo do slide' : 'Texto do slide';
-    fields.innerHTML = `<div><label>${textLbl}</label><textarea id="ef_text" rows="6">${escH(d.text)}</textarea></div>`;
+    const textLbl = isStory ? 'Texto narrativo do slide' : isFrases ? 'Frase' : 'Texto do slide';
+    fields.innerHTML = `<div><label>${textLbl}</label><textarea id="ef_text" rows="5">${escH(d.text)}</textarea></div>`
+      + (isFrases ? `<div><label>Autor / Fonte <span class="opt-lbl">(opcional)</span></label><input type="text" id="ef_author" value="${escH(d.author || '')}"></div>` : '');
   } else {
-    const ctaLbl = isStory ? 'Fecho narrativo (deixa vazio para "Fim.")' : 'Call-to-action (deixa vazio para design padrão)';
+    const ctaLbl = isStory ? 'Fecho narrativo (deixa vazio para "Fim.")' : isFrases ? 'Call-to-action (deixa vazio para "Guarda estas frases.")' : 'Call-to-action (deixa vazio para design padrão)';
     fields.innerHTML = `<div><label>${ctaLbl}</label><textarea id="ef_cta" rows="4">${escH(d.cta || '')}</textarea></div>`;
   }
 
@@ -1092,24 +1256,26 @@ function openEdit(i) {
 function applyEdit() {
   const d = slideData[editIdx];
   const t = d.t;
-  const isStory = d.mode === 'historia';
+  const isStory  = d.mode === 'historia';
+  const isFrases = d.mode === 'frases';
 
   if (d.type === 'cover') {
     d.title    = document.getElementById('ef_title').value.trim();
     d.subtitle = document.getElementById('ef_sub').value.trim();
-    genSlides[editIdx] = isStory
-      ? makeCoverStory(d.title, d.subtitle, d.handle, d.total, t)
-      : makeCover(d.title, d.subtitle, d.handle, d.total, t);
+    genSlides[editIdx] = isStory  ? makeCoverStory(d.title, d.subtitle, d.handle, d.total, t)
+                       : isFrases ? makeCoverQuotes(d.title, d.subtitle, d.handle, d.total, t)
+                       :            makeCover(d.title, d.subtitle, d.handle, d.total, t);
   } else if (d.type === 'content') {
     d.text = document.getElementById('ef_text').value.trim();
-    genSlides[editIdx] = isStory
-      ? makeContentStory(d.text, d.num, d.title, d.handle, d.total, t)
-      : makeContent(d.text, d.num, d.title, d.handle, d.total, t);
+    if (isFrases) d.author = (document.getElementById('ef_author')?.value || '').trim();
+    genSlides[editIdx] = isStory  ? makeContentStory(d.text, d.num, d.title, d.handle, d.total, t)
+                       : isFrases ? makeContentQuote(d.text, d.author, d.num, d.total, t)
+                       :            makeContent(d.text, d.num, d.title, d.handle, d.total, t);
   } else {
     d.cta = document.getElementById('ef_cta').value.trim();
-    genSlides[editIdx] = isStory
-      ? makeLastStory(d.cta, d.handle, d.total, t)
-      : makeLast(d.cta, d.handle, d.total, t);
+    genSlides[editIdx] = isStory  ? makeLastStory(d.cta, d.handle, d.total, t)
+                       : isFrases ? makeLastQuotes(d.cta, d.handle, d.total, t)
+                       :            makeLast(d.cta, d.handle, d.total, t);
   }
 
   // Atualiza thumbnail
