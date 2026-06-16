@@ -229,6 +229,7 @@
       <button class="mode-tab on" id="tabCarrossel">📊 Carrossel</button>
       <button class="mode-tab" id="tabHistoria">📖 História</button>
       <button class="mode-tab" id="tabFrases">✦ Frases</button>
+      <button class="mode-tab" id="tabSubstack">📰 Substack</button>
     </div>
 
     <!-- CONTEÚDO -->
@@ -386,6 +387,15 @@ const STORY_THEMES = {
   crepusc:  { n:'Crepusc.', i:'🌅', g1:'#100618', g2:'#180b22', ac:'#d09040', tx:'#f8efd8', su:'#a07030', ov:'rgba(16,6,24,.74)',nb:'rgba(208,144,64,.04)'  }
 };
 
+const SUBSTACK_THEMES = {
+  typeset:   { n:'Typeset',  i:'📄', g1:'#f8f5f0', g2:'#ede8e0', ac:'#1a1510', tx:'#1a1510', su:'#7a6a58', ov:'rgba(248,245,240,.6)', nb:'rgba(26,21,16,.03)'   },
+  pressroom: { n:'Pressroom',i:'🖨️', g1:'#121212', g2:'#1e1e1e', ac:'#f0f0f0', tx:'#f5f5f5', su:'#888888', ov:'rgba(18,18,18,.75)',   nb:'rgba(240,240,240,.03)' },
+  cobalt:    { n:'Cobalt',   i:'🔷', g1:'#03060e', g2:'#060d1e', ac:'#4d8fe8', tx:'#e0ecff', su:'#4a6898', ov:'rgba(3,6,14,.78)',     nb:'rgba(77,143,232,.04)'  },
+  jasper:    { n:'Jasper',   i:'🔶', g1:'#120806', g2:'#1e0e0a', ac:'#e06840', tx:'#ffe8e0', su:'#a05038', ov:'rgba(18,8,6,.76)',     nb:'rgba(224,104,64,.04)'  },
+  sage:      { n:'Sage',     i:'🌱', g1:'#070e0a', g2:'#0c1810', ac:'#58b870', tx:'#e0f4e8', su:'#508060', ov:'rgba(7,14,10,.76)',    nb:'rgba(88,184,112,.04)'  },
+  goldenrod: { n:'Goldenrod',i:'🌾', g1:'#0e0c04', g2:'#1a1608', ac:'#d4a830', tx:'#fff8e0', su:'#988028', ov:'rgba(14,12,4,.76)',    nb:'rgba(212,168,48,.04)'  }
+};
+
 const FP = {
   tt: "'Playfair Display',Georgia,serif",
   tb: "'Inter',system-ui,sans-serif",
@@ -400,7 +410,7 @@ let coverImg = null, genSlides = [], slideData = [], mIdx = 0;
 function buildThemeGrid() {
   const tg = document.getElementById('themeGrid');
   tg.innerHTML = '';
-  const themes = MODE === 'historia' ? STORY_THEMES : THEMES;
+  const themes = MODE === 'historia' ? STORY_THEMES : MODE === 'substack' ? SUBSTACK_THEMES : THEMES;
   if (!themes[TK]) TK = Object.keys(themes)[0];
   for (const [k, t] of Object.entries(themes)) {
     const b = document.createElement('button');
@@ -422,12 +432,14 @@ function setMode(m) {
   document.getElementById('tabCarrossel').classList.toggle('on', m === 'carrossel');
   document.getElementById('tabHistoria').classList.toggle('on',  m === 'historia');
   document.getElementById('tabFrases').classList.toggle('on',    m === 'frases');
+  document.getElementById('tabSubstack').classList.toggle('on',  m === 'substack');
   document.getElementById('secSlider').style.display  = m === 'frases' ? 'none' : '';
   document.getElementById('fldAuthor').style.display  = m === 'frases' ? 'flex' : 'none';
   const labels = {
     carrossel: { btn:'✨  Gerar Carrossel', content:'Texto completo', cta:'Call-to-action no slide final <span class="opt-lbl">(opcional)</span>', title:'Título', sub:'Subtítulo <span class="opt-lbl">(opcional)</span>', ph:'Cola aqui todo o texto. A ferramenta divide automaticamente em slides — não precisas de fazer nada.', words:30 },
     historia:  { btn:'✨  Gerar História',  content:'Texto da história', cta:'Fecho narrativo <span class="opt-lbl">(opcional)</span>', title:'Título da história', sub:'Epígrafe / subtítulo <span class="opt-lbl">(opcional)</span>', ph:'Escreve ou cola aqui a tua história. Será dividida automaticamente em slides narrativos.', words:40 },
-    frases:    { btn:'✨  Gerar Frases',    content:'Frases (uma por parágrafo)', cta:'Call-to-action no slide final <span class="opt-lbl">(opcional)</span>', title:'Título da coleção', sub:'Subtítulo <span class="opt-lbl">(opcional)</span>', ph:'Escreve uma frase por parágrafo.\nPodes adicionar o autor na linha seguinte começando com —\n\nEx:\nA vida é bela.\n— Autor', words:30 }
+    frases:    { btn:'✨  Gerar Frases',    content:'Frases (uma por parágrafo)', cta:'Call-to-action no slide final <span class="opt-lbl">(opcional)</span>', title:'Título da coleção', sub:'Subtítulo <span class="opt-lbl">(opcional)</span>', ph:'Escreve uma frase por parágrafo.\nPodes adicionar o autor na linha seguinte começando com —\n\nEx:\nA vida é bela.\n— Autor', words:30 },
+    substack:  { btn:'✨  Gerar Post',      content:'Texto do artigo / post', cta:'Call-to-action <span class="opt-lbl">(ex: "Lê o artigo completo no Substack")</span>', title:'Título do artigo', sub:'Subtítulo / edição <span class="opt-lbl">(opcional)</span>', ph:'Cola aqui o texto do artigo Substack. Será dividido automaticamente em slides com estética de newsletter.', words:40 }
   };
   const l = labels[m];
   document.getElementById('wordsSlider').value = l.words;
@@ -445,6 +457,7 @@ function setMode(m) {
 document.getElementById('tabCarrossel').onclick = () => { if (MODE !== 'carrossel') setMode('carrossel'); };
 document.getElementById('tabHistoria').onclick  = () => { if (MODE !== 'historia')  setMode('historia');  };
 document.getElementById('tabFrases').onclick    = () => { if (MODE !== 'frases')    setMode('frases');    };
+document.getElementById('tabSubstack').onclick  = () => { if (MODE !== 'substack')  setMode('substack');  };
 
 // ─── Upload ──────────────────────────────
 (function() {
@@ -483,7 +496,8 @@ function updatePreview() {
     previewEl.innerHTML = `→ <strong>${count + 2}</strong> slides no total (capa + ${count} frases + final)`;
   } else {
     const count = autoSplit(raw, n).length;
-    previewEl.innerHTML = `→ <strong>${count + 2}</strong> slides no total (capa + ${count} conteúdo + final)`;
+    const lbl = MODE === 'substack' ? 'excertos' : 'conteúdo';
+    previewEl.innerHTML = `→ <strong>${count + 2}</strong> slides no total (capa + ${count} ${lbl} + final)`;
   }
 }
 
@@ -1110,6 +1124,150 @@ function makeLastQuotes(cta, handle, total, t) {
   return c;
 }
 
+// ─── Substack: Capa ──────────────────────
+function makeCoverSubstack(title, subtitle, handle, total, t) {
+  const c = mkC(), ctx = c.getContext('2d');
+  const lM = P, maxW = S - P * 2;
+  if (coverImg) {
+    coverFit(ctx, coverImg);
+    const bot = ctx.createLinearGradient(0, S * .2, 0, S);
+    bot.addColorStop(0, 'rgba(0,0,0,0)'); bot.addColorStop(.4, t.ov); bot.addColorStop(1, 'rgba(0,0,0,.94)');
+    ctx.fillStyle = bot; ctx.fillRect(0, 0, S, S);
+    const top = ctx.createLinearGradient(0, 0, 0, S * .3);
+    top.addColorStop(0, 'rgba(0,0,0,.55)'); top.addColorStop(1, 'rgba(0,0,0,0)');
+    ctx.fillStyle = top; ctx.fillRect(0, 0, S, S * .3);
+  } else {
+    gradBg(ctx, t);
+    ctx.save(); ctx.globalAlpha = .028; ctx.font = `900 560px ${FP.tb}`; ctx.fillStyle = t.ac;
+    ctx.textAlign = 'right'; ctx.textBaseline = 'bottom';
+    ctx.fillText('S', S + 40, S * .92); ctx.restore();
+  }
+
+  const newsletter = handle ? (handle.startsWith('@') ? handle.slice(1).toUpperCase() : handle.toUpperCase()) : '';
+  if (newsletter) {
+    ctx.save(); ctx.font = `700 22px ${FP.tb}`; ctx.fillStyle = t.ac; ctx.globalAlpha = .85;
+    ctx.textAlign = 'left'; ctx.textBaseline = 'top'; ctx.fillText(newsletter, lM, P); ctx.restore();
+  }
+  ctx.save(); ctx.font = `500 22px ${FP.tb}`; ctx.fillStyle = t.su; ctx.globalAlpha = .7;
+  ctx.textAlign = 'right'; ctx.textBaseline = 'top'; ctx.fillText('01 / ' + p2(total), S - P, P); ctx.restore();
+
+  ctx.save(); ctx.strokeStyle = t.ac; ctx.lineWidth = 1; ctx.globalAlpha = .28;
+  ctx.beginPath(); ctx.moveTo(lM, P + 46); ctx.lineTo(S - P, P + 46); ctx.stroke(); ctx.restore();
+
+  const titleFS = autoFS(ctx, title || 'Artigo', maxW, 440, 88, 48, '700', `'Playfair Display',Georgia,serif`);
+  const titleLH = titleFS * 1.18;
+  ctx.font = `700 ${titleFS}px 'Playfair Display',Georgia,serif`;
+  const tLines = wrapText(ctx, title || 'Artigo', maxW);
+  const tH = tLines.length * titleLH;
+  const tStartY = S * .44 - tH / 2;
+  ctx.save(); ctx.font = `700 ${titleFS}px 'Playfair Display',Georgia,serif`;
+  ctx.fillStyle = coverImg ? '#fff' : t.tx; ctx.textAlign = 'left'; ctx.textBaseline = 'top';
+  ctx.shadowColor = 'rgba(0,0,0,.3)'; ctx.shadowBlur = 12;
+  tLines.forEach((l, i) => ctx.fillText(l, lM, tStartY + i * titleLH)); ctx.restore();
+
+  if (subtitle) {
+    ctx.save(); ctx.font = `400 30px ${FP.tb}`; ctx.fillStyle = coverImg ? 'rgba(255,255,255,.7)' : t.su;
+    ctx.textAlign = 'left'; ctx.textBaseline = 'top';
+    wrapText(ctx, subtitle, maxW).forEach((l, i) => ctx.fillText(l, lM, tStartY + tH + 24 + i * 40));
+    ctx.restore();
+  }
+
+  ctx.save(); ctx.fillStyle = t.ac; ctx.globalAlpha = .55; ctx.fillRect(lM, S - P - 38, 80, 3); ctx.restore();
+  ctx.save(); ctx.font = `300 20px ${FP.tb}`; ctx.fillStyle = coverImg ? 'rgba(255,255,255,.4)' : t.su; ctx.globalAlpha = .6;
+  ctx.textAlign = 'right'; ctx.textBaseline = 'bottom'; ctx.fillText('desliza para ler  →', S - P, S - P); ctx.restore();
+  return c;
+}
+
+// ─── Substack: Conteúdo ──────────────────
+function makeContentSubstack(text, num, title, handle, total, t) {
+  const c = mkC(), ctx = c.getContext('2d');
+  gradBg(ctx, t);
+  const lM = P, rM = S - P, maxW = S - P * 2;
+
+  if (title) {
+    ctx.save(); ctx.font = `500 21px ${FP.tb}`; ctx.fillStyle = t.su; ctx.globalAlpha = .6;
+    ctx.textAlign = 'left'; ctx.textBaseline = 'top';
+    const tl = wrapText(ctx, title, maxW - 110);
+    ctx.fillText(tl[0] + (tl.length > 1 ? ' …' : ''), lM, P); ctx.restore();
+  }
+  ctx.save(); ctx.font = `600 21px ${FP.tb}`; ctx.fillStyle = t.ac;
+  ctx.textAlign = 'right'; ctx.textBaseline = 'top'; ctx.fillText(p2(num) + ' / ' + p2(total), rM, P); ctx.restore();
+
+  ctx.save(); ctx.strokeStyle = t.ac; ctx.lineWidth = 1; ctx.globalAlpha = .22;
+  ctx.beginPath(); ctx.moveTo(lM, P + 44); ctx.lineTo(rM, P + 44); ctx.stroke(); ctx.restore();
+
+  const bodyTop = P + 66, bodyH = S - bodyTop - P - 62;
+  const fs = text ? autoFS(ctx, text, maxW, bodyH, 46, 24, FP.bw, FP.tb) : 40;
+  const lh = fs * 1.76;
+
+  const lines = [];
+  ctx.font = `${FP.bw} ${fs}px ${FP.tb}`;
+  for (const para of (text || '').split('\n')) {
+    if (!para.trim()) { lines.push(null); continue; }
+    for (const l of wrapText(ctx, para, maxW)) lines.push(l);
+  }
+  ctx.save(); ctx.font = `${FP.bw} ${fs}px ${FP.tb}`; ctx.fillStyle = t.tx;
+  ctx.textAlign = 'left'; ctx.textBaseline = 'top';
+  let ty = bodyTop;
+  for (const line of lines) {
+    if (ty > S - P - 82) break;
+    if (line === null) { ty += lh * .45; continue; }
+    ctx.fillText(line, lM, ty); ty += lh;
+  }
+  ctx.restore();
+
+  ctx.save(); ctx.strokeStyle = t.ac; ctx.lineWidth = 1; ctx.globalAlpha = .2;
+  ctx.beginPath(); ctx.moveTo(lM, S - P - 36); ctx.lineTo(rM, S - P - 36); ctx.stroke(); ctx.restore();
+
+  if (handle) {
+    const h = handle.startsWith('@') ? handle : '@' + handle;
+    ctx.save(); ctx.font = `400 21px ${FP.tb}`; ctx.fillStyle = t.su; ctx.globalAlpha = .5;
+    ctx.textAlign = 'left'; ctx.textBaseline = 'bottom'; ctx.fillText(h, lM, S - P); ctx.restore();
+  }
+  return c;
+}
+
+// ─── Substack: Final ─────────────────────
+function makeLastSubstack(cta, handle, total, t) {
+  const c = mkC(), ctx = c.getContext('2d');
+  gradBg(ctx, t);
+  const lM = P, rM = S - P, maxW = S - P * 2, midY = S * .46;
+
+  ctx.save(); ctx.font = `600 22px ${FP.tb}`; ctx.fillStyle = t.ac;
+  ctx.textAlign = 'right'; ctx.textBaseline = 'top'; ctx.fillText(p2(total) + ' / ' + p2(total), rM, P); ctx.restore();
+
+  ctx.save(); ctx.strokeStyle = t.ac; ctx.lineWidth = 1.5; ctx.globalAlpha = .3;
+  ctx.beginPath(); ctx.moveTo(lM, P + 46); ctx.lineTo(rM, P + 46); ctx.stroke(); ctx.restore();
+
+  if (cta) {
+    const fs = autoFS(ctx, cta, maxW, 440, 58, 26, FP.bw, FP.tb);
+    const lh = fs * 1.72;
+    const ctaLines = [];
+    ctx.font = `${FP.bw} ${fs}px ${FP.tb}`;
+    for (const l of wrapText(ctx, cta, maxW)) ctaLines.push(l);
+    const ctaH = ctaLines.length * lh;
+    ctx.save(); ctx.font = `${FP.bw} ${fs}px ${FP.tb}`; ctx.fillStyle = t.tx;
+    ctx.textAlign = 'left'; ctx.textBaseline = 'top';
+    let ty = midY - ctaH / 2;
+    ctaLines.forEach(l => { ctx.fillText(l, lM, ty); ty += lh; }); ctx.restore();
+  } else {
+    ctx.save(); ctx.font = `700 64px 'Playfair Display',Georgia,serif`; ctx.fillStyle = t.tx;
+    ctx.textAlign = 'left'; ctx.textBaseline = 'middle'; ctx.fillText('Continua no', lM, midY - 46); ctx.restore();
+    ctx.save(); ctx.font = `700 64px 'Playfair Display',Georgia,serif`; ctx.fillStyle = t.ac;
+    ctx.textAlign = 'left'; ctx.textBaseline = 'middle'; ctx.fillText('Substack.', lM, midY + 34); ctx.restore();
+  }
+
+  ctx.save(); ctx.strokeStyle = t.ac; ctx.lineWidth = 1; ctx.globalAlpha = .22;
+  ctx.beginPath(); ctx.moveTo(lM, S - P - 54); ctx.lineTo(rM, S - P - 54); ctx.stroke(); ctx.restore();
+
+  if (handle) {
+    const h = handle.startsWith('@') ? handle : '@' + handle;
+    ctx.save(); ctx.font = `600 34px ${FP.tb}`; ctx.fillStyle = t.ac;
+    ctx.textAlign = 'left'; ctx.textBaseline = 'bottom'; ctx.fillText(h, lM, S - P - 10); ctx.restore();
+  }
+  return c;
+}
+
 // ─── Renderizar card ─────────────────────
 function renderCard(cv, i, label) {
   const card   = document.createElement('div'); card.className = 'scard';
@@ -1151,10 +1309,11 @@ async function generate() {
   const cta    = document.getElementById('ctaIn').value.trim();
   const handle = document.getElementById('handleIn').value.trim();
   const maxW   = parseInt(slider.value, 10);
-  const isStory  = MODE === 'historia';
-  const isFrases = MODE === 'frases';
-  const themes   = isStory ? STORY_THEMES : THEMES;
-  const t        = themes[TK] || themes[Object.keys(themes)[0]];
+  const isStory    = MODE === 'historia';
+  const isFrases   = MODE === 'frases';
+  const isSubstack = MODE === 'substack';
+  const themes     = isStory ? STORY_THEMES : isSubstack ? SUBSTACK_THEMES : THEMES;
+  const t          = themes[TK] || themes[Object.keys(themes)[0]];
   const globalAuthor = isFrases ? (document.getElementById('authorIn').value.trim()) : '';
 
   if (!title && !raw) { alert('Preenche o título ou o texto.'); return; }
@@ -1192,6 +1351,13 @@ async function generate() {
     genSlides.push(makeCoverStory(title, sub, handle, total, t));
     blocks.forEach((b, i) => genSlides.push(makeContentStory(b, i + 2, title, handle, total, t)));
     genSlides.push(makeLastStory(cta, handle, total, t));
+  } else if (isSubstack) {
+    slideData.push({ type:'cover',   title, subtitle:sub, handle, total, t, mode:'substack' });
+    blocks.forEach((b, i) => slideData.push({ type:'content', text:b, num:i+2, title, handle, total, t, mode:'substack' }));
+    slideData.push({ type:'last', cta, handle, total, t, mode:'substack' });
+    genSlides.push(makeCoverSubstack(title, sub, handle, total, t));
+    blocks.forEach((b, i) => genSlides.push(makeContentSubstack(b, i + 2, title, handle, total, t)));
+    genSlides.push(makeLastSubstack(cta, handle, total, t));
   } else {
     slideData.push({ type:'cover',   title, subtitle:sub, handle, total, t, mode:'carrossel' });
     blocks.forEach((b, i) => slideData.push({ type:'content', text:b, num:i+2, title, handle, total, t, mode:'carrossel' }));
@@ -1223,30 +1389,31 @@ let editIdx = -1;
 function openEdit(i) {
   editIdx = i;
   const d   = slideData[i];
-  const isStory  = d.mode === 'historia';
-  const isFrases = d.mode === 'frases';
+  const isStory    = d.mode === 'historia';
+  const isFrases   = d.mode === 'frases';
+  const isSubstack = d.mode === 'substack';
   const lbl = i === 0
-    ? (isStory ? 'Editar Capa da História' : isFrases ? 'Editar Capa da Coleção' : 'Editar Capa')
+    ? (isStory ? 'Editar Capa da História' : isFrases ? 'Editar Capa da Coleção' : isSubstack ? 'Editar Capa do Artigo' : 'Editar Capa')
     : i === slideData.length - 1
-      ? (isStory ? 'Editar Fecho' : isFrases ? 'Editar Slide Final' : 'Editar Slide Final')
-      : (isFrases ? `Editar Frase ${i + 1}` : `Editar Slide ${i + 1}`);
+      ? (isStory ? 'Editar Fecho' : 'Editar Slide Final')
+      : (isFrases ? `Editar Frase ${i + 1}` : isSubstack ? `Editar Excerto ${i + 1}` : `Editar Slide ${i + 1}`);
   document.getElementById('editLabel').textContent = lbl;
 
   const fields = document.getElementById('editFields');
   fields.innerHTML = '';
 
   if (d.type === 'cover') {
-    const titleLbl = isStory ? 'Título da história' : isFrases ? 'Título da coleção' : 'Título';
-    const subLbl   = isStory ? 'Epígrafe / subtítulo' : 'Subtítulo';
+    const titleLbl = isStory ? 'Título da história' : isFrases ? 'Título da coleção' : isSubstack ? 'Título do artigo' : 'Título';
+    const subLbl   = isStory ? 'Epígrafe / subtítulo' : isSubstack ? 'Subtítulo / edição' : 'Subtítulo';
     fields.innerHTML = `
       <div><label>${titleLbl}</label><input type="text" id="ef_title" value="${escH(d.title)}"></div>
       <div><label>${subLbl}</label><input type="text" id="ef_sub" value="${escH(d.subtitle || '')}"></div>`;
   } else if (d.type === 'content') {
-    const textLbl = isStory ? 'Texto narrativo do slide' : isFrases ? 'Frase' : 'Texto do slide';
+    const textLbl = isStory ? 'Texto narrativo do slide' : isFrases ? 'Frase' : isSubstack ? 'Excerto do artigo' : 'Texto do slide';
     fields.innerHTML = `<div><label>${textLbl}</label><textarea id="ef_text" rows="5">${escH(d.text)}</textarea></div>`
       + (isFrases ? `<div><label>Autor / Fonte <span class="opt-lbl">(opcional)</span></label><input type="text" id="ef_author" value="${escH(d.author || '')}"></div>` : '');
   } else {
-    const ctaLbl = isStory ? 'Fecho narrativo (deixa vazio para "Fim.")' : isFrases ? 'Call-to-action (deixa vazio para "Guarda estas frases.")' : 'Call-to-action (deixa vazio para design padrão)';
+    const ctaLbl = isStory ? 'Fecho narrativo (deixa vazio para "Fim.")' : isFrases ? 'Call-to-action (deixa vazio para "Guarda estas frases.")' : isSubstack ? 'Call-to-action (deixa vazio para "Continua no Substack.")' : 'Call-to-action (deixa vazio para design padrão)';
     fields.innerHTML = `<div><label>${ctaLbl}</label><textarea id="ef_cta" rows="4">${escH(d.cta || '')}</textarea></div>`;
   }
 
@@ -1256,26 +1423,30 @@ function openEdit(i) {
 function applyEdit() {
   const d = slideData[editIdx];
   const t = d.t;
-  const isStory  = d.mode === 'historia';
-  const isFrases = d.mode === 'frases';
+  const isStory    = d.mode === 'historia';
+  const isFrases   = d.mode === 'frases';
+  const isSubstack = d.mode === 'substack';
 
   if (d.type === 'cover') {
     d.title    = document.getElementById('ef_title').value.trim();
     d.subtitle = document.getElementById('ef_sub').value.trim();
-    genSlides[editIdx] = isStory  ? makeCoverStory(d.title, d.subtitle, d.handle, d.total, t)
-                       : isFrases ? makeCoverQuotes(d.title, d.subtitle, d.handle, d.total, t)
-                       :            makeCover(d.title, d.subtitle, d.handle, d.total, t);
+    genSlides[editIdx] = isStory    ? makeCoverStory(d.title, d.subtitle, d.handle, d.total, t)
+                       : isFrases   ? makeCoverQuotes(d.title, d.subtitle, d.handle, d.total, t)
+                       : isSubstack ? makeCoverSubstack(d.title, d.subtitle, d.handle, d.total, t)
+                       :              makeCover(d.title, d.subtitle, d.handle, d.total, t);
   } else if (d.type === 'content') {
     d.text = document.getElementById('ef_text').value.trim();
     if (isFrases) d.author = (document.getElementById('ef_author')?.value || '').trim();
-    genSlides[editIdx] = isStory  ? makeContentStory(d.text, d.num, d.title, d.handle, d.total, t)
-                       : isFrases ? makeContentQuote(d.text, d.author, d.num, d.total, t)
-                       :            makeContent(d.text, d.num, d.title, d.handle, d.total, t);
+    genSlides[editIdx] = isStory    ? makeContentStory(d.text, d.num, d.title, d.handle, d.total, t)
+                       : isFrases   ? makeContentQuote(d.text, d.author, d.num, d.total, t)
+                       : isSubstack ? makeContentSubstack(d.text, d.num, d.title, d.handle, d.total, t)
+                       :              makeContent(d.text, d.num, d.title, d.handle, d.total, t);
   } else {
     d.cta = document.getElementById('ef_cta').value.trim();
-    genSlides[editIdx] = isStory  ? makeLastStory(d.cta, d.handle, d.total, t)
-                       : isFrases ? makeLastQuotes(d.cta, d.handle, d.total, t)
-                       :            makeLast(d.cta, d.handle, d.total, t);
+    genSlides[editIdx] = isStory    ? makeLastStory(d.cta, d.handle, d.total, t)
+                       : isFrases   ? makeLastQuotes(d.cta, d.handle, d.total, t)
+                       : isSubstack ? makeLastSubstack(d.cta, d.handle, d.total, t)
+                       :              makeLast(d.cta, d.handle, d.total, t);
   }
 
   // Atualiza thumbnail
