@@ -215,7 +215,7 @@
 <header class="hdr">
   <div class="hdr-logo">🎠</div>
   <div>
-    <h1>Central Carrossel Manual Instagram</h1>
+    <h1>Central Carrossel Manual</h1>
     <small>Cola o texto — os slides são criados automaticamente</small>
   </div>
 </header>
@@ -230,6 +230,7 @@
       <button class="mode-tab" id="tabHistoria">📖 História</button>
       <button class="mode-tab" id="tabFrases">✦ Frases</button>
       <button class="mode-tab" id="tabSubstack">📰 Substack</button>
+      <button class="mode-tab" id="tabThreads">🧵 Threads</button>
     </div>
 
     <!-- CONTEÚDO -->
@@ -278,6 +279,11 @@
       <div class="fld" id="fldNewsletter" style="display:none">
         <label>Nome da newsletter <span class="opt-lbl">(aparece no topo dos slides)</span></label>
         <input type="text" id="newsletterIn" placeholder="Ex: Reflexões Diárias, O Miradouro…">
+      </div>
+
+      <div class="fld" id="fldThreadTopic" style="display:none">
+        <label>Tópico / Série <span class="opt-lbl">(aparece no topo dos slides)</span></label>
+        <input type="text" id="threadTopicIn" placeholder="Ex: Produtividade, Empreendedorismo…">
       </div>
 
       <div class="fld">
@@ -392,6 +398,15 @@ const STORY_THEMES = {
   crepusc:  { n:'Crepusc.', i:'🌅', g1:'#100618', g2:'#180b22', ac:'#d09040', tx:'#f8efd8', su:'#a07030', ov:'rgba(16,6,24,.74)',nb:'rgba(208,144,64,.04)'  }
 };
 
+const THREADS_THEMES = {
+  onyx:    { n:'Onyx',    i:'⬛', g1:'#101010', g2:'#181818', ac:'#f5f5f5', tx:'#f5f5f5', su:'#888888', ov:'rgba(16,16,16,.82)',     nb:'rgba(245,245,245,.04)' },
+  paper:   { n:'Paper',   i:'🤍', g1:'#f8f6f2', g2:'#ede9e3', ac:'#1a1814', tx:'#1a1814', su:'#888070', ov:'rgba(248,246,242,.7)',   nb:'rgba(26,24,20,.03)'   },
+  indigo:  { n:'Índigo',  i:'🔵', g1:'#050818', g2:'#0a0e28', ac:'#818cf8', tx:'#e0e4ff', su:'#5a62b8', ov:'rgba(5,8,24,.8)',        nb:'rgba(129,140,248,.04)' },
+  ember:   { n:'Brasa',   i:'🔥', g1:'#120704', g2:'#1e0c06', ac:'#f97316', tx:'#fff0e8', su:'#b85020', ov:'rgba(18,7,4,.78)',       nb:'rgba(249,115,22,.04)'  },
+  matcha:  { n:'Matcha',  i:'🍵', g1:'#080e08', g2:'#0e180e', ac:'#86efac', tx:'#e8f8ec', su:'#4a8858', ov:'rgba(8,14,8,.76)',       nb:'rgba(134,239,172,.04)' },
+  chalk:   { n:'Chalk',   i:'🩶', g1:'#1a1a1a', g2:'#242424', ac:'#a3a3a3', tx:'#f4f4f4', su:'#707070', ov:'rgba(26,26,26,.8)',      nb:'rgba(163,163,163,.04)' }
+};
+
 const SUBSTACK_THEMES = {
   typeset:   { n:'Typeset',  i:'📄', g1:'#f8f5f0', g2:'#ede8e0', ac:'#1a1510', tx:'#1a1510', su:'#7a6a58', ov:'rgba(248,245,240,.6)', nb:'rgba(26,21,16,.03)'   },
   pressroom: { n:'Pressroom',i:'🖨️', g1:'#121212', g2:'#1e1e1e', ac:'#f0f0f0', tx:'#f5f5f5', su:'#888888', ov:'rgba(18,18,18,.75)',   nb:'rgba(240,240,240,.03)' },
@@ -415,7 +430,7 @@ let coverImg = null, genSlides = [], slideData = [], mIdx = 0;
 function buildThemeGrid() {
   const tg = document.getElementById('themeGrid');
   tg.innerHTML = '';
-  const themes = MODE === 'historia' ? STORY_THEMES : MODE === 'substack' ? SUBSTACK_THEMES : THEMES;
+  const themes = MODE === 'historia' ? STORY_THEMES : MODE === 'substack' ? SUBSTACK_THEMES : MODE === 'threads' ? THREADS_THEMES : THEMES;
   if (!themes[TK]) TK = Object.keys(themes)[0];
   for (const [k, t] of Object.entries(themes)) {
     const b = document.createElement('button');
@@ -438,14 +453,17 @@ function setMode(m) {
   document.getElementById('tabHistoria').classList.toggle('on',  m === 'historia');
   document.getElementById('tabFrases').classList.toggle('on',    m === 'frases');
   document.getElementById('tabSubstack').classList.toggle('on',  m === 'substack');
-  document.getElementById('secSlider').style.display    = m === 'frases' ? 'none' : '';
-  document.getElementById('fldAuthor').style.display    = m === 'frases' ? 'flex' : 'none';
-  document.getElementById('fldNewsletter').style.display = m === 'substack' ? 'flex' : 'none';
+  document.getElementById('tabThreads').classList.toggle('on',   m === 'threads');
+  document.getElementById('secSlider').style.display      = m === 'frases' ? 'none' : '';
+  document.getElementById('fldAuthor').style.display      = m === 'frases'  ? 'flex' : 'none';
+  document.getElementById('fldNewsletter').style.display  = m === 'substack' ? 'flex' : 'none';
+  document.getElementById('fldThreadTopic').style.display = m === 'threads'  ? 'flex' : 'none';
   const labels = {
     carrossel: { btn:'✨  Gerar Carrossel', content:'Texto completo', cta:'Call-to-action no slide final <span class="opt-lbl">(opcional)</span>', title:'Título', sub:'Subtítulo <span class="opt-lbl">(opcional)</span>', ph:'Cola aqui todo o texto. A ferramenta divide automaticamente em slides — não precisas de fazer nada.', words:30 },
     historia:  { btn:'✨  Gerar História',  content:'Texto da história', cta:'Fecho narrativo <span class="opt-lbl">(opcional)</span>', title:'Título da história', sub:'Epígrafe / subtítulo <span class="opt-lbl">(opcional)</span>', ph:'Escreve ou cola aqui a tua história. Será dividida automaticamente em slides narrativos.', words:40 },
     frases:    { btn:'✨  Gerar Frases',    content:'Frases (uma por parágrafo)', cta:'Call-to-action no slide final <span class="opt-lbl">(opcional)</span>', title:'Título da coleção', sub:'Subtítulo <span class="opt-lbl">(opcional)</span>', ph:'Escreve uma frase por parágrafo.\nPodes adicionar o autor na linha seguinte começando com —\n\nEx:\nA vida é bela.\n— Autor', words:30 },
-    substack:  { btn:'✨  Gerar Post',      content:'Texto do artigo / post', cta:'Call-to-action <span class="opt-lbl">(ex: "Lê o artigo completo no Substack")</span>', title:'Título do artigo', sub:'Subtítulo / edição <span class="opt-lbl">(opcional)</span>', ph:'Cola aqui o texto do artigo Substack. Será dividido automaticamente em slides com estética de newsletter.', words:40 }
+    substack:  { btn:'✨  Gerar Post',      content:'Texto do artigo / post', cta:'Call-to-action <span class="opt-lbl">(ex: "Lê o artigo completo no Substack")</span>', title:'Título do artigo', sub:'Subtítulo / edição <span class="opt-lbl">(opcional)</span>', ph:'Cola aqui o texto do artigo Substack. Será dividido automaticamente em slides com estética de newsletter.', words:40 },
+    threads:   { btn:'🧵  Gerar Thread',    content:'Texto da thread', cta:'Call-to-action <span class="opt-lbl">(ex: "Segue para mais threads")</span>', title:'Título / gancho', sub:'Subtítulo <span class="opt-lbl">(opcional)</span>', ph:'Cola aqui o texto. Cada post da thread terá até ~50 palavras — direto e impactante, como no Threads.', words:50 }
   };
   const l = labels[m];
   document.getElementById('wordsSlider').value = l.words;
@@ -464,6 +482,7 @@ document.getElementById('tabCarrossel').onclick = () => { if (MODE !== 'carrosse
 document.getElementById('tabHistoria').onclick  = () => { if (MODE !== 'historia')  setMode('historia');  };
 document.getElementById('tabFrases').onclick    = () => { if (MODE !== 'frases')    setMode('frases');    };
 document.getElementById('tabSubstack').onclick  = () => { if (MODE !== 'substack')  setMode('substack');  };
+document.getElementById('tabThreads').onclick   = () => { if (MODE !== 'threads')   setMode('threads');   };
 
 // ─── Upload ──────────────────────────────
 (function() {
@@ -502,7 +521,7 @@ function updatePreview() {
     previewEl.innerHTML = `→ <strong>${count + 2}</strong> slides no total (capa + ${count} frases + final)`;
   } else {
     const count = autoSplit(raw, n).length;
-    const lbl = MODE === 'substack' ? 'excertos' : 'conteúdo';
+    const lbl = MODE === 'substack' ? 'excertos' : MODE === 'threads' ? 'posts' : 'conteúdo';
     previewEl.innerHTML = `→ <strong>${count + 2}</strong> slides no total (capa + ${count} ${lbl} + final)`;
   }
 }
@@ -1275,6 +1294,167 @@ function makeLastSubstack(cta, handle, newsletter, total, t) {
   return c;
 }
 
+// ─── Threads: helpers ────────────────────
+function drawThreadsTopBar(ctx, topic, num, total, t) {
+  // Left: topic or 🧵
+  const label = topic || '🧵 Threads';
+  ctx.save(); ctx.font = `700 26px ${FP.tb}`; ctx.fillStyle = t.ac; ctx.globalAlpha = .72;
+  ctx.textAlign = 'left'; ctx.textBaseline = 'top'; ctx.fillText(label, P, P); ctx.restore();
+  // Right: num / total
+  ctx.save(); ctx.font = `600 26px ${FP.tb}`; ctx.fillStyle = t.su;
+  ctx.textAlign = 'right'; ctx.textBaseline = 'top'; ctx.fillText(p2(num) + ' / ' + p2(total), S - P, P); ctx.restore();
+  // Bottom separator line
+  ctx.save(); ctx.strokeStyle = t.ac; ctx.lineWidth = 1; ctx.globalAlpha = .14;
+  ctx.beginPath(); ctx.moveTo(P, P + 52); ctx.lineTo(S - P, P + 52); ctx.stroke(); ctx.restore();
+}
+
+// ─── Threads: Capa ───────────────────────
+function makeCoverThreads(title, subtitle, handle, topic, total, t) {
+  const c = mkC(), ctx = c.getContext('2d');
+  if (coverImg) {
+    coverFit(ctx, coverImg);
+    const bot = ctx.createLinearGradient(0, S * .2, 0, S);
+    bot.addColorStop(0, 'rgba(0,0,0,0)'); bot.addColorStop(.45, t.ov); bot.addColorStop(1, 'rgba(0,0,0,.95)');
+    ctx.fillStyle = bot; ctx.fillRect(0, 0, S, S);
+    const top = ctx.createLinearGradient(0, 0, 0, S * .22);
+    top.addColorStop(0, 'rgba(0,0,0,.5)'); top.addColorStop(1, 'rgba(0,0,0,0)');
+    ctx.fillStyle = top; ctx.fillRect(0, 0, S, S * .22);
+  } else {
+    gradBg(ctx, t);
+    // Subtle large "T" watermark
+    ctx.save(); ctx.globalAlpha = .03; ctx.font = `900 700px ${FP.tb}`; ctx.fillStyle = t.ac;
+    ctx.textAlign = 'center'; ctx.textBaseline = 'middle'; ctx.fillText('T', S * .5, S * .5); ctx.restore();
+  }
+
+  // Topic label top-left
+  const topLabel = topic || '🧵 Thread';
+  ctx.save(); ctx.font = `700 26px ${FP.tb}`; ctx.fillStyle = coverImg ? 'rgba(255,255,255,.72)' : t.ac; ctx.globalAlpha = .8;
+  ctx.textAlign = 'left'; ctx.textBaseline = 'top'; ctx.fillText(topLabel, P, P); ctx.restore();
+  ctx.save(); ctx.font = `600 26px ${FP.tb}`; ctx.fillStyle = coverImg ? 'rgba(255,255,255,.55)' : t.su;
+  ctx.textAlign = 'right'; ctx.textBaseline = 'top'; ctx.fillText('01 / ' + p2(total), S - P, P); ctx.restore();
+
+  // Accent bar
+  let y = S - P;
+  ctx.save(); ctx.font = `300 20px ${FP.tb}`; ctx.fillStyle = 'rgba(255,255,255,.36)';
+  ctx.textAlign = 'right'; ctx.textBaseline = 'bottom'; ctx.fillText('desliza para ler  →', S - P, y); ctx.restore(); y -= 44;
+
+  if (handle) {
+    const h = handle.startsWith('@') ? handle : '@' + handle;
+    ctx.save(); ctx.font = `500 30px ${FP.tb}`; ctx.fillStyle = coverImg ? 'rgba(255,255,255,.6)' : t.su;
+    ctx.textAlign = 'left'; ctx.textBaseline = 'bottom'; ctx.fillText(h, P, y); ctx.restore(); y -= 42;
+  }
+
+  if (subtitle) {
+    ctx.save(); ctx.font = `400 34px ${FP.tb}`; ctx.fillStyle = coverImg ? 'rgba(255,255,255,.68)' : t.su;
+    ctx.textAlign = 'left'; ctx.textBaseline = 'bottom'; ctx.shadowColor = 'rgba(0,0,0,.4)'; ctx.shadowBlur = 10;
+    const sl = wrapText(ctx, subtitle, S - P * 2);
+    y -= (sl.length - 1) * 42;
+    sl.forEach((l, i) => ctx.fillText(l, P, y + i * 42));
+    y -= 42 + 16; ctx.restore();
+  }
+
+  // Title — big bold Inter
+  ctx.save(); ctx.font = `900 78px ${FP.tb}`; ctx.fillStyle = coverImg ? '#fff' : t.tx;
+  ctx.textAlign = 'left'; ctx.textBaseline = 'bottom';
+  ctx.shadowColor = 'rgba(0,0,0,.6)'; ctx.shadowBlur = 24;
+  const tl = wrapText(ctx, title || 'Thread', S - P * 2);
+  y -= (tl.length - 1) * 92;
+  tl.forEach((l, i) => ctx.fillText(l, P, y + i * 92));
+  y -= 92 + 20; ctx.restore();
+
+  // Accent line below (above title start)
+  ctx.save(); ctx.fillStyle = t.ac; ctx.fillRect(P, y - 2, 80, 5); ctx.restore();
+
+  return c;
+}
+
+// ─── Threads: Conteúdo ───────────────────
+function makeContentThreads(text, num, title, handle, topic, total, t) {
+  const c = mkC(), ctx = c.getContext('2d');
+  gradBg(ctx, t);
+
+  // Faded large post number background
+  ctx.save(); ctx.font = `900 320px ${FP.tb}`; ctx.fillStyle = t.nb;
+  ctx.textAlign = 'right'; ctx.textBaseline = 'middle'; ctx.fillText(p2(num), S - P + 20, S * .52); ctx.restore();
+
+  // Top vertical accent bar
+  ctx.save(); ctx.fillStyle = t.ac; ctx.fillRect(P, P + 68, 4, 100); ctx.restore();
+
+  drawThreadsTopBar(ctx, topic, num, total, t);
+
+  // Body text — large, bold, centered vertically
+  const maxW = S - P * 2.5, contentH = 620;
+  const fs = text ? autoFS(ctx, text, maxW, contentH, 58, 28, '600', FP.tb) : 50;
+  const lh = fs * 1.54;
+  ctx.save(); ctx.font = `600 ${fs}px ${FP.tb}`; ctx.fillStyle = t.tx;
+  ctx.textAlign = 'left'; ctx.textBaseline = 'alphabetic';
+  // Align left for thread post feel, with left margin
+  const lines = [];
+  for (const para of (text || '').split('\n')) {
+    if (!para.trim()) { lines.push(null); continue; }
+    for (const l of wrapText(ctx, para, maxW)) lines.push(l);
+  }
+  const totalH = lines.reduce((a, r) => a + (r === null ? lh * .45 : lh), 0);
+  let ty = S * .5 - totalH / 2;
+  for (const row of lines) {
+    if (row === null) { ty += lh * .45; continue; }
+    ctx.fillText(row, P + 16, ty + lh * .82); ty += lh;
+  }
+  ctx.restore();
+
+  // Handle at bottom
+  if (handle) {
+    const h = handle.startsWith('@') ? handle : '@' + handle;
+    ctx.save(); ctx.font = `500 24px ${FP.tb}`; ctx.fillStyle = t.su; ctx.globalAlpha = .5;
+    ctx.textAlign = 'left'; ctx.textBaseline = 'bottom'; ctx.fillText(h, P, S - P); ctx.restore();
+  }
+
+  return c;
+}
+
+// ─── Threads: Final ──────────────────────
+function makeLastThreads(cta, handle, topic, total, t) {
+  const c = mkC(), ctx = c.getContext('2d');
+  gradBg(ctx, t);
+
+  drawThreadsTopBar(ctx, topic, total, total, t);
+
+  const cx = S / 2;
+
+  // Large 🧵 icon centered (as decorative element)
+  ctx.save(); ctx.font = `900 120px ${FP.tb}`; ctx.fillStyle = t.ac; ctx.globalAlpha = .08;
+  ctx.textAlign = 'center'; ctx.textBaseline = 'middle'; ctx.fillText('🧵', cx, S * .35); ctx.restore();
+
+  if (cta) {
+    const fs = autoFS(ctx, cta, S - P * 2, 460, 66, 30, '700', FP.tb);
+    const lh = fs * 1.48;
+    ctx.save(); ctx.font = `700 ${fs}px ${FP.tb}`; ctx.fillStyle = t.tx;
+    ctx.textAlign = 'center'; ctx.textBaseline = 'alphabetic';
+    drawCentered(ctx, cta, cx, S * .48, S - P * 2, lh); ctx.restore();
+  } else {
+    ctx.save(); ctx.font = `900 54px ${FP.tb}`; ctx.fillStyle = t.tx;
+    ctx.textAlign = 'center'; ctx.textBaseline = 'middle'; ctx.fillText('Gostaste da thread?', cx, S * .38); ctx.restore();
+    const actions = ['♥  Deixa um Like', '🔁  Faz Re-Thread', '◎  Segue para mais'];
+    ctx.save(); ctx.font = `400 34px ${FP.tb}`; ctx.fillStyle = t.su;
+    ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
+    actions.forEach((a, i) => ctx.fillText(a, cx, S * .52 + i * 64)); ctx.restore();
+  }
+
+  // Gradient divider line
+  const dg = ctx.createLinearGradient(cx - 100, 0, cx + 100, 0);
+  dg.addColorStop(0, 'transparent'); dg.addColorStop(.5, t.ac); dg.addColorStop(1, 'transparent');
+  ctx.save(); ctx.strokeStyle = dg; ctx.lineWidth = 1.5; ctx.globalAlpha = .4;
+  ctx.beginPath(); ctx.moveTo(cx - 100, S * .72); ctx.lineTo(cx + 100, S * .72); ctx.stroke(); ctx.restore();
+
+  if (handle) {
+    const h = handle.startsWith('@') ? handle : '@' + handle;
+    ctx.save(); ctx.font = `700 38px ${FP.tb}`; ctx.fillStyle = t.ac;
+    ctx.textAlign = 'center'; ctx.textBaseline = 'middle'; ctx.fillText(h, cx, S * .8); ctx.restore();
+  }
+
+  return c;
+}
+
 // ─── Renderizar card ─────────────────────
 function renderCard(cv, i, label) {
   const card   = document.createElement('div'); card.className = 'scard';
@@ -1319,10 +1499,12 @@ async function generate() {
   const isStory    = MODE === 'historia';
   const isFrases   = MODE === 'frases';
   const isSubstack = MODE === 'substack';
-  const themes     = isStory ? STORY_THEMES : isSubstack ? SUBSTACK_THEMES : THEMES;
+  const isThreads  = MODE === 'threads';
+  const themes     = isStory ? STORY_THEMES : isSubstack ? SUBSTACK_THEMES : isThreads ? THREADS_THEMES : THEMES;
   const t          = themes[TK] || themes[Object.keys(themes)[0]];
-  const globalAuthor   = isFrases   ? (document.getElementById('authorIn').value.trim())   : '';
+  const globalAuthor   = isFrases   ? (document.getElementById('authorIn').value.trim())    : '';
   const newsletterName = isSubstack ? (document.getElementById('newsletterIn').value.trim()) : '';
+  const threadTopic    = isThreads  ? (document.getElementById('threadTopicIn').value.trim()) : '';
 
   if (!title && !raw) { alert('Preenche o título ou o texto.'); return; }
 
@@ -1345,7 +1527,14 @@ async function generate() {
   await document.fonts.ready;
   await new Promise(r => setTimeout(r, 60));
 
-  if (isFrases) {
+  if (isThreads) {
+    slideData.push({ type:'cover',   title, subtitle:sub, handle, topic:threadTopic, total, t, mode:'threads' });
+    blocks.forEach((b, i) => slideData.push({ type:'content', text:b, num:i+2, title, handle, topic:threadTopic, total, t, mode:'threads' }));
+    slideData.push({ type:'last', cta, handle, topic:threadTopic, total, t, mode:'threads' });
+    genSlides.push(makeCoverThreads(title, sub, handle, threadTopic, total, t));
+    blocks.forEach((b, i) => genSlides.push(makeContentThreads(b, i + 2, title, handle, threadTopic, total, t)));
+    genSlides.push(makeLastThreads(cta, handle, threadTopic, total, t));
+  } else if (isFrases) {
     slideData.push({ type:'cover', title, subtitle:sub, handle, total, t, mode:'frases' });
     quotes.forEach((q, i) => slideData.push({ type:'content', text:q.text, author: q.author || globalAuthor, num:i+2, title, handle, total, t, mode:'frases' }));
     slideData.push({ type:'last', cta, handle, total, t, mode:'frases' });
@@ -1400,28 +1589,29 @@ function openEdit(i) {
   const isStory    = d.mode === 'historia';
   const isFrases   = d.mode === 'frases';
   const isSubstack = d.mode === 'substack';
+  const isThreads  = d.mode === 'threads';
   const lbl = i === 0
-    ? (isStory ? 'Editar Capa da História' : isFrases ? 'Editar Capa da Coleção' : isSubstack ? 'Editar Capa do Artigo' : 'Editar Capa')
+    ? (isStory ? 'Editar Capa da História' : isFrases ? 'Editar Capa da Coleção' : isSubstack ? 'Editar Capa do Artigo' : isThreads ? 'Editar Capa da Thread' : 'Editar Capa')
     : i === slideData.length - 1
       ? (isStory ? 'Editar Fecho' : 'Editar Slide Final')
-      : (isFrases ? `Editar Frase ${i + 1}` : isSubstack ? `Editar Excerto ${i + 1}` : `Editar Slide ${i + 1}`);
+      : (isFrases ? `Editar Frase ${i + 1}` : isSubstack ? `Editar Excerto ${i + 1}` : isThreads ? `Editar Post ${i + 1}` : `Editar Slide ${i + 1}`);
   document.getElementById('editLabel').textContent = lbl;
 
   const fields = document.getElementById('editFields');
   fields.innerHTML = '';
 
   if (d.type === 'cover') {
-    const titleLbl = isStory ? 'Título da história' : isFrases ? 'Título da coleção' : isSubstack ? 'Título do artigo' : 'Título';
+    const titleLbl = isStory ? 'Título da história' : isFrases ? 'Título da coleção' : isSubstack ? 'Título do artigo' : isThreads ? 'Título / gancho' : 'Título';
     const subLbl   = isStory ? 'Epígrafe / subtítulo' : isSubstack ? 'Subtítulo / edição' : 'Subtítulo';
     fields.innerHTML = `
       <div><label>${titleLbl}</label><input type="text" id="ef_title" value="${escH(d.title)}"></div>
       <div><label>${subLbl}</label><input type="text" id="ef_sub" value="${escH(d.subtitle || '')}"></div>`;
   } else if (d.type === 'content') {
-    const textLbl = isStory ? 'Texto narrativo do slide' : isFrases ? 'Frase' : isSubstack ? 'Excerto do artigo' : 'Texto do slide';
+    const textLbl = isStory ? 'Texto narrativo do slide' : isFrases ? 'Frase' : isSubstack ? 'Excerto do artigo' : isThreads ? 'Texto do post' : 'Texto do slide';
     fields.innerHTML = `<div><label>${textLbl}</label><textarea id="ef_text" rows="5">${escH(d.text)}</textarea></div>`
       + (isFrases ? `<div><label>Autor / Fonte <span class="opt-lbl">(opcional)</span></label><input type="text" id="ef_author" value="${escH(d.author || '')}"></div>` : '');
   } else {
-    const ctaLbl = isStory ? 'Fecho narrativo (deixa vazio para "Fim.")' : isFrases ? 'Call-to-action (deixa vazio para "Guarda estas frases.")' : isSubstack ? 'Call-to-action (deixa vazio para "Continua no Substack.")' : 'Call-to-action (deixa vazio para design padrão)';
+    const ctaLbl = isStory ? 'Fecho narrativo (deixa vazio para "Fim.")' : isFrases ? 'Call-to-action (deixa vazio para "Guarda estas frases.")' : isSubstack ? 'Call-to-action (deixa vazio para "Continua no Substack.")' : isThreads ? 'Call-to-action (deixa vazio para design padrão)' : 'Call-to-action (deixa vazio para design padrão)';
     fields.innerHTML = `<div><label>${ctaLbl}</label><textarea id="ef_cta" rows="4">${escH(d.cta || '')}</textarea></div>`;
   }
 
@@ -1434,6 +1624,7 @@ function applyEdit() {
   const isStory    = d.mode === 'historia';
   const isFrases   = d.mode === 'frases';
   const isSubstack = d.mode === 'substack';
+  const isThreads  = d.mode === 'threads';
 
   if (d.type === 'cover') {
     d.title    = document.getElementById('ef_title').value.trim();
@@ -1441,6 +1632,7 @@ function applyEdit() {
     genSlides[editIdx] = isStory    ? makeCoverStory(d.title, d.subtitle, d.handle, d.total, t)
                        : isFrases   ? makeCoverQuotes(d.title, d.subtitle, d.handle, d.total, t)
                        : isSubstack ? makeCoverSubstack(d.title, d.subtitle, d.handle, d.newsletter, d.total, t)
+                       : isThreads  ? makeCoverThreads(d.title, d.subtitle, d.handle, d.topic, d.total, t)
                        :              makeCover(d.title, d.subtitle, d.handle, d.total, t);
   } else if (d.type === 'content') {
     d.text = document.getElementById('ef_text').value.trim();
@@ -1448,12 +1640,14 @@ function applyEdit() {
     genSlides[editIdx] = isStory    ? makeContentStory(d.text, d.num, d.title, d.handle, d.total, t)
                        : isFrases   ? makeContentQuote(d.text, d.author, d.num, d.total, t)
                        : isSubstack ? makeContentSubstack(d.text, d.num, d.title, d.handle, d.newsletter, d.total, t)
+                       : isThreads  ? makeContentThreads(d.text, d.num, d.title, d.handle, d.topic, d.total, t)
                        :              makeContent(d.text, d.num, d.title, d.handle, d.total, t);
   } else {
     d.cta = document.getElementById('ef_cta').value.trim();
     genSlides[editIdx] = isStory    ? makeLastStory(d.cta, d.handle, d.total, t)
                        : isFrases   ? makeLastQuotes(d.cta, d.handle, d.total, t)
                        : isSubstack ? makeLastSubstack(d.cta, d.handle, d.newsletter, d.total, t)
+                       : isThreads  ? makeLastThreads(d.cta, d.handle, d.topic, d.total, t)
                        :              makeLast(d.cta, d.handle, d.total, t);
   }
 
