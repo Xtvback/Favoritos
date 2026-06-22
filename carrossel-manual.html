@@ -463,7 +463,7 @@ function setMode(m) {
     historia:  { btn:'✨  Gerar História',  content:'Texto da história', cta:'Fecho narrativo <span class="opt-lbl">(opcional)</span>', title:'Título da história', sub:'Epígrafe / subtítulo <span class="opt-lbl">(opcional)</span>', ph:'Escreve ou cola aqui a tua história. Será dividida automaticamente em slides narrativos.', words:40 },
     frases:    { btn:'✨  Gerar Frases',    content:'Frases (uma por parágrafo)', cta:'Call-to-action no slide final <span class="opt-lbl">(opcional)</span>', title:'Título da coleção', sub:'Subtítulo <span class="opt-lbl">(opcional)</span>', ph:'Escreve uma frase por parágrafo.\nPodes adicionar o autor na linha seguinte começando com —\n\nEx:\nA vida é bela.\n— Autor', words:30 },
     substack:  { btn:'✨  Gerar Post',      content:'Texto do artigo / post', cta:'Call-to-action <span class="opt-lbl">(ex: "Lê o artigo completo no Substack")</span>', title:'Título do artigo', sub:'Subtítulo / edição <span class="opt-lbl">(opcional)</span>', ph:'Cola aqui o texto do artigo Substack. Será dividido automaticamente em slides com estética de newsletter.', words:40 },
-    threads:   { btn:'🧵  Gerar Thread',    content:'Texto da thread', cta:'Call-to-action <span class="opt-lbl">(ex: "Segue para mais threads")</span>', title:'Título / gancho', sub:'Subtítulo <span class="opt-lbl">(opcional)</span>', ph:'Cola aqui o texto. Cada post da thread terá até ~50 palavras — direto e impactante, como no Threads.', words:50 }
+    threads:   { btn:'🧵  Gerar Thread',    content:'Texto da thread', cta:'Call-to-action <span class="opt-lbl">(ex: "Segue para mais threads")</span>', title:'Título / gancho', sub:'Subtítulo <span class="opt-lbl">(opcional)</span>', ph:'Cola aqui o texto. Cada post da thread terá até ~35 palavras — direto e impactante, como no Threads.', words:35 }
   };
   const l = labels[m];
   document.getElementById('wordsSlider').value = l.words;
@@ -522,7 +522,11 @@ function updatePreview() {
   } else {
     const count = autoSplit(raw, n).length;
     const lbl = MODE === 'substack' ? 'excertos' : MODE === 'threads' ? 'posts' : 'conteúdo';
-    previewEl.innerHTML = `→ <strong>${count + 2}</strong> slides no total (capa + ${count} ${lbl} + final)`;
+    if (MODE === 'threads' && count > 8) {
+      previewEl.innerHTML = `→ <strong>10</strong> slides (máx. Threads) — <span style="color:#f97316">${count - 8} ${lbl} cortados</span>`;
+    } else {
+      previewEl.innerHTML = `→ <strong>${count + 2}</strong> slides no total (capa + ${count} ${lbl} + final)`;
+    }
   }
 }
 
@@ -1509,7 +1513,8 @@ async function generate() {
   if (!title && !raw) { alert('Preenche o título ou o texto.'); return; }
 
   const quotes = isFrases ? parseQuotes(raw) : [];
-  const blocks = isFrases ? [] : (raw ? autoSplit(raw, maxW) : []);
+  let blocks = isFrases ? [] : (raw ? autoSplit(raw, maxW) : []);
+  if (isThreads && blocks.length > 8) blocks = blocks.slice(0, 8); // max 10 slides (capa + 8 + final)
   const total  = (isFrases ? quotes.length : blocks.length) + 2;
 
   document.getElementById('emptyEl').style.display  = 'none';
