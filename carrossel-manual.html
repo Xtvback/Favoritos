@@ -57,7 +57,7 @@
     /* Mode tabs */
     .mode-tabs { flex-shrink:0; display:flex; gap:0; border-bottom:1px solid var(--bd); overflow-x:auto; scrollbar-width:none; background:var(--panel); }
     .mode-tabs::-webkit-scrollbar { display:none; }
-    .mode-tab { flex:0 0 auto; padding:10px 13px; background:none; border:none; border-bottom:2px solid transparent; color:var(--mu); font-family:inherit; font-size:12px; font-weight:600; cursor:pointer; transition:color .15s,border-color .15s; margin-bottom:-1px; white-space:nowrap; }
+    .mode-tab { flex:0 0 auto; padding:14px 13px; min-height:44px; background:none; border:none; border-bottom:2px solid transparent; color:var(--mu); font-family:inherit; font-size:12px; font-weight:600; cursor:pointer; transition:color .15s,border-color .15s; margin-bottom:-1px; white-space:nowrap; touch-action:manipulation; -webkit-tap-highlight-color:rgba(124,58,237,.2); }
     .mode-tab.on { color:var(--tx); border-bottom-color:var(--acc); }
 
     .fsec { padding:22px 22px 20px; border-bottom:1px solid var(--bd); }
@@ -230,11 +230,11 @@
 
     <!-- MODE TABS — fora do scroll para garantir cliques -->
     <div class="mode-tabs">
-      <button class="mode-tab on" id="tabCarrossel">📊 Carrossel</button>
-      <button class="mode-tab" id="tabHistoria">📖 História</button>
-      <button class="mode-tab" id="tabFrases">✦ Frases</button>
-      <button class="mode-tab" id="tabSubstack">📰 Substack</button>
-      <button class="mode-tab" id="tabThreads">🧵 Threads</button>
+      <button class="mode-tab on" id="tabCarrossel" onclick="setMode('carrossel')">📊 Carrossel</button>
+      <button class="mode-tab" id="tabHistoria"  onclick="setMode('historia')">📖 História</button>
+      <button class="mode-tab" id="tabFrases"    onclick="setMode('frases')">✦ Frases</button>
+      <button class="mode-tab" id="tabSubstack"  onclick="setMode('substack')">📰 Substack</button>
+      <button class="mode-tab" id="tabThreads"   onclick="setMode('threads')">🧵 Threads</button>
     </div>
 
     <div class="form-body">
@@ -485,11 +485,6 @@ function setMode(m) {
   updatePreview();
 }
 
-document.getElementById('tabCarrossel').onclick = () => { if (MODE !== 'carrossel') setMode('carrossel'); };
-document.getElementById('tabHistoria').onclick  = () => { if (MODE !== 'historia')  setMode('historia');  };
-document.getElementById('tabFrases').onclick    = () => { if (MODE !== 'frases')    setMode('frases');    };
-document.getElementById('tabSubstack').onclick  = () => { if (MODE !== 'substack')  setMode('substack');  };
-document.getElementById('tabThreads').onclick   = () => { if (MODE !== 'threads')   setMode('threads');   };
 
 // ─── Upload ──────────────────────────────
 (function() {
