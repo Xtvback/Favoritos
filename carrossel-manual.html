@@ -46,13 +46,16 @@
 
     .form {
       background:var(--panel); border-right:1px solid var(--bd);
-      overflow-y:auto; max-height:calc(100dvh - 65px);
       display:flex; flex-direction:column;
+      max-height:calc(100dvh - 65px);
     }
-    @media(max-width:900px){ .form{max-height:none;} }
+    .form-body {
+      overflow-y:auto; flex:1;
+    }
+    @media(max-width:900px){ .form{max-height:none;} .form-body{overflow-y:visible;} }
 
     /* Mode tabs */
-    .mode-tabs { position:sticky; top:0; z-index:10; background:var(--panel); display:flex; gap:0; border-bottom:1px solid var(--bd); overflow-x:auto; scrollbar-width:none; flex-shrink:0; }
+    .mode-tabs { flex-shrink:0; display:flex; gap:0; border-bottom:1px solid var(--bd); overflow-x:auto; scrollbar-width:none; background:var(--panel); }
     .mode-tabs::-webkit-scrollbar { display:none; }
     .mode-tab { flex:0 0 auto; padding:10px 13px; background:none; border:none; border-bottom:2px solid transparent; color:var(--mu); font-family:inherit; font-size:12px; font-weight:600; cursor:pointer; transition:color .15s,border-color .15s; margin-bottom:-1px; white-space:nowrap; }
     .mode-tab.on { color:var(--tx); border-bottom-color:var(--acc); }
@@ -225,7 +228,7 @@
 
   <section class="form">
 
-    <!-- MODE TABS -->
+    <!-- MODE TABS — fora do scroll para garantir cliques -->
     <div class="mode-tabs">
       <button class="mode-tab on" id="tabCarrossel">📊 Carrossel</button>
       <button class="mode-tab" id="tabHistoria">📖 História</button>
@@ -233,6 +236,8 @@
       <button class="mode-tab" id="tabSubstack">📰 Substack</button>
       <button class="mode-tab" id="tabThreads">🧵 Threads</button>
     </div>
+
+    <div class="form-body">
 
     <!-- CONTEÚDO -->
     <div class="fsec">
@@ -316,6 +321,7 @@
       <button class="gen" id="genBtn">✨ &nbsp;Gerar Carrossel</button>
     </div>
 
+    </div><!-- /form-body -->
   </section>
 
   <!-- PREVIEW -->
