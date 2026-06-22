@@ -52,8 +52,9 @@
     @media(max-width:900px){ .form{max-height:none;} }
 
     /* Mode tabs */
-    .mode-tabs { display:flex; gap:0; border-bottom:1px solid var(--bd); }
-    .mode-tab { flex:1; padding:13px; background:none; border:none; border-bottom:2px solid transparent; color:var(--mu); font-family:inherit; font-size:13px; font-weight:600; cursor:pointer; transition:color .15s,border-color .15s; margin-bottom:-1px; }
+    .mode-tabs { display:flex; gap:0; border-bottom:1px solid var(--bd); overflow-x:auto; scrollbar-width:none; }
+    .mode-tabs::-webkit-scrollbar { display:none; }
+    .mode-tab { flex:0 0 auto; padding:11px 14px; background:none; border:none; border-bottom:2px solid transparent; color:var(--mu); font-family:inherit; font-size:12px; font-weight:600; cursor:pointer; transition:color .15s,border-color .15s; margin-bottom:-1px; white-space:nowrap; }
     .mode-tab.on { color:var(--tx); border-bottom-color:var(--acc); }
 
     .fsec { padding:22px 22px 20px; border-bottom:1px solid var(--bd); }
