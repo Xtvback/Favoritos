@@ -281,6 +281,15 @@
         <input type="text" id="newsletterIn" placeholder="Ex: Reflexões Diárias, O Miradouro…">
       </div>
 
+      <div class="fld" id="fldSubstackAuthor" style="display:none">
+        <label>Autor / Byline <span class="opt-lbl">(aparece na capa)</span></label>
+        <input type="text" id="substackAuthorIn" placeholder="Ex: João Silva">
+      </div>
+      <div class="fld" id="fldSubstackUrl" style="display:none">
+        <label>URL do Substack <span class="opt-lbl">(aparece no slide final)</span></label>
+        <input type="text" id="substackUrlIn" placeholder="Ex: joaosilva.substack.com">
+      </div>
+
       <div class="fld" id="fldThreadTopic" style="display:none">
         <label>Tópico / Série <span class="opt-lbl">(aparece no topo dos slides)</span></label>
         <input type="text" id="threadTopicIn" placeholder="Ex: Produtividade, Empreendedorismo…">
@@ -454,10 +463,13 @@ function setMode(m) {
   document.getElementById('tabFrases').classList.toggle('on',    m === 'frases');
   document.getElementById('tabSubstack').classList.toggle('on',  m === 'substack');
   document.getElementById('tabThreads').classList.toggle('on',   m === 'threads');
-  document.getElementById('secSlider').style.display      = m === 'frases' ? 'none' : '';
-  document.getElementById('fldAuthor').style.display      = m === 'frases'  ? 'flex' : 'none';
-  document.getElementById('fldNewsletter').style.display  = m === 'substack' ? 'flex' : 'none';
-  document.getElementById('fldThreadTopic').style.display = m === 'threads'  ? 'flex' : 'none';
+  document.getElementById('secSlider').style.display        = m === 'frases' ? 'none' : '';
+  document.getElementById('fldAuthor').style.display        = m === 'frases'   ? 'flex' : 'none';
+  document.getElementById('fldNewsletter').style.display    = m === 'substack'  ? 'flex' : 'none';
+  document.getElementById('fldSubstackAuthor').style.display= m === 'substack'  ? 'flex' : 'none';
+  document.getElementById('fldSubstackUrl').style.display   = m === 'substack'  ? 'flex' : 'none';
+  document.getElementById('fldThreadTopic').style.display   = m === 'threads'   ? 'flex' : 'none';
+  if (m === 'substack') TK = 'typeset';
   const labels = {
     carrossel: { btn:'✨  Gerar Carrossel', content:'Texto completo', cta:'Call-to-action no slide final <span class="opt-lbl">(opcional)</span>', title:'Título', sub:'Subtítulo <span class="opt-lbl">(opcional)</span>', ph:'Cola aqui todo o texto. A ferramenta divide automaticamente em slides — não precisas de fazer nada.', words:30 },
     historia:  { btn:'✨  Gerar História',  content:'Texto da história', cta:'Fecho narrativo <span class="opt-lbl">(opcional)</span>', title:'Título da história', sub:'Epígrafe / subtítulo <span class="opt-lbl">(opcional)</span>', ph:'Escreve ou cola aqui a tua história. Será dividida automaticamente em slides narrativos.', words:40 },
@@ -1154,55 +1166,93 @@ function makeLastQuotes(cta, handle, total, t) {
 }
 
 // ─── Substack: Capa ──────────────────────
-function makeCoverSubstack(title, subtitle, handle, newsletter, total, t) {
+function makeCoverSubstack(title, subtitle, handle, newsletter, author, total, t) {
   const c = mkC(), ctx = c.getContext('2d');
   const lM = P, maxW = S - P * 2;
+
   if (coverImg) {
     coverFit(ctx, coverImg);
-    const bot = ctx.createLinearGradient(0, S * .2, 0, S);
-    bot.addColorStop(0, 'rgba(0,0,0,0)'); bot.addColorStop(.4, t.ov); bot.addColorStop(1, 'rgba(0,0,0,.94)');
+    const bot = ctx.createLinearGradient(0, S * .15, 0, S);
+    bot.addColorStop(0, 'rgba(0,0,0,0)'); bot.addColorStop(.38, t.ov); bot.addColorStop(1, 'rgba(0,0,0,.95)');
     ctx.fillStyle = bot; ctx.fillRect(0, 0, S, S);
-    const top = ctx.createLinearGradient(0, 0, 0, S * .3);
-    top.addColorStop(0, 'rgba(0,0,0,.55)'); top.addColorStop(1, 'rgba(0,0,0,0)');
-    ctx.fillStyle = top; ctx.fillRect(0, 0, S, S * .3);
+    const top = ctx.createLinearGradient(0, 0, 0, S * .28);
+    top.addColorStop(0, 'rgba(0,0,0,.52)'); top.addColorStop(1, 'rgba(0,0,0,0)');
+    ctx.fillStyle = top; ctx.fillRect(0, 0, S, S * .28);
   } else {
     gradBg(ctx, t);
-    ctx.save(); ctx.globalAlpha = .028; ctx.font = `900 560px ${FP.tb}`; ctx.fillStyle = t.ac;
-    ctx.textAlign = 'right'; ctx.textBaseline = 'bottom';
-    ctx.fillText('S', S + 40, S * .92); ctx.restore();
   }
 
+  const onImg   = !!coverImg;
+  const txColor = onImg ? '#fff'                      : t.tx;
+  const suColor = onImg ? 'rgba(255,255,255,.62)'     : t.su;
+  const acColor = onImg ? 'rgba(255,255,255,.88)'     : t.ac;
+
+  // ── Masthead: newsletter name centered + rule ──
+  const mastheadY = P;
   if (newsletter) {
-    ctx.save(); ctx.font = `700 22px ${FP.tb}`; ctx.fillStyle = t.ac; ctx.globalAlpha = .85;
-    ctx.textAlign = 'left'; ctx.textBaseline = 'top'; ctx.fillText(newsletter, lM, P); ctx.restore();
+    ctx.save();
+    ctx.font = `700 20px ${FP.tb}`;
+    ctx.fillStyle = acColor;
+    ctx.globalAlpha = .88;
+    ctx.textAlign = 'center'; ctx.textBaseline = 'top';
+    ctx.fillText(newsletter.toUpperCase(), S / 2, mastheadY);
+    ctx.restore();
   }
-  ctx.save(); ctx.font = `500 22px ${FP.tb}`; ctx.fillStyle = t.su; ctx.globalAlpha = .7;
-  ctx.textAlign = 'right'; ctx.textBaseline = 'top'; ctx.fillText('01 / ' + p2(total), S - P, P); ctx.restore();
+  // Thin rules flanking masthead
+  const ruleY = mastheadY + (newsletter ? 40 : 12);
+  ctx.save(); ctx.strokeStyle = acColor; ctx.lineWidth = 1; ctx.globalAlpha = .32;
+  ctx.beginPath(); ctx.moveTo(lM, ruleY); ctx.lineTo(S - P, ruleY); ctx.stroke(); ctx.restore();
 
-  ctx.save(); ctx.strokeStyle = t.ac; ctx.lineWidth = 1; ctx.globalAlpha = .28;
-  ctx.beginPath(); ctx.moveTo(lM, P + 46); ctx.lineTo(S - P, P + 46); ctx.stroke(); ctx.restore();
+  // Slide counter — small, top-right
+  ctx.save(); ctx.font = `400 19px ${FP.tb}`; ctx.fillStyle = suColor; ctx.globalAlpha = .65;
+  ctx.textAlign = 'right'; ctx.textBaseline = 'top'; ctx.fillText('01 / ' + p2(total), S - P, mastheadY + 2); ctx.restore();
 
-  const titleFS = autoFS(ctx, title || 'Artigo', maxW, 440, 88, 48, '700', `'Playfair Display',Georgia,serif`);
-  const titleLH = titleFS * 1.18;
+  // ── Title block — centered vertically ──
+  const titleFS = autoFS(ctx, title || 'Artigo', maxW, 460, 96, 46, '700', `'Playfair Display',Georgia,serif`);
+  const titleLH = titleFS * 1.16;
   ctx.font = `700 ${titleFS}px 'Playfair Display',Georgia,serif`;
-  const tLines = wrapText(ctx, title || 'Artigo', maxW);
-  const tH = tLines.length * titleLH;
-  const tStartY = S * .44 - tH / 2;
-  ctx.save(); ctx.font = `700 ${titleFS}px 'Playfair Display',Georgia,serif`;
-  ctx.fillStyle = coverImg ? '#fff' : t.tx; ctx.textAlign = 'left'; ctx.textBaseline = 'top';
-  ctx.shadowColor = 'rgba(0,0,0,.3)'; ctx.shadowBlur = 12;
-  tLines.forEach((l, i) => ctx.fillText(l, lM, tStartY + i * titleLH)); ctx.restore();
+  const tLines  = wrapText(ctx, title || 'Artigo', maxW);
+  const tH      = tLines.length * titleLH;
+  const tStartY = S * .42 - tH / 2;
 
+  ctx.save();
+  ctx.font = `700 ${titleFS}px 'Playfair Display',Georgia,serif`;
+  ctx.fillStyle = txColor; ctx.textAlign = 'center'; ctx.textBaseline = 'top';
+  ctx.shadowColor = onImg ? 'rgba(0,0,0,.55)' : 'transparent'; ctx.shadowBlur = 18;
+  tLines.forEach((l, i) => ctx.fillText(l, S / 2, tStartY + i * titleLH));
+  ctx.restore();
+
+  // ── Subtitle (italic, below title) ──
+  let belowTitle = tStartY + tH + 26;
   if (subtitle) {
-    ctx.save(); ctx.font = `400 30px ${FP.tb}`; ctx.fillStyle = coverImg ? 'rgba(255,255,255,.7)' : t.su;
-    ctx.textAlign = 'left'; ctx.textBaseline = 'top';
-    wrapText(ctx, subtitle, maxW).forEach((l, i) => ctx.fillText(l, lM, tStartY + tH + 24 + i * 40));
+    ctx.save();
+    ctx.font = `italic 400 28px 'Playfair Display',Georgia,serif`;
+    ctx.fillStyle = suColor; ctx.textAlign = 'center'; ctx.textBaseline = 'top';
+    const subLines = wrapText(ctx, subtitle, maxW - P);
+    subLines.forEach((l, i) => ctx.fillText(l, S / 2, belowTitle + i * 40));
+    belowTitle += subLines.length * 40 + 10;
     ctx.restore();
   }
 
-  ctx.save(); ctx.fillStyle = t.ac; ctx.globalAlpha = .55; ctx.fillRect(lM, S - P - 38, 80, 3); ctx.restore();
-  ctx.save(); ctx.font = `300 20px ${FP.tb}`; ctx.fillStyle = coverImg ? 'rgba(255,255,255,.4)' : t.su; ctx.globalAlpha = .6;
+  // ── Decorative divider ──
+  const divY = belowTitle + 22;
+  ctx.save(); ctx.fillStyle = acColor; ctx.globalAlpha = .45; ctx.fillRect(S / 2 - 36, divY, 72, 2); ctx.restore();
+
+  // ── Author byline ──
+  if (author) {
+    ctx.save();
+    ctx.font = `500 23px ${FP.tb}`; ctx.fillStyle = suColor;
+    ctx.textAlign = 'center'; ctx.textBaseline = 'top';
+    ctx.fillText('por ' + author, S / 2, divY + 16);
+    ctx.restore();
+  }
+
+  // ── Bottom rule + "desliza" ──
+  ctx.save(); ctx.strokeStyle = acColor; ctx.lineWidth = 1; ctx.globalAlpha = .2;
+  ctx.beginPath(); ctx.moveTo(lM, S - P - 38); ctx.lineTo(S - P, S - P - 38); ctx.stroke(); ctx.restore();
+  ctx.save(); ctx.font = `300 19px ${FP.tb}`; ctx.fillStyle = suColor; ctx.globalAlpha = .55;
   ctx.textAlign = 'right'; ctx.textBaseline = 'bottom'; ctx.fillText('desliza para ler  →', S - P, S - P); ctx.restore();
+
   return c;
 }
 
@@ -1211,88 +1261,106 @@ function makeContentSubstack(text, num, title, handle, newsletter, total, t) {
   const c = mkC(), ctx = c.getContext('2d');
   gradBg(ctx, t);
   const lM = P, rM = S - P, maxW = S - P * 2;
+  const SERIF = `'Playfair Display',Georgia,serif`;
 
+  // ── Header strip ──
   const topLabel = newsletter || title;
   if (topLabel) {
-    ctx.save(); ctx.font = `500 21px ${FP.tb}`; ctx.fillStyle = t.su; ctx.globalAlpha = .6;
+    ctx.save(); ctx.font = `500 20px ${FP.tb}`; ctx.fillStyle = t.su; ctx.globalAlpha = .6;
     ctx.textAlign = 'left'; ctx.textBaseline = 'top';
-    const tl = wrapText(ctx, topLabel, maxW - 110);
+    const tl = wrapText(ctx, topLabel, maxW - 120);
     ctx.fillText(tl[0] + (tl.length > 1 ? ' …' : ''), lM, P); ctx.restore();
   }
-  ctx.save(); ctx.font = `600 21px ${FP.tb}`; ctx.fillStyle = t.ac;
+  ctx.save(); ctx.font = `600 20px ${FP.tb}`; ctx.fillStyle = t.ac;
   ctx.textAlign = 'right'; ctx.textBaseline = 'top'; ctx.fillText(p2(num) + ' / ' + p2(total), rM, P); ctx.restore();
 
   ctx.save(); ctx.strokeStyle = t.ac; ctx.lineWidth = 1; ctx.globalAlpha = .22;
-  ctx.beginPath(); ctx.moveTo(lM, P + 44); ctx.lineTo(rM, P + 44); ctx.stroke(); ctx.restore();
+  ctx.beginPath(); ctx.moveTo(lM, P + 42); ctx.lineTo(rM, P + 42); ctx.stroke(); ctx.restore();
 
-  const bodyTop = P + 66, bodyH = S - bodyTop - P - 62;
-  const fs = text ? autoFS(ctx, text, maxW, bodyH, 46, 24, FP.bw, FP.tb) : 40;
-  const lh = fs * 1.76;
+  // ── Body text in Playfair italic — editorial feel ──
+  const bodyTop = P + 64, bodyH = S - bodyTop - P - 64;
+  const fs = text ? autoFS(ctx, text, maxW, bodyH, 48, 24, 'italic 400', SERIF) : 42;
+  const lh = fs * 1.82;
 
   const lines = [];
-  ctx.font = `${FP.bw} ${fs}px ${FP.tb}`;
+  ctx.font = `italic 400 ${fs}px ${SERIF}`;
   for (const para of (text || '').split('\n')) {
     if (!para.trim()) { lines.push(null); continue; }
     for (const l of wrapText(ctx, para, maxW)) lines.push(l);
   }
-  ctx.save(); ctx.font = `${FP.bw} ${fs}px ${FP.tb}`; ctx.fillStyle = t.tx;
+  ctx.save();
+  ctx.font = `italic 400 ${fs}px ${SERIF}`; ctx.fillStyle = t.tx;
   ctx.textAlign = 'left'; ctx.textBaseline = 'top';
   let ty = bodyTop;
   for (const line of lines) {
-    if (ty > S - P - 82) break;
+    if (ty > S - P - 84) break;
     if (line === null) { ty += lh * .45; continue; }
     ctx.fillText(line, lM, ty); ty += lh;
   }
   ctx.restore();
 
-  ctx.save(); ctx.strokeStyle = t.ac; ctx.lineWidth = 1; ctx.globalAlpha = .2;
+  // ── Bottom rule + handle ──
+  ctx.save(); ctx.strokeStyle = t.ac; ctx.lineWidth = 1; ctx.globalAlpha = .18;
   ctx.beginPath(); ctx.moveTo(lM, S - P - 36); ctx.lineTo(rM, S - P - 36); ctx.stroke(); ctx.restore();
 
   if (handle) {
     const h = handle.startsWith('@') ? handle : '@' + handle;
-    ctx.save(); ctx.font = `400 21px ${FP.tb}`; ctx.fillStyle = t.su; ctx.globalAlpha = .5;
+    ctx.save(); ctx.font = `400 20px ${FP.tb}`; ctx.fillStyle = t.su; ctx.globalAlpha = .5;
     ctx.textAlign = 'left'; ctx.textBaseline = 'bottom'; ctx.fillText(h, lM, S - P); ctx.restore();
   }
   return c;
 }
 
 // ─── Substack: Final ─────────────────────
-function makeLastSubstack(cta, handle, newsletter, total, t) {
+function makeLastSubstack(cta, handle, newsletter, substackUrl, total, t) {
   const c = mkC(), ctx = c.getContext('2d');
   gradBg(ctx, t);
-  const lM = P, rM = S - P, maxW = S - P * 2, midY = S * .46;
+  const lM = P, rM = S - P, maxW = S - P * 2;
+  const SERIF = `'Playfair Display',Georgia,serif`;
+  const midY  = S * .44;
 
-  ctx.save(); ctx.font = `600 22px ${FP.tb}`; ctx.fillStyle = t.ac;
+  // Header
+  ctx.save(); ctx.font = `600 20px ${FP.tb}`; ctx.fillStyle = t.ac;
   ctx.textAlign = 'right'; ctx.textBaseline = 'top'; ctx.fillText(p2(total) + ' / ' + p2(total), rM, P); ctx.restore();
+  ctx.save(); ctx.strokeStyle = t.ac; ctx.lineWidth = 1; ctx.globalAlpha = .25;
+  ctx.beginPath(); ctx.moveTo(lM, P + 42); ctx.lineTo(rM, P + 42); ctx.stroke(); ctx.restore();
 
-  ctx.save(); ctx.strokeStyle = t.ac; ctx.lineWidth = 1.5; ctx.globalAlpha = .3;
-  ctx.beginPath(); ctx.moveTo(lM, P + 46); ctx.lineTo(rM, P + 46); ctx.stroke(); ctx.restore();
-
+  // Main CTA or default editorial "Continua no Substack"
   if (cta) {
-    const fs = autoFS(ctx, cta, maxW, 440, 58, 26, FP.bw, FP.tb);
-    const lh = fs * 1.72;
-    const ctaLines = [];
-    ctx.font = `${FP.bw} ${fs}px ${FP.tb}`;
-    for (const l of wrapText(ctx, cta, maxW)) ctaLines.push(l);
-    const ctaH = ctaLines.length * lh;
-    ctx.save(); ctx.font = `${FP.bw} ${fs}px ${FP.tb}`; ctx.fillStyle = t.tx;
+    const fs = autoFS(ctx, cta, maxW, 440, 72, 28, '700', SERIF);
+    const lh  = fs * 1.52;
+    ctx.font   = `700 ${fs}px ${SERIF}`;
+    const ctaLines = wrapText(ctx, cta, maxW);
+    const ctaH     = ctaLines.length * lh;
+    ctx.save(); ctx.font = `700 ${fs}px ${SERIF}`; ctx.fillStyle = t.tx;
     ctx.textAlign = 'left'; ctx.textBaseline = 'top';
     let ty = midY - ctaH / 2;
     ctaLines.forEach(l => { ctx.fillText(l, lM, ty); ty += lh; }); ctx.restore();
   } else {
-    ctx.save(); ctx.font = `700 64px 'Playfair Display',Georgia,serif`; ctx.fillStyle = t.tx;
-    ctx.textAlign = 'left'; ctx.textBaseline = 'middle'; ctx.fillText('Continua no', lM, midY - 46); ctx.restore();
-    ctx.save(); ctx.font = `700 64px 'Playfair Display',Georgia,serif`; ctx.fillStyle = t.ac;
-    ctx.textAlign = 'left'; ctx.textBaseline = 'middle'; ctx.fillText('Substack.', lM, midY + 34); ctx.restore();
+    ctx.save(); ctx.font = `400 italic 52px ${SERIF}`; ctx.fillStyle = t.su; ctx.globalAlpha = .75;
+    ctx.textAlign = 'left'; ctx.textBaseline = 'middle'; ctx.fillText('Continua no', lM, midY - 44); ctx.restore();
+    ctx.save(); ctx.font = `700 76px ${SERIF}`; ctx.fillStyle = t.ac;
+    ctx.textAlign = 'left'; ctx.textBaseline = 'middle'; ctx.fillText('Substack.', lM, midY + 36); ctx.restore();
   }
 
-  ctx.save(); ctx.strokeStyle = t.ac; ctx.lineWidth = 1; ctx.globalAlpha = .22;
-  ctx.beginPath(); ctx.moveTo(lM, S - P - 54); ctx.lineTo(rM, S - P - 54); ctx.stroke(); ctx.restore();
+  // URL indicator (if provided)
+  if (substackUrl) {
+    const urlY = S * .68;
+    ctx.save(); ctx.strokeStyle = t.ac; ctx.lineWidth = 1; ctx.globalAlpha = .2;
+    ctx.beginPath(); ctx.moveTo(lM, urlY - 16); ctx.lineTo(rM, urlY - 16); ctx.stroke(); ctx.restore();
+    ctx.save(); ctx.font = `500 24px ${FP.tb}`; ctx.fillStyle = t.ac; ctx.globalAlpha = .85;
+    ctx.textAlign = 'left'; ctx.textBaseline = 'top';
+    ctx.fillText('↗  ' + substackUrl, lM, urlY); ctx.restore();
+  }
+
+  // Bottom strip
+  ctx.save(); ctx.strokeStyle = t.ac; ctx.lineWidth = 1; ctx.globalAlpha = .2;
+  ctx.beginPath(); ctx.moveTo(lM, S - P - 52); ctx.lineTo(rM, S - P - 52); ctx.stroke(); ctx.restore();
 
   if (newsletter || handle) {
     const h = handle ? (handle.startsWith('@') ? handle : '@' + handle) : '';
     const bottomLine = newsletter ? (h ? `${newsletter}  ·  ${h}` : newsletter) : h;
-    ctx.save(); ctx.font = `600 30px ${FP.tb}`; ctx.fillStyle = t.ac;
+    ctx.save(); ctx.font = `600 28px ${FP.tb}`; ctx.fillStyle = t.ac;
     ctx.textAlign = 'left'; ctx.textBaseline = 'bottom'; ctx.fillText(bottomLine, lM, S - P - 10); ctx.restore();
   }
   return c;
@@ -1506,9 +1574,11 @@ async function generate() {
   const isThreads  = MODE === 'threads';
   const themes     = isStory ? STORY_THEMES : isSubstack ? SUBSTACK_THEMES : isThreads ? THREADS_THEMES : THEMES;
   const t          = themes[TK] || themes[Object.keys(themes)[0]];
-  const globalAuthor   = isFrases   ? (document.getElementById('authorIn').value.trim())    : '';
-  const newsletterName = isSubstack ? (document.getElementById('newsletterIn').value.trim()) : '';
-  const threadTopic    = isThreads  ? (document.getElementById('threadTopicIn').value.trim()) : '';
+  const globalAuthor    = isFrases   ? (document.getElementById('authorIn').value.trim())         : '';
+  const newsletterName  = isSubstack ? (document.getElementById('newsletterIn').value.trim())    : '';
+  const substackAuthor  = isSubstack ? (document.getElementById('substackAuthorIn').value.trim()) : '';
+  const substackUrl     = isSubstack ? (document.getElementById('substackUrlIn').value.trim())    : '';
+  const threadTopic     = isThreads  ? (document.getElementById('threadTopicIn').value.trim())   : '';
 
   if (!title && !raw) { alert('Preenche o título ou o texto.'); return; }
 
@@ -1554,12 +1624,12 @@ async function generate() {
     blocks.forEach((b, i) => genSlides.push(makeContentStory(b, i + 2, title, handle, total, t)));
     genSlides.push(makeLastStory(cta, handle, total, t));
   } else if (isSubstack) {
-    slideData.push({ type:'cover',   title, subtitle:sub, handle, newsletter:newsletterName, total, t, mode:'substack' });
+    slideData.push({ type:'cover',   title, subtitle:sub, handle, newsletter:newsletterName, author:substackAuthor, substackUrl, total, t, mode:'substack' });
     blocks.forEach((b, i) => slideData.push({ type:'content', text:b, num:i+2, title, handle, newsletter:newsletterName, total, t, mode:'substack' }));
-    slideData.push({ type:'last', cta, handle, newsletter:newsletterName, total, t, mode:'substack' });
-    genSlides.push(makeCoverSubstack(title, sub, handle, newsletterName, total, t));
+    slideData.push({ type:'last', cta, handle, newsletter:newsletterName, substackUrl, total, t, mode:'substack' });
+    genSlides.push(makeCoverSubstack(title, sub, handle, newsletterName, substackAuthor, total, t));
     blocks.forEach((b, i) => genSlides.push(makeContentSubstack(b, i + 2, title, handle, newsletterName, total, t)));
-    genSlides.push(makeLastSubstack(cta, handle, newsletterName, total, t));
+    genSlides.push(makeLastSubstack(cta, handle, newsletterName, substackUrl, total, t));
   } else {
     slideData.push({ type:'cover',   title, subtitle:sub, handle, total, t, mode:'carrossel' });
     blocks.forEach((b, i) => slideData.push({ type:'content', text:b, num:i+2, title, handle, total, t, mode:'carrossel' }));
@@ -1636,7 +1706,7 @@ function applyEdit() {
     d.subtitle = document.getElementById('ef_sub').value.trim();
     genSlides[editIdx] = isStory    ? makeCoverStory(d.title, d.subtitle, d.handle, d.total, t)
                        : isFrases   ? makeCoverQuotes(d.title, d.subtitle, d.handle, d.total, t)
-                       : isSubstack ? makeCoverSubstack(d.title, d.subtitle, d.handle, d.newsletter, d.total, t)
+                       : isSubstack ? makeCoverSubstack(d.title, d.subtitle, d.handle, d.newsletter, d.author, d.total, t)
                        : isThreads  ? makeCoverThreads(d.title, d.subtitle, d.handle, d.topic, d.total, t)
                        :              makeCover(d.title, d.subtitle, d.handle, d.total, t);
   } else if (d.type === 'content') {
@@ -1651,7 +1721,7 @@ function applyEdit() {
     d.cta = document.getElementById('ef_cta').value.trim();
     genSlides[editIdx] = isStory    ? makeLastStory(d.cta, d.handle, d.total, t)
                        : isFrases   ? makeLastQuotes(d.cta, d.handle, d.total, t)
-                       : isSubstack ? makeLastSubstack(d.cta, d.handle, d.newsletter, d.total, t)
+                       : isSubstack ? makeLastSubstack(d.cta, d.handle, d.newsletter, d.substackUrl, d.total, t)
                        : isThreads  ? makeLastThreads(d.cta, d.handle, d.topic, d.total, t)
                        :              makeLast(d.cta, d.handle, d.total, t);
   }
