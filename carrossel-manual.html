@@ -1298,77 +1298,110 @@ function makeLastSubstack(cta, handle, newsletter, total, t) {
   return c;
 }
 
-// ─── Threads: helpers ────────────────────
-function drawThreadsTopBar(ctx, topic, num, total, t) {
-  // Left: topic or 🧵
-  const label = topic || '🧵 Threads';
-  ctx.save(); ctx.font = `700 26px ${FP.tb}`; ctx.fillStyle = t.ac; ctx.globalAlpha = .72;
-  ctx.textAlign = 'left'; ctx.textBaseline = 'top'; ctx.fillText(label, P, P); ctx.restore();
-  // Right: num / total
-  ctx.save(); ctx.font = `600 26px ${FP.tb}`; ctx.fillStyle = t.su;
-  ctx.textAlign = 'right'; ctx.textBaseline = 'top'; ctx.fillText(p2(num) + ' / ' + p2(total), S - P, P); ctx.restore();
-  // Bottom separator line
-  ctx.save(); ctx.strokeStyle = t.ac; ctx.lineWidth = 1; ctx.globalAlpha = .14;
-  ctx.beginPath(); ctx.moveTo(P, P + 52); ctx.lineTo(S - P, P + 52); ctx.stroke(); ctx.restore();
+// ─── Threads: layout ─────────────────────
+const TH_R  = 36;
+const TH_AX = P + TH_R;
+const TH_AY = P + TH_R + 10;
+const TH_TX = TH_AX + TH_R + 16;
+
+function _thAvatar(ctx, handle, t, onImg) {
+  const isLight = t.g1 > '#c';
+  const letter  = handle ? handle.replace(/^@/, '')[0].toUpperCase() : 'T';
+  ctx.save();
+  ctx.beginPath(); ctx.arc(TH_AX, TH_AY, TH_R, 0, Math.PI * 2);
+  ctx.fillStyle = onImg ? 'rgba(0,0,0,.28)' : (isLight ? 'rgba(0,0,0,.07)' : 'rgba(255,255,255,.07)');
+  ctx.fill();
+  ctx.strokeStyle = onImg ? 'rgba(255,255,255,.35)' : t.ac; ctx.lineWidth = 1.5; ctx.globalAlpha = .4;
+  ctx.stroke(); ctx.restore();
+  ctx.save();
+  ctx.font = `700 28px ${FP.tb}`; ctx.fillStyle = onImg ? 'rgba(255,255,255,.8)' : t.ac;
+  ctx.textAlign = 'center'; ctx.textBaseline = 'middle'; ctx.fillText(letter, TH_AX, TH_AY); ctx.restore();
+}
+
+function _thHeader(ctx, handle, t, onImg) {
+  _thAvatar(ctx, handle, t, onImg);
+  if (!handle) return;
+  const h = handle.startsWith('@') ? handle : '@' + handle;
+  ctx.save(); ctx.font = `700 28px ${FP.tb}`; ctx.fillStyle = onImg ? '#fff' : t.tx;
+  ctx.textAlign = 'left'; ctx.textBaseline = 'middle';
+  ctx.fillText(h, TH_TX, TH_AY - 7); ctx.restore();
+  ctx.save(); ctx.font = `400 21px ${FP.tb}`; ctx.fillStyle = onImg ? 'rgba(255,255,255,.45)' : t.su; ctx.globalAlpha = .6;
+  ctx.textAlign = 'left'; ctx.textBaseline = 'middle';
+  ctx.fillText('agora', TH_TX, TH_AY + 16); ctx.restore();
+}
+
+function _thLine(ctx, t, y1, y2) {
+  const grad = ctx.createLinearGradient(0, y1, 0, y2);
+  grad.addColorStop(0,   t.ac + '55');
+  grad.addColorStop(0.5, t.ac + '22');
+  grad.addColorStop(1,   'transparent');
+  ctx.save(); ctx.strokeStyle = grad; ctx.lineWidth = 1.5;
+  ctx.beginPath(); ctx.moveTo(TH_AX, y1); ctx.lineTo(TH_AX, y2); ctx.stroke(); ctx.restore();
+}
+
+function _thCounter(ctx, num, total, t, onImg) {
+  ctx.save(); ctx.font = `500 22px ${FP.tb}`;
+  ctx.fillStyle = onImg ? 'rgba(255,255,255,.4)' : t.su; ctx.globalAlpha = .55;
+  ctx.textAlign = 'right'; ctx.textBaseline = 'bottom';
+  ctx.fillText(num + ' / ' + total, S - P, S - P); ctx.restore();
 }
 
 // ─── Threads: Capa ───────────────────────
 function makeCoverThreads(title, subtitle, handle, topic, total, t) {
   const c = mkC(), ctx = c.getContext('2d');
-  if (coverImg) {
+  const onImg = !!coverImg;
+  if (onImg) {
     coverFit(ctx, coverImg);
-    const bot = ctx.createLinearGradient(0, S * .2, 0, S);
-    bot.addColorStop(0, 'rgba(0,0,0,0)'); bot.addColorStop(.45, t.ov); bot.addColorStop(1, 'rgba(0,0,0,.95)');
-    ctx.fillStyle = bot; ctx.fillRect(0, 0, S, S);
-    const top = ctx.createLinearGradient(0, 0, 0, S * .22);
+    const ov = ctx.createLinearGradient(0, S * .18, 0, S);
+    ov.addColorStop(0, 'rgba(0,0,0,0)'); ov.addColorStop(.42, t.ov); ov.addColorStop(1, 'rgba(0,0,0,.95)');
+    ctx.fillStyle = ov; ctx.fillRect(0, 0, S, S);
+    const top = ctx.createLinearGradient(0, 0, 0, S * .25);
     top.addColorStop(0, 'rgba(0,0,0,.5)'); top.addColorStop(1, 'rgba(0,0,0,0)');
-    ctx.fillStyle = top; ctx.fillRect(0, 0, S, S * .22);
+    ctx.fillStyle = top; ctx.fillRect(0, 0, S, S * .25);
   } else {
     gradBg(ctx, t);
-    // Subtle large "T" watermark
-    ctx.save(); ctx.globalAlpha = .03; ctx.font = `900 700px ${FP.tb}`; ctx.fillStyle = t.ac;
-    ctx.textAlign = 'center'; ctx.textBaseline = 'middle'; ctx.fillText('T', S * .5, S * .5); ctx.restore();
   }
 
-  // Topic label top-left
-  const topLabel = topic || '🧵 Thread';
-  ctx.save(); ctx.font = `700 26px ${FP.tb}`; ctx.fillStyle = coverImg ? 'rgba(255,255,255,.72)' : t.ac; ctx.globalAlpha = .8;
-  ctx.textAlign = 'left'; ctx.textBaseline = 'top'; ctx.fillText(topLabel, P, P); ctx.restore();
-  ctx.save(); ctx.font = `600 26px ${FP.tb}`; ctx.fillStyle = coverImg ? 'rgba(255,255,255,.55)' : t.su;
-  ctx.textAlign = 'right'; ctx.textBaseline = 'top'; ctx.fillText('01 / ' + p2(total), S - P, P); ctx.restore();
+  _thHeader(ctx, handle, t, onImg);
+  _thLine(ctx, t, TH_AY + TH_R + 10, S - P - 110);
 
-  // Accent bar
+  if (topic) {
+    ctx.save(); ctx.font = `600 22px ${FP.tb}`;
+    ctx.fillStyle = onImg ? 'rgba(255,255,255,.5)' : t.su; ctx.globalAlpha = .65;
+    ctx.textAlign = 'right'; ctx.textBaseline = 'top';
+    ctx.fillText(topic, S - P, P + 2); ctx.restore();
+  }
+
   let y = S - P;
-  ctx.save(); ctx.font = `300 20px ${FP.tb}`; ctx.fillStyle = 'rgba(255,255,255,.36)';
-  ctx.textAlign = 'right'; ctx.textBaseline = 'bottom'; ctx.fillText('desliza para ler  →', S - P, y); ctx.restore(); y -= 44;
+  _thCounter(ctx, 1, total, t, onImg);
+  y -= 36;
 
-  if (handle) {
-    const h = handle.startsWith('@') ? handle : '@' + handle;
-    ctx.save(); ctx.font = `500 30px ${FP.tb}`; ctx.fillStyle = coverImg ? 'rgba(255,255,255,.6)' : t.su;
-    ctx.textAlign = 'left'; ctx.textBaseline = 'bottom'; ctx.fillText(h, P, y); ctx.restore(); y -= 42;
-  }
+  ctx.save(); ctx.font = `300 20px ${FP.tb}`;
+  ctx.fillStyle = onImg ? 'rgba(255,255,255,.32)' : t.su; ctx.globalAlpha = .38;
+  ctx.textAlign = 'right'; ctx.textBaseline = 'bottom';
+  ctx.fillText('desliza  →', S - P, y); ctx.restore(); y -= 42;
 
   if (subtitle) {
-    ctx.save(); ctx.font = `400 34px ${FP.tb}`; ctx.fillStyle = coverImg ? 'rgba(255,255,255,.68)' : t.su;
-    ctx.textAlign = 'left'; ctx.textBaseline = 'bottom'; ctx.shadowColor = 'rgba(0,0,0,.4)'; ctx.shadowBlur = 10;
+    ctx.save(); ctx.font = `400 33px ${FP.tb}`; ctx.fillStyle = onImg ? 'rgba(255,255,255,.62)' : t.su;
+    ctx.textAlign = 'left'; ctx.textBaseline = 'bottom';
     const sl = wrapText(ctx, subtitle, S - P * 2);
     y -= (sl.length - 1) * 42;
-    sl.forEach((l, i) => ctx.fillText(l, P, y + i * 42));
-    y -= 42 + 16; ctx.restore();
+    sl.forEach((l, i) => ctx.fillText(l, P, y + i * 42)); y -= 42 + 14; ctx.restore();
   }
 
-  // Title — big bold Inter
-  ctx.save(); ctx.font = `900 78px ${FP.tb}`; ctx.fillStyle = coverImg ? '#fff' : t.tx;
+  const titleMaxW = S - P * 2;
+  const titleFS   = autoFS(ctx, title || 'Thread', titleMaxW, 400, 90, 44, '900', FP.tb);
+  const titleLH   = titleFS * 1.14;
+  ctx.save(); ctx.font = `900 ${titleFS}px ${FP.tb}`;
+  const tl = wrapText(ctx, title || 'Thread', titleMaxW);
+  ctx.fillStyle = onImg ? '#fff' : t.tx;
   ctx.textAlign = 'left'; ctx.textBaseline = 'bottom';
-  ctx.shadowColor = 'rgba(0,0,0,.6)'; ctx.shadowBlur = 24;
-  const tl = wrapText(ctx, title || 'Thread', S - P * 2);
-  y -= (tl.length - 1) * 92;
-  tl.forEach((l, i) => ctx.fillText(l, P, y + i * 92));
-  y -= 92 + 20; ctx.restore();
+  ctx.shadowColor = 'rgba(0,0,0,.5)'; ctx.shadowBlur = 18;
+  y -= (tl.length - 1) * titleLH;
+  tl.forEach((l, i) => ctx.fillText(l, P, y + i * titleLH)); ctx.restore();
+  y -= titleLH + 18;
 
-  // Accent line below (above title start)
-  ctx.save(); ctx.fillStyle = t.ac; ctx.fillRect(P, y - 2, 80, 5); ctx.restore();
-
+  ctx.save(); ctx.fillStyle = t.ac; ctx.globalAlpha = .75; ctx.fillRect(P, y - 4, 64, 4); ctx.restore();
   return c;
 }
 
@@ -1377,42 +1410,36 @@ function makeContentThreads(text, num, title, handle, topic, total, t) {
   const c = mkC(), ctx = c.getContext('2d');
   gradBg(ctx, t);
 
-  // Faded large post number background
-  ctx.save(); ctx.font = `900 320px ${FP.tb}`; ctx.fillStyle = t.nb;
-  ctx.textAlign = 'right'; ctx.textBaseline = 'middle'; ctx.fillText(p2(num), S - P + 20, S * .52); ctx.restore();
+  _thHeader(ctx, handle, t, false);
 
-  // Top vertical accent bar
-  ctx.save(); ctx.fillStyle = t.ac; ctx.fillRect(P, P + 68, 4, 100); ctx.restore();
+  const lineY1 = TH_AY + TH_R + 10;
+  const lineY2 = S - P - 70;
+  _thLine(ctx, t, lineY1, lineY2);
 
-  drawThreadsTopBar(ctx, topic, num, total, t);
+  const textTop  = TH_AY + TH_R + 28;
+  const textMaxW = S - TH_TX - P;
+  const contentH = lineY2 - textTop - 20;
 
-  // Body text — large, bold, centered vertically
-  const maxW = S - P * 2.5, contentH = 620;
-  const fs = text ? autoFS(ctx, text, maxW, contentH, 58, 28, '600', FP.tb) : 50;
-  const lh = fs * 1.54;
-  ctx.save(); ctx.font = `600 ${fs}px ${FP.tb}`; ctx.fillStyle = t.tx;
-  ctx.textAlign = 'left'; ctx.textBaseline = 'alphabetic';
-  // Align left for thread post feel, with left margin
+  const fs = text ? autoFS(ctx, text, textMaxW, contentH, 64, 30, '500', FP.tb) : 52;
+  const lh = fs * 1.52;
+
   const lines = [];
   for (const para of (text || '').split('\n')) {
     if (!para.trim()) { lines.push(null); continue; }
-    for (const l of wrapText(ctx, para, maxW)) lines.push(l);
+    for (const l of wrapText(ctx, para, textMaxW)) lines.push(l);
   }
-  const totalH = lines.reduce((a, r) => a + (r === null ? lh * .45 : lh), 0);
-  let ty = S * .5 - totalH / 2;
+  const totalH = lines.reduce((a, r) => a + (r === null ? lh * .4 : lh), 0);
+  let ty = textTop + Math.max(0, (contentH - totalH) / 2);
+
+  ctx.save(); ctx.font = `500 ${fs}px ${FP.tb}`; ctx.fillStyle = t.tx;
+  ctx.textAlign = 'left'; ctx.textBaseline = 'top';
   for (const row of lines) {
-    if (row === null) { ty += lh * .45; continue; }
-    ctx.fillText(row, P + 16, ty + lh * .82); ty += lh;
+    if (row === null) { ty += lh * .4; continue; }
+    ctx.fillText(row, TH_TX, ty); ty += lh;
   }
   ctx.restore();
 
-  // Handle at bottom
-  if (handle) {
-    const h = handle.startsWith('@') ? handle : '@' + handle;
-    ctx.save(); ctx.font = `500 24px ${FP.tb}`; ctx.fillStyle = t.su; ctx.globalAlpha = .5;
-    ctx.textAlign = 'left'; ctx.textBaseline = 'bottom'; ctx.fillText(h, P, S - P); ctx.restore();
-  }
-
+  _thCounter(ctx, num, total, t, false);
   return c;
 }
 
@@ -1421,42 +1448,45 @@ function makeLastThreads(cta, handle, topic, total, t) {
   const c = mkC(), ctx = c.getContext('2d');
   gradBg(ctx, t);
 
-  drawThreadsTopBar(ctx, topic, total, total, t);
+  _thHeader(ctx, handle, t, false);
+  // sem thread line — a thread termina aqui
 
-  const cx = S / 2;
-
-  // Large 🧵 icon centered (as decorative element)
-  ctx.save(); ctx.font = `900 120px ${FP.tb}`; ctx.fillStyle = t.ac; ctx.globalAlpha = .08;
-  ctx.textAlign = 'center'; ctx.textBaseline = 'middle'; ctx.fillText('🧵', cx, S * .35); ctx.restore();
+  const contentTop = TH_AY + TH_R + 50;
+  const contentW   = S - TH_TX - P;
+  const midY = contentTop + (S - P - contentTop) * .42;
 
   if (cta) {
-    const fs = autoFS(ctx, cta, S - P * 2, 460, 66, 30, '700', FP.tb);
-    const lh = fs * 1.48;
+    const fs = autoFS(ctx, cta, contentW, 500, 68, 30, '700', FP.tb);
+    const lh = fs * 1.44;
+    const lines = wrapText(ctx, cta, contentW);
+    const totalH = lines.length * lh;
     ctx.save(); ctx.font = `700 ${fs}px ${FP.tb}`; ctx.fillStyle = t.tx;
-    ctx.textAlign = 'center'; ctx.textBaseline = 'alphabetic';
-    drawCentered(ctx, cta, cx, S * .48, S - P * 2, lh); ctx.restore();
+    ctx.textAlign = 'left'; ctx.textBaseline = 'top';
+    let ty = midY - totalH / 2;
+    lines.forEach(l => { ctx.fillText(l, TH_TX, ty); ty += lh; }); ctx.restore();
   } else {
-    ctx.save(); ctx.font = `900 54px ${FP.tb}`; ctx.fillStyle = t.tx;
-    ctx.textAlign = 'center'; ctx.textBaseline = 'middle'; ctx.fillText('Gostaste da thread?', cx, S * .38); ctx.restore();
-    const actions = ['♥  Deixa um Like', '🔁  Faz Re-Thread', '◎  Segue para mais'];
-    ctx.save(); ctx.font = `400 34px ${FP.tb}`; ctx.fillStyle = t.su;
-    ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
-    actions.forEach((a, i) => ctx.fillText(a, cx, S * .52 + i * 64)); ctx.restore();
+    ctx.save(); ctx.font = `800 56px ${FP.tb}`; ctx.fillStyle = t.tx;
+    ctx.textAlign = 'left'; ctx.textBaseline = 'top';
+    ctx.fillText('Gostaste?', TH_TX, contentTop + 20); ctx.restore();
+    const actions = ['♥  Deixa um Like', '⟳  Faz Repost', '◎  Segue para mais'];
+    ctx.save(); ctx.font = `400 32px ${FP.tb}`; ctx.fillStyle = t.su;
+    ctx.textAlign = 'left'; ctx.textBaseline = 'top';
+    actions.forEach((a, i) => ctx.fillText(a, TH_TX, contentTop + 106 + i * 60)); ctx.restore();
   }
 
-  // Gradient divider line
-  const dg = ctx.createLinearGradient(cx - 100, 0, cx + 100, 0);
-  dg.addColorStop(0, 'transparent'); dg.addColorStop(.5, t.ac); dg.addColorStop(1, 'transparent');
-  ctx.save(); ctx.strokeStyle = dg; ctx.lineWidth = 1.5; ctx.globalAlpha = .4;
-  ctx.beginPath(); ctx.moveTo(cx - 100, S * .72); ctx.lineTo(cx + 100, S * .72); ctx.stroke(); ctx.restore();
+  ctx.save(); ctx.strokeStyle = t.ac; ctx.lineWidth = 1; ctx.globalAlpha = .18;
+  ctx.beginPath(); ctx.moveTo(TH_TX, S * .8); ctx.lineTo(S - P, S * .8); ctx.stroke(); ctx.restore();
 
   if (handle) {
     const h = handle.startsWith('@') ? handle : '@' + handle;
-    ctx.save(); ctx.font = `700 38px ${FP.tb}`; ctx.fillStyle = t.ac;
-    ctx.textAlign = 'center'; ctx.textBaseline = 'middle'; ctx.fillText(h, cx, S * .8); ctx.restore();
+    ctx.save(); ctx.font = `700 32px ${FP.tb}`; ctx.fillStyle = t.ac;
+    ctx.textAlign = 'left'; ctx.textBaseline = 'bottom';
+    ctx.fillText(h, TH_TX, S - P - 10); ctx.restore();
   }
 
+  _thCounter(ctx, total, total, t, false);
   return c;
+}
 }
 
 // ─── Renderizar card ─────────────────────
