@@ -1,0 +1,382 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Comic Book Tool — Upscale de Imagens</title>
+<style>
+  :root {
+    --accent: #0078d4;
+    --bg: #0e0e16;
+    --panel: #17172447;
+    --panel-solid: #1b1b28;
+    --border: rgba(255,255,255,.1);
+    --text: #f2f2f5;
+    --text-muted: #9a9aa8;
+    --radius: 10px;
+  }
+  * { margin:0; padding:0; box-sizing:border-box; }
+  body {
+    font-family:'Segoe UI',system-ui,sans-serif;
+    background:
+      radial-gradient(ellipse 70% 80% at 5% 95%, rgba(123,47,247,.35) 0%, transparent 55%),
+      radial-gradient(ellipse 60% 60% at 95% 5%,  rgba(255,107,157,.3) 0%, transparent 50%),
+      radial-gradient(ellipse 80% 80% at 55% 50%, rgba(0,80,200,.25)  0%, transparent 70%),
+      var(--bg);
+    color:var(--text);
+    min-height:100vh;
+    padding:24px;
+  }
+  header { max-width:1100px; margin:0 auto 20px; display:flex; align-items:center; gap:14px; }
+  header .icon { font-size:2.4rem; filter:drop-shadow(0 2px 8px rgba(0,0,0,.5)); }
+  header h1 { font-size:1.5rem; font-weight:600; }
+  header p { color:var(--text-muted); font-size:.85rem; margin-top:2px; }
+
+  main { max-width:1100px; margin:0 auto; display:flex; flex-direction:column; gap:18px; }
+
+  .card {
+    background:var(--panel-solid); border:1px solid var(--border); border-radius:var(--radius);
+    padding:18px 20px;
+  }
+
+  .drop {
+    border:2px dashed rgba(255,255,255,.2); border-radius:var(--radius);
+    padding:36px 20px; text-align:center; cursor:pointer; transition:.15s;
+  }
+  .drop:hover, .drop.drag { border-color:var(--accent); background:rgba(0,120,212,.08); }
+  .drop .di { font-size:2.2rem; margin-bottom:8px; }
+  .drop .dt { color:var(--text-muted); font-size:.85rem; }
+  #file-input { display:none; }
+
+  .controls { display:flex; flex-wrap:wrap; gap:16px; align-items:flex-end; margin-top:16px; }
+  .field { display:flex; flex-direction:column; gap:6px; }
+  .field label { font-size:.78rem; color:var(--text-muted); }
+  .field select, .field input[type=number] {
+    background:rgba(255,255,255,.06); border:1px solid var(--border); color:var(--text);
+    border-radius:6px; padding:8px 10px; font-size:.85rem; min-width:140px;
+  }
+  .btn {
+    background:var(--accent); color:#fff; border:none; border-radius:6px;
+    padding:10px 18px; font-size:.85rem; font-weight:600; cursor:pointer; transition:filter .15s;
+  }
+  .btn:hover { filter:brightness(1.15); }
+  .btn:disabled { opacity:.4; cursor:not-allowed; }
+  .btn.secondary { background:rgba(255,255,255,.08); }
+
+  #grid {
+    display:grid; grid-template-columns:repeat(auto-fill,minmax(200px,1fr)); gap:14px;
+  }
+  .item {
+    background:rgba(255,255,255,.04); border:1px solid var(--border); border-radius:8px;
+    overflow:hidden; display:flex; flex-direction:column;
+  }
+  .item .thumb-wrap { position:relative; aspect-ratio:1; background:#000; }
+  .item img { width:100%; height:100%; object-fit:contain; }
+  .item .meta { padding:8px 10px; font-size:.72rem; color:var(--text-muted); display:flex; flex-direction:column; gap:2px; }
+  .item .meta b { color:var(--text); font-weight:600; }
+  .item .row { display:flex; justify-content:space-between; gap:12px; padding:8px 10px; }
+  .item .status { font-size:.7rem; padding:2px 8px; border-radius:20px; }
+  .status.pending { background:rgba(255,255,255,.08); color:var(--text-muted); }
+  .status.done { background:rgba(30,190,120,.18); color:#4ee0a0; }
+  .status.working { background:rgba(255,180,0,.18); color:#ffc94d; }
+  .item .rm { cursor:pointer; color:#ff8080; font-size:.72rem; background:none; border:none; }
+  .item .dl-single { font-size:.72rem; color:var(--accent); background:none; border:none; cursor:pointer; }
+
+  footer { text-align:center; color:var(--text-muted); font-size:.72rem; margin:30px 0 10px; }
+  .empty-hint { text-align:center; color:var(--text-muted); font-size:.85rem; padding:20px; }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="icon">📚</div>
+  <div>
+    <h1>Comic Book Tool</h1>
+    <p>Aumenta a resolução e define os DPI das imagens (ideal para arte gerada por IA em baixa resolução)</p>
+  </div>
+</header>
+
+<main>
+  <div class="card">
+    <div class="drop" id="drop">
+      <div class="di">🖼️</div>
+      <div class="dt">Arrasta imagens para aqui ou clica para escolher (podes selecionar várias)</div>
+      <input type="file" id="file-input" accept="image/*" multiple>
+    </div>
+
+    <div class="controls">
+      <div class="field">
+        <label>DPI de saída</label>
+        <select id="dpi">
+          <option value="150">150 DPI</option>
+          <option value="300" selected>300 DPI</option>
+          <option value="600">600 DPI</option>
+        </select>
+      </div>
+      <div class="field">
+        <label>Fator de escala</label>
+        <select id="scale">
+          <option value="1">Manter tamanho (só define DPI)</option>
+          <option value="2" selected>2x</option>
+          <option value="3">3x</option>
+          <option value="4">4x</option>
+        </select>
+      </div>
+      <div class="field">
+        <label>Formato de saída</label>
+        <select id="format">
+          <option value="image/png" selected>PNG</option>
+          <option value="image/jpeg">JPEG</option>
+        </select>
+      </div>
+      <button class="btn" id="process-btn" disabled>Processar tudo</button>
+      <button class="btn secondary" id="download-all-btn" disabled>Descarregar tudo</button>
+      <button class="btn secondary" id="clear-btn" disabled>Limpar</button>
+    </div>
+  </div>
+
+  <div class="card">
+    <div id="grid"></div>
+    <div class="empty-hint" id="empty-hint">Ainda não adicionaste nenhuma imagem.</div>
+  </div>
+</main>
+
+<footer>Todo o processamento acontece localmente no teu navegador — nenhuma imagem é enviada para um servidor.</footer>
+
+<script>
+(function(){
+  const drop = document.getElementById('drop');
+  const fileInput = document.getElementById('file-input');
+  const grid = document.getElementById('grid');
+  const emptyHint = document.getElementById('empty-hint');
+  const processBtn = document.getElementById('process-btn');
+  const downloadAllBtn = document.getElementById('download-all-btn');
+  const clearBtn = document.getElementById('clear-btn');
+  const dpiSel = document.getElementById('dpi');
+  const scaleSel = document.getElementById('scale');
+  const formatSel = document.getElementById('format');
+
+  let items = []; // {id, file, img, originalW, originalH, resultBlob, resultURL, status}
+  let seq = 0;
+
+  drop.addEventListener('click', () => fileInput.click());
+  ['dragover','dragenter'].forEach(ev => drop.addEventListener(ev, e => { e.preventDefault(); drop.classList.add('drag'); }));
+  ['dragleave','dragend','drop'].forEach(ev => drop.addEventListener(ev, e => { e.preventDefault(); drop.classList.remove('drag'); }));
+  drop.addEventListener('drop', e => addFiles(e.dataTransfer.files));
+  fileInput.addEventListener('change', e => addFiles(e.target.files));
+
+  function addFiles(fileList) {
+    const files = Array.from(fileList).filter(f => f.type.startsWith('image/'));
+    files.forEach(file => {
+      const id = 'img-' + (++seq);
+      const item = { id, file, status:'pending', resultBlob:null, resultURL:null };
+      const img = new Image();
+      const objURL = URL.createObjectURL(file);
+      img.onload = () => {
+        item.img = img;
+        item.originalW = img.naturalWidth;
+        item.originalH = img.naturalHeight;
+        render();
+      };
+      img.src = objURL;
+      item.previewURL = objURL;
+      items.push(item);
+    });
+    render();
+    updateButtons();
+  }
+
+  function updateButtons() {
+    processBtn.disabled = items.length === 0;
+    clearBtn.disabled = items.length === 0;
+    downloadAllBtn.disabled = !items.some(i => i.status === 'done');
+  }
+
+  function render() {
+    emptyHint.style.display = items.length ? 'none' : 'block';
+    grid.innerHTML = '';
+    items.forEach(item => {
+      const el = document.createElement('div');
+      el.className = 'item';
+      const dims = item.originalW ? `${item.originalW}×${item.originalH}px` : '...';
+      const resultDims = item.resultW ? `${item.resultW}×${item.resultH}px` : '—';
+      el.innerHTML = `
+        <div class="thumb-wrap"><img src="${item.resultURL || item.previewURL}"></div>
+        <div class="meta">
+          <b>${item.file.name}</b>
+          <span>Original: ${dims}</span>
+          <span>Resultado: ${resultDims}</span>
+        </div>
+        <div class="row">
+          <span class="status ${item.status}">${statusLabel(item.status)}</span>
+          <div>
+            ${item.status==='done' ? `<button class="dl-single" data-id="${item.id}">Descarregar</button>` : ''}
+            <button class="rm" data-id="${item.id}">Remover</button>
+          </div>
+        </div>
+      `;
+      grid.appendChild(el);
+    });
+    grid.querySelectorAll('.rm').forEach(b => b.addEventListener('click', () => removeItem(b.dataset.id)));
+    grid.querySelectorAll('.dl-single').forEach(b => b.addEventListener('click', () => downloadItem(b.dataset.id)));
+  }
+
+  function statusLabel(s) {
+    return { pending:'Por processar', working:'A processar…', done:'Concluído' }[s] || s;
+  }
+
+  function removeItem(id) {
+    items = items.filter(i => i.id !== id);
+    render();
+    updateButtons();
+  }
+
+  clearBtn.addEventListener('click', () => {
+    items = [];
+    render();
+    updateButtons();
+  });
+
+  processBtn.addEventListener('click', async () => {
+    const dpi = parseInt(dpiSel.value, 10);
+    const scale = parseFloat(scaleSel.value);
+    const format = formatSel.value;
+    processBtn.disabled = true;
+    for (const item of items) {
+      if (!item.img) continue;
+      item.status = 'working';
+      render();
+      await processItem(item, scale, dpi, format);
+      item.status = 'done';
+      render();
+      updateButtons();
+    }
+    processBtn.disabled = false;
+  });
+
+  async function processItem(item, scale, dpi, format) {
+    const w = Math.round(item.originalW * scale);
+    const h = Math.round(item.originalH * scale);
+    const canvas = document.createElement('canvas');
+    canvas.width = w;
+    canvas.height = h;
+    const ctx = canvas.getContext('2d');
+    ctx.imageSmoothingEnabled = true;
+    ctx.imageSmoothingQuality = 'high';
+    ctx.drawImage(item.img, 0, 0, w, h);
+
+    const quality = format === 'image/jpeg' ? 0.95 : undefined;
+    const blob = await new Promise(res => canvas.toBlob(res, format, quality));
+    const withDPI = await setDPI(blob, dpi, format);
+
+    if (item.resultURL) URL.revokeObjectURL(item.resultURL);
+    item.resultBlob = withDPI;
+    item.resultURL = URL.createObjectURL(withDPI);
+    item.resultW = w;
+    item.resultH = h;
+  }
+
+  // Injeta a densidade de pixels (DPI) nos metadados do ficheiro exportado.
+  async function setDPI(blob, dpi, format) {
+    const buf = new Uint8Array(await blob.arrayBuffer());
+    if (format === 'image/png') return setPNGPhys(buf, dpi);
+    if (format === 'image/jpeg') return setJPEGDensity(buf, dpi);
+    return blob;
+  }
+
+  function crc32(bytes) {
+    let table = crc32.table || (crc32.table = (() => {
+      const t = [];
+      for (let n = 0; n < 256; n++) {
+        let c = n;
+        for (let k = 0; k < 8; k++) c = (c & 1) ? (0xEDB88320 ^ (c >>> 1)) : (c >>> 1);
+        t[n] = c;
+      }
+      return t;
+    })());
+    let crc = 0xFFFFFFFF;
+    for (let i = 0; i < bytes.length; i++) crc = table[(crc ^ bytes[i]) & 0xFF] ^ (crc >>> 8);
+    return (crc ^ 0xFFFFFFFF) >>> 0;
+  }
+
+  function setPNGPhys(buf, dpi) {
+    const ppm = Math.round(dpi / 0.0254); // pixels por metro
+    const chunkType = new TextEncoder().encode('pHYs');
+    const data = new Uint8Array(9);
+    const dv = new DataView(data.buffer);
+    dv.setUint32(0, ppm);
+    dv.setUint32(4, ppm);
+    data[8] = 1; // unidade: metros
+    const typeAndData = new Uint8Array(chunkType.length + data.length);
+    typeAndData.set(chunkType, 0);
+    typeAndData.set(data, chunkType.length);
+    const crc = crc32(typeAndData);
+
+    const lenBytes = new Uint8Array(4);
+    new DataView(lenBytes.buffer).setUint32(0, data.length);
+    const crcBytes = new Uint8Array(4);
+    new DataView(crcBytes.buffer).setUint32(0, crc);
+
+    const pHYsChunk = new Uint8Array(4 + typeAndData.length + 4);
+    pHYsChunk.set(lenBytes, 0);
+    pHYsChunk.set(typeAndData, 4);
+    pHYsChunk.set(crcBytes, 4 + typeAndData.length);
+
+    // Insere logo a seguir ao chunk IHDR (bytes 8..33 do PNG: assinatura 8 + IHDR 25).
+    const insertAt = 8 + 25;
+    const out = new Uint8Array(buf.length + pHYsChunk.length);
+    out.set(buf.subarray(0, insertAt), 0);
+    out.set(pHYsChunk, insertAt);
+    out.set(buf.subarray(insertAt), insertAt + pHYsChunk.length);
+    return new Blob([out], { type: 'image/png' });
+  }
+
+  function setJPEGDensity(buf, dpi) {
+    // O JFIF APP0 está sempre logo após o SOI (0xFFD8), com o formato:
+    // FF E0 LenHi LenLo "JFIF\0" ver(2) units(1) xdensity(2) ydensity(2) thumb(2)
+    if (buf[0] !== 0xFF || buf[1] !== 0xD8) return new Blob([buf], { type: 'image/jpeg' });
+    if (buf[2] === 0xFF && buf[3] === 0xE0) {
+      const out = buf.slice();
+      // offset 4,5 = length; offset 6-10 = "JFIF\0"; 11 = version(2); 13 = units; 14-15 = xdensity; 16-17=ydensity
+      out[13] = 1; // units = 1 (dots per inch)
+      out[14] = (dpi >> 8) & 0xFF; out[15] = dpi & 0xFF;
+      out[16] = (dpi >> 8) & 0xFF; out[17] = dpi & 0xFF;
+      return new Blob([out], { type: 'image/jpeg' });
+    }
+    // Sem APP0 (raro vindo de canvas.toBlob) — insere um novo segmento JFIF.
+    const app0 = new Uint8Array(18);
+    app0[0]=0xFF; app0[1]=0xE0; app0[2]=0x00; app0[3]=0x10;
+    app0.set(new TextEncoder().encode('JFIF\0'), 4);
+    app0[9]=1; app0[10]=0; // versão 1.0
+    app0[11]=1; // units = DPI
+    app0[12]=(dpi>>8)&0xFF; app0[13]=dpi&0xFF;
+    app0[14]=(dpi>>8)&0xFF; app0[15]=dpi&0xFF;
+    app0[16]=0; app0[17]=0; // sem thumbnail
+    const out = new Uint8Array(buf.length + app0.length);
+    out.set(buf.subarray(0,2), 0);
+    out.set(app0, 2);
+    out.set(buf.subarray(2), 2 + app0.length);
+    return new Blob([out], { type: 'image/jpeg' });
+  }
+
+  function extFor(format) { return format === 'image/jpeg' ? 'jpg' : 'png'; }
+
+  function downloadItem(id) {
+    const item = items.find(i => i.id === id);
+    if (!item || !item.resultBlob) return;
+    const a = document.createElement('a');
+    a.href = item.resultURL;
+    const base = item.file.name.replace(/\.[^.]+$/, '');
+    a.download = `${base}-hd.${extFor(formatSel.value)}`;
+    a.click();
+  }
+
+  downloadAllBtn.addEventListener('click', () => {
+    items.filter(i => i.status === 'done').forEach((item, idx) => {
+      setTimeout(() => downloadItem(item.id), idx * 250);
+    });
+  });
+})();
+</script>
+</body>
+</html>
