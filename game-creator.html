@@ -1,0 +1,324 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="default">
+  <meta name="apple-mobile-web-app-title" content="Game Creator">
+  <title>Game Creator — André M. Fernandes</title>
+  <style>
+    :root {
+      --bg: #f2f2f7;
+      --card: #ffffff;
+      --primary: #007aff;
+      --text: #1c1c1e;
+      --text2: #6d6d72;
+      --text3: #aeaeb2;
+      --sep: rgba(60,60,67,0.18);
+      --safe-t: env(safe-area-inset-top, 0px);
+      --safe-b: env(safe-area-inset-bottom, 0px);
+      --safe-l: env(safe-area-inset-left, 0px);
+      --safe-r: env(safe-area-inset-right, 0px);
+    }
+    @media (prefers-color-scheme: dark) {
+      :root {
+        --bg: #000;
+        --card: #1c1c1e;
+        --text: #fff;
+        --text2: #8e8e93;
+        --text3: #48484a;
+        --sep: rgba(84,84,88,0.6);
+      }
+    }
+
+    *, *::before, *::after {
+      box-sizing: border-box; margin: 0; padding: 0;
+      -webkit-tap-highlight-color: transparent;
+    }
+    html { height: 100%; scroll-behavior: smooth; }
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "SF Pro Text", "SF Pro Display", system-ui, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      min-height: 100dvh;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    .page {
+      padding-top: var(--safe-t);
+      padding-bottom: calc(var(--safe-b) + 48px);
+      padding-left: var(--safe-l);
+      padding-right: var(--safe-r);
+    }
+
+    /* ── BACK LINK ── */
+    .back-link {
+      display: flex;
+      align-items: center;
+      gap: 4px;
+      padding: 16px 16px 0;
+      font-size: 15px;
+      color: var(--primary);
+      text-decoration: none;
+    }
+
+    /* ── HERO ── */
+    .hero {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 24px 24px 24px;
+      gap: 0;
+    }
+    .hero-avatar {
+      width: 88px; height: 88px;
+      border-radius: 50%;
+      background: linear-gradient(145deg, #5e5ce6, #bf5af2);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 42px;
+      box-shadow: 0 4px 20px rgba(94,92,230,0.35);
+      margin-bottom: 16px;
+    }
+    .hero-name {
+      font-size: 24px;
+      font-weight: 700;
+      letter-spacing: -0.5px;
+      text-align: center;
+    }
+    .hero-sub {
+      font-size: 14px;
+      color: var(--text2);
+      margin-top: 4px;
+      text-align: center;
+      max-width: 320px;
+    }
+
+    /* ── SECTION ── */
+    .section {
+      padding: 0 16px;
+      margin-bottom: 8px;
+    }
+    .section-header {
+      font-size: 13px;
+      font-weight: 600;
+      color: var(--text2);
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      padding: 0 16px;
+      margin-bottom: 8px;
+      margin-top: 28px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .section-header::before {
+      content: '';
+      display: inline-block;
+      width: 3px;
+      height: 14px;
+      border-radius: 2px;
+      background: var(--primary);
+      flex-shrink: 0;
+    }
+
+    /* ── LIST GROUP ── */
+    .list-group {
+      background: var(--card);
+      border-radius: 16px;
+      overflow: hidden;
+    }
+
+    /* ── ROW ── */
+    .row {
+      display: flex;
+      align-items: center;
+      gap: 0;
+      min-height: 60px;
+      padding: 10px 16px 10px 16px;
+      text-decoration: none;
+      color: inherit;
+      position: relative;
+      transition: background 0.1s;
+      cursor: pointer;
+    }
+    .row:active { background: rgba(128,128,128,0.1); }
+
+    .row:not(:last-child)::after {
+      content: '';
+      position: absolute;
+      bottom: 0;
+      left: 76px;
+      right: 0;
+      height: 0.5px;
+      background: var(--sep);
+    }
+
+    .row-icon {
+      width: 46px; height: 46px;
+      border-radius: 11px;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 24px;
+      flex-shrink: 0;
+      margin-right: 14px;
+    }
+    .row-body {
+      flex: 1;
+      min-width: 0;
+      display: flex;
+      flex-direction: column;
+      gap: 2px;
+    }
+    .row-title {
+      font-size: 16px;
+      font-weight: 500;
+      letter-spacing: -0.2px;
+      color: var(--text);
+    }
+    .row-desc {
+      font-size: 13px;
+      color: var(--text2);
+      line-height: 1.4;
+    }
+    .row-chevron {
+      font-size: 18px;
+      color: var(--text3);
+      margin-left: 8px;
+      flex-shrink: 0;
+      font-weight: 300;
+    }
+
+    /* ── GRADIENT COLOURS ── */
+    .ic-blue   { background: linear-gradient(145deg,#1a91ff,#0062d4); }
+    .ic-purple { background: linear-gradient(145deg,#bf5af2,#9b40d1); }
+    .ic-green  { background: linear-gradient(145deg,#30d158,#25a244); }
+    .ic-orange { background: linear-gradient(145deg,#ff9f0a,#e07a00); }
+    .ic-red    { background: linear-gradient(145deg,#ff453a,#d93025); }
+    .ic-teal   { background: linear-gradient(145deg,#5ac8fa,#3ba0d1); }
+    .ic-indigo { background: linear-gradient(145deg,#5e5ce6,#4240c4); }
+    .ic-pink   { background: linear-gradient(145deg,#ff375f,#d4234a); }
+    .ic-gray   { background: linear-gradient(145deg,#8e8e93,#636366); }
+    .ic-yellow { background: linear-gradient(145deg,#ffd60a,#c49b00); }
+  </style>
+</head>
+<body>
+<div class="page">
+
+  <a class="back-link" href="https://xtvback.github.io/Favoritos/links.html">‹ Links</a>
+
+  <!-- HERO -->
+  <div class="hero">
+    <div class="hero-avatar">🎮</div>
+    <div class="hero-name">Game Creator</div>
+    <div class="hero-sub">Engines de jogos e IAs compatíveis para trabalhar diretamente com elas</div>
+  </div>
+
+  <!-- ENGINES -->
+  <div class="section-header">Engines de Jogos</div>
+  <div class="section">
+    <div class="list-group">
+
+      <a class="row" href="https://www.rpgmakerweb.com" target="_blank">
+        <div class="row-icon ic-red">⚔️</div>
+        <div class="row-body">
+          <div class="row-title">RPG Maker</div>
+          <div class="row-desc">Engine focada em RPGs 2D, sem necessidade de código — ver a secção RPG Maker nos Links para recursos, plugins e assets</div>
+        </div>
+        <span class="row-chevron">›</span>
+      </a>
+
+      <a class="row" href="https://godotengine.org" target="_blank">
+        <div class="row-icon ic-blue">🤖</div>
+        <div class="row-body">
+          <div class="row-title">Godot Engine</div>
+          <div class="row-desc">Engine open-source gratuita para jogos 2D e 3D, com GDScript e suporte a C#</div>
+        </div>
+        <span class="row-chevron">›</span>
+      </a>
+
+      <a class="row" href="https://unity.com" target="_blank">
+        <div class="row-icon ic-gray">🎮</div>
+        <div class="row-body">
+          <div class="row-title">Unity</div>
+          <div class="row-desc">Uma das engines mais usadas do mercado, para jogos 2D, 3D, mobile e VR/AR</div>
+        </div>
+        <span class="row-chevron">›</span>
+      </a>
+
+      <a class="row" href="https://www.unrealengine.com" target="_blank">
+        <div class="row-icon ic-purple">🕹️</div>
+        <div class="row-body">
+          <div class="row-title">Unreal Engine</div>
+          <div class="row-desc">Engine da Epic Games focada em gráficos de alta fidelidade e Blueprints visuais</div>
+        </div>
+        <span class="row-chevron">›</span>
+      </a>
+
+      <a class="row" href="https://gamemaker.io" target="_blank">
+        <div class="row-icon ic-orange">🧱</div>
+        <div class="row-body">
+          <div class="row-title">GameMaker</div>
+          <div class="row-desc">Engine 2D acessível para iniciantes, com drag-and-drop e a linguagem GML</div>
+        </div>
+        <span class="row-chevron">›</span>
+      </a>
+
+      <a class="row" href="https://www.construct.net" target="_blank">
+        <div class="row-icon ic-teal">🧩</div>
+        <div class="row-body">
+          <div class="row-title">Construct 3</div>
+          <div class="row-desc">Engine 2D baseada em browser, sem necessidade de código, ideal para prototipagem rápida</div>
+        </div>
+        <span class="row-chevron">›</span>
+      </a>
+
+    </div>
+  </div>
+
+  <!-- IA COMPATÍVEL -->
+  <div class="section-header">IA para Trabalhar Diretamente nas Engines</div>
+  <div class="section">
+    <div class="list-group">
+
+      <a class="row" href="https://github.com/3ddelano/gdai-mcp-plugin-godot" target="_blank">
+        <div class="row-icon ic-green">🔌</div>
+        <div class="row-body">
+          <div class="row-title">GDAI MCP Plugin (Godot)</div>
+          <div class="row-desc">Plugin MCP para Godot que permite a Claude, Cursor, Windsurf e VS Code criar cenas, scripts e recursos diretamente no editor</div>
+        </div>
+        <span class="row-chevron">›</span>
+      </a>
+
+      <a class="row" href="https://github.com/CoplayDev/unity-mcp" target="_blank">
+        <div class="row-icon ic-indigo">🔗</div>
+        <div class="row-body">
+          <div class="row-title">Unity MCP</div>
+          <div class="row-desc">Ponte MCP entre IAs (Claude, Cursor, Copilot) e o Unity Editor para gerir assets, cenas e scripts</div>
+        </div>
+        <span class="row-chevron">›</span>
+      </a>
+
+      <a class="row" href="https://github.com/chongdashu/unreal-mcp" target="_blank">
+        <div class="row-icon ic-red">⚙️</div>
+        <div class="row-body">
+          <div class="row-title">Unreal MCP</div>
+          <div class="row-desc">Servidor MCP que permite a Claude, Cursor e Windsurf controlar o Unreal Engine por linguagem natural</div>
+        </div>
+        <span class="row-chevron">›</span>
+      </a>
+
+      <a class="row" href="https://rosebud.ai" target="_blank">
+        <div class="row-icon ic-pink">✨</div>
+        <div class="row-body">
+          <div class="row-title">Rosebud AI</div>
+          <div class="row-desc">Engine online que gera jogos 2D/3D jogáveis a partir de descrições em texto, com assets gerados por IA</div>
+        </div>
+        <span class="row-chevron">›</span>
+      </a>
+
+    </div>
+  </div>
+
+</div>
+</body>
+</html>
