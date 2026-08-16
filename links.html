@@ -9,2539 +9,619 @@
   <title>Links — André M. Fernandes</title>
   <style>
     :root {
-      --bg: #f2f2f7;
-      --card: #ffffff;
-      --primary: #007aff;
-      --text: #1c1c1e;
-      --text2: #6d6d72;
-      --text3: #aeaeb2;
-      --sep: rgba(60,60,67,0.18);
+      --bg: #f0f1f4;
+      --surface: #ffffff;
+      --surface-2: #e7e9ee;
+      --line: rgba(16,19,26,.09);
+      --line-strong: rgba(16,19,26,.16);
+      --text: #10131a;
+      --text-2: #565e6e;
+      --text-3: #8b93a2;
+      --accent: #c98a1f;
+      --accent-soft: rgba(201,138,31,.14);
+      --shadow: 0 1px 2px rgba(16,19,26,.04), 0 8px 24px -12px rgba(16,19,26,.18);
       --safe-t: env(safe-area-inset-top, 0px);
       --safe-b: env(safe-area-inset-bottom, 0px);
       --safe-l: env(safe-area-inset-left, 0px);
       --safe-r: env(safe-area-inset-right, 0px);
-      --search-h: 56px;
-      --nav-h: 48px;
-      --sticky-offset: calc(var(--search-h) + var(--nav-h));
+
+      --c-paginas: #b8342f; --c-ias: #5a52c9; --c-suno: #c93f74; --c-rpg: #2e9c4a;
+      --c-claude: #b8582e; --c-gemini: #2670c9; --c-deepseek: #3f4fbf; --c-qwen: #1f938c;
+      --c-chatgpt: #1e9c6e; --c-gpts: #4e57c4; --c-social: #b32e73; --c-kdp: #8a5423;
+      --c-comic: #b8511f; --c-gems: #7e46b8; --c-aistudio: #3d7f96; --c-repos: #57617a;
     }
     @media (prefers-color-scheme: dark) {
       :root {
-        --bg: #000;
-        --card: #1c1c1e;
-        --text: #fff;
-        --text2: #8e8e93;
-        --text3: #48484a;
-        --sep: rgba(84,84,88,0.6);
+        --bg: #10131a;
+        --surface: #171b24;
+        --surface-2: #1e2430;
+        --line: rgba(238,240,244,.09);
+        --line-strong: rgba(238,240,244,.16);
+        --text: #eef0f4;
+        --text-2: #99a1b0;
+        --text-3: #5d6474;
+        --accent: #f2b134;
+        --accent-soft: rgba(242,177,52,.16);
+        --shadow: 0 1px 2px rgba(0,0,0,.3), 0 12px 32px -14px rgba(0,0,0,.55);
+
+        --c-paginas: #e05c5c; --c-ias: #8c8cf2; --c-suno: #f2679c; --c-rpg: #5fcf7a;
+        --c-claude: #e08a5c; --c-gemini: #5aa8f2; --c-deepseek: #6b7fe0; --c-qwen: #3fc4bb;
+        --c-chatgpt: #3fcf9e; --c-gpts: #7d8cf0; --c-social: #e0559a; --c-kdp: #cf9b56;
+        --c-comic: #e0794a; --c-gems: #b07de0; --c-aistudio: #6bafc9; --c-repos: #8a94a8;
       }
     }
 
-    *, *::before, *::after {
-      box-sizing: border-box; margin: 0; padding: 0;
-      -webkit-tap-highlight-color: transparent;
-    }
-    html { height: 100%; scroll-behavior: smooth; }
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
     body {
-      font-family: -apple-system, BlinkMacSystemFont, "SF Pro Text", "SF Pro Display", system-ui, sans-serif;
+      margin: 0;
       background: var(--bg);
       color: var(--text);
-      min-height: 100dvh;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", system-ui, sans-serif;
       -webkit-font-smoothing: antialiased;
+      min-height: 100dvh;
+    }
+    @media (prefers-reduced-motion: reduce) {
+      * { animation-duration: 0.001ms !important; transition-duration: 0.001ms !important; }
     }
 
-    /* ── PAGE WRAPPER ── */
-    .page {
-      padding-top: var(--safe-t);
-      padding-bottom: calc(var(--safe-b) + 48px);
-      padding-left: var(--safe-l);
-      padding-right: var(--safe-r);
-    }
-
-    /* ── HERO ── */
-    .hero {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      padding: 40px 24px 24px;
-      gap: 0;
-    }
-    .hero-avatar {
-      width: 88px; height: 88px;
-      border-radius: 50%;
-      background: linear-gradient(145deg, #1a91ff, #5856d6);
-      display: flex; align-items: center; justify-content: center;
-      font-size: 42px;
-      box-shadow: 0 4px 20px rgba(0,122,255,0.3);
-      margin-bottom: 16px;
-    }
-    .hero-name {
-      font-size: 24px;
+    .display {
+      font-family: "Avenir Next", "Segoe UI Semibold", "Century Gothic", -apple-system, system-ui, sans-serif;
       font-weight: 700;
-      letter-spacing: -0.5px;
-      text-align: center;
+      letter-spacing: -0.01em;
     }
-    .hero-sub {
-      font-size: 14px;
-      color: var(--text2);
-      margin-top: 4px;
-      text-align: center;
+    .mono {
+      font-family: ui-monospace, "SF Mono", "Cascadia Code", "Roboto Mono", monospace;
+      font-variant-numeric: tabular-nums;
     }
 
-    /* ── STICKY SEARCH BAR ── */
-    .search-wrap {
+    a { color: inherit; }
+    button { font: inherit; color: inherit; }
+
+    /* ── SHELL ── */
+    .shell {
+      max-width: 1080px;
+      margin: 0 auto;
+      padding: calc(var(--safe-t) + 20px) calc(var(--safe-r) + 20px) calc(var(--safe-b) + 64px) calc(var(--safe-l) + 20px);
+    }
+
+    /* ── HEADER / CONTROL STRIP ── */
+    .topbar {
       position: sticky;
       top: 0;
-      z-index: 100;
-      background: var(--bg);
-      padding: 8px 16px;
-      height: var(--search-h);
-      display: flex;
-      align-items: center;
-      backdrop-filter: saturate(180%) blur(20px);
-      -webkit-backdrop-filter: saturate(180%) blur(20px);
-      border-bottom: 0.5px solid var(--sep);
+      z-index: 50;
+      background: color-mix(in srgb, var(--bg) 88%, transparent);
+      backdrop-filter: blur(14px) saturate(140%);
+      -webkit-backdrop-filter: blur(14px) saturate(140%);
+      margin: calc(var(--safe-t) * -1) -20px 0;
+      padding: calc(var(--safe-t) + 14px) 20px 12px;
+      border-bottom: 1px solid var(--line);
     }
-    .search-inner {
+    .topbar-row {
+      display: flex;
+      align-items: baseline;
+      justify-content: space-between;
+      gap: 16px;
+      flex-wrap: wrap;
+      margin-bottom: 12px;
+    }
+    .wordmark {
+      display: flex;
+      align-items: baseline;
+      gap: 10px;
+    }
+    .wordmark-mark {
+      font-size: 22px;
+      letter-spacing: -0.02em;
+    }
+    .wordmark-star { color: var(--accent); }
+    .stat-line {
+      font-size: 12.5px;
+      color: var(--text-3);
+      letter-spacing: 0.03em;
+    }
+    .stat-line b { color: var(--text-2); font-weight: 600; }
+
+    .search-row {
       display: flex;
       align-items: center;
-      background: var(--card);
+      gap: 8px;
+      background: var(--surface);
+      border: 1px solid var(--line);
       border-radius: 12px;
       padding: 0 12px;
-      gap: 8px;
-      width: 100%;
-      height: 38px;
-      box-shadow: 0 1px 4px rgba(0,0,0,0.06);
+      height: 44px;
+      box-shadow: var(--shadow);
     }
-    .search-icon { font-size: 16px; color: var(--text3); flex-shrink: 0; }
+    .search-row:focus-within {
+      border-color: var(--accent);
+      box-shadow: 0 0 0 3px var(--accent-soft), var(--shadow);
+    }
+    .search-icon { font-size: 15px; color: var(--text-3); flex-shrink: 0; }
     .search-input {
       flex: 1;
       border: none;
-      background: transparent;
-      font-size: 16px;
-      color: var(--text);
       outline: none;
+      background: transparent;
+      font-size: 15.5px;
+      color: var(--text);
       font-family: inherit;
+      min-width: 0;
     }
-    .search-input::placeholder { color: var(--text3); }
+    .search-input::placeholder { color: var(--text-3); }
     .search-clear {
-      font-size: 16px;
-      color: var(--text3);
-      cursor: pointer;
-      flex-shrink: 0;
       display: none;
-      background: rgba(120,120,128,0.2);
-      border: none;
-      border-radius: 50%;
-      width: 20px; height: 20px;
       align-items: center;
       justify-content: center;
-      font-weight: 700;
-      line-height: 1;
+      width: 22px; height: 22px;
+      border-radius: 50%;
+      border: none;
+      background: var(--surface-2);
+      color: var(--text-2);
+      font-size: 13px;
+      cursor: pointer;
+      flex-shrink: 0;
     }
     .search-clear.visible { display: flex; }
 
-    /* ── CATEGORY NAV ── */
-    .cat-nav {
-      position: sticky;
-      top: var(--search-h);
-      z-index: 99;
-      background: var(--bg);
-      backdrop-filter: saturate(180%) blur(20px);
-      -webkit-backdrop-filter: saturate(180%) blur(20px);
-      border-bottom: 0.5px solid var(--sep);
-      height: var(--nav-h);
-      display: flex;
-      align-items: center;
-      overflow-x: auto;
-      gap: 8px;
-      padding: 0 16px;
-      scrollbar-width: none;
+    /* ── BENTO GRID ── */
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 14px;
+      margin-top: 22px;
     }
-    .cat-nav::-webkit-scrollbar { display: none; }
-    .cat-pill {
-      flex-shrink: 0;
-      font-size: 13px;
-      font-weight: 500;
-      padding: 5px 12px;
-      border-radius: 20px;
-      background: var(--card);
-      color: var(--text2);
-      text-decoration: none;
-      border: none;
-      cursor: pointer;
-      transition: background 0.15s, color 0.15s;
-      white-space: nowrap;
+    @media (max-width: 720px) {
+      .grid { grid-template-columns: repeat(2, 1fr); }
     }
-    .cat-pill:active, .cat-pill:hover {
-      background: var(--primary);
-      color: #fff;
+    @media (max-width: 420px) {
+      .grid { grid-template-columns: 1fr; }
     }
 
-    /* ── SECTION ── */
-    .section {
-      padding: 0 16px;
-      margin-bottom: 8px;
-    }
-    .section-header {
-      font-size: 13px;
-      font-weight: 600;
-      color: var(--text2);
-      text-transform: uppercase;
-      letter-spacing: 0.5px;
-      padding: 0 16px;
-      margin-bottom: 8px;
-      margin-top: 28px;
-      scroll-margin-top: calc(var(--sticky-offset) + 8px);
-      display: flex;
-      align-items: center;
-      gap: 8px;
-    }
-    .section-header::before {
-      content: '';
-      display: inline-block;
-      width: 3px;
-      height: 14px;
-      border-radius: 2px;
-      background: var(--primary);
-      flex-shrink: 0;
-    }
-
-    /* ── SECTION BLOCK (for hiding during search) ── */
-    .section-block { transition: opacity 0.15s; }
-    .section-block.hidden { display: none; }
-
-    /* ── NO RESULTS ── */
-    .no-results {
-      display: none;
-      text-align: center;
-      padding: 48px 24px;
-      color: var(--text2);
-      font-size: 15px;
-    }
-    .no-results.visible { display: block; }
-
-    /* ── LIST GROUP ── */
-    .list-group {
-      background: var(--card);
-      border-radius: 16px;
-      overflow: hidden;
-    }
-
-    /* ── ROW ── */
-    .row {
-      display: flex;
-      align-items: center;
-      gap: 0;
-      min-height: 60px;
-      padding: 10px 16px 10px 16px;
-      text-decoration: none;
-      color: inherit;
+    .tile {
       position: relative;
-      transition: background 0.1s;
+      grid-column: span 1;
+      background: var(--surface);
+      border: 1px solid var(--line);
+      border-radius: 16px;
+      padding: 16px 16px 14px;
       cursor: pointer;
-    }
-    .row:active { background: rgba(128,128,128,0.1); }
-    .row.search-hidden { display: none; }
-
-    /* Inset separator */
-    .row:not(:last-child)::after {
-      content: '';
-      position: absolute;
-      bottom: 0;
-      left: 76px;
-      right: 0;
-      height: 0.5px;
-      background: var(--sep);
-    }
-
-    .row-icon {
-      width: 46px; height: 46px;
-      border-radius: 11px;
-      display: flex; align-items: center; justify-content: center;
-      font-size: 24px;
-      flex-shrink: 0;
-      margin-right: 14px;
-    }
-    .row-body {
-      flex: 1;
-      min-width: 0;
+      text-align: left;
       display: flex;
       flex-direction: column;
-      gap: 2px;
+      gap: 12px;
+      box-shadow: var(--shadow);
+      opacity: 0;
+      transform: translateY(10px);
+      animation: tile-in 0.5s cubic-bezier(.2,.7,.2,1) forwards;
+      transition: border-color .15s, transform .15s;
+      width: 100%;
     }
-    .row-title {
-      font-size: 16px;
-      font-weight: 500;
-      letter-spacing: -0.2px;
-      color: var(--text);
-      white-space: nowrap;
-      overflow: hidden;
-      text-overflow: ellipsis;
+    .tile::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 16px; right: 16px;
+      height: 3px;
+      border-radius: 0 0 3px 3px;
+      background: var(--tile-color);
     }
-    .row-desc {
-      font-size: 13px;
-      color: var(--text2);
-      line-height: 1.4;
+    .tile:hover, .tile:focus-visible {
+      transform: translateY(-2px);
+      border-color: var(--line-strong);
     }
-    .row-chevron {
-      font-size: 18px;
-      color: var(--text3);
-      margin-left: 8px;
-      flex-shrink: 0;
-      font-weight: 300;
+    .tile:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+    .tile.hide { display: none; }
+
+    @keyframes tile-in {
+      to { opacity: 1; transform: translateY(0); }
+    }
+    @media (prefers-reduced-motion: reduce) {
+      .tile { opacity: 1; transform: none; animation: none; }
     }
 
-    /* ── REPO TAGS ── */
-    .row-tags {
+    .tile--l { grid-column: span 2; }
+    @media (max-width: 420px) { .tile--l { grid-column: span 1; } }
+
+    .tile-head {
       display: flex;
-      gap: 6px;
-      margin-top: 8px;
-      flex-wrap: wrap;
-    }
-    .tag {
-      font-size: 12px;
-      font-weight: 600;
-      padding: 5px 12px;
-      border-radius: 20px;
-      text-decoration: none;
-      transition: opacity 0.12s;
-    }
-    .tag:active { opacity: 0.55; }
-    .tag-gh {
-      background: rgba(0,0,0,0.07);
-      color: var(--text2);
-    }
-    @media (prefers-color-scheme: dark) {
-      .tag-gh { background: rgba(255,255,255,0.1); }
-    }
-    .tag-web {
-      background: rgba(0,122,255,0.12);
-      color: var(--primary);
-    }
-    .tag-vercel {
-      background: rgba(0,0,0,0.07);
-      color: var(--text2);
-    }
-    @media (prefers-color-scheme: dark) {
-      .tag-vercel { background: rgba(255,255,255,0.1); }
-    }
-
-    .row.repo-row {
       align-items: flex-start;
-      padding-top: 14px;
-      padding-bottom: 14px;
+      justify-content: space-between;
+      gap: 10px;
     }
-    .row.repo-row .row-icon { margin-top: 2px; }
-
-    /* ── BACK TO TOP ── */
-    .back-top {
-      position: fixed;
-      bottom: calc(var(--safe-b) + 24px);
-      right: 20px;
-      width: 40px; height: 40px;
-      border-radius: 50%;
-      background: var(--primary);
-      color: #fff;
-      font-size: 18px;
-      border: none;
-      cursor: pointer;
+    .tile-name {
+      font-size: 16.5px;
+      line-height: 1.25;
+      text-wrap: balance;
+    }
+    .tile--l .tile-name { font-size: 20px; }
+    .tile-count {
+      flex-shrink: 0;
+      font-size: 11px;
+      padding: 3px 8px;
+      border-radius: 20px;
+      background: color-mix(in srgb, var(--tile-color) 16%, var(--surface));
+      color: var(--tile-color);
+      white-space: nowrap;
+    }
+    .tile-icons {
       display: flex;
       align-items: center;
-      justify-content: center;
-      box-shadow: 0 4px 16px rgba(0,122,255,0.35);
-      opacity: 0;
-      transform: translateY(8px);
-      transition: opacity 0.2s, transform 0.2s;
-      pointer-events: none;
+      gap: 6px;
+      flex-wrap: wrap;
+    }
+    .tile-icon {
+      width: 26px; height: 26px;
+      border-radius: 8px;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 14px;
+      background: color-mix(in srgb, var(--tile-color) 14%, var(--surface));
+      flex-shrink: 0;
+    }
+    .tile-icon-more {
+      font-size: 11px;
+      color: var(--text-3);
+      padding-left: 2px;
+    }
+    .tile-foot {
+      margin-top: auto;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 12.5px;
+      color: var(--text-3);
+    }
+    .tile-foot .chev { color: var(--tile-color); transition: transform .15s; }
+    .tile:hover .tile-foot .chev { transform: translateX(3px); }
+
+    /* ── NO RESULTS ── */
+    .empty {
+      display: none;
+      text-align: center;
+      padding: 64px 24px;
+      color: var(--text-3);
+      font-size: 14.5px;
+    }
+    .empty.visible { display: block; }
+
+    /* ── SEARCH RESULTS LIST ── */
+    .results {
+      display: none;
+      flex-direction: column;
+      margin-top: 22px;
+      border: 1px solid var(--line);
+      border-radius: 16px;
+      overflow: hidden;
+      background: var(--surface);
+    }
+    .results.visible { display: flex; }
+    .result-row {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 11px 14px;
+      text-decoration: none;
+      color: inherit;
+      border-bottom: 1px solid var(--line);
+      transition: background .1s;
+    }
+    .result-row:last-child { border-bottom: none; }
+    .result-row:hover { background: var(--surface-2); }
+    .result-icon {
+      width: 34px; height: 34px;
+      border-radius: 9px;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 16px;
+      background: color-mix(in srgb, var(--row-color) 16%, var(--surface));
+      flex-shrink: 0;
+    }
+    .result-body { min-width: 0; flex: 1; }
+    .result-title { font-size: 14.5px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+    .result-cat { font-size: 12px; color: var(--row-color); margin-top: 1px; }
+
+    /* ── EXPANDED PANEL (OVERLAY) ── */
+    .overlay {
+      position: fixed;
+      inset: 0;
+      background: rgba(8,9,12,.5);
+      backdrop-filter: blur(3px);
       z-index: 200;
+      display: none;
+      align-items: flex-end;
+      justify-content: center;
+      padding: 0;
     }
-    .back-top.visible {
-      opacity: 1;
-      transform: translateY(0);
-      pointer-events: auto;
+    .overlay.open { display: flex; }
+    @media (min-width: 640px) {
+      .overlay { align-items: center; padding: 40px 20px; }
     }
 
-    /* ── GRADIENT COLOURS ── */
-    .ic-blue   { background: linear-gradient(145deg,#1a91ff,#0062d4); }
-    .ic-purple { background: linear-gradient(145deg,#bf5af2,#9b40d1); }
-    .ic-green  { background: linear-gradient(145deg,#30d158,#25a244); }
-    .ic-orange { background: linear-gradient(145deg,#ff9f0a,#e07a00); }
-    .ic-red    { background: linear-gradient(145deg,#ff453a,#d93025); }
-    .ic-teal   { background: linear-gradient(145deg,#5ac8fa,#3ba0d1); }
-    .ic-indigo { background: linear-gradient(145deg,#5e5ce6,#4240c4); }
-    .ic-pink   { background: linear-gradient(145deg,#ff375f,#d4234a); }
-    .ic-gray   { background: linear-gradient(145deg,#8e8e93,#636366); }
-    .ic-yellow { background: linear-gradient(145deg,#ffd60a,#c49b00); }
+    .panel {
+      background: var(--bg);
+      width: 100%;
+      max-width: 640px;
+      max-height: 82vh;
+      border-radius: 20px 20px 0 0;
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+      box-shadow: 0 -20px 60px rgba(0,0,0,.3);
+      transform: translateY(24px);
+      opacity: 0;
+      transition: transform .22s cubic-bezier(.2,.7,.2,1), opacity .22s;
+      padding-bottom: var(--safe-b);
+    }
+    .overlay.open .panel { transform: translateY(0); opacity: 1; }
+    @media (min-width: 640px) {
+      .panel { border-radius: 20px; max-height: 74vh; padding-bottom: 0; }
+    }
 
+    .panel-head {
+      padding: 18px 20px 14px;
+      border-bottom: 1px solid var(--line);
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      gap: 12px;
+      background: var(--surface);
+      flex-shrink: 0;
+    }
+    .panel-title-wrap { display: flex; align-items: center; gap: 10px; }
+    .panel-swatch {
+      width: 8px; height: 24px;
+      border-radius: 4px;
+      background: var(--panel-color);
+      flex-shrink: 0;
+    }
+    .panel-title { font-size: 18px; text-wrap: balance; }
+    .panel-count { font-size: 12.5px; color: var(--text-3); margin-top: 2px; }
+    .panel-close {
+      width: 30px; height: 30px;
+      border-radius: 50%;
+      border: none;
+      background: var(--surface-2);
+      color: var(--text-2);
+      font-size: 14px;
+      cursor: pointer;
+      flex-shrink: 0;
+    }
+    .panel-list { overflow-y: auto; }
+    .panel-row {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 12px 20px;
+      text-decoration: none;
+      color: inherit;
+      border-bottom: 1px solid var(--line);
+      transition: background .1s;
+    }
+    .panel-row:last-child { border-bottom: none; }
+    .panel-row:hover { background: var(--surface-2); }
+    .panel-icon {
+      width: 38px; height: 38px;
+      border-radius: 10px;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 18px;
+      background: color-mix(in srgb, var(--panel-color) 16%, var(--surface));
+      flex-shrink: 0;
+    }
+    .panel-body { min-width: 0; flex: 1; }
+    .panel-row-title { font-size: 15px; }
+    .panel-row-desc { font-size: 12.5px; color: var(--text-3); margin-top: 2px; }
+    .panel-arrow { color: var(--text-3); font-size: 15px; flex-shrink: 0; }
+
+    .panel-subhead {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 14px 20px 6px;
+      font-size: 11.5px;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      color: var(--text-3);
+    }
+
+    .panel-tags {
+      display: flex;
+      gap: 6px;
+      flex-shrink: 0;
+    }
+    .panel-tag {
+      font-size: 11.5px;
+      font-weight: 600;
+      padding: 5px 10px;
+      border-radius: 20px;
+      text-decoration: none;
+      background: var(--surface-2);
+      color: var(--text-2);
+      white-space: nowrap;
+    }
+    .panel-tag:hover { background: var(--line-strong); }
+    .panel-tag--accent { background: color-mix(in srgb, var(--panel-color) 16%, var(--surface)); color: var(--panel-color); }
   </style>
 </head>
 <body>
-<div class="page">
 
-  <!-- HERO -->
-  <div class="hero">
-    <div class="hero-avatar">🔖</div>
-    <div class="hero-name">André M. Fernandes</div>
-    <div class="hero-sub">Repositórios e páginas pessoais</div>
-  </div>
-
-
-  <!-- SEARCH BAR -->
-  <div class="search-wrap">
-    <div class="search-inner">
-      <span class="search-icon">🔍</span>
-      <input class="search-input" id="searchInput" type="search" placeholder="Pesquisar links…" autocomplete="off" autocorrect="off" spellcheck="false">
-      <button class="search-clear" id="searchClear" aria-label="Limpar">✕</button>
-    </div>
-  </div>
-
-  <!-- CATEGORY NAV -->
-  <nav class="cat-nav" id="catNav">
-    <a class="cat-pill" href="#sec-paginas">Favoritos</a>
-    <a class="cat-pill" href="#sec-ias">IAs</a>
-    <a class="cat-pill" href="#sec-suno">Suno</a>
-    <a class="cat-pill" href="#sec-rpg">RPG Maker</a>
-    <a class="cat-pill" href="#sec-claude">Claude</a>
-    <a class="cat-pill" href="#sec-gemini">Gemini</a>
-    <a class="cat-pill" href="#sec-deepseek">DeepSeek</a>
-    <a class="cat-pill" href="#sec-qwen">Qwen</a>
-    <a class="cat-pill" href="#sec-chatgpt">ChatGPT</a>
-    <a class="cat-pill" href="#sec-gpts">GPTs</a>
-    <a class="cat-pill" href="#sec-social">Social</a>
-    <a class="cat-pill" href="#sec-kdp">KDP</a>
-    <a class="cat-pill" href="#sec-comic">BD</a>
-    <a class="cat-pill" href="#sec-gems">Gems</a>
-    <a class="cat-pill" href="#sec-aistudio">AI Studio</a>
-    <a class="cat-pill" href="#sec-repos">GitHub</a>
-  </nav>
-
-  <!-- NO RESULTS -->
-  <div class="no-results" id="noResults">Nenhum resultado encontrado 🔎</div>
-
-  <!-- PÁGINAS -->
-  <div class="section-block" data-section="sec-paginas">
-  <div class="section-header" id="sec-paginas">Páginas do Favoritos</div>
-  <div class="section">
-    <div class="list-group">
-
-      <a class="row" href="https://xtvback.github.io/Favoritos/" target="_blank">
-        <div class="row-icon ic-indigo">🖥️</div>
-        <div class="row-body">
-          <div class="row-title">DesktopWeb</div>
-          <div class="row-desc">Ambiente de trabalho virtual com atalhos para as ferramentas e apps web</div>
-        </div>
-        <span class="row-chevron">›</span>
-      </a>
-
-      <a class="row" href="https://xtvback.github.io/Favoritos/app-ideas.html" target="_blank">
-        <div class="row-icon ic-blue">💡</div>
-        <div class="row-body">
-          <div class="row-title">App Ideas</div>
-          <div class="row-desc">Gestor de ideias para criação de apps, com histórico e arquivo por data</div>
-        </div>
-        <span class="row-chevron">›</span>
-      </a>
-
-      <a class="row" href="https://xtvback.github.io/Favoritos/ideias-soltas.html" target="_blank">
-        <div class="row-icon ic-purple">✨</div>
-        <div class="row-body">
-          <div class="row-title">Ideias Soltas</div>
-          <div class="row-desc">Captura rápida de ideias gerais e pensamentos soltos, com arquivo</div>
-        </div>
-        <span class="row-chevron">›</span>
-      </a>
-
-      <a class="row" href="https://xtvback.github.io/Favoritos/ideias-livros.html" target="_blank">
-        <div class="row-icon ic-orange">📖</div>
-        <div class="row-body">
-          <div class="row-title">Ideias Livros</div>
-          <div class="row-desc">Registo de ideias para livros: título, género literário e sinopse</div>
-        </div>
-        <span class="row-chevron">›</span>
-      </a>
-
-      <a class="row" href="https://xtvback.github.io/Favoritos/passwords.html" target="_blank">
-        <div class="row-icon ic-green">🔐</div>
-        <div class="row-body">
-          <div class="row-title">Passwords</div>
-          <div class="row-desc">Cofre de passwords protegido por PIN com campo extra para notas</div>
-        </div>
-        <span class="row-chevron">›</span>
-      </a>
-
-      <a class="row" href="https://xtvback.github.io/Favoritos/multi-ai-search.html" target="_blank">
-        <div class="row-icon ic-teal">🤖</div>
-        <div class="row-body">
-          <div class="row-title">Multi AI Search</div>
-          <div class="row-desc">Pesquisa simultânea em várias IAs com a mesma pergunta</div>
-        </div>
-        <span class="row-chevron">›</span>
-      </a>
-
-      <a class="row" href="https://xtvback.github.io/Favoritos/instagram-slides.html" target="_blank">
-        <div class="row-icon ic-pink">📸</div>
-        <div class="row-body">
-          <div class="row-title">Instagram Slides</div>
-          <div class="row-desc">Gerador de carrosséis para o Instagram com texto, estilos e hashtags</div>
-        </div>
-        <span class="row-chevron">›</span>
-      </a>
-
-      <a class="row" href="https://xtvback.github.io/Favoritos/carrossel-manual.html" target="_blank">
-        <div class="row-icon ic-purple">🎠</div>
-        <div class="row-body">
-          <div class="row-title">Central Carrossel Manual Instagram</div>
-          <div class="row-desc">Gerador automático de carrosséis, histórias e frases para o Instagram com 3 modos e temas</div>
-        </div>
-        <span class="row-chevron">›</span>
-      </a>
-
-      <a class="row" href="https://xtvback.github.io/Favoritos/frases.html" target="_blank">
-        <div class="row-icon ic-yellow">💬</div>
-        <div class="row-body">
-          <div class="row-title">Frases</div>
-          <div class="row-desc">Gerador de slides com citações filosóficas para partilhar nas redes</div>
-        </div>
-        <span class="row-chevron">›</span>
-      </a>
-
-      <a class="row" href="https://xtvback.github.io/Favoritos/estreias.html" target="_blank">
-        <div class="row-icon ic-purple">🎬</div>
-        <div class="row-body">
-          <div class="row-title">Estreias</div>
-          <div class="row-desc">Tracker de estreias de filmes, séries, anime e documentários com integração TMDB</div>
-        </div>
-        <span class="row-chevron">›</span>
-      </a>
-
-      <a class="row" href="https://xtvback.github.io/Favoritos/partilha-contas.html" target="_blank">
-        <div class="row-icon ic-teal">🔗</div>
-        <div class="row-body">
-          <div class="row-title">Partilha de Contas</div>
-          <div class="row-desc">Descobre e guarda serviços de partilha de subscrições como ShareSub, Spliiit e mais</div>
-        </div>
-        <span class="row-chevron">›</span>
-      </a>
-
-      <a class="row" href="https://xtvback.github.io/Favoritos/comic-book-tool.html" target="_blank">
-        <div class="row-icon ic-purple">📚</div>
-        <div class="row-body">
-          <div class="row-title">Comic Book Tool</div>
-          <div class="row-desc">Aumenta a resolução e define os DPI de várias imagens de uma vez (ideal para arte gerada por IA)</div>
-        </div>
-        <span class="row-chevron">›</span>
-      </a>
-
-      <a class="row" href="https://xtvback.github.io/Favoritos/extras.html" target="_blank">
-        <div class="row-icon ic-red">⚡</div>
-        <div class="row-body">
-          <div class="row-title">Claude Extras</div>
-          <div class="row-desc">Centro de descoberta de ferramentas e funcionalidades do Claude</div>
-        </div>
-        <span class="row-chevron">›</span>
-      </a>
-
-      <a class="row" href="https://xtvback.github.io/Favoritos/chatgpt-extras.html" target="_blank">
-        <div class="row-icon ic-green">💬</div>
-        <div class="row-body">
-          <div class="row-title">ChatGPT Extras</div>
-          <div class="row-desc">Centro de descoberta de GPTs, Apps e Actions do ChatGPT</div>
-        </div>
-        <span class="row-chevron">›</span>
-      </a>
-
-      <a class="row" href="https://xtvback.github.io/Favoritos/uslords.html" target="_blank">
-        <div class="row-icon ic-indigo">🌌</div>
-        <div class="row-body">
-          <div class="row-title">Uslords — Base de Dados</div>
-          <div class="row-desc">Base de dados do universo Uslords: raças, personagens, lugares, fações e eventos</div>
-        </div>
-        <span class="row-chevron">›</span>
-      </a>
-
-      <a class="row" href="https://xtvback.github.io/Favoritos/links.html" target="_blank">
-        <div class="row-icon ic-gray">🔖</div>
-        <div class="row-body">
-          <div class="row-title">Links</div>
-          <div class="row-desc">Esta página — todos os repositórios GitHub e páginas do Favoritos</div>
-        </div>
-        <span class="row-chevron">›</span>
-      </a>
-
-      <a class="row" href="https://xtvback.github.io/Favoritos/game-creator.html" target="_blank">
-        <div class="row-icon ic-indigo">🎮</div>
-        <div class="row-body">
-          <div class="row-title">Game Creator</div>
-          <div class="row-desc">20 engines de jogos e 27 IAs para código, assets 3D, NPCs e design — Godot, Unity, Unreal, RPG Maker, Roblox e mais</div>
-        </div>
-        <span class="row-chevron">›</span>
-      </a>
-
-    </div>
-  </div>
-  </div>
-
-  <!-- IAs -->
-  <div class="section-block" data-section="sec-ias">
-  <div class="section-header" id="sec-ias">Inteligências Artificiais</div>
-  <div class="section">
-    <div class="list-group">
-
-      <a class="row" href="https://chat.deepseek.com" target="_blank">
-        <div class="row-icon ic-blue">🔵</div>
-        <div class="row-body">
-          <div class="row-title">DeepSeek</div>
-        </div>
-        <span class="row-chevron">›</span>
-      </a>
-
-      <a class="row" href="#sec-chatgpt">
-        <div class="row-icon ic-green">💬</div>
-        <div class="row-body">
-          <div class="row-title">ChatGPT</div>
-          <div class="row-desc">Chat, apps, GPTs, plugins/actions e mais ferramentas ↓</div>
-        </div>
-        <span class="row-chevron">›</span>
-      </a>
-
-      <a class="row" href="https://storyspark.ai" target="_blank">
-        <div class="row-icon ic-orange">✨</div>
-        <div class="row-body">
-          <div class="row-title">Story Spark</div>
-        </div>
-        <span class="row-chevron">›</span>
-      </a>
-
-      <a class="row" href="https://copilot.microsoft.com" target="_blank">
-        <div class="row-icon ic-indigo">🪟</div>
-        <div class="row-body">
-          <div class="row-title">Microsoft Copilot</div>
-        </div>
-        <span class="row-chevron">›</span>
-      </a>
-
-      <a class="row" href="https://chat.qwen.ai" target="_blank">
-        <div class="row-icon ic-purple">🌀</div>
-        <div class="row-body">
-          <div class="row-title">Qwen</div>
-        </div>
-        <span class="row-chevron">›</span>
-      </a>
-
-      <a class="row" href="https://venice.ai" target="_blank">
-        <div class="row-icon ic-teal">🌊</div>
-        <div class="row-body">
-          <div class="row-title">Venice</div>
-        </div>
-        <span class="row-chevron">›</span>
-      </a>
-
-      <a class="row" href="https://chat.mistral.ai" target="_blank">
-        <div class="row-icon ic-orange">💬</div>
-        <div class="row-body">
-          <div class="row-title">Le Chat</div>
-        </div>
-        <span class="row-chevron">›</span>
-      </a>
-
-      <a class="row" href="https://poe.com" target="_blank">
-        <div class="row-icon ic-gray">🤖</div>
-        <div class="row-body">
-          <div class="row-title">Poe</div>
-        </div>
-        <span class="row-chevron">›</span>
-      </a>
-
-      <a class="row" href="https://www.perplexity.ai" target="_blank">
-        <div class="row-icon ic-blue">🔍</div>
-        <div class="row-body">
-          <div class="row-title">Perplexity</div>
-        </div>
-        <span class="row-chevron">›</span>
-      </a>
-
-      <a class="row" href="https://z.ai" target="_blank">
-        <div class="row-icon ic-indigo">⚡</div>
-        <div class="row-body">
-          <div class="row-title">Z.ai</div>
-        </div>
-        <span class="row-chevron">›</span>
-      </a>
-
-      <a class="row" href="https://gamma.app" target="_blank">
-        <div class="row-icon ic-green">🎯</div>
-        <div class="row-body">
-          <div class="row-title">Gamma</div>
-        </div>
-        <span class="row-chevron">›</span>
-      </a>
-
-      <a class="row" href="https://claude.ai" target="_blank">
-        <div class="row-icon ic-orange">🧠</div>
-        <div class="row-body">
-          <div class="row-title">Claude</div>
-        </div>
-        <span class="row-chevron">›</span>
-      </a>
-
-      <a class="row" href="https://notebooklm.google.com" target="_blank">
-        <div class="row-icon ic-blue">📓</div>
-        <div class="row-body">
-          <div class="row-title">NotebookLM</div>
-        </div>
-        <span class="row-chevron">›</span>
-      </a>
-
-      <a class="row" href="https://www.nexuscentral.ai" target="_blank">
-        <div class="row-icon ic-teal">💠</div>
-        <div class="row-body">
-          <div class="row-title">Nexus Central</div>
-        </div>
-        <span class="row-chevron">›</span>
-      </a>
-
-      <a class="row" href="https://manus.im" target="_blank">
-        <div class="row-icon ic-gray">✖️</div>
-        <div class="row-body">
-          <div class="row-title">Manus</div>
-        </div>
-        <span class="row-chevron">›</span>
-      </a>
-
-      <a class="row" href="https://jenova.ai" target="_blank">
-        <div class="row-icon ic-purple">🤖</div>
-        <div class="row-body">
-          <div class="row-title">Jenova - A Plataforma de Agentes de IA</div>
-        </div>
-        <span class="row-chevron">›</span>
-      </a>
-
-      <a class="row" href="https://duck.ai" target="_blank">
-        <div class="row-icon ic-orange">🦆</div>
-        <div class="row-body">
-          <div class="row-title">Duck.ai</div>
-        </div>
-        <span class="row-chevron">›</span>
-      </a>
-
-      <a class="row" href="https://api.together.ai/models" target="_blank">
-        <div class="row-icon ic-green">🔗</div>
-        <div class="row-body">
-          <div class="row-title">api.together.ai/models</div>
-        </div>
-        <span class="row-chevron">›</span>
-      </a>
-
-      <a class="row" href="https://gamma.app/slides" target="_blank">
-        <div class="row-icon ic-green">📊</div>
-        <div class="row-body">
-          <div class="row-title">Gamma (Slides)</div>
-        </div>
-        <span class="row-chevron">›</span>
-      </a>
-
-      <a class="row" href="https://arli.ai/chat" target="_blank">
-        <div class="row-icon ic-gray">💬</div>
-        <div class="row-body">
-          <div class="row-title">Chat - Arli AI</div>
-        </div>
-        <span class="row-chevron">›</span>
-      </a>
-
-      <a class="row" href="https://skywork.ai" target="_blank">
-        <div class="row-icon ic-blue">🌀</div>
-        <div class="row-body">
-          <div class="row-title">Skywork: Agente de IA tudo-em-um</div>
-        </div>
-        <span class="row-chevron">›</span>
-      </a>
-
-      <a class="row" href="https://nousresearch.com/chat" target="_blank">
-        <div class="row-icon ic-indigo">💬</div>
-        <div class="row-body">
-          <div class="row-title">Nous Chat</div>
-        </div>
-        <span class="row-chevron">›</span>
-      </a>
-
-      <a class="row" href="https://yiyan.baidu.com" target="_blank">
-        <div class="row-icon ic-blue">🈶</div>
-        <div class="row-body">
-          <div class="row-title">ERNIE</div>
-        </div>
-        <span class="row-chevron">›</span>
-      </a>
-
-      <a class="row" href="https://deepai.org" target="_blank">
-        <div class="row-icon ic-purple">🎨</div>
-        <div class="row-body">
-          <div class="row-title">Generative AI APIs | Run Image, Video...</div>
-        </div>
-        <span class="row-chevron">›</span>
-      </a>
-
-      <a class="row" href="https://playground.microsoft.ai/chat" target="_blank">
-        <div class="row-icon ic-blue">🪟</div>
-        <div class="row-body">
-          <div class="row-title">Microsoft AI Playground</div>
-        </div>
-        <span class="row-chevron">›</span>
-      </a>
-
-    </div>
-  </div>
-  </div>
-
-  <!-- SUNO -->
-  <div class="section-block" data-section="sec-suno">
-  <div class="section-header" id="sec-suno">Ferramentas para Suno</div>
-  <div class="section">
-    <div class="list-group">
-
-      <a class="row" href="https://suno.com" target="_blank">
-        <div class="row-icon ic-green">🎵</div>
-        <div class="row-body">
-          <div class="row-title">Suno</div>
-          <div class="row-desc">Criação de músicas completas com IA — letra, voz e instrumentação</div>
-        </div>
-        <span class="row-chevron">›</span>
-      </a>
-
-      <a class="row" href="https://sunobuilder.com" target="_blank">
-        <div class="row-icon ic-blue">🎛️</div>
-        <div class="row-body">
-          <div class="row-title">Suno Prompt Builder</div>
-          <div class="row-desc">Constrói prompts otimizados para o Suno com 200+ instrumentos e 50+ géneros</div>
-        </div>
-        <span class="row-chevron">›</span>
-      </a>
-
-      <a class="row" href="https://sunoaiwiki.com" target="_blank">
-        <div class="row-icon ic-indigo">📖</div>
-        <div class="row-body">
-          <div class="row-title">Suno AI Wiki</div>
-          <div class="row-desc">Wiki comunitária com metatags, guias de estrutura de música e dicas de prompting</div>
-        </div>
-        <span class="row-chevron">›</span>
-      </a>
-
-      <a class="row" href="https://openmusicprompt.com/blog/suno-ai-metatags-guide" target="_blank">
-        <div class="row-icon ic-purple">🏷️</div>
-        <div class="row-body">
-          <div class="row-title">OpenMusicPrompt — Metatags Guide</div>
-          <div class="row-desc">Guia com 500+ metatags para Suno v5: estrutura, mood, estilo vocal e instrumentos</div>
-        </div>
-        <span class="row-chevron">›</span>
-      </a>
-
-      <a class="row" href="https://www.peak-studios.de/en/suno-prompt-generator/" target="_blank">
-        <div class="row-icon ic-teal">🎚️</div>
-        <div class="row-body">
-          <div class="row-title">Peak Studios — Suno Prompt Generator</div>
-          <div class="row-desc">Gerador de prompts profissional para criar descrições de estilo no Suno</div>
-        </div>
-        <span class="row-chevron">›</span>
-      </a>
-
-      <a class="row" href="https://hookgenius.app" target="_blank">
-        <div class="row-icon ic-orange">✍️</div>
-        <div class="row-body">
-          <div class="row-title">HookGenius</div>
-          <div class="row-desc">Gera letras e prompts de estilo para Suno em vários géneros musicais</div>
-        </div>
-        <span class="row-chevron">›</span>
-      </a>
-
-      <a class="row" href="https://www.songaifarm.com" target="_blank">
-        <div class="row-icon ic-green">🎤</div>
-        <div class="row-body">
-          <div class="row-title">Song AI Farm</div>
-          <div class="row-desc">Converte melodias em letras e analisa o "ADN" da música — 5 gerações grátis/dia</div>
-        </div>
-        <span class="row-chevron">›</span>
-      </a>
-
-      <a class="row" href="https://www.lalal.ai" target="_blank">
-        <div class="row-icon ic-pink">🎙️</div>
-        <div class="row-body">
-          <div class="row-title">LALAL.AI</div>
-          <div class="row-desc">Separador de stems com IA — isola voz, bateria, baixo, guitarra de qualquer faixa</div>
-        </div>
-        <span class="row-chevron">›</span>
-      </a>
-
-      <a class="row" href="https://moises.ai" target="_blank">
-        <div class="row-icon ic-indigo">🎸</div>
-        <div class="row-body">
-          <div class="row-title">Moises</div>
-          <div class="row-desc">Separação de stems, deteção de acordes, transcrição de letra e mudança de tom</div>
-        </div>
-        <span class="row-chevron">›</span>
-      </a>
-
-      <a class="row" href="https://www.bandlab.com" target="_blank">
-        <div class="row-icon ic-orange">🎹</div>
-        <div class="row-body">
-          <div class="row-title">BandLab</div>
-          <div class="row-desc">DAW gratuito no browser com mixagem, masterização IA e comunidade social</div>
-        </div>
-        <span class="row-chevron">›</span>
-      </a>
-
-      <a class="row" href="https://www.audacityteam.org" target="_blank">
-        <div class="row-icon ic-gray">🔊</div>
-        <div class="row-body">
-          <div class="row-title">Audacity</div>
-          <div class="row-desc">Editor de áudio gratuito e open-source para cortar, equalizar e tratar faixas do Suno</div>
-        </div>
-        <span class="row-chevron">›</span>
-      </a>
-
-      <a class="row" href="https://soundplate.com/suno-mastering/" target="_blank">
-        <div class="row-icon ic-teal">📻</div>
-        <div class="row-body">
-          <div class="row-title">Soundplate — Suno Mastering</div>
-          <div class="row-desc">Masterização online gratuita especialmente pensada para música gerada pelo Suno</div>
-        </div>
-        <span class="row-chevron">›</span>
-      </a>
-
-      <a class="row" href="https://discord.com/invite/suno" target="_blank">
-        <div class="row-icon ic-indigo">💬</div>
-        <div class="row-body">
-          <div class="row-title">Suno Discord (Comunidade Oficial)</div>
-          <div class="row-desc">400K+ membros — partilha de prompts, feedback e novidades sobre o Suno</div>
-        </div>
-        <span class="row-chevron">›</span>
-      </a>
-
-      <a class="row" href="https://www.reddit.com/r/SunoAI/" target="_blank">
-        <div class="row-icon ic-orange">🟠</div>
-        <div class="row-body">
-          <div class="row-title">r/SunoAI — Reddit</div>
-          <div class="row-desc">Subreddit ativo com 80K+ membros: músicas, dicas de prompting e novidades</div>
-        </div>
-        <span class="row-chevron">›</span>
-      </a>
-
-    </div>
-  </div>
-  </div>
-
-  <!-- RPG MAKER -->
-  <div class="section-block" data-section="sec-rpg">
-  <div class="section-header" id="sec-rpg">RPG Maker</div>
-  <div class="section">
-    <div class="list-group">
-
-      <a class="row" href="https://www.rpgmakerweb.com" target="_blank">
-        <div class="row-icon ic-blue">⚔️</div>
-        <div class="row-body">
-          <div class="row-title">RPG Maker Web (Oficial)</div>
-          <div class="row-desc">Site oficial da Kadokawa com downloads, DLCs e blog do RPG Maker</div>
-        </div>
-        <span class="row-chevron">›</span>
-      </a>
-
-      <a class="row" href="https://www.rpgmakerweb.com/additional-downloads" target="_blank">
-        <div class="row-icon ic-green">🎁</div>
-        <div class="row-body">
-          <div class="row-title">RPG Maker — Free Downloads</div>
-          <div class="row-desc">Conteúdo gratuito oficial: tilesets, músicas, plugins e DLCs</div>
-        </div>
-        <span class="row-chevron">›</span>
-      </a>
-
-      <a class="row" href="https://itch.io/game-assets/free/tag-rpgmaker" target="_blank">
-        <div class="row-icon ic-pink">🖼️</div>
-        <div class="row-body">
-          <div class="row-title">itch.io — Assets gratuitos para RPG Maker</div>
-          <div class="row-desc">Maior repositório de tilesets, sprites e músicas marcados para RPG Maker</div>
-        </div>
-        <span class="row-chevron">›</span>
-      </a>
-
-      <a class="row" href="https://opengameart.org" target="_blank">
-        <div class="row-icon ic-orange">🎨</div>
-        <div class="row-body">
-          <div class="row-title">OpenGameArt.org</div>
-          <div class="row-desc">Biblioteca open-source com tilesets, sprites e músicas com licença livre</div>
-        </div>
-        <span class="row-chevron">›</span>
-      </a>
-
-      <a class="row" href="https://rpgtileset.com" target="_blank">
-        <div class="row-icon ic-teal">🗺️</div>
-        <div class="row-body">
-          <div class="row-title">RPG TileSet</div>
-          <div class="row-desc">Mais de 10.000 assets gratuitos focados em tilesets e sprites para RPG Maker MV</div>
-        </div>
-        <span class="row-chevron">›</span>
-      </a>
-
-      <a class="row" href="https://www.yanfly.moe/wiki" target="_blank">
-        <div class="row-icon ic-indigo">🔌</div>
-        <div class="row-body">
-          <div class="row-title">Yanfly.moe Wiki</div>
-          <div class="row-desc">Wiki oficial dos plugins Yanfly (MV) e VisuStella (MZ) com documentação completa</div>
-        </div>
-        <span class="row-chevron">›</span>
-      </a>
-
-      <a class="row" href="https://galvs-scripts.com/rpgmaker/rmmz-plugins/" target="_blank">
-        <div class="row-icon ic-purple">⚙️</div>
-        <div class="row-body">
-          <div class="row-title">Galv's Plugins</div>
-          <div class="row-desc">Coleção gratuita de plugins de qualidade para MV e MZ: efeitos, mapas e sistemas</div>
-        </div>
-        <span class="row-chevron">›</span>
-      </a>
-
-      <a class="row" href="https://github.com/topics/rpg-maker-mz" target="_blank">
-        <div class="row-icon ic-gray">🐙</div>
-        <div class="row-body">
-          <div class="row-title">GitHub — Plugins RPG Maker MZ</div>
-          <div class="row-desc">Todos os repositórios públicos com plugins e scripts open-source para MZ</div>
-        </div>
-        <span class="row-chevron">›</span>
-      </a>
-
-      <a class="row" href="https://github.com/topics/rpg-maker-mv" target="_blank">
-        <div class="row-icon ic-gray">🐙</div>
-        <div class="row-body">
-          <div class="row-title">GitHub — Plugins RPG Maker MV</div>
-          <div class="row-desc">Repositórios públicos com plugins e scripts open-source para RPG Maker MV</div>
-        </div>
-        <span class="row-chevron">›</span>
-      </a>
-
-      <a class="row" href="https://rpgmaker.fandom.com/wiki/RPG_Maker_Wiki" target="_blank">
-        <div class="row-icon ic-orange">📚</div>
-        <div class="row-body">
-          <div class="row-title">RPG Maker Wiki (Fandom)</div>
-          <div class="row-desc">Wiki com 1.380+ artigos sobre engines, tutoriais, scripts e jogos feitos em RPG Maker</div>
-        </div>
-        <span class="row-chevron">›</span>
-      </a>
-
-      <a class="row" href="https://rpgmaker.net" target="_blank">
-        <div class="row-icon ic-blue">🌐</div>
-        <div class="row-body">
-          <div class="row-title">rpgmaker.net</div>
-          <div class="row-desc">Portal independente com tutoriais, scripts, utilitários e jogos de todas as versões</div>
-        </div>
-        <span class="row-chevron">›</span>
-      </a>
-
-      <a class="row" href="https://forums.rpgmakerweb.com" target="_blank">
-        <div class="row-icon ic-indigo">💬</div>
-        <div class="row-body">
-          <div class="row-title">RPG Maker Forums (Oficial)</div>
-          <div class="row-desc">Fórum oficial com suporte técnico, plugins, recursos e showcase de projetos</div>
-        </div>
-        <span class="row-chevron">›</span>
-      </a>
-
-      <a class="row" href="https://www.reddit.com/r/RPGMaker" target="_blank">
-        <div class="row-icon ic-orange">🟠</div>
-        <div class="row-body">
-          <div class="row-title">r/RPGMaker — Reddit</div>
-          <div class="row-desc">Subreddit ativo com showcases, ajuda e partilha de recursos para todas as versões</div>
-        </div>
-        <span class="row-chevron">›</span>
-      </a>
-
-      <a class="row" href="https://www.mapeditor.org" target="_blank">
-        <div class="row-icon ic-green">🗺️</div>
-        <div class="row-body">
-          <div class="row-title">Tiled Map Editor</div>
-          <div class="row-desc">Editor de mapas gratuito e open-source com suporte a múltiplas camadas, integrável ao MV e MZ</div>
-        </div>
-        <span class="row-chevron">›</span>
-      </a>
-
-      <a class="row" href="https://liberatedpixelcup.github.io/Universal-LPC-Spritesheet-Character-Generator/" target="_blank">
-        <div class="row-icon ic-purple">🧙</div>
-        <div class="row-body">
-          <div class="row-title">Universal LPC Sprite Generator</div>
-          <div class="row-desc">Gerador online de spritesheets pixel art com 4.000+ combinações, exportação em PNG</div>
-        </div>
-        <span class="row-chevron">›</span>
-      </a>
-
-      <a class="row" href="https://www.spritefusion.com" target="_blank">
-        <div class="row-icon ic-teal">🖱️</div>
-        <div class="row-body">
-          <div class="row-title">Sprite Fusion</div>
-          <div class="row-desc">Editor de tilemaps online gratuito para prototipar mapas com tilesets do RPG Maker</div>
-        </div>
-        <span class="row-chevron">›</span>
-      </a>
-
-    </div>
-  </div>
-  </div>
-
-  <!-- CLAUDE EXTRAS -->
-  <div class="section-block" data-section="sec-claude">
-  <div class="section-header" id="sec-claude">Claude — Extras & Ferramentas</div>
-  <div class="section">
-    <div class="list-group">
-
-      <a class="row" href="https://claude.ai" target="_blank">
-        <div class="row-icon ic-orange">🧠</div>
-        <div class="row-body">
-          <div class="row-title">Claude.ai</div>
-          <div class="row-desc">Interface web oficial do Claude — plano gratuito disponível, sem instalação</div>
-        </div>
-        <span class="row-chevron">›</span>
-      </a>
-
-      <a class="row" href="https://platform.claude.com/docs/en/home" target="_blank">
-        <div class="row-icon ic-indigo">📄</div>
-        <div class="row-body">
-          <div class="row-title">Documentação da API Claude</div>
-          <div class="row-desc">Portal central para desenvolvedores: quickstart, modelos, tool use, visão e caching</div>
-        </div>
-        <span class="row-chevron">›</span>
-      </a>
-
-      <a class="row" href="https://docs.anthropic.com/claude/prompt-library" target="_blank">
-        <div class="row-icon ic-purple">📚</div>
-        <div class="row-body">
-          <div class="row-title">Biblioteca de Prompts Oficiais</div>
-          <div class="row-desc">60+ prompts prontos organizados por categoria com boas práticas em XML</div>
-        </div>
-        <span class="row-chevron">›</span>
-      </a>
-
-      <a class="row" href="https://platform.claude.com/docs/en/about-claude/models/overview" target="_blank">
-        <div class="row-icon ic-blue">📊</div>
-        <div class="row-body">
-          <div class="row-title">Visão Geral dos Modelos Claude</div>
-          <div class="row-desc">Comparação de todos os modelos (Opus, Sonnet, Haiku) com contexto, preços e casos de uso</div>
-        </div>
-        <span class="row-chevron">›</span>
-      </a>
-
-      <a class="row" href="https://www.anthropic.com/learn/build-with-claude" target="_blank">
-        <div class="row-icon ic-green">🎓</div>
-        <div class="row-body">
-          <div class="row-title">Anthropic Academy</div>
-          <div class="row-desc">Cursos gratuitos do iniciante ao avançado sobre desenvolvimento com Claude</div>
-        </div>
-        <span class="row-chevron">›</span>
-      </a>
-
-      <a class="row" href="https://platform.claude.com/docs/en/build-with-claude/prompt-engineering/claude-prompting-best-practices" target="_blank">
-        <div class="row-icon ic-teal">⚡</div>
-        <div class="row-body">
-          <div class="row-title">Guia de Prompt Engineering</div>
-          <div class="row-desc">Técnicas oficiais de prompting: XML, chain-of-thought, roles e sistemas agênticos</div>
-        </div>
-        <span class="row-chevron">›</span>
-      </a>
-
-      <a class="row" href="https://github.com/anthropics/prompt-eng-interactive-tutorial" target="_blank">
-        <div class="row-icon ic-gray">🐙</div>
-        <div class="row-body">
-          <div class="row-title">Tutorial Interativo de Prompt Engineering</div>
-          <div class="row-desc">Curso em 9 capítulos com exercícios práticos criado pela Anthropic, disponível no GitHub</div>
-        </div>
-        <span class="row-chevron">›</span>
-      </a>
-
-      <a class="row" href="https://github.com/anthropics/anthropic-cookbook" target="_blank">
-        <div class="row-icon ic-gray">🐙</div>
-        <div class="row-body">
-          <div class="row-title">Anthropic Cookbook</div>
-          <div class="row-desc">Notebooks com código para RAG, tool use, visão e técnicas avançadas com Claude</div>
-        </div>
-        <span class="row-chevron">›</span>
-      </a>
-
-      <a class="row" href="https://marketplace.visualstudio.com/items?itemName=anthropic.claude-code" target="_blank">
-        <div class="row-icon ic-blue">💻</div>
-        <div class="row-body">
-          <div class="row-title">Claude Code — Extensão VS Code</div>
-          <div class="row-desc">Extensão oficial para VS Code com diffs inline, histórico de conversas e suporte a MCP</div>
-        </div>
-        <span class="row-chevron">›</span>
-      </a>
-
-      <a class="row" href="https://code.claude.com/docs/en/mcp" target="_blank">
-        <div class="row-icon ic-purple">🔌</div>
-        <div class="row-body">
-          <div class="row-title">Claude Code — Documentação MCP</div>
-          <div class="row-desc">Guia oficial para conectar o Claude Code a ferramentas externas via Model Context Protocol</div>
-        </div>
-        <span class="row-chevron">›</span>
-      </a>
-
-      <a class="row" href="https://www.mcpserverfinder.com/categories/claude-ai" target="_blank">
-        <div class="row-icon ic-orange">🔎</div>
-        <div class="row-body">
-          <div class="row-title">MCP Server Finder</div>
-          <div class="row-desc">Diretório comunitário com centenas de servidores MCP para integrar ao Claude</div>
-        </div>
-        <span class="row-chevron">›</span>
-      </a>
-
-      <a class="row" href="https://www.reddit.com/r/ClaudeAI" target="_blank">
-        <div class="row-icon ic-orange">🟠</div>
-        <div class="row-body">
-          <div class="row-title">r/ClaudeAI — Reddit</div>
-          <div class="row-desc">Subreddit ativo com dicas, prompts, notícias e discussões técnicas sobre o Claude</div>
-        </div>
-        <span class="row-chevron">›</span>
-      </a>
-
-    </div>
-  </div>
-  </div>
-
-  <!-- GEMINI EXTRAS -->
-  <div class="section-block" data-section="sec-gemini">
-  <div class="section-header" id="sec-gemini">Gemini — Extras & Ferramentas</div>
-  <div class="section">
-    <div class="list-group">
-
-      <a class="row" href="https://gemini.google.com" target="_blank">
-        <div class="row-icon ic-blue">✨</div>
-        <div class="row-body">
-          <div class="row-title">Gemini</div>
-          <div class="row-desc">Interface principal do assistente Gemini do Google, gratuita no navegador</div>
-        </div>
-        <span class="row-chevron">›</span>
-      </a>
-
-      <a class="row" href="https://aistudio.google.com" target="_blank">
-        <div class="row-icon ic-indigo">🔬</div>
-        <div class="row-body">
-          <div class="row-title">Google AI Studio</div>
-          <div class="row-desc">Ambiente web oficial para testar e criar com a API Gemini — camada gratuita sem cartão</div>
-        </div>
-        <span class="row-chevron">›</span>
-      </a>
-
-      <a class="row" href="https://ai.google.dev/gemini-api/docs" target="_blank">
-        <div class="row-icon ic-blue">📄</div>
-        <div class="row-body">
-          <div class="row-title">Documentação da API Gemini</div>
-          <div class="row-desc">Documentação técnica completa com quickstart e referência para desenvolvedores</div>
-        </div>
-        <span class="row-chevron">›</span>
-      </a>
-
-      <a class="row" href="https://ai.google.dev/api" target="_blank">
-        <div class="row-icon ic-teal">🔗</div>
-        <div class="row-body">
-          <div class="row-title">Referência da API Gemini</div>
-          <div class="row-desc">Referência completa dos endpoints (padrão, streaming e tempo real) para integração</div>
-        </div>
-        <span class="row-chevron">›</span>
-      </a>
-
-      <a class="row" href="https://workspace.google.com/learning/content/gemini-prompt-guide" target="_blank">
-        <div class="row-icon ic-green">📝</div>
-        <div class="row-body">
-          <div class="row-title">Gemini no Google Workspace</div>
-          <div class="row-desc">Guia oficial de prompts para usar o Gemini no Gmail, Docs, Sheets e outros apps</div>
-        </div>
-        <span class="row-chevron">›</span>
-      </a>
-
-      <a class="row" href="https://notebooklm.google.com" target="_blank">
-        <div class="row-icon ic-indigo">📓</div>
-        <div class="row-body">
-          <div class="row-title">NotebookLM</div>
-          <div class="row-desc">IA baseada no Gemini que analisa fontes e gera resumos, podcasts e vídeos explicativos</div>
-        </div>
-        <span class="row-chevron">›</span>
-      </a>
-
-      <a class="row" href="https://developers.google.com/gemini-code-assist/docs/overview" target="_blank">
-        <div class="row-icon ic-blue">💻</div>
-        <div class="row-body">
-          <div class="row-title">Gemini Code Assist</div>
-          <div class="row-desc">Extensão gratuita de IA para código em VS Code e IDEs JetBrains com chat e completions</div>
-        </div>
-        <span class="row-chevron">›</span>
-      </a>
-
-      <a class="row" href="https://plugins.jetbrains.com/plugin/24198-gemini-code-assist" target="_blank">
-        <div class="row-icon ic-orange">🧩</div>
-        <div class="row-body">
-          <div class="row-title">Gemini Code Assist — JetBrains</div>
-          <div class="row-desc">Plugin oficial no JetBrains Marketplace para IntelliJ, PyCharm e outros IDEs</div>
-        </div>
-        <span class="row-chevron">›</span>
-      </a>
-
-      <a class="row" href="https://github.com/google-gemini/gemini-cli" target="_blank">
-        <div class="row-icon ic-gray">🐙</div>
-        <div class="row-body">
-          <div class="row-title">Gemini CLI (open source)</div>
-          <div class="row-desc">Agente IA open-source para terminal com suporte a MCP e contexto de 1M tokens</div>
-        </div>
-        <span class="row-chevron">›</span>
-      </a>
-
-      <a class="row" href="https://ai.google.dev/gemini-api/docs/prompting-strategies" target="_blank">
-        <div class="row-icon ic-teal">⚡</div>
-        <div class="row-body">
-          <div class="row-title">Estratégias de Prompt para Gemini</div>
-          <div class="row-desc">Guia oficial com conceitos e boas práticas para criar prompts eficazes nos modelos Gemini</div>
-        </div>
-        <span class="row-chevron">›</span>
-      </a>
-
-      <a class="row" href="https://www.promptingguide.ai/models/gemini" target="_blank">
-        <div class="row-icon ic-purple">📖</div>
-        <div class="row-body">
-          <div class="row-title">Prompt Engineering Guide — Gemini</div>
-          <div class="row-desc">Guia independente DAIR.AI com exemplos práticos e dicas específicas para o Gemini</div>
-        </div>
-        <span class="row-chevron">›</span>
-      </a>
-
-      <a class="row" href="https://discord.com/invite/gemini" target="_blank">
-        <div class="row-icon ic-indigo">💬</div>
-        <div class="row-body">
-          <div class="row-title">Discord Oficial do Gemini</div>
-          <div class="row-desc">Servidor oficial com 68K+ membros para prompts, discussões e eventos "Prompt Like a Pro"</div>
-        </div>
-        <span class="row-chevron">›</span>
-      </a>
-
-      <a class="row" href="https://www.reddit.com/r/Gemini" target="_blank">
-        <div class="row-icon ic-orange">🟠</div>
-        <div class="row-body">
-          <div class="row-title">r/Gemini — Reddit</div>
-          <div class="row-desc">Comunidade Reddit para discussões, dicas, notícias e casos de uso do Google Gemini</div>
-        </div>
-        <span class="row-chevron">›</span>
-      </a>
-
-    </div>
-  </div>
-  </div>
-
-  <!-- DEEPSEEK EXTRAS -->
-  <div class="section-block" data-section="sec-deepseek">
-  <div class="section-header" id="sec-deepseek">DeepSeek — Extras & Ferramentas</div>
-  <div class="section">
-    <div class="list-group">
-
-      <a class="row" href="https://chat.deepseek.com" target="_blank">
-        <div class="row-icon ic-blue">🔵</div>
-        <div class="row-body">
-          <div class="row-title">DeepSeek Chat</div>
-          <div class="row-desc">Interface oficial gratuita com modos de raciocínio profundo (DeepThink) e busca na web</div>
-        </div>
-        <span class="row-chevron">›</span>
-      </a>
-
-      <a class="row" href="https://api-docs.deepseek.com" target="_blank">
-        <div class="row-icon ic-indigo">📄</div>
-        <div class="row-body">
-          <div class="row-title">DeepSeek API Docs</div>
-          <div class="row-desc">Documentação oficial da API com exemplos de código, referência de modelos e quickstart</div>
-        </div>
-        <span class="row-chevron">›</span>
-      </a>
-
-      <a class="row" href="https://github.com/deepseek-ai" target="_blank">
-        <div class="row-icon ic-gray">🐙</div>
-        <div class="row-body">
-          <div class="row-title">DeepSeek no GitHub</div>
-          <div class="row-desc">Organização oficial com repositórios de todos os modelos, pesos e papers</div>
-        </div>
-        <span class="row-chevron">›</span>
-      </a>
-
-      <a class="row" href="https://huggingface.co/deepseek-ai" target="_blank">
-        <div class="row-icon ic-orange">🤗</div>
-        <div class="row-body">
-          <div class="row-title">DeepSeek no Hugging Face</div>
-          <div class="row-desc">Todos os modelos DeepSeek (V3, R1, Coder…) para download gratuito com licença MIT</div>
-        </div>
-        <span class="row-chevron">›</span>
-      </a>
-
-      <a class="row" href="https://huggingface.co/unsloth/DeepSeek-R1-GGUF" target="_blank">
-        <div class="row-icon ic-orange">⚙️</div>
-        <div class="row-body">
-          <div class="row-title">DeepSeek-R1 GGUF (Unsloth)</div>
-          <div class="row-desc">Versão quantizada do R1 em GGUF otimizada para correr localmente com Ollama ou LM Studio</div>
-        </div>
-        <span class="row-chevron">›</span>
-      </a>
-
-      <a class="row" href="https://ollama.com/search?q=deepseek" target="_blank">
-        <div class="row-icon ic-green">🦙</div>
-        <div class="row-body">
-          <div class="row-title">Ollama — Modelos DeepSeek</div>
-          <div class="row-desc">Corre DeepSeek localmente via linha de comando com um único `ollama pull`</div>
-        </div>
-        <span class="row-chevron">›</span>
-      </a>
-
-      <a class="row" href="https://lmstudio.ai" target="_blank">
-        <div class="row-icon ic-purple">🖥️</div>
-        <div class="row-body">
-          <div class="row-title">LM Studio</div>
-          <div class="row-desc">App desktop gratuito para baixar e rodar modelos DeepSeek localmente com aceleração GPU</div>
-        </div>
-        <span class="row-chevron">›</span>
-      </a>
-
-      <a class="row" href="https://github.com/open-webui/open-webui" target="_blank">
-        <div class="row-icon ic-teal">🌐</div>
-        <div class="row-body">
-          <div class="row-title">Open WebUI</div>
-          <div class="row-desc">Interface web open-source estilo ChatGPT para usar DeepSeek localmente via Ollama</div>
-        </div>
-        <span class="row-chevron">›</span>
-      </a>
-
-      <a class="row" href="https://github.com/deepseek-ai/awesome-deepseek-integration" target="_blank">
-        <div class="row-icon ic-gray">🐙</div>
-        <div class="row-body">
-          <div class="row-title">Awesome DeepSeek Integration</div>
-          <div class="row-desc">Lista curada oficial com dezenas de integrações: VS Code, JetBrains, Slack, Discord e mais</div>
-        </div>
-        <span class="row-chevron">›</span>
-      </a>
-
-      <a class="row" href="https://www.reddit.com/r/DeepSeek" target="_blank">
-        <div class="row-icon ic-orange">🟠</div>
-        <div class="row-body">
-          <div class="row-title">r/DeepSeek — Reddit</div>
-          <div class="row-desc">Comunidade Reddit com discussões, tutoriais e comparações sobre os modelos DeepSeek</div>
-        </div>
-        <span class="row-chevron">›</span>
-      </a>
-
-    </div>
-  </div>
-  </div>
-
-  <!-- QWEN EXTRAS -->
-  <div class="section-block" data-section="sec-qwen">
-  <div class="section-header" id="sec-qwen">Qwen — Extras & Ferramentas</div>
-  <div class="section">
-    <div class="list-group">
-
-      <a class="row" href="https://chat.qwen.ai" target="_blank">
-        <div class="row-icon ic-purple">🌀</div>
-        <div class="row-body">
-          <div class="row-title">Qwen Chat</div>
-          <div class="row-desc">Interface web gratuita para conversar com os modelos Qwen diretamente no navegador</div>
-        </div>
-        <span class="row-chevron">›</span>
-      </a>
-
-      <a class="row" href="https://qwenlm.github.io" target="_blank">
-        <div class="row-icon ic-blue">📰</div>
-        <div class="row-body">
-          <div class="row-title">Blog Oficial do Qwen</div>
-          <div class="row-desc">Anúncios de modelos, benchmarks e notas de lançamento da equipa QwenLM</div>
-        </div>
-        <span class="row-chevron">›</span>
-      </a>
-
-      <a class="row" href="https://www.alibabacloud.com/help/en/model-studio/qwen-api-reference/" target="_blank">
-        <div class="row-icon ic-indigo">📄</div>
-        <div class="row-body">
-          <div class="row-title">Documentação da API Qwen</div>
-          <div class="row-desc">Referência completa da API REST do Qwen, compatível com formato OpenAI</div>
-        </div>
-        <span class="row-chevron">›</span>
-      </a>
-
-      <a class="row" href="https://www.alibabacloud.com/help/en/model-studio/prompt-engineering-guide" target="_blank">
-        <div class="row-icon ic-teal">⚡</div>
-        <div class="row-body">
-          <div class="row-title">Guia de Prompt Engineering — Qwen</div>
-          <div class="row-desc">Guia oficial da Alibaba com técnicas de prompting para modelos Qwen (texto, visão, código)</div>
-        </div>
-        <span class="row-chevron">›</span>
-      </a>
-
-      <a class="row" href="https://huggingface.co/Qwen" target="_blank">
-        <div class="row-icon ic-orange">🤗</div>
-        <div class="row-body">
-          <div class="row-title">Qwen no Hugging Face</div>
-          <div class="row-desc">Todos os modelos Qwen para download gratuito (Qwen3, Qwen2.5, Qwen-Image…)</div>
-        </div>
-        <span class="row-chevron">›</span>
-      </a>
-
-      <a class="row" href="https://ollama.com/library/qwen3.5" target="_blank">
-        <div class="row-icon ic-green">🦙</div>
-        <div class="row-body">
-          <div class="row-title">Ollama — Modelos Qwen</div>
-          <div class="row-desc">Corre Qwen localmente com um único comando, sem necessidade de GPU na nuvem</div>
-        </div>
-        <span class="row-chevron">›</span>
-      </a>
-
-      <a class="row" href="https://openrouter.ai/qwen" target="_blank">
-        <div class="row-icon ic-blue">🔗</div>
-        <div class="row-body">
-          <div class="row-title">OpenRouter — Modelos Qwen</div>
-          <div class="row-desc">Acesso via API unificada a dezenas de modelos Qwen incluindo versões gratuitas</div>
-        </div>
-        <span class="row-chevron">›</span>
-      </a>
-
-      <a class="row" href="https://github.com/QwenLM/Qwen3" target="_blank">
-        <div class="row-icon ic-gray">🐙</div>
-        <div class="row-body">
-          <div class="row-title">QwenLM/Qwen3 — GitHub</div>
-          <div class="row-desc">Repositório oficial do Qwen3 com instruções para rodar com llama.cpp, vLLM e Transformers</div>
-        </div>
-        <span class="row-chevron">›</span>
-      </a>
-
-      <a class="row" href="https://discord.com/invite/CV4E9rpNSD" target="_blank">
-        <div class="row-icon ic-indigo">💬</div>
-        <div class="row-body">
-          <div class="row-title">Discord Oficial do Qwen</div>
-          <div class="row-desc">Servidor oficial com 23K+ membros para suporte, novidades e discussões técnicas</div>
-        </div>
-        <span class="row-chevron">›</span>
-      </a>
-
-      <a class="row" href="https://www.modelscope.cn/organization/qwen" target="_blank">
-        <div class="row-icon ic-purple">🌐</div>
-        <div class="row-body">
-          <div class="row-title">ModelScope — Qwen</div>
-          <div class="row-desc">Plataforma da Alibaba alternativa ao Hugging Face com todos os modelos Qwen hospedados</div>
-        </div>
-        <span class="row-chevron">›</span>
-      </a>
-
-    </div>
-  </div>
-  </div>
-
-  <!-- CHATGPT EXTRAS -->
-  <div class="section-block" data-section="sec-chatgpt">
-  <div class="section-header" id="sec-chatgpt">ChatGPT — Extras & Ferramentas</div>
-  <div class="section">
-    <div class="list-group">
-
-      <a class="row" href="https://chatgpt.com" target="_blank">
-        <div class="row-icon ic-green">💬</div>
-        <div class="row-body">
-          <div class="row-title">ChatGPT (Oficial)</div>
-          <div class="row-desc">Chat direto no navegador, sem instalação</div>
-        </div>
-        <span class="row-chevron">›</span>
-      </a>
-
-      <a class="row" href="https://openai.com/chatgpt/download/" target="_blank">
-        <div class="row-icon ic-blue">📲</div>
-        <div class="row-body">
-          <div class="row-title">Apps ChatGPT — Download Oficial</div>
-          <div class="row-desc">Apps para Windows, Mac, iPhone e Android com deteção automática do sistema</div>
-        </div>
-        <span class="row-chevron">›</span>
-      </a>
-
-      <a class="row" href="https://platform.openai.com" target="_blank">
-        <div class="row-icon ic-indigo">⚙️</div>
-        <div class="row-body">
-          <div class="row-title">OpenAI Platform</div>
-          <div class="row-desc">Dashboard oficial da API: chaves, uso, faturação e playground</div>
-        </div>
-        <span class="row-chevron">›</span>
-      </a>
-
-      <a class="row" href="https://platform.openai.com/docs" target="_blank">
-        <div class="row-icon ic-teal">📄</div>
-        <div class="row-body">
-          <div class="row-title">Documentação da API OpenAI</div>
-          <div class="row-desc">Referência completa da API, modelos, function calling e guias</div>
-        </div>
-        <span class="row-chevron">›</span>
-      </a>
-
-      <a class="row" href="https://help.openai.com/en/collections/3742473-chatgpt" target="_blank">
-        <div class="row-icon ic-orange">❓</div>
-        <div class="row-body">
-          <div class="row-title">Central de Ajuda — ChatGPT</div>
-          <div class="row-desc">Artigos oficiais de suporte: contas, funcionalidades e resolução de problemas</div>
-        </div>
-        <span class="row-chevron">›</span>
-      </a>
-
-      <a class="row" href="https://community.openai.com" target="_blank">
-        <div class="row-icon ic-purple">💬</div>
-        <div class="row-body">
-          <div class="row-title">OpenAI Developer Community</div>
-          <div class="row-desc">Fórum oficial para developers: dúvidas de API, exemplos e discussões técnicas</div>
-        </div>
-        <span class="row-chevron">›</span>
-      </a>
-
-      <a class="row" href="https://chatgpt.com/codex/" target="_blank">
-        <div class="row-icon ic-indigo">🧑‍💻</div>
-        <div class="row-body">
-          <div class="row-title">Codex</div>
-          <div class="row-desc">Agente de programação IA da OpenAI integrado no ChatGPT: PRs, refactors e code review</div>
-        </div>
-        <span class="row-chevron">›</span>
-      </a>
-
-      <a class="row" href="https://chatgpt.com/atlas" target="_blank">
-        <div class="row-icon ic-blue">🧭</div>
-        <div class="row-body">
-          <div class="row-title">ChatGPT Atlas</div>
-          <div class="row-desc">Browser com ChatGPT integrado (barra lateral, memória de navegação, modo agente)</div>
-        </div>
-        <span class="row-chevron">›</span>
-      </a>
-
-      <a class="row" href="https://academy.openai.com" target="_blank">
-        <div class="row-icon ic-green">🎓</div>
-        <div class="row-body">
-          <div class="row-title">OpenAI Academy</div>
-          <div class="row-desc">Plataforma gratuita e oficial com cursos e workshops para aprender a usar IA/ChatGPT</div>
-        </div>
-        <span class="row-chevron">›</span>
-      </a>
-
-    </div>
-  </div>
-  </div>
-
-  <!-- CHATGPT GPTs & PLUGINS -->
-  <div class="section-block" data-section="sec-gpts">
-  <div class="section-header" id="sec-gpts">ChatGPT — GPTs & Plugins</div>
-  <div class="section">
-    <div class="list-group">
-
-      <a class="row" href="https://openai.com/index/introducing-gpts/" target="_blank">
-        <div class="row-icon ic-blue">📰</div>
-        <div class="row-body">
-          <div class="row-title">Introducing GPTs (Oficial)</div>
-          <div class="row-desc">Anúncio original da OpenAI sobre os GPTs personalizados</div>
-        </div>
-        <span class="row-chevron">›</span>
-      </a>
-
-      <a class="row" href="https://chatgpt.com/gpts" target="_blank">
-        <div class="row-icon ic-green">🗂️</div>
-        <div class="row-body">
-          <div class="row-title">GPT Store — Explorar GPTs</div>
-          <div class="row-desc">Loja oficial com GPTs criados pela comunidade, organizados por categoria</div>
-        </div>
-        <span class="row-chevron">›</span>
-      </a>
-
-      <a class="row" href="https://help.openai.com/en/articles/8554397-creating-a-gpt" target="_blank">
-        <div class="row-icon ic-indigo">➕</div>
-        <div class="row-body">
-          <div class="row-title">Creating a GPT — Guia Oficial</div>
-          <div class="row-desc">Como criar um GPT personalizado com instruções, conhecimento e capacidades</div>
-        </div>
-        <span class="row-chevron">›</span>
-      </a>
-
-      <a class="row" href="https://help.openai.com/en/articles/8554407-gpts-in-chatgpt" target="_blank">
-        <div class="row-icon ic-teal">❓</div>
-        <div class="row-body">
-          <div class="row-title">GPTs in ChatGPT — Central de Ajuda</div>
-          <div class="row-desc">Explica o que são os GPTs e como usá-los dentro do ChatGPT</div>
-        </div>
-        <span class="row-chevron">›</span>
-      </a>
-
-      <a class="row" href="https://help.openai.com/en/articles/8798878-building-and-publishing-a-gpt" target="_blank">
-        <div class="row-icon ic-orange">🔗</div>
-        <div class="row-body">
-          <div class="row-title">Sharing and Publishing GPTs</div>
-          <div class="row-desc">Guia oficial para partilhar um GPT em privado ou publicá-lo na GPT Store</div>
-        </div>
-        <span class="row-chevron">›</span>
-      </a>
-
-      <a class="row" href="https://platform.openai.com/docs/actions/introduction" target="_blank">
-        <div class="row-icon ic-purple">🔌</div>
-        <div class="row-body">
-          <div class="row-title">GPT Actions — Documentação</div>
-          <div class="row-desc">Como ligar um GPT a APIs externas (o equivalente atual aos antigos plugins)</div>
-        </div>
-        <span class="row-chevron">›</span>
-      </a>
-
-      <a class="row" href="https://chatgpt.com/g/g-xgfNjMjM9-canva" target="_blank">
-        <div class="row-icon ic-purple">🎨</div>
-        <div class="row-body">
-          <div class="row-title">GPT — Canva</div>
-          <div class="row-desc">Cria designs, apresentações e posts para redes sociais diretamente no ChatGPT</div>
-        </div>
-        <span class="row-chevron">›</span>
-      </a>
-
-      <a class="row" href="https://help.consensus.app/en/articles/10059020-consensus-in-chatgpt" target="_blank">
-        <div class="row-icon ic-blue">🎓</div>
-        <div class="row-body">
-          <div class="row-title">GPT — Consensus</div>
-          <div class="row-desc">Pesquisa e cita mais de 200 milhões de artigos científicos com respostas fundamentadas</div>
-        </div>
-        <span class="row-chevron">›</span>
-      </a>
-
-      <a class="row" href="https://gpt.wolfram.com" target="_blank">
-        <div class="row-icon ic-red">🧮</div>
-        <div class="row-body">
-          <div class="row-title">GPT — Wolfram</div>
-          <div class="row-desc">Cálculo simbólico, matemática avançada e dados em tempo real via Wolfram|Alpha</div>
-        </div>
-        <span class="row-chevron">›</span>
-      </a>
-
-      <a class="row" href="https://actions.zapier.com/gpt/start" target="_blank">
-        <div class="row-icon ic-orange">⚡</div>
-        <div class="row-body">
-          <div class="row-title">Plugin/Action — Zapier AI Actions</div>
-          <div class="row-desc">Liga o teu GPT a mais de 7000 apps (Gmail, Sheets, Slack…) via Actions da Zapier</div>
-        </div>
-        <span class="row-chevron">›</span>
-      </a>
-
-      <a class="row" href="https://www.expedia.com/newsroom/expedia-launched-chatgpt" target="_blank">
-        <div class="row-icon ic-teal">✈️</div>
-        <div class="row-body">
-          <div class="row-title">Plugin/Action — Expedia</div>
-          <div class="row-desc">Planeamento de viagens conversacional: voos, hotéis e atividades dentro do ChatGPT</div>
-        </div>
-        <span class="row-chevron">›</span>
-      </a>
-
-      <a class="row" href="https://www.kayak.com/news/ai-mode/" target="_blank">
-        <div class="row-icon ic-green">🧭</div>
-        <div class="row-body">
-          <div class="row-title">Plugin/Action — Kayak (Ask AI)</div>
-          <div class="row-desc">Pesquisa de viagens em linguagem natural combinando dados da Kayak com IA</div>
-        </div>
-        <span class="row-chevron">›</span>
-      </a>
-
-      <a class="row" href="https://help.whimsical.com/integrations/chatgpt" target="_blank">
-        <div class="row-icon ic-purple">📊</div>
-        <div class="row-body">
-          <div class="row-title">GPT — Whimsical Diagrams</div>
-          <div class="row-desc">Gera flowcharts, mapas mentais e diagramas de sequência a partir de linguagem natural</div>
-        </div>
-        <span class="row-chevron">›</span>
-      </a>
-
-      <a class="row" href="https://openai.com/index/instacart-partnership/" target="_blank">
-        <div class="row-icon ic-orange">🛒</div>
-        <div class="row-body">
-          <div class="row-title">App/Plugin — Instacart</div>
-          <div class="row-desc">Compras de supermercado com checkout instantâneo diretamente numa conversa no ChatGPT</div>
-        </div>
-        <span class="row-chevron">›</span>
-      </a>
-
-    </div>
-  </div>
-  </div>
-
-  <!-- AUTOMAÇÃO REDES SOCIAIS -->
-  <div class="section-block" data-section="sec-social">
-  <div class="section-header" id="sec-social">Automação de Redes Sociais</div>
-  <div class="section">
-    <div class="list-group">
-
-      <a class="row" href="https://buffer.com" target="_blank">
-        <div class="row-icon ic-blue">📅</div>
-        <div class="row-body">
-          <div class="row-title">Buffer</div>
-          <div class="row-desc">Plano gratuito permanente: 3 canais, fila de posts, assistente IA e landing page básica</div>
-        </div>
-        <span class="row-chevron">›</span>
-      </a>
-
-      <a class="row" href="https://publer.io" target="_blank">
-        <div class="row-icon ic-purple">📲</div>
-        <div class="row-body">
-          <div class="row-title">Publer</div>
-          <div class="row-desc">Agendador com 3 contas gratuitas, editor de fotos, integração Canva e Link in Bio</div>
-        </div>
-        <span class="row-chevron">›</span>
-      </a>
-
-      <a class="row" href="https://www.zoho.com/social/free-edition.html" target="_blank">
-        <div class="row-icon ic-green">📊</div>
-        <div class="row-body">
-          <div class="row-title">Zoho Social</div>
-          <div class="row-desc">Plano gratuito com 6 canais, agendamento ilimitado e calendário de conteúdo</div>
-        </div>
-        <span class="row-chevron">›</span>
-      </a>
-
-      <a class="row" href="https://business.facebook.com" target="_blank">
-        <div class="row-icon ic-blue">📘</div>
-        <div class="row-body">
-          <div class="row-title">Meta Business Suite</div>
-          <div class="row-desc">100% gratuito — agendamento nativo para Facebook e Instagram com inbox unificado</div>
-        </div>
-        <span class="row-chevron">›</span>
-      </a>
-
-      <a class="row" href="https://www.make.com" target="_blank">
-        <div class="row-icon ic-indigo">⚙️</div>
-        <div class="row-body">
-          <div class="row-title">Make (ex-Integromat)</div>
-          <div class="row-desc">1.000 operações/mês grátis, workflows multi-etapas visuais sem cartão de crédito</div>
-        </div>
-        <span class="row-chevron">›</span>
-      </a>
-
-      <a class="row" href="https://n8n.io" target="_blank">
-        <div class="row-icon ic-orange">🔀</div>
-        <div class="row-body">
-          <div class="row-title">n8n</div>
-          <div class="row-desc">Automação open-source self-hosted gratuita e ilimitada com 500+ integrações</div>
-        </div>
-        <span class="row-chevron">›</span>
-      </a>
-
-      <a class="row" href="https://www.activepieces.com" target="_blank">
-        <div class="row-icon ic-teal">🧩</div>
-        <div class="row-body">
-          <div class="row-title">Activepieces</div>
-          <div class="row-desc">Alternativa open-source ao Zapier: 1.000 tarefas/mês grátis ou self-hosting ilimitado</div>
-        </div>
-        <span class="row-chevron">›</span>
-      </a>
-
-      <a class="row" href="https://zapier.com" target="_blank">
-        <div class="row-icon ic-orange">⚡</div>
-        <div class="row-body">
-          <div class="row-title">Zapier</div>
-          <div class="row-desc">O maior ecossistema de integrações — 100 tarefas/mês grátis para automações simples</div>
-        </div>
-        <span class="row-chevron">›</span>
-      </a>
-
-      <a class="row" href="https://www.canva.com" target="_blank">
-        <div class="row-icon ic-pink">🎨</div>
-        <div class="row-body">
-          <div class="row-title">Canva</div>
-          <div class="row-desc">250.000+ templates gratuitos para Stories, carrosséis, Reels e posts sociais</div>
-        </div>
-        <span class="row-chevron">›</span>
-      </a>
-
-      <a class="row" href="https://www.adobe.com/br/express/" target="_blank">
-        <div class="row-icon ic-red">✨</div>
-        <div class="row-body">
-          <div class="row-title">Adobe Express</div>
-          <div class="row-desc">Templates de posts sociais, editor de vídeo e geração de imagens com Adobe Firefly</div>
-        </div>
-        <span class="row-chevron">›</span>
-      </a>
-
-      <a class="row" href="https://www.capcut.com" target="_blank">
-        <div class="row-icon ic-gray">🎬</div>
-        <div class="row-body">
-          <div class="row-title">CapCut</div>
-          <div class="row-desc">Editor de vídeo gratuito para Reels e TikTok com legendas automáticas e templates</div>
-        </div>
-        <span class="row-chevron">›</span>
-      </a>
-
-      <a class="row" href="https://metricool.com" target="_blank">
-        <div class="row-icon ic-blue">📈</div>
-        <div class="row-body">
-          <div class="row-title">Metricool</div>
-          <div class="row-desc">Analytics gratuito para 10 plataformas: Instagram, TikTok, YouTube, LinkedIn e mais</div>
-        </div>
-        <span class="row-chevron">›</span>
-      </a>
-
-      <a class="row" href="https://socialblade.com" target="_blank">
-        <div class="row-icon ic-green">📉</div>
-        <div class="row-body">
-          <div class="row-title">Social Blade</div>
-          <div class="row-desc">Estatísticas públicas de crescimento de qualquer canal no YouTube, Twitch, Instagram e TikTok</div>
-        </div>
-        <span class="row-chevron">›</span>
-      </a>
-
-      <a class="row" href="https://postiz.com" target="_blank">
-        <div class="row-icon ic-indigo">🗓️</div>
-        <div class="row-body">
-          <div class="row-title">Postiz (open-source)</div>
-          <div class="row-desc">Agendador social 100% open-source self-hosted para 18+ plataformas, sem mensalidade</div>
-        </div>
-        <span class="row-chevron">›</span>
-      </a>
-
-    </div>
-  </div>
-  </div>
-
-  <!-- KDP -->
-  <div class="section-block" data-section="sec-kdp">
-  <div class="section-header" id="sec-kdp">Amazon KDP — Autopublicação</div>
-  <div class="section">
-    <div class="list-group">
-
-      <a class="row" href="https://kdp.amazon.com" target="_blank">
-        <div class="row-icon ic-orange">📚</div>
-        <div class="row-body">
-          <div class="row-title">KDP — Amazon (Oficial)</div>
-          <div class="row-desc">Portal oficial para publicar eBooks, paperbacks e hardcovers gratuitamente na Amazon</div>
-        </div>
-        <span class="row-chevron">›</span>
-      </a>
-
-      <a class="row" href="https://kdp.amazon.com/en_US/help" target="_blank">
-        <div class="row-icon ic-blue">❓</div>
-        <div class="row-body">
-          <div class="row-title">KDP Help Center</div>
-          <div class="row-desc">Central de ajuda oficial com guias sobre upload, formatação, royalties e conta</div>
-        </div>
-        <span class="row-chevron">›</span>
-      </a>
-
-      <a class="row" href="https://kdp.amazon.com/en_US/help/topic/GMC96WUF2L2W7XLR" target="_blank">
-        <div class="row-icon ic-green">💬</div>
-        <div class="row-body">
-          <div class="row-title">KDP Community (Fórum Oficial)</div>
-          <div class="row-desc">Fórum da Amazon onde autores trocam dúvidas e experiências sobre o KDP</div>
-        </div>
-        <span class="row-chevron">›</span>
-      </a>
-
-      <a class="row" href="https://www.amazon.com/Kindle-Create/b?node=18292298011" target="_blank">
-        <div class="row-icon ic-orange">📝</div>
-        <div class="row-body">
-          <div class="row-title">Kindle Create</div>
-          <div class="row-desc">Software gratuito da Amazon para formatar eBooks e paperbacks (Windows e Mac)</div>
-        </div>
-        <span class="row-chevron">›</span>
-      </a>
-
-      <a class="row" href="https://reedsy.com/studio" target="_blank">
-        <div class="row-icon ic-indigo">✍️</div>
-        <div class="row-body">
-          <div class="row-title">Reedsy Studio</div>
-          <div class="row-desc">Editor online gratuito para escrever e formatar livros, exportando para EPUB e PDF prontos para KDP</div>
-        </div>
-        <span class="row-chevron">›</span>
-      </a>
-
-      <a class="row" href="https://www.canva.com/create/book-covers/" target="_blank">
-        <div class="row-icon ic-pink">🎨</div>
-        <div class="row-body">
-          <div class="row-title">Canva — Capas de Livros</div>
-          <div class="row-desc">Templates gratuitos já dimensionados para capas KDP com editor drag-and-drop</div>
-        </div>
-        <span class="row-chevron">›</span>
-      </a>
-
-      <a class="row" href="https://bookbrush.com" target="_blank">
-        <div class="row-icon ic-teal">🖼️</div>
-        <div class="row-body">
-          <div class="row-title">BookBrush</div>
-          <div class="row-desc">Templates de capa por género, mockups 3D e remoção de fundo (plano gratuito disponível)</div>
-        </div>
-        <span class="row-chevron">›</span>
-      </a>
-
-      <a class="row" href="https://kindlepreneur.com" target="_blank">
-        <div class="row-icon ic-orange">🔑</div>
-        <div class="row-body">
-          <div class="row-title">Kindlepreneur</div>
-          <div class="row-desc">Blog e ferramentas gratuitas: calculadora de vendas por BSR, guias de keywords — recomendado pela Amazon</div>
-        </div>
-        <span class="row-chevron">›</span>
-      </a>
-
-      <a class="row" href="https://www.selfpublishingtitans.com/tools?categories=Free+Tools" target="_blank">
-        <div class="row-icon ic-purple">🔍</div>
-        <div class="row-body">
-          <div class="row-title">Self Publishing Titans — Free Tools</div>
-          <div class="row-desc">Suite gratuita de pesquisa de nicho e palavras-chave com dados reais de buscas na Amazon</div>
-        </div>
-        <span class="row-chevron">›</span>
-      </a>
-
-      <a class="row" href="https://www.automateed.com/kdp-keyword-research-tool" target="_blank">
-        <div class="row-icon ic-blue">🏷️</div>
-        <div class="row-body">
-          <div class="row-title">Automateed — KDP Keyword Tool</div>
-          <div class="row-desc">Ferramenta gratuita para encontrar palavras-chave de alto valor para livros na Amazon</div>
-        </div>
-        <span class="row-chevron">›</span>
-      </a>
-
-      <a class="row" href="https://manuscriptreport.com/tools/kdp-keyword-generator" target="_blank">
-        <div class="row-icon ic-teal">📊</div>
-        <div class="row-body">
-          <div class="row-title">ManuscriptReport — KDP Keyword Generator</div>
-          <div class="row-desc">Gerador gratuito de palavras-chave com análise de volume de busca e competitividade</div>
-        </div>
-        <span class="row-chevron">›</span>
-      </a>
-
-      <a class="row" href="https://www.reddit.com/r/selfpublish/" target="_blank">
-        <div class="row-icon ic-orange">🟠</div>
-        <div class="row-body">
-          <div class="row-title">r/selfpublish — Reddit</div>
-          <div class="row-desc">Subreddit ativo sobre escrita, formatação, capas, marketing e resultados reais de autores indie</div>
-        </div>
-        <span class="row-chevron">›</span>
-      </a>
-
-      <a class="row" href="https://www.reddit.com/r/KDP/" target="_blank">
-        <div class="row-icon ic-orange">🟠</div>
-        <div class="row-body">
-          <div class="row-title">r/KDP — Reddit</div>
-          <div class="row-desc">Subreddit dedicado ao Amazon KDP com dúvidas, dicas e debates sobre a plataforma</div>
-        </div>
-        <span class="row-chevron">›</span>
-      </a>
-
-      <a class="row" href="https://www.youtube.com/@selfpubwithdale" target="_blank">
-        <div class="row-icon ic-red">▶️</div>
-        <div class="row-body">
-          <div class="row-title">Self Publishing with Dale — YouTube</div>
-          <div class="row-desc">Tutoriais completos sobre KDP, formatação, marketing e autopublicação</div>
-        </div>
-        <span class="row-chevron">›</span>
-      </a>
-
-      <a class="row" href="https://www.youtube.com/@selfpublishingempire" target="_blank">
-        <div class="row-icon ic-red">▶️</div>
-        <div class="row-body">
-          <div class="row-title">Self Publishing Empire — YouTube</div>
-          <div class="row-desc">Estratégias de livros low-content e pesquisa de nichos lucrativos para KDP</div>
-        </div>
-        <span class="row-chevron">›</span>
-      </a>
-
-    </div>
-  </div>
-  </div>
-
-  <!-- BANDA DESENHADA -->
-  <div class="section-block" data-section="sec-comic">
-  <div class="section-header" id="sec-comic">Criação de Banda Desenhada</div>
-  <div class="section">
-    <div class="list-group">
-
-      <a class="row" href="https://krita.org" target="_blank">
-        <div class="row-icon ic-blue">🎨</div>
-        <div class="row-body">
-          <div class="row-title">Krita</div>
-          <div class="row-desc">Software open-source de pintura digital com ferramentas específicas para quadrinhos e animação</div>
-        </div>
-        <span class="row-chevron">›</span>
-      </a>
-
-      <a class="row" href="https://medibangpaint.com/en/" target="_blank">
-        <div class="row-icon ic-teal">✏️</div>
-        <div class="row-body">
-          <div class="row-title">MediBang Paint</div>
-          <div class="row-desc">App gratuito para mangá e quadrinhos com painéis, tons de tela, balões e nuvem (desktop e mobile)</div>
-        </div>
-        <span class="row-chevron">›</span>
-      </a>
-
-      <a class="row" href="https://www.clipstudio.net/en/" target="_blank">
-        <div class="row-icon ic-indigo">🖊️</div>
-        <div class="row-body">
-          <div class="row-title">Clip Studio Paint (web)</div>
-          <div class="row-desc">Padrão da indústria para mangá e HQs — versão web com uso gratuito mensal limitado</div>
-        </div>
-        <span class="row-chevron">›</span>
-      </a>
-
-      <a class="row" href="https://www.canva.com/create/comic-strips/" target="_blank">
-        <div class="row-icon ic-pink">🗂️</div>
-        <div class="row-body">
-          <div class="row-title">Canva — Comic Strip Maker</div>
-          <div class="row-desc">Criador online gratuito de tiras e páginas com templates em grelha de painéis prontos</div>
-        </div>
-        <span class="row-chevron">›</span>
-      </a>
-
-      <a class="row" href="https://www.storyboardthat.com/comic-maker" target="_blank">
-        <div class="row-icon ic-orange">🎭</div>
-        <div class="row-body">
-          <div class="row-title">Storyboard That</div>
-          <div class="row-desc">Ferramenta online gratuita com personagens, cenários e layouts prontos para quadrinhos e storyboards</div>
-        </div>
-        <span class="row-chevron">›</span>
-      </a>
-
-      <a class="row" href="https://comicfury.com" target="_blank">
-        <div class="row-icon ic-green">🌐</div>
-        <div class="row-body">
-          <div class="row-title">ComicFury</div>
-          <div class="row-desc">Plataforma gratuita e sem anúncios para hospedar e publicar webcomics com comunidade integrada</div>
-        </div>
-        <span class="row-chevron">›</span>
-      </a>
-
-      <a class="row" href="https://www.adobe.com/products/firefly/features/ai-comic-generator.html" target="_blank">
-        <div class="row-icon ic-red">🤖</div>
-        <div class="row-body">
-          <div class="row-title">Adobe Firefly — AI Comic Generator</div>
-          <div class="row-desc">Gera painéis e tiras por IA com 25 créditos mensais gratuitos, seguro para uso comercial</div>
-        </div>
-        <span class="row-chevron">›</span>
-      </a>
-
-      <a class="row" href="https://www.comicsai.org/en" target="_blank">
-        <div class="row-icon ic-purple">🤖</div>
-        <div class="row-body">
-          <div class="row-title">ComicsAI</div>
-          <div class="row-desc">Gera painéis únicos e tiras de 4 quadros a partir de texto — estilos mangá, super-herói e cartoon</div>
-        </div>
-        <span class="row-chevron">›</span>
-      </a>
-
-      <a class="row" href="https://blambot.com" target="_blank">
-        <div class="row-icon ic-yellow">🔤</div>
-        <div class="row-body">
-          <div class="row-title">Blambot — Comic Fonts & Lettering</div>
-          <div class="row-desc">Maior biblioteca de fontes para quadrinhos — uso gratuito para criadores independentes incluindo projetos comerciais</div>
-        </div>
-        <span class="row-chevron">›</span>
-      </a>
-
-      <a class="row" href="https://superscript.app" target="_blank">
-        <div class="row-icon ic-blue">📄</div>
-        <div class="row-body">
-          <div class="row-title">Superscript</div>
-          <div class="row-desc">Editor gratuito de roteiros de quadrinhos: numera páginas e painéis automaticamente e exporta em formato padrão</div>
-        </div>
-        <span class="row-chevron">›</span>
-      </a>
-
-      <a class="row" href="https://assets.clip-studio.com/en-us" target="_blank">
-        <div class="row-icon ic-indigo">📦</div>
-        <div class="row-body">
-          <div class="row-title">Clip Studio Assets</div>
-          <div class="row-desc">Milhares de pincéis, tons, poses 3D e fundos gratuitos para o Clip Studio Paint</div>
-        </div>
-        <span class="row-chevron">›</span>
-      </a>
-
-      <a class="row" href="https://www.reddit.com/r/makecomics/" target="_blank">
-        <div class="row-icon ic-orange">🟠</div>
-        <div class="row-body">
-          <div class="row-title">r/makecomics — Reddit</div>
-          <div class="row-desc">Comunidade para criadores de quadrinhos com dicas práticas, feedback e discussões técnicas</div>
-        </div>
-        <span class="row-chevron">›</span>
-      </a>
-
-      <a class="row" href="https://www.reddit.com/r/comicbooks/" target="_blank">
-        <div class="row-icon ic-orange">🟠</div>
-        <div class="row-body">
-          <div class="row-title">r/comicbooks — Reddit</div>
-          <div class="row-desc">Uma das maiores comunidades de quadrinhos do Reddit para leitura, discussão e referências</div>
-        </div>
-        <span class="row-chevron">›</span>
-      </a>
-
-      <a class="row" href="https://www.youtube.com/@ProkoTV" target="_blank">
-        <div class="row-icon ic-red">▶️</div>
-        <div class="row-body">
-          <div class="row-title">Proko — YouTube</div>
-          <div class="row-desc">Tutoriais gratuitos de anatomia, figura humana e personagens — referência essencial para quadrinistas</div>
-        </div>
-        <span class="row-chevron">›</span>
-      </a>
-
-    </div>
-  </div>
-  </div>
-
-  <!-- GEMINI GEMS -->
-  <div class="section-block" data-section="sec-gems">
-  <div class="section-header" id="sec-gems">Gemini Gems</div>
-  <div class="section">
-    <div class="list-group">
-
-      <a class="row" href="https://gemini.google/overview/gems/" target="_blank">
-        <div class="row-icon ic-blue">💎</div>
-        <div class="row-body">
-          <div class="row-title">Gemini Gems — Visão Geral (Oficial)</div>
-          <div class="row-desc">Página oficial do Google a apresentar o que são os Gems e como começar a usá-los</div>
-        </div>
-        <span class="row-chevron">›</span>
-      </a>
-
-      <a class="row" href="https://gemini.google.com/gems/view" target="_blank">
-        <div class="row-icon ic-green">🗂️</div>
-        <div class="row-body">
-          <div class="row-title">Gem Manager — Explorar e Gerir Gems</div>
-          <div class="row-desc">Painel principal com os Gems pré-prontos do Google (Brainstormer, Coding partner, Writing editor…)</div>
-        </div>
-        <span class="row-chevron">›</span>
-      </a>
-
-      <a class="row" href="https://gemini.google.com/gems/create" target="_blank">
-        <div class="row-icon ic-indigo">➕</div>
-        <div class="row-body">
-          <div class="row-title">Criar um Novo Gem</div>
-          <div class="row-desc">Interface oficial para criar um Gem personalizado com nome, instruções e ficheiros de contexto</div>
-        </div>
-        <span class="row-chevron">›</span>
-      </a>
-
-      <a class="row" href="https://support.google.com/gemini/answer/15146780" target="_blank">
-        <div class="row-icon ic-blue">❓</div>
-        <div class="row-body">
-          <div class="row-title">Como Usar os Gems — Suporte Google</div>
-          <div class="row-desc">Documentação oficial passo a passo para aceder, usar e personalizar Gems no desktop e mobile</div>
-        </div>
-        <span class="row-chevron">›</span>
-      </a>
-
-      <a class="row" href="https://support.google.com/gemini/answer/15235603" target="_blank">
-        <div class="row-icon ic-teal">📝</div>
-        <div class="row-body">
-          <div class="row-title">Dicas para Criar Gems — Suporte Google</div>
-          <div class="row-desc">Guia oficial com boas práticas para escrever instruções eficazes: role, tom e formato de resposta</div>
-        </div>
-        <span class="row-chevron">›</span>
-      </a>
-
-      <a class="row" href="https://support.google.com/gemini/answer/16504957" target="_blank">
-        <div class="row-icon ic-green">🔗</div>
-        <div class="row-body">
-          <div class="row-title">Como Partilhar um Gem — Suporte Google</div>
-          <div class="row-desc">Instruções oficiais para partilhar Gems com outras pessoas via link</div>
-        </div>
-        <span class="row-chevron">›</span>
-      </a>
-
-      <a class="row" href="https://blog.google/products/gemini/google-gems-tips/" target="_blank">
-        <div class="row-icon ic-orange">📰</div>
-        <div class="row-body">
-          <div class="row-title">Blog Google — Dicas de Gems</div>
-          <div class="row-desc">Artigo oficial com exemplos práticos por categoria: escrita, carreira, aprendizado e programação</div>
-        </div>
-        <span class="row-chevron">›</span>
-      </a>
-
-      <a class="row" href="https://github.com/nirzaf/gemini-gems" target="_blank">
-        <div class="row-icon ic-gray">🐙</div>
-        <div class="row-body">
-          <div class="row-title">nirzaf/gemini-gems — GitHub</div>
-          <div class="row-desc">21+ prompts prontos para copiar como Gems especializados: revisão de código, documentação e mais</div>
-        </div>
-        <span class="row-chevron">›</span>
-      </a>
-
-      <a class="row" href="https://github.com/ZeroLu/awesome-gemini-ai" target="_blank">
-        <div class="row-icon ic-gray">🐙</div>
-        <div class="row-body">
-          <div class="row-title">awesome-gemini-ai — GitHub</div>
-          <div class="row-desc">Coleção curada de prompts para Gemini em coding, agentes, design e produtividade</div>
-        </div>
-        <span class="row-chevron">›</span>
-      </a>
-
-      <a class="row" href="https://github.com/AIwork4me/awesome-gemini-visual-gems" target="_blank">
-        <div class="row-icon ic-gray">🐙</div>
-        <div class="row-body">
-          <div class="row-title">awesome-gemini-visual-gems — GitHub</div>
-          <div class="row-desc">16 prompts testados para transformar texto em infográficos visuais usando o Gemini</div>
-        </div>
-        <span class="row-chevron">›</span>
-      </a>
-
-      <a class="row" href="https://www.aifire.co/p/gemini-gems-guide-2025-build-ai-workflows-that-work" target="_blank">
-        <div class="row-icon ic-orange">🔥</div>
-        <div class="row-body">
-          <div class="row-title">Guia Completo de Gems — AIFire</div>
-          <div class="row-desc">Como construir fluxos de trabalho eficientes com Gems, com exemplos práticos por categoria</div>
-        </div>
-        <span class="row-chevron">›</span>
-      </a>
-
-      <a class="row" href="https://www.computerworld.com/article/4054876/a-beginners-guide-to-google-gemini-gems.html" target="_blank">
-        <div class="row-icon ic-blue">📖</div>
-        <div class="row-body">
-          <div class="row-title">Guia para Iniciantes em Gems — Computerworld</div>
-          <div class="row-desc">Introdução acessível explicando as categorias pré-prontas e como criar os primeiros Gems</div>
-        </div>
-        <span class="row-chevron">›</span>
-      </a>
-
-    </div>
-  </div>
-  </div>
-
-  <!-- GOOGLE AI STUDIO + VPN -->
-  <div class="section-block" data-section="sec-aistudio">
-  <div class="section-header" id="sec-aistudio">Google AI Studio + VPN (acesso EUA)</div>
-  <div class="section">
-    <div class="list-group">
-
-      <a class="row" href="https://aistudio.google.com/welcome" target="_blank">
-        <div class="row-icon ic-blue">🔬</div>
-        <div class="row-body">
-          <div class="row-title">Google AI Studio</div>
-          <div class="row-desc">Playground oficial — testa modelos Gemini, cria prompts e gera chaves de API gratuitamente</div>
-        </div>
-        <span class="row-chevron">›</span>
-      </a>
-
-      <a class="row" href="https://aistudio.google.com/app/apikey" target="_blank">
-        <div class="row-icon ic-green">🔑</div>
-        <div class="row-body">
-          <div class="row-title">Gerir Chaves de API — AI Studio</div>
-          <div class="row-desc">Cria, visualiza e revoga as tuas chaves de API do Gemini gratuitamente</div>
-        </div>
-        <span class="row-chevron">›</span>
-      </a>
-
-      <a class="row" href="https://aistudio.google.com/app/gallery" target="_blank">
-        <div class="row-icon ic-purple">🖼️</div>
-        <div class="row-body">
-          <div class="row-title">Galeria de Prompts — AI Studio</div>
-          <div class="row-desc">Coleção curada de prompts prontos para inspirar desenvolvedores e criativos</div>
-        </div>
-        <span class="row-chevron">›</span>
-      </a>
-
-      <a class="row" href="https://ai.google.dev/gemini-api/docs" target="_blank">
-        <div class="row-icon ic-blue">📄</div>
-        <div class="row-body">
-          <div class="row-title">Documentação da API Gemini</div>
-          <div class="row-desc">Central de documentação oficial com guias, referências e exemplos de código</div>
-        </div>
-        <span class="row-chevron">›</span>
-      </a>
-
-      <a class="row" href="https://ai.google.dev/gemini-api/docs/ai-studio-quickstart" target="_blank">
-        <div class="row-icon ic-teal">⚡</div>
-        <div class="row-body">
-          <div class="row-title">Quickstart do AI Studio</div>
-          <div class="row-desc">Tutorial oficial de início rápido: criar prompts, testar modelos e obter a primeira chave</div>
-        </div>
-        <span class="row-chevron">›</span>
-      </a>
-
-      <a class="row" href="https://ai.google.dev/gemini-api/docs/changelog" target="_blank">
-        <div class="row-icon ic-indigo">📋</div>
-        <div class="row-body">
-          <div class="row-title">Changelog da API Gemini</div>
-          <div class="row-desc">Notas de versão com todas as atualizações e novos modelos lançados</div>
-        </div>
-        <span class="row-chevron">›</span>
-      </a>
-
-      <div class="row" style="cursor:default;">
-        <div class="row-icon ic-gray">🔒</div>
-        <div class="row-body">
-          <div class="row-title" style="color:var(--text-secondary,#888);font-size:0.78rem;font-weight:600;text-transform:uppercase;letter-spacing:.05em;">VPN gratuitas — parecer ser dos EUA</div>
-        </div>
+<div class="shell">
+  <div class="topbar">
+    <div class="topbar-row">
+      <div class="wordmark">
+        <span class="wordmark-mark display"><span class="wordmark-star">★</span> Favoritos</span>
       </div>
-
-      <a class="row" href="https://protonvpn.com" target="_blank">
-        <div class="row-icon ic-indigo">🛡️</div>
-        <div class="row-body">
-          <div class="row-title">Proton VPN</div>
-          <div class="row-desc">VPN 100% gratuita, sem limite de dados e com servidor nos EUA — a mais fiável para privacidade</div>
-        </div>
-        <span class="row-chevron">›</span>
-      </a>
-
-      <a class="row" href="https://windscribe.com" target="_blank">
-        <div class="row-icon ic-blue">💨</div>
-        <div class="row-body">
-          <div class="row-title">Windscribe</div>
-          <div class="row-desc">VPN gratuita com 10 GB/mês e servidor nos EUA — extensão para Chrome e Firefox</div>
-        </div>
-        <span class="row-chevron">›</span>
-      </a>
-
-      <a class="row" href="https://browsec.com" target="_blank">
-        <div class="row-icon ic-green">🌐</div>
-        <div class="row-body">
-          <div class="row-title">Browsec VPN</div>
-          <div class="row-desc">Extensão gratuita sem cadastro com servidor nos EUA para Chrome e Firefox</div>
-        </div>
-        <span class="row-chevron">›</span>
-      </a>
-
-      <a class="row" href="https://www.urban-vpn.com" target="_blank">
-        <div class="row-icon ic-orange">🏙️</div>
-        <div class="row-body">
-          <div class="row-title">Urban VPN</div>
-          <div class="row-desc">Extensão gratuita e sem limite de dados para Chrome e Firefox com 350+ servidores incluindo EUA</div>
-        </div>
-        <span class="row-chevron">›</span>
-      </a>
-
-      <a class="row" href="https://xvpn.io/free-vpn/chrome-extension" target="_blank">
-        <div class="row-icon ic-teal">⚡</div>
-        <div class="row-body">
-          <div class="row-title">X-VPN (extensão Chrome)</div>
-          <div class="row-desc">Extensão gratuita para Chrome — sem conta, sem dados pessoais, liga imediatamente</div>
-        </div>
-        <span class="row-chevron">›</span>
-      </a>
-
+      <div class="stat-line mono" id="statLine"></div>
+    </div>
+    <div class="search-row">
+      <span class="search-icon">⌕</span>
+      <input class="search-input" id="searchInput" type="search" placeholder="Pesquisar em todas as categorias…" autocomplete="off" autocorrect="off" spellcheck="false">
+      <button class="search-clear" id="searchClear" aria-label="Limpar pesquisa">✕</button>
     </div>
   </div>
-  </div>
 
-  <!-- REPOSITÓRIOS -->
-  <div class="section-block" data-section="sec-repos">
-  <div class="section-header" id="sec-repos">Repositórios GitHub</div>
-  <div class="section">
-    <div class="list-group">
-
-      <div class="row repo-row">
-        <div class="row-icon ic-indigo">🌐</div>
-        <div class="row-body">
-          <div class="row-title">minha-primeira-app</div>
-          <div class="row-desc">Site do Autor André Fernandes</div>
-          <div class="row-tags">
-            <a class="tag tag-gh" href="https://github.com/Xtvback/minha-primeira-app" target="_blank">GitHub</a>
-            <a class="tag tag-vercel" href="https://andremfernandes.vercel.app" target="_blank">Vercel ↗</a>
-          </div>
-        </div>
-      </div>
-
-      <div class="row repo-row">
-        <div class="row-icon ic-blue">📋</div>
-        <div class="row-body">
-          <div class="row-title">mural-textos</div>
-          <div class="row-desc">Mural de textos</div>
-          <div class="row-tags">
-            <a class="tag tag-gh"  href="https://github.com/Xtvback/mural-textos" target="_blank">GitHub</a>
-            <a class="tag tag-web" href="https://xtvback.github.io/mural-textos" target="_blank">Página ↗</a>
-          </div>
-        </div>
-      </div>
-
-      <div class="row repo-row">
-        <div class="row-icon ic-pink">📸</div>
-        <div class="row-body">
-          <div class="row-title">insta-tool-web</div>
-          <div class="row-desc">Ferramentas Instagram acessíveis via browser</div>
-          <div class="row-tags">
-            <a class="tag tag-gh"  href="https://github.com/Xtvback/insta-tool-web" target="_blank">GitHub</a>
-            <a class="tag tag-web" href="https://xtvback.github.io/insta-tool-web" target="_blank">Página ↗</a>
-          </div>
-        </div>
-      </div>
-
-      <div class="row repo-row">
-        <div class="row-icon ic-orange">🗂️</div>
-        <div class="row-body">
-          <div class="row-title">Favoritos</div>
-          <div class="row-desc">Este repositório — ferramentas e páginas pessoais</div>
-          <div class="row-tags">
-            <a class="tag tag-gh"  href="https://github.com/Xtvback/Favoritos" target="_blank">GitHub</a>
-            <a class="tag tag-web" href="https://xtvback.github.io/Favoritos" target="_blank">Página ↗</a>
-          </div>
-        </div>
-      </div>
-
-      <div class="row repo-row">
-        <div class="row-icon ic-purple">🧩</div>
-        <div class="row-body">
-          <div class="row-title">solvero</div>
-          <div class="row-desc">Projeto em desenvolvimento</div>
-          <div class="row-tags">
-            <a class="tag tag-gh"  href="https://github.com/Xtvback/solvero" target="_blank">GitHub</a>
-            <a class="tag tag-web" href="https://xtvback.github.io/solvero" target="_blank">Página ↗</a>
-          </div>
-        </div>
-      </div>
-
-      <div class="row repo-row">
-        <div class="row-icon ic-gray">📁</div>
-        <div class="row-body">
-          <div class="row-title">mark2016</div>
-          <div class="row-desc">Site pessoal de 2016</div>
-          <div class="row-tags">
-            <a class="tag tag-gh"  href="https://github.com/Xtvback/mark2016" target="_blank">GitHub</a>
-            <a class="tag tag-web" href="https://xtvback.github.io/mark2016" target="_blank">Página ↗</a>
-          </div>
-        </div>
-      </div>
-
-    </div>
-  </div>
-  </div>
-
+  <div class="grid" id="grid"></div>
+  <div class="results" id="results"></div>
+  <div class="empty" id="empty">Sem resultados para essa pesquisa.</div>
 </div>
-  <!-- BACK TO TOP -->
-  <button class="back-top" id="backTop" onclick="window.scrollTo({top:0,behavior:'smooth'})">↑</button>
 
-  <script>
-    // ── Search ──
-    const input = document.getElementById('searchInput');
-    const clearBtn = document.getElementById('searchClear');
-    const noResults = document.getElementById('noResults');
-    const catNav = document.getElementById('catNav');
+<div class="overlay" id="overlay">
+  <div class="panel" role="dialog" aria-modal="true" aria-labelledby="panelTitle">
+    <div class="panel-head">
+      <div class="panel-title-wrap">
+        <span class="panel-swatch" id="panelSwatch"></span>
+        <div>
+          <div class="panel-title display" id="panelTitle"></div>
+          <div class="panel-count mono" id="panelCount"></div>
+        </div>
+      </div>
+      <button class="panel-close" id="panelClose" aria-label="Fechar">✕</button>
+    </div>
+    <div class="panel-list" id="panelList"></div>
+  </div>
+</div>
 
-    function normalise(str) {
-      return str.toLowerCase()
-        .normalize('NFD').replace(/[\u0300-\u036f]/g, '');
-    }
+<script>
+const DATA = [{"id": "sec-paginas", "title": "As Minhas Páginas", "items": [{"type": "link", "href": "https://xtvback.github.io/Favoritos/", "ic": "ic-indigo", "e": "🖥️", "t": "DesktopWeb", "d": "Ambiente de trabalho virtual com atalhos para as ferramentas e apps web"}, {"type": "link", "href": "https://xtvback.github.io/Favoritos/app-ideas.html", "ic": "ic-blue", "e": "💡", "t": "App Ideas", "d": "Gestor de ideias para criação de apps, com histórico e arquivo por data"}, {"type": "link", "href": "https://xtvback.github.io/Favoritos/ideias-soltas.html", "ic": "ic-purple", "e": "✨", "t": "Ideias Soltas", "d": "Captura rápida de ideias gerais e pensamentos soltos, com arquivo"}, {"type": "link", "href": "https://xtvback.github.io/Favoritos/ideias-livros.html", "ic": "ic-orange", "e": "📖", "t": "Ideias Livros", "d": "Registo de ideias para livros: título, género literário e sinopse"}, {"type": "link", "href": "https://xtvback.github.io/Favoritos/passwords.html", "ic": "ic-green", "e": "🔐", "t": "Passwords", "d": "Cofre de passwords protegido por PIN com campo extra para notas"}, {"type": "link", "href": "https://xtvback.github.io/Favoritos/multi-ai-search.html", "ic": "ic-teal", "e": "🤖", "t": "Multi AI Search", "d": "Pesquisa simultânea em várias IAs com a mesma pergunta"}, {"type": "link", "href": "https://xtvback.github.io/Favoritos/instagram-slides.html", "ic": "ic-pink", "e": "📸", "t": "Instagram Slides", "d": "Gerador de carrosséis para o Instagram com texto, estilos e hashtags"}, {"type": "link", "href": "https://xtvback.github.io/Favoritos/carrossel-manual.html", "ic": "ic-purple", "e": "🎠", "t": "Central Carrossel Manual Instagram", "d": "Gerador automático de carrosséis, histórias e frases para o Instagram com 3 modos e temas"}, {"type": "link", "href": "https://xtvback.github.io/Favoritos/frases.html", "ic": "ic-yellow", "e": "💬", "t": "Frases", "d": "Gerador de slides com citações filosóficas para partilhar nas redes"}, {"type": "link", "href": "https://xtvback.github.io/Favoritos/estreias.html", "ic": "ic-purple", "e": "🎬", "t": "Estreias", "d": "Tracker de estreias de filmes, séries, anime e documentários com integração TMDB"}, {"type": "link", "href": "https://xtvback.github.io/Favoritos/partilha-contas.html", "ic": "ic-teal", "e": "🔗", "t": "Partilha de Contas", "d": "Descobre e guarda serviços de partilha de subscrições como ShareSub, Spliiit e mais"}, {"type": "link", "href": "https://xtvback.github.io/Favoritos/comic-book-tool.html", "ic": "ic-purple", "e": "📚", "t": "Comic Book Tool", "d": "Aumenta a resolução e define os DPI de várias imagens de uma vez (ideal para arte gerada por IA)"}, {"type": "link", "href": "https://xtvback.github.io/Favoritos/extras.html", "ic": "ic-red", "e": "⚡", "t": "Claude Extras", "d": "Centro de descoberta de ferramentas e funcionalidades do Claude"}, {"type": "link", "href": "https://xtvback.github.io/Favoritos/chatgpt-extras.html", "ic": "ic-green", "e": "💬", "t": "ChatGPT Extras", "d": "Centro de descoberta de GPTs, Apps e Actions do ChatGPT"}, {"type": "link", "href": "https://xtvback.github.io/Favoritos/uslords.html", "ic": "ic-indigo", "e": "🌌", "t": "Uslords — Base de Dados", "d": "Base de dados do universo Uslords: raças, personagens, lugares, fações e eventos"}, {"type": "link", "href": "https://xtvback.github.io/Favoritos/links.html", "ic": "ic-gray", "e": "🔖", "t": "Links", "d": "Esta página — todos os repositórios GitHub e páginas do Favoritos"}, {"type": "link", "href": "https://xtvback.github.io/Favoritos/game-creator.html", "ic": "ic-indigo", "e": "🎮", "t": "Game Creator", "d": "20 engines de jogos e 27 IAs para código, assets 3D, NPCs e design — Godot, Unity, Unreal, RPG Maker, Roblox e mais"}], "dark": "#e05c5c", "light": "#b8342f", "tier": "m", "linkCount": 17}, {"id": "sec-ias", "title": "Inteligências Artificiais", "items": [{"type": "link", "href": "https://chat.deepseek.com", "ic": "ic-blue", "e": "🔵", "t": "DeepSeek", "d": ""}, {"type": "link", "href": "#sec-chatgpt", "ic": "ic-green", "e": "💬", "t": "ChatGPT", "d": "Chat, apps, GPTs, plugins/actions e mais ferramentas ↓"}, {"type": "link", "href": "https://storyspark.ai", "ic": "ic-orange", "e": "✨", "t": "Story Spark", "d": ""}, {"type": "link", "href": "https://copilot.microsoft.com", "ic": "ic-indigo", "e": "🪟", "t": "Microsoft Copilot", "d": ""}, {"type": "link", "href": "https://chat.qwen.ai", "ic": "ic-purple", "e": "🌀", "t": "Qwen", "d": ""}, {"type": "link", "href": "https://venice.ai", "ic": "ic-teal", "e": "🌊", "t": "Venice", "d": ""}, {"type": "link", "href": "https://chat.mistral.ai", "ic": "ic-orange", "e": "💬", "t": "Le Chat", "d": ""}, {"type": "link", "href": "https://poe.com", "ic": "ic-gray", "e": "🤖", "t": "Poe", "d": ""}, {"type": "link", "href": "https://www.perplexity.ai", "ic": "ic-blue", "e": "🔍", "t": "Perplexity", "d": ""}, {"type": "link", "href": "https://z.ai", "ic": "ic-indigo", "e": "⚡", "t": "Z.ai", "d": ""}, {"type": "link", "href": "https://gamma.app", "ic": "ic-green", "e": "🎯", "t": "Gamma", "d": ""}, {"type": "link", "href": "https://claude.ai", "ic": "ic-orange", "e": "🧠", "t": "Claude", "d": ""}, {"type": "link", "href": "https://notebooklm.google.com", "ic": "ic-blue", "e": "📓", "t": "NotebookLM", "d": ""}, {"type": "link", "href": "https://www.nexuscentral.ai", "ic": "ic-teal", "e": "💠", "t": "Nexus Central", "d": ""}, {"type": "link", "href": "https://manus.im", "ic": "ic-gray", "e": "✖️", "t": "Manus", "d": ""}, {"type": "link", "href": "https://jenova.ai", "ic": "ic-purple", "e": "🤖", "t": "Jenova - A Plataforma de Agentes de IA", "d": ""}, {"type": "link", "href": "https://duck.ai", "ic": "ic-orange", "e": "🦆", "t": "Duck.ai", "d": ""}, {"type": "link", "href": "https://api.together.ai/models", "ic": "ic-green", "e": "🔗", "t": "api.together.ai/models", "d": ""}, {"type": "link", "href": "https://gamma.app/slides", "ic": "ic-green", "e": "📊", "t": "Gamma (Slides)", "d": ""}, {"type": "link", "href": "https://arli.ai/chat", "ic": "ic-gray", "e": "💬", "t": "Chat - Arli AI", "d": ""}, {"type": "link", "href": "https://skywork.ai", "ic": "ic-blue", "e": "🌀", "t": "Skywork: Agente de IA tudo-em-um", "d": ""}, {"type": "link", "href": "https://nousresearch.com/chat", "ic": "ic-indigo", "e": "💬", "t": "Nous Chat", "d": ""}, {"type": "link", "href": "https://yiyan.baidu.com", "ic": "ic-blue", "e": "🈶", "t": "ERNIE", "d": ""}, {"type": "link", "href": "https://deepai.org", "ic": "ic-purple", "e": "🎨", "t": "Generative AI APIs | Run Image, Video...", "d": ""}, {"type": "link", "href": "https://playground.microsoft.ai/chat", "ic": "ic-blue", "e": "🪟", "t": "Microsoft AI Playground", "d": ""}], "dark": "#8c8cf2", "light": "#5a52c9", "tier": "l", "linkCount": 25}, {"id": "sec-suno", "title": "Ferramentas para Suno", "items": [{"type": "link", "href": "https://suno.com", "ic": "ic-green", "e": "🎵", "t": "Suno", "d": "Criação de músicas completas com IA — letra, voz e instrumentação"}, {"type": "link", "href": "https://sunobuilder.com", "ic": "ic-blue", "e": "🎛️", "t": "Suno Prompt Builder", "d": "Constrói prompts otimizados para o Suno com 200+ instrumentos e 50+ géneros"}, {"type": "link", "href": "https://sunoaiwiki.com", "ic": "ic-indigo", "e": "📖", "t": "Suno AI Wiki", "d": "Wiki comunitária com metatags, guias de estrutura de música e dicas de prompting"}, {"type": "link", "href": "https://openmusicprompt.com/blog/suno-ai-metatags-guide", "ic": "ic-purple", "e": "🏷️", "t": "OpenMusicPrompt — Metatags Guide", "d": "Guia com 500+ metatags para Suno v5: estrutura, mood, estilo vocal e instrumentos"}, {"type": "link", "href": "https://www.peak-studios.de/en/suno-prompt-generator/", "ic": "ic-teal", "e": "🎚️", "t": "Peak Studios — Suno Prompt Generator", "d": "Gerador de prompts profissional para criar descrições de estilo no Suno"}, {"type": "link", "href": "https://hookgenius.app", "ic": "ic-orange", "e": "✍️", "t": "HookGenius", "d": "Gera letras e prompts de estilo para Suno em vários géneros musicais"}, {"type": "link", "href": "https://www.songaifarm.com", "ic": "ic-green", "e": "🎤", "t": "Song AI Farm", "d": "Converte melodias em letras e analisa o \"ADN\" da música — 5 gerações grátis/dia"}, {"type": "link", "href": "https://www.lalal.ai", "ic": "ic-pink", "e": "🎙️", "t": "LALAL.AI", "d": "Separador de stems com IA — isola voz, bateria, baixo, guitarra de qualquer faixa"}, {"type": "link", "href": "https://moises.ai", "ic": "ic-indigo", "e": "🎸", "t": "Moises", "d": "Separação de stems, deteção de acordes, transcrição de letra e mudança de tom"}, {"type": "link", "href": "https://www.bandlab.com", "ic": "ic-orange", "e": "🎹", "t": "BandLab", "d": "DAW gratuito no browser com mixagem, masterização IA e comunidade social"}, {"type": "link", "href": "https://www.audacityteam.org", "ic": "ic-gray", "e": "🔊", "t": "Audacity", "d": "Editor de áudio gratuito e open-source para cortar, equalizar e tratar faixas do Suno"}, {"type": "link", "href": "https://soundplate.com/suno-mastering/", "ic": "ic-teal", "e": "📻", "t": "Soundplate — Suno Mastering", "d": "Masterização online gratuita especialmente pensada para música gerada pelo Suno"}, {"type": "link", "href": "https://discord.com/invite/suno", "ic": "ic-indigo", "e": "💬", "t": "Suno Discord (Comunidade Oficial)", "d": "400K+ membros — partilha de prompts, feedback e novidades sobre o Suno"}, {"type": "link", "href": "https://www.reddit.com/r/SunoAI/", "ic": "ic-orange", "e": "🟠", "t": "r/SunoAI — Reddit", "d": "Subreddit ativo com 80K+ membros: músicas, dicas de prompting e novidades"}], "dark": "#f2679c", "light": "#c93f74", "tier": "m", "linkCount": 14}, {"id": "sec-rpg", "title": "RPG Maker", "items": [{"type": "link", "href": "https://www.rpgmakerweb.com", "ic": "ic-blue", "e": "⚔️", "t": "RPG Maker Web (Oficial)", "d": "Site oficial da Kadokawa com downloads, DLCs e blog do RPG Maker"}, {"type": "link", "href": "https://www.rpgmakerweb.com/additional-downloads", "ic": "ic-green", "e": "🎁", "t": "RPG Maker — Free Downloads", "d": "Conteúdo gratuito oficial: tilesets, músicas, plugins e DLCs"}, {"type": "link", "href": "https://itch.io/game-assets/free/tag-rpgmaker", "ic": "ic-pink", "e": "🖼️", "t": "itch.io — Assets gratuitos para RPG Maker", "d": "Maior repositório de tilesets, sprites e músicas marcados para RPG Maker"}, {"type": "link", "href": "https://opengameart.org", "ic": "ic-orange", "e": "🎨", "t": "OpenGameArt.org", "d": "Biblioteca open-source com tilesets, sprites e músicas com licença livre"}, {"type": "link", "href": "https://rpgtileset.com", "ic": "ic-teal", "e": "🗺️", "t": "RPG TileSet", "d": "Mais de 10.000 assets gratuitos focados em tilesets e sprites para RPG Maker MV"}, {"type": "link", "href": "https://www.yanfly.moe/wiki", "ic": "ic-indigo", "e": "🔌", "t": "Yanfly.moe Wiki", "d": "Wiki oficial dos plugins Yanfly (MV) e VisuStella (MZ) com documentação completa"}, {"type": "link", "href": "https://galvs-scripts.com/rpgmaker/rmmz-plugins/", "ic": "ic-purple", "e": "⚙️", "t": "Galv's Plugins", "d": "Coleção gratuita de plugins de qualidade para MV e MZ: efeitos, mapas e sistemas"}, {"type": "link", "href": "https://github.com/topics/rpg-maker-mz", "ic": "ic-gray", "e": "🐙", "t": "GitHub — Plugins RPG Maker MZ", "d": "Todos os repositórios públicos com plugins e scripts open-source para MZ"}, {"type": "link", "href": "https://github.com/topics/rpg-maker-mv", "ic": "ic-gray", "e": "🐙", "t": "GitHub — Plugins RPG Maker MV", "d": "Repositórios públicos com plugins e scripts open-source para RPG Maker MV"}, {"type": "link", "href": "https://rpgmaker.fandom.com/wiki/RPG_Maker_Wiki", "ic": "ic-orange", "e": "📚", "t": "RPG Maker Wiki (Fandom)", "d": "Wiki com 1.380+ artigos sobre engines, tutoriais, scripts e jogos feitos em RPG Maker"}, {"type": "link", "href": "https://rpgmaker.net", "ic": "ic-blue", "e": "🌐", "t": "rpgmaker.net", "d": "Portal independente com tutoriais, scripts, utilitários e jogos de todas as versões"}, {"type": "link", "href": "https://forums.rpgmakerweb.com", "ic": "ic-indigo", "e": "💬", "t": "RPG Maker Forums (Oficial)", "d": "Fórum oficial com suporte técnico, plugins, recursos e showcase de projetos"}, {"type": "link", "href": "https://www.reddit.com/r/RPGMaker", "ic": "ic-orange", "e": "🟠", "t": "r/RPGMaker — Reddit", "d": "Subreddit ativo com showcases, ajuda e partilha de recursos para todas as versões"}, {"type": "link", "href": "https://www.mapeditor.org", "ic": "ic-green", "e": "🗺️", "t": "Tiled Map Editor", "d": "Editor de mapas gratuito e open-source com suporte a múltiplas camadas, integrável ao MV e MZ"}, {"type": "link", "href": "https://liberatedpixelcup.github.io/Universal-LPC-Spritesheet-Character-Generator/", "ic": "ic-purple", "e": "🧙", "t": "Universal LPC Sprite Generator", "d": "Gerador online de spritesheets pixel art com 4.000+ combinações, exportação em PNG"}, {"type": "link", "href": "https://www.spritefusion.com", "ic": "ic-teal", "e": "🖱️", "t": "Sprite Fusion", "d": "Editor de tilemaps online gratuito para prototipar mapas com tilesets do RPG Maker"}], "dark": "#5fcf7a", "light": "#2e9c4a", "tier": "m", "linkCount": 16}, {"id": "sec-claude", "title": "Claude — Extras & Ferramentas", "items": [{"type": "link", "href": "https://claude.ai", "ic": "ic-orange", "e": "🧠", "t": "Claude.ai", "d": "Interface web oficial do Claude — plano gratuito disponível, sem instalação"}, {"type": "link", "href": "https://platform.claude.com/docs/en/home", "ic": "ic-indigo", "e": "📄", "t": "Documentação da API Claude", "d": "Portal central para desenvolvedores: quickstart, modelos, tool use, visão e caching"}, {"type": "link", "href": "https://docs.anthropic.com/claude/prompt-library", "ic": "ic-purple", "e": "📚", "t": "Biblioteca de Prompts Oficiais", "d": "60+ prompts prontos organizados por categoria com boas práticas em XML"}, {"type": "link", "href": "https://platform.claude.com/docs/en/about-claude/models/overview", "ic": "ic-blue", "e": "📊", "t": "Visão Geral dos Modelos Claude", "d": "Comparação de todos os modelos (Opus, Sonnet, Haiku) com contexto, preços e casos de uso"}, {"type": "link", "href": "https://www.anthropic.com/learn/build-with-claude", "ic": "ic-green", "e": "🎓", "t": "Anthropic Academy", "d": "Cursos gratuitos do iniciante ao avançado sobre desenvolvimento com Claude"}, {"type": "link", "href": "https://platform.claude.com/docs/en/build-with-claude/prompt-engineering/claude-prompting-best-practices", "ic": "ic-teal", "e": "⚡", "t": "Guia de Prompt Engineering", "d": "Técnicas oficiais de prompting: XML, chain-of-thought, roles e sistemas agênticos"}, {"type": "link", "href": "https://github.com/anthropics/prompt-eng-interactive-tutorial", "ic": "ic-gray", "e": "🐙", "t": "Tutorial Interativo de Prompt Engineering", "d": "Curso em 9 capítulos com exercícios práticos criado pela Anthropic, disponível no GitHub"}, {"type": "link", "href": "https://github.com/anthropics/anthropic-cookbook", "ic": "ic-gray", "e": "🐙", "t": "Anthropic Cookbook", "d": "Notebooks com código para RAG, tool use, visão e técnicas avançadas com Claude"}, {"type": "link", "href": "https://marketplace.visualstudio.com/items?itemName=anthropic.claude-code", "ic": "ic-blue", "e": "💻", "t": "Claude Code — Extensão VS Code", "d": "Extensão oficial para VS Code com diffs inline, histórico de conversas e suporte a MCP"}, {"type": "link", "href": "https://code.claude.com/docs/en/mcp", "ic": "ic-purple", "e": "🔌", "t": "Claude Code — Documentação MCP", "d": "Guia oficial para conectar o Claude Code a ferramentas externas via Model Context Protocol"}, {"type": "link", "href": "https://www.mcpserverfinder.com/categories/claude-ai", "ic": "ic-orange", "e": "🔎", "t": "MCP Server Finder", "d": "Diretório comunitário com centenas de servidores MCP para integrar ao Claude"}, {"type": "link", "href": "https://www.reddit.com/r/ClaudeAI", "ic": "ic-orange", "e": "🟠", "t": "r/ClaudeAI — Reddit", "d": "Subreddit ativo com dicas, prompts, notícias e discussões técnicas sobre o Claude"}], "dark": "#e08a5c", "light": "#b8582e", "tier": "m", "linkCount": 12}, {"id": "sec-gemini", "title": "Gemini — Extras & Ferramentas", "items": [{"type": "link", "href": "https://gemini.google.com", "ic": "ic-blue", "e": "✨", "t": "Gemini", "d": "Interface principal do assistente Gemini do Google, gratuita no navegador"}, {"type": "link", "href": "https://aistudio.google.com", "ic": "ic-indigo", "e": "🔬", "t": "Google AI Studio", "d": "Ambiente web oficial para testar e criar com a API Gemini — camada gratuita sem cartão"}, {"type": "link", "href": "https://ai.google.dev/gemini-api/docs", "ic": "ic-blue", "e": "📄", "t": "Documentação da API Gemini", "d": "Documentação técnica completa com quickstart e referência para desenvolvedores"}, {"type": "link", "href": "https://ai.google.dev/api", "ic": "ic-teal", "e": "🔗", "t": "Referência da API Gemini", "d": "Referência completa dos endpoints (padrão, streaming e tempo real) para integração"}, {"type": "link", "href": "https://workspace.google.com/learning/content/gemini-prompt-guide", "ic": "ic-green", "e": "📝", "t": "Gemini no Google Workspace", "d": "Guia oficial de prompts para usar o Gemini no Gmail, Docs, Sheets e outros apps"}, {"type": "link", "href": "https://notebooklm.google.com", "ic": "ic-indigo", "e": "📓", "t": "NotebookLM", "d": "IA baseada no Gemini que analisa fontes e gera resumos, podcasts e vídeos explicativos"}, {"type": "link", "href": "https://developers.google.com/gemini-code-assist/docs/overview", "ic": "ic-blue", "e": "💻", "t": "Gemini Code Assist", "d": "Extensão gratuita de IA para código em VS Code e IDEs JetBrains com chat e completions"}, {"type": "link", "href": "https://plugins.jetbrains.com/plugin/24198-gemini-code-assist", "ic": "ic-orange", "e": "🧩", "t": "Gemini Code Assist — JetBrains", "d": "Plugin oficial no JetBrains Marketplace para IntelliJ, PyCharm e outros IDEs"}, {"type": "link", "href": "https://github.com/google-gemini/gemini-cli", "ic": "ic-gray", "e": "🐙", "t": "Gemini CLI (open source)", "d": "Agente IA open-source para terminal com suporte a MCP e contexto de 1M tokens"}, {"type": "link", "href": "https://ai.google.dev/gemini-api/docs/prompting-strategies", "ic": "ic-teal", "e": "⚡", "t": "Estratégias de Prompt para Gemini", "d": "Guia oficial com conceitos e boas práticas para criar prompts eficazes nos modelos Gemini"}, {"type": "link", "href": "https://www.promptingguide.ai/models/gemini", "ic": "ic-purple", "e": "📖", "t": "Prompt Engineering Guide — Gemini", "d": "Guia independente DAIR.AI com exemplos práticos e dicas específicas para o Gemini"}, {"type": "link", "href": "https://discord.com/invite/gemini", "ic": "ic-indigo", "e": "💬", "t": "Discord Oficial do Gemini", "d": "Servidor oficial com 68K+ membros para prompts, discussões e eventos \"Prompt Like a Pro\""}, {"type": "link", "href": "https://www.reddit.com/r/Gemini", "ic": "ic-orange", "e": "🟠", "t": "r/Gemini — Reddit", "d": "Comunidade Reddit para discussões, dicas, notícias e casos de uso do Google Gemini"}], "dark": "#5aa8f2", "light": "#2670c9", "tier": "m", "linkCount": 13}, {"id": "sec-deepseek", "title": "DeepSeek — Extras & Ferramentas", "items": [{"type": "link", "href": "https://chat.deepseek.com", "ic": "ic-blue", "e": "🔵", "t": "DeepSeek Chat", "d": "Interface oficial gratuita com modos de raciocínio profundo (DeepThink) e busca na web"}, {"type": "link", "href": "https://api-docs.deepseek.com", "ic": "ic-indigo", "e": "📄", "t": "DeepSeek API Docs", "d": "Documentação oficial da API com exemplos de código, referência de modelos e quickstart"}, {"type": "link", "href": "https://github.com/deepseek-ai", "ic": "ic-gray", "e": "🐙", "t": "DeepSeek no GitHub", "d": "Organização oficial com repositórios de todos os modelos, pesos e papers"}, {"type": "link", "href": "https://huggingface.co/deepseek-ai", "ic": "ic-orange", "e": "🤗", "t": "DeepSeek no Hugging Face", "d": "Todos os modelos DeepSeek (V3, R1, Coder…) para download gratuito com licença MIT"}, {"type": "link", "href": "https://huggingface.co/unsloth/DeepSeek-R1-GGUF", "ic": "ic-orange", "e": "⚙️", "t": "DeepSeek-R1 GGUF (Unsloth)", "d": "Versão quantizada do R1 em GGUF otimizada para correr localmente com Ollama ou LM Studio"}, {"type": "link", "href": "https://ollama.com/search?q=deepseek", "ic": "ic-green", "e": "🦙", "t": "Ollama — Modelos DeepSeek", "d": "Corre DeepSeek localmente via linha de comando com um único `ollama pull`"}, {"type": "link", "href": "https://lmstudio.ai", "ic": "ic-purple", "e": "🖥️", "t": "LM Studio", "d": "App desktop gratuito para baixar e rodar modelos DeepSeek localmente com aceleração GPU"}, {"type": "link", "href": "https://github.com/open-webui/open-webui", "ic": "ic-teal", "e": "🌐", "t": "Open WebUI", "d": "Interface web open-source estilo ChatGPT para usar DeepSeek localmente via Ollama"}, {"type": "link", "href": "https://github.com/deepseek-ai/awesome-deepseek-integration", "ic": "ic-gray", "e": "🐙", "t": "Awesome DeepSeek Integration", "d": "Lista curada oficial com dezenas de integrações: VS Code, JetBrains, Slack, Discord e mais"}, {"type": "link", "href": "https://www.reddit.com/r/DeepSeek", "ic": "ic-orange", "e": "🟠", "t": "r/DeepSeek — Reddit", "d": "Comunidade Reddit com discussões, tutoriais e comparações sobre os modelos DeepSeek"}], "dark": "#6b7fe0", "light": "#3f4fbf", "tier": "m", "linkCount": 10}, {"id": "sec-qwen", "title": "Qwen — Extras & Ferramentas", "items": [{"type": "link", "href": "https://chat.qwen.ai", "ic": "ic-purple", "e": "🌀", "t": "Qwen Chat", "d": "Interface web gratuita para conversar com os modelos Qwen diretamente no navegador"}, {"type": "link", "href": "https://qwenlm.github.io", "ic": "ic-blue", "e": "📰", "t": "Blog Oficial do Qwen", "d": "Anúncios de modelos, benchmarks e notas de lançamento da equipa QwenLM"}, {"type": "link", "href": "https://www.alibabacloud.com/help/en/model-studio/qwen-api-reference/", "ic": "ic-indigo", "e": "📄", "t": "Documentação da API Qwen", "d": "Referência completa da API REST do Qwen, compatível com formato OpenAI"}, {"type": "link", "href": "https://www.alibabacloud.com/help/en/model-studio/prompt-engineering-guide", "ic": "ic-teal", "e": "⚡", "t": "Guia de Prompt Engineering — Qwen", "d": "Guia oficial da Alibaba com técnicas de prompting para modelos Qwen (texto, visão, código)"}, {"type": "link", "href": "https://huggingface.co/Qwen", "ic": "ic-orange", "e": "🤗", "t": "Qwen no Hugging Face", "d": "Todos os modelos Qwen para download gratuito (Qwen3, Qwen2.5, Qwen-Image…)"}, {"type": "link", "href": "https://ollama.com/library/qwen3.5", "ic": "ic-green", "e": "🦙", "t": "Ollama — Modelos Qwen", "d": "Corre Qwen localmente com um único comando, sem necessidade de GPU na nuvem"}, {"type": "link", "href": "https://openrouter.ai/qwen", "ic": "ic-blue", "e": "🔗", "t": "OpenRouter — Modelos Qwen", "d": "Acesso via API unificada a dezenas de modelos Qwen incluindo versões gratuitas"}, {"type": "link", "href": "https://github.com/QwenLM/Qwen3", "ic": "ic-gray", "e": "🐙", "t": "QwenLM/Qwen3 — GitHub", "d": "Repositório oficial do Qwen3 com instruções para rodar com llama.cpp, vLLM e Transformers"}, {"type": "link", "href": "https://discord.com/invite/CV4E9rpNSD", "ic": "ic-indigo", "e": "💬", "t": "Discord Oficial do Qwen", "d": "Servidor oficial com 23K+ membros para suporte, novidades e discussões técnicas"}, {"type": "link", "href": "https://www.modelscope.cn/organization/qwen", "ic": "ic-purple", "e": "🌐", "t": "ModelScope — Qwen", "d": "Plataforma da Alibaba alternativa ao Hugging Face com todos os modelos Qwen hospedados"}], "dark": "#3fc4bb", "light": "#1f938c", "tier": "m", "linkCount": 10}, {"id": "sec-chatgpt", "title": "ChatGPT — Extras & Ferramentas", "items": [{"type": "link", "href": "https://chatgpt.com", "ic": "ic-green", "e": "💬", "t": "ChatGPT (Oficial)", "d": "Chat direto no navegador, sem instalação"}, {"type": "link", "href": "https://openai.com/chatgpt/download/", "ic": "ic-blue", "e": "📲", "t": "Apps ChatGPT — Download Oficial", "d": "Apps para Windows, Mac, iPhone e Android com deteção automática do sistema"}, {"type": "link", "href": "https://platform.openai.com", "ic": "ic-indigo", "e": "⚙️", "t": "OpenAI Platform", "d": "Dashboard oficial da API: chaves, uso, faturação e playground"}, {"type": "link", "href": "https://platform.openai.com/docs", "ic": "ic-teal", "e": "📄", "t": "Documentação da API OpenAI", "d": "Referência completa da API, modelos, function calling e guias"}, {"type": "link", "href": "https://help.openai.com/en/collections/3742473-chatgpt", "ic": "ic-orange", "e": "❓", "t": "Central de Ajuda — ChatGPT", "d": "Artigos oficiais de suporte: contas, funcionalidades e resolução de problemas"}, {"type": "link", "href": "https://community.openai.com", "ic": "ic-purple", "e": "💬", "t": "OpenAI Developer Community", "d": "Fórum oficial para developers: dúvidas de API, exemplos e discussões técnicas"}, {"type": "link", "href": "https://chatgpt.com/codex/", "ic": "ic-indigo", "e": "🧑‍💻", "t": "Codex", "d": "Agente de programação IA da OpenAI integrado no ChatGPT: PRs, refactors e code review"}, {"type": "link", "href": "https://chatgpt.com/atlas", "ic": "ic-blue", "e": "🧭", "t": "ChatGPT Atlas", "d": "Browser com ChatGPT integrado (barra lateral, memória de navegação, modo agente)"}, {"type": "link", "href": "https://academy.openai.com", "ic": "ic-green", "e": "🎓", "t": "OpenAI Academy", "d": "Plataforma gratuita e oficial com cursos e workshops para aprender a usar IA/ChatGPT"}], "dark": "#3fcf9e", "light": "#1e9c6e", "tier": "s", "linkCount": 9}, {"id": "sec-gpts", "title": "ChatGPT — GPTs & Plugins", "items": [{"type": "link", "href": "https://openai.com/index/introducing-gpts/", "ic": "ic-blue", "e": "📰", "t": "Introducing GPTs (Oficial)", "d": "Anúncio original da OpenAI sobre os GPTs personalizados"}, {"type": "link", "href": "https://chatgpt.com/gpts", "ic": "ic-green", "e": "🗂️", "t": "GPT Store — Explorar GPTs", "d": "Loja oficial com GPTs criados pela comunidade, organizados por categoria"}, {"type": "link", "href": "https://help.openai.com/en/articles/8554397-creating-a-gpt", "ic": "ic-indigo", "e": "➕", "t": "Creating a GPT — Guia Oficial", "d": "Como criar um GPT personalizado com instruções, conhecimento e capacidades"}, {"type": "link", "href": "https://help.openai.com/en/articles/8554407-gpts-in-chatgpt", "ic": "ic-teal", "e": "❓", "t": "GPTs in ChatGPT — Central de Ajuda", "d": "Explica o que são os GPTs e como usá-los dentro do ChatGPT"}, {"type": "link", "href": "https://help.openai.com/en/articles/8798878-building-and-publishing-a-gpt", "ic": "ic-orange", "e": "🔗", "t": "Sharing and Publishing GPTs", "d": "Guia oficial para partilhar um GPT em privado ou publicá-lo na GPT Store"}, {"type": "link", "href": "https://platform.openai.com/docs/actions/introduction", "ic": "ic-purple", "e": "🔌", "t": "GPT Actions — Documentação", "d": "Como ligar um GPT a APIs externas (o equivalente atual aos antigos plugins)"}, {"type": "link", "href": "https://chatgpt.com/g/g-xgfNjMjM9-canva", "ic": "ic-purple", "e": "🎨", "t": "GPT — Canva", "d": "Cria designs, apresentações e posts para redes sociais diretamente no ChatGPT"}, {"type": "link", "href": "https://help.consensus.app/en/articles/10059020-consensus-in-chatgpt", "ic": "ic-blue", "e": "🎓", "t": "GPT — Consensus", "d": "Pesquisa e cita mais de 200 milhões de artigos científicos com respostas fundamentadas"}, {"type": "link", "href": "https://gpt.wolfram.com", "ic": "ic-red", "e": "🧮", "t": "GPT — Wolfram", "d": "Cálculo simbólico, matemática avançada e dados em tempo real via Wolfram|Alpha"}, {"type": "link", "href": "https://actions.zapier.com/gpt/start", "ic": "ic-orange", "e": "⚡", "t": "Plugin/Action — Zapier AI Actions", "d": "Liga o teu GPT a mais de 7000 apps (Gmail, Sheets, Slack…) via Actions da Zapier"}, {"type": "link", "href": "https://www.expedia.com/newsroom/expedia-launched-chatgpt", "ic": "ic-teal", "e": "✈️", "t": "Plugin/Action — Expedia", "d": "Planeamento de viagens conversacional: voos, hotéis e atividades dentro do ChatGPT"}, {"type": "link", "href": "https://www.kayak.com/news/ai-mode/", "ic": "ic-green", "e": "🧭", "t": "Plugin/Action — Kayak (Ask AI)", "d": "Pesquisa de viagens em linguagem natural combinando dados da Kayak com IA"}, {"type": "link", "href": "https://help.whimsical.com/integrations/chatgpt", "ic": "ic-purple", "e": "📊", "t": "GPT — Whimsical Diagrams", "d": "Gera flowcharts, mapas mentais e diagramas de sequência a partir de linguagem natural"}, {"type": "link", "href": "https://openai.com/index/instacart-partnership/", "ic": "ic-orange", "e": "🛒", "t": "App/Plugin — Instacart", "d": "Compras de supermercado com checkout instantâneo diretamente numa conversa no ChatGPT"}], "dark": "#7d8cf0", "light": "#4e57c4", "tier": "m", "linkCount": 14}, {"id": "sec-social", "title": "Automação de Redes Sociais", "items": [{"type": "link", "href": "https://buffer.com", "ic": "ic-blue", "e": "📅", "t": "Buffer", "d": "Plano gratuito permanente: 3 canais, fila de posts, assistente IA e landing page básica"}, {"type": "link", "href": "https://publer.io", "ic": "ic-purple", "e": "📲", "t": "Publer", "d": "Agendador com 3 contas gratuitas, editor de fotos, integração Canva e Link in Bio"}, {"type": "link", "href": "https://www.zoho.com/social/free-edition.html", "ic": "ic-green", "e": "📊", "t": "Zoho Social", "d": "Plano gratuito com 6 canais, agendamento ilimitado e calendário de conteúdo"}, {"type": "link", "href": "https://business.facebook.com", "ic": "ic-blue", "e": "📘", "t": "Meta Business Suite", "d": "100% gratuito — agendamento nativo para Facebook e Instagram com inbox unificado"}, {"type": "link", "href": "https://www.make.com", "ic": "ic-indigo", "e": "⚙️", "t": "Make (ex-Integromat)", "d": "1.000 operações/mês grátis, workflows multi-etapas visuais sem cartão de crédito"}, {"type": "link", "href": "https://n8n.io", "ic": "ic-orange", "e": "🔀", "t": "n8n", "d": "Automação open-source self-hosted gratuita e ilimitada com 500+ integrações"}, {"type": "link", "href": "https://www.activepieces.com", "ic": "ic-teal", "e": "🧩", "t": "Activepieces", "d": "Alternativa open-source ao Zapier: 1.000 tarefas/mês grátis ou self-hosting ilimitado"}, {"type": "link", "href": "https://zapier.com", "ic": "ic-orange", "e": "⚡", "t": "Zapier", "d": "O maior ecossistema de integrações — 100 tarefas/mês grátis para automações simples"}, {"type": "link", "href": "https://www.canva.com", "ic": "ic-pink", "e": "🎨", "t": "Canva", "d": "250.000+ templates gratuitos para Stories, carrosséis, Reels e posts sociais"}, {"type": "link", "href": "https://www.adobe.com/br/express/", "ic": "ic-red", "e": "✨", "t": "Adobe Express", "d": "Templates de posts sociais, editor de vídeo e geração de imagens com Adobe Firefly"}, {"type": "link", "href": "https://www.capcut.com", "ic": "ic-gray", "e": "🎬", "t": "CapCut", "d": "Editor de vídeo gratuito para Reels e TikTok com legendas automáticas e templates"}, {"type": "link", "href": "https://metricool.com", "ic": "ic-blue", "e": "📈", "t": "Metricool", "d": "Analytics gratuito para 10 plataformas: Instagram, TikTok, YouTube, LinkedIn e mais"}, {"type": "link", "href": "https://socialblade.com", "ic": "ic-green", "e": "📉", "t": "Social Blade", "d": "Estatísticas públicas de crescimento de qualquer canal no YouTube, Twitch, Instagram e TikTok"}, {"type": "link", "href": "https://postiz.com", "ic": "ic-indigo", "e": "🗓️", "t": "Postiz (open-source)", "d": "Agendador social 100% open-source self-hosted para 18+ plataformas, sem mensalidade"}], "dark": "#e0559a", "light": "#b32e73", "tier": "m", "linkCount": 14}, {"id": "sec-kdp", "title": "Amazon KDP — Autopublicação", "items": [{"type": "link", "href": "https://kdp.amazon.com", "ic": "ic-orange", "e": "📚", "t": "KDP — Amazon (Oficial)", "d": "Portal oficial para publicar eBooks, paperbacks e hardcovers gratuitamente na Amazon"}, {"type": "link", "href": "https://kdp.amazon.com/en_US/help", "ic": "ic-blue", "e": "❓", "t": "KDP Help Center", "d": "Central de ajuda oficial com guias sobre upload, formatação, royalties e conta"}, {"type": "link", "href": "https://kdp.amazon.com/en_US/help/topic/GMC96WUF2L2W7XLR", "ic": "ic-green", "e": "💬", "t": "KDP Community (Fórum Oficial)", "d": "Fórum da Amazon onde autores trocam dúvidas e experiências sobre o KDP"}, {"type": "link", "href": "https://www.amazon.com/Kindle-Create/b?node=18292298011", "ic": "ic-orange", "e": "📝", "t": "Kindle Create", "d": "Software gratuito da Amazon para formatar eBooks e paperbacks (Windows e Mac)"}, {"type": "link", "href": "https://reedsy.com/studio", "ic": "ic-indigo", "e": "✍️", "t": "Reedsy Studio", "d": "Editor online gratuito para escrever e formatar livros, exportando para EPUB e PDF prontos para KDP"}, {"type": "link", "href": "https://www.canva.com/create/book-covers/", "ic": "ic-pink", "e": "🎨", "t": "Canva — Capas de Livros", "d": "Templates gratuitos já dimensionados para capas KDP com editor drag-and-drop"}, {"type": "link", "href": "https://bookbrush.com", "ic": "ic-teal", "e": "🖼️", "t": "BookBrush", "d": "Templates de capa por género, mockups 3D e remoção de fundo (plano gratuito disponível)"}, {"type": "link", "href": "https://kindlepreneur.com", "ic": "ic-orange", "e": "🔑", "t": "Kindlepreneur", "d": "Blog e ferramentas gratuitas: calculadora de vendas por BSR, guias de keywords — recomendado pela Amazon"}, {"type": "link", "href": "https://www.selfpublishingtitans.com/tools?categories=Free+Tools", "ic": "ic-purple", "e": "🔍", "t": "Self Publishing Titans — Free Tools", "d": "Suite gratuita de pesquisa de nicho e palavras-chave com dados reais de buscas na Amazon"}, {"type": "link", "href": "https://www.automateed.com/kdp-keyword-research-tool", "ic": "ic-blue", "e": "🏷️", "t": "Automateed — KDP Keyword Tool", "d": "Ferramenta gratuita para encontrar palavras-chave de alto valor para livros na Amazon"}, {"type": "link", "href": "https://manuscriptreport.com/tools/kdp-keyword-generator", "ic": "ic-teal", "e": "📊", "t": "ManuscriptReport — KDP Keyword Generator", "d": "Gerador gratuito de palavras-chave com análise de volume de busca e competitividade"}, {"type": "link", "href": "https://www.reddit.com/r/selfpublish/", "ic": "ic-orange", "e": "🟠", "t": "r/selfpublish — Reddit", "d": "Subreddit ativo sobre escrita, formatação, capas, marketing e resultados reais de autores indie"}, {"type": "link", "href": "https://www.reddit.com/r/KDP/", "ic": "ic-orange", "e": "🟠", "t": "r/KDP — Reddit", "d": "Subreddit dedicado ao Amazon KDP com dúvidas, dicas e debates sobre a plataforma"}, {"type": "link", "href": "https://www.youtube.com/@selfpubwithdale", "ic": "ic-red", "e": "▶️", "t": "Self Publishing with Dale — YouTube", "d": "Tutoriais completos sobre KDP, formatação, marketing e autopublicação"}, {"type": "link", "href": "https://www.youtube.com/@selfpublishingempire", "ic": "ic-red", "e": "▶️", "t": "Self Publishing Empire — YouTube", "d": "Estratégias de livros low-content e pesquisa de nichos lucrativos para KDP"}], "dark": "#cf9b56", "light": "#8a5423", "tier": "m", "linkCount": 15}, {"id": "sec-comic", "title": "Criação de Banda Desenhada", "items": [{"type": "link", "href": "https://krita.org", "ic": "ic-blue", "e": "🎨", "t": "Krita", "d": "Software open-source de pintura digital com ferramentas específicas para quadrinhos e animação"}, {"type": "link", "href": "https://medibangpaint.com/en/", "ic": "ic-teal", "e": "✏️", "t": "MediBang Paint", "d": "App gratuito para mangá e quadrinhos com painéis, tons de tela, balões e nuvem (desktop e mobile)"}, {"type": "link", "href": "https://www.clipstudio.net/en/", "ic": "ic-indigo", "e": "🖊️", "t": "Clip Studio Paint (web)", "d": "Padrão da indústria para mangá e HQs — versão web com uso gratuito mensal limitado"}, {"type": "link", "href": "https://www.canva.com/create/comic-strips/", "ic": "ic-pink", "e": "🗂️", "t": "Canva — Comic Strip Maker", "d": "Criador online gratuito de tiras e páginas com templates em grelha de painéis prontos"}, {"type": "link", "href": "https://www.storyboardthat.com/comic-maker", "ic": "ic-orange", "e": "🎭", "t": "Storyboard That", "d": "Ferramenta online gratuita com personagens, cenários e layouts prontos para quadrinhos e storyboards"}, {"type": "link", "href": "https://comicfury.com", "ic": "ic-green", "e": "🌐", "t": "ComicFury", "d": "Plataforma gratuita e sem anúncios para hospedar e publicar webcomics com comunidade integrada"}, {"type": "link", "href": "https://www.adobe.com/products/firefly/features/ai-comic-generator.html", "ic": "ic-red", "e": "🤖", "t": "Adobe Firefly — AI Comic Generator", "d": "Gera painéis e tiras por IA com 25 créditos mensais gratuitos, seguro para uso comercial"}, {"type": "link", "href": "https://www.comicsai.org/en", "ic": "ic-purple", "e": "🤖", "t": "ComicsAI", "d": "Gera painéis únicos e tiras de 4 quadros a partir de texto — estilos mangá, super-herói e cartoon"}, {"type": "link", "href": "https://blambot.com", "ic": "ic-yellow", "e": "🔤", "t": "Blambot — Comic Fonts & Lettering", "d": "Maior biblioteca de fontes para quadrinhos — uso gratuito para criadores independentes incluindo projetos comerciais"}, {"type": "link", "href": "https://superscript.app", "ic": "ic-blue", "e": "📄", "t": "Superscript", "d": "Editor gratuito de roteiros de quadrinhos: numera páginas e painéis automaticamente e exporta em formato padrão"}, {"type": "link", "href": "https://assets.clip-studio.com/en-us", "ic": "ic-indigo", "e": "📦", "t": "Clip Studio Assets", "d": "Milhares de pincéis, tons, poses 3D e fundos gratuitos para o Clip Studio Paint"}, {"type": "link", "href": "https://www.reddit.com/r/makecomics/", "ic": "ic-orange", "e": "🟠", "t": "r/makecomics — Reddit", "d": "Comunidade para criadores de quadrinhos com dicas práticas, feedback e discussões técnicas"}, {"type": "link", "href": "https://www.reddit.com/r/comicbooks/", "ic": "ic-orange", "e": "🟠", "t": "r/comicbooks — Reddit", "d": "Uma das maiores comunidades de quadrinhos do Reddit para leitura, discussão e referências"}, {"type": "link", "href": "https://www.youtube.com/@ProkoTV", "ic": "ic-red", "e": "▶️", "t": "Proko — YouTube", "d": "Tutoriais gratuitos de anatomia, figura humana e personagens — referência essencial para quadrinistas"}], "dark": "#e0794a", "light": "#b8511f", "tier": "m", "linkCount": 14}, {"id": "sec-gems", "title": "Gemini Gems", "items": [{"type": "link", "href": "https://gemini.google/overview/gems/", "ic": "ic-blue", "e": "💎", "t": "Gemini Gems — Visão Geral (Oficial)", "d": "Página oficial do Google a apresentar o que são os Gems e como começar a usá-los"}, {"type": "link", "href": "https://gemini.google.com/gems/view", "ic": "ic-green", "e": "🗂️", "t": "Gem Manager — Explorar e Gerir Gems", "d": "Painel principal com os Gems pré-prontos do Google (Brainstormer, Coding partner, Writing editor…)"}, {"type": "link", "href": "https://gemini.google.com/gems/create", "ic": "ic-indigo", "e": "➕", "t": "Criar um Novo Gem", "d": "Interface oficial para criar um Gem personalizado com nome, instruções e ficheiros de contexto"}, {"type": "link", "href": "https://support.google.com/gemini/answer/15146780", "ic": "ic-blue", "e": "❓", "t": "Como Usar os Gems — Suporte Google", "d": "Documentação oficial passo a passo para aceder, usar e personalizar Gems no desktop e mobile"}, {"type": "link", "href": "https://support.google.com/gemini/answer/15235603", "ic": "ic-teal", "e": "📝", "t": "Dicas para Criar Gems — Suporte Google", "d": "Guia oficial com boas práticas para escrever instruções eficazes: role, tom e formato de resposta"}, {"type": "link", "href": "https://support.google.com/gemini/answer/16504957", "ic": "ic-green", "e": "🔗", "t": "Como Partilhar um Gem — Suporte Google", "d": "Instruções oficiais para partilhar Gems com outras pessoas via link"}, {"type": "link", "href": "https://blog.google/products/gemini/google-gems-tips/", "ic": "ic-orange", "e": "📰", "t": "Blog Google — Dicas de Gems", "d": "Artigo oficial com exemplos práticos por categoria: escrita, carreira, aprendizado e programação"}, {"type": "link", "href": "https://github.com/nirzaf/gemini-gems", "ic": "ic-gray", "e": "🐙", "t": "nirzaf/gemini-gems — GitHub", "d": "21+ prompts prontos para copiar como Gems especializados: revisão de código, documentação e mais"}, {"type": "link", "href": "https://github.com/ZeroLu/awesome-gemini-ai", "ic": "ic-gray", "e": "🐙", "t": "awesome-gemini-ai — GitHub", "d": "Coleção curada de prompts para Gemini em coding, agentes, design e produtividade"}, {"type": "link", "href": "https://github.com/AIwork4me/awesome-gemini-visual-gems", "ic": "ic-gray", "e": "🐙", "t": "awesome-gemini-visual-gems — GitHub", "d": "16 prompts testados para transformar texto em infográficos visuais usando o Gemini"}, {"type": "link", "href": "https://www.aifire.co/p/gemini-gems-guide-2025-build-ai-workflows-that-work", "ic": "ic-orange", "e": "🔥", "t": "Guia Completo de Gems — AIFire", "d": "Como construir fluxos de trabalho eficientes com Gems, com exemplos práticos por categoria"}, {"type": "link", "href": "https://www.computerworld.com/article/4054876/a-beginners-guide-to-google-gemini-gems.html", "ic": "ic-blue", "e": "📖", "t": "Guia para Iniciantes em Gems — Computerworld", "d": "Introdução acessível explicando as categorias pré-prontas e como criar os primeiros Gems"}], "dark": "#b07de0", "light": "#7e46b8", "tier": "m", "linkCount": 12}, {"id": "sec-aistudio", "title": "Google AI Studio + VPN (acesso EUA)", "items": [{"type": "link", "href": "https://aistudio.google.com/welcome", "ic": "ic-blue", "e": "🔬", "t": "Google AI Studio", "d": "Playground oficial — testa modelos Gemini, cria prompts e gera chaves de API gratuitamente"}, {"type": "link", "href": "https://aistudio.google.com/app/apikey", "ic": "ic-green", "e": "🔑", "t": "Gerir Chaves de API — AI Studio", "d": "Cria, visualiza e revoga as tuas chaves de API do Gemini gratuitamente"}, {"type": "link", "href": "https://aistudio.google.com/app/gallery", "ic": "ic-purple", "e": "🖼️", "t": "Galeria de Prompts — AI Studio", "d": "Coleção curada de prompts prontos para inspirar desenvolvedores e criativos"}, {"type": "link", "href": "https://ai.google.dev/gemini-api/docs", "ic": "ic-blue", "e": "📄", "t": "Documentação da API Gemini", "d": "Central de documentação oficial com guias, referências e exemplos de código"}, {"type": "link", "href": "https://ai.google.dev/gemini-api/docs/ai-studio-quickstart", "ic": "ic-teal", "e": "⚡", "t": "Quickstart do AI Studio", "d": "Tutorial oficial de início rápido: criar prompts, testar modelos e obter a primeira chave"}, {"type": "link", "href": "https://ai.google.dev/gemini-api/docs/changelog", "ic": "ic-indigo", "e": "📋", "t": "Changelog da API Gemini", "d": "Notas de versão com todas as atualizações e novos modelos lançados"}, {"type": "divider", "ic": "ic-gray", "e": "🔒", "t": "VPN gratuitas — parecer ser dos EUA"}, {"type": "link", "href": "https://protonvpn.com", "ic": "ic-indigo", "e": "🛡️", "t": "Proton VPN", "d": "VPN 100% gratuita, sem limite de dados e com servidor nos EUA — a mais fiável para privacidade"}, {"type": "link", "href": "https://windscribe.com", "ic": "ic-blue", "e": "💨", "t": "Windscribe", "d": "VPN gratuita com 10 GB/mês e servidor nos EUA — extensão para Chrome e Firefox"}, {"type": "link", "href": "https://browsec.com", "ic": "ic-green", "e": "🌐", "t": "Browsec VPN", "d": "Extensão gratuita sem cadastro com servidor nos EUA para Chrome e Firefox"}, {"type": "link", "href": "https://www.urban-vpn.com", "ic": "ic-orange", "e": "🏙️", "t": "Urban VPN", "d": "Extensão gratuita e sem limite de dados para Chrome e Firefox com 350+ servidores incluindo EUA"}, {"type": "link", "href": "https://xvpn.io/free-vpn/chrome-extension", "ic": "ic-teal", "e": "⚡", "t": "X-VPN (extensão Chrome)", "d": "Extensão gratuita para Chrome — sem conta, sem dados pessoais, liga imediatamente"}], "dark": "#6bafc9", "light": "#3d7f96", "tier": "m", "linkCount": 11}, {"id": "sec-repos", "title": "Repositórios GitHub", "items": [{"type": "repo", "ic": "ic-indigo", "e": "🌐", "t": "minha-primeira-app", "d": "Site do Autor André Fernandes", "links": [{"cls": "tag-gh", "href": "https://github.com/Xtvback/minha-primeira-app", "label": "GitHub"}, {"cls": "tag-vercel", "href": "https://andremfernandes.vercel.app", "label": "Vercel ↗"}]}, {"type": "repo", "ic": "ic-blue", "e": "📋", "t": "mural-textos", "d": "Mural de textos", "links": [{"cls": "tag-gh", "href": "https://github.com/Xtvback/mural-textos", "label": "GitHub"}, {"cls": "tag-web", "href": "https://xtvback.github.io/mural-textos", "label": "Página ↗"}]}, {"type": "repo", "ic": "ic-pink", "e": "📸", "t": "insta-tool-web", "d": "Ferramentas Instagram acessíveis via browser", "links": [{"cls": "tag-gh", "href": "https://github.com/Xtvback/insta-tool-web", "label": "GitHub"}, {"cls": "tag-web", "href": "https://xtvback.github.io/insta-tool-web", "label": "Página ↗"}]}, {"type": "repo", "ic": "ic-orange", "e": "🗂️", "t": "Favoritos", "d": "Este repositório — ferramentas e páginas pessoais", "links": [{"cls": "tag-gh", "href": "https://github.com/Xtvback/Favoritos", "label": "GitHub"}, {"cls": "tag-web", "href": "https://xtvback.github.io/Favoritos", "label": "Página ↗"}]}, {"type": "repo", "ic": "ic-purple", "e": "🧩", "t": "solvero", "d": "Projeto em desenvolvimento", "links": [{"cls": "tag-gh", "href": "https://github.com/Xtvback/solvero", "label": "GitHub"}, {"cls": "tag-web", "href": "https://xtvback.github.io/solvero", "label": "Página ↗"}]}, {"type": "repo", "ic": "ic-gray", "e": "📁", "t": "mark2016", "d": "Site pessoal de 2016", "links": [{"cls": "tag-gh", "href": "https://github.com/Xtvback/mark2016", "label": "GitHub"}, {"cls": "tag-web", "href": "https://xtvback.github.io/mark2016", "label": "Página ↗"}]}], "dark": "#8a94a8", "light": "#57617a", "tier": "s", "linkCount": 6}];
 
-    input.addEventListener('input', () => {
-      const q = normalise(input.value.trim());
-      clearBtn.classList.toggle('visible', q.length > 0);
+const grid = document.getElementById('grid');
+const results = document.getElementById('results');
+const empty = document.getElementById('empty');
+const statLine = document.getElementById('statLine');
+const searchInput = document.getElementById('searchInput');
+const searchClear = document.getElementById('searchClear');
+const overlay = document.getElementById('overlay');
+const panelTitle = document.getElementById('panelTitle');
+const panelCount = document.getElementById('panelCount');
+const panelSwatch = document.getElementById('panelSwatch');
+const panelList = document.getElementById('panelList');
+const panelClose = document.getElementById('panelClose');
 
-      const blocks = document.querySelectorAll('.section-block');
-      let anyVisible = false;
+const totalLinks = DATA.reduce((n, s) => n + s.linkCount, 0);
+statLine.innerHTML = `<b>${totalLinks}</b> links · <b>${DATA.length}</b> categorias`;
 
-      blocks.forEach(block => {
-        if (!q) {
-          block.classList.remove('hidden');
-          block.querySelectorAll('.row').forEach(r => r.classList.remove('search-hidden'));
-          return;
-        }
-        let blockHasMatch = false;
-        block.querySelectorAll('.row').forEach(row => {
-          const text = normalise(row.innerText || row.textContent);
-          const match = text.includes(q);
-          row.classList.toggle('search-hidden', !match);
-          if (match) blockHasMatch = true;
-        });
-        block.classList.toggle('hidden', !blockHasMatch);
-        if (blockHasMatch) anyVisible = true;
-      });
+function catVar(id) {
+  return `var(--c-${id.replace('sec-', '')})`;
+}
 
-      noResults.classList.toggle('visible', q.length > 0 && !anyVisible);
-      catNav.style.display = q.length > 0 ? 'none' : '';
+function normalise(str) {
+  return str.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '');
+}
+
+function renderGrid() {
+  grid.innerHTML = DATA.map((s, i) => {
+    const previewItems = s.items.filter(it => it.type !== 'divider');
+    const max = s.tier === 'l' ? 10 : 6;
+    return `
+    <button class="tile tile--${s.tier}" style="--tile-color:${catVar(s.id)}; animation-delay:${i * 35}ms" data-id="${s.id}">
+      <div class="tile-head">
+        <div class="tile-name display">${s.title}</div>
+        <span class="tile-count mono">${s.linkCount}</span>
+      </div>
+      <div class="tile-icons">
+        ${previewItems.slice(0, max).map(it => `<span class="tile-icon">${it.e}</span>`).join('')}
+        ${previewItems.length > max ? `<span class="tile-icon-more mono">+${previewItems.length - max}</span>` : ''}
+      </div>
+      <div class="tile-foot"><span>abrir categoria</span><span class="chev">→</span></div>
+    </button>
+  `;
+  }).join('');
+
+  grid.querySelectorAll('.tile').forEach(t => {
+    t.addEventListener('click', () => openPanel(t.dataset.id));
+  });
+}
+
+function renderPanelItem(it, colorVar) {
+  if (it.type === 'divider') {
+    return `<div class="panel-subhead"><span>${it.e}</span><span>${it.t}</span></div>`;
+  }
+  if (it.type === 'repo') {
+    return `
+      <div class="panel-row" style="--panel-color:${colorVar}">
+        <span class="panel-icon">${it.e}</span>
+        <span class="panel-body">
+          <span class="panel-row-title">${it.t}</span>
+          <span class="panel-row-desc">${it.d}</span>
+        </span>
+        <span class="panel-tags">
+          ${it.links.map(l => `<a class="panel-tag ${l.cls.includes('gh') ? '' : 'panel-tag--accent'}" href="${l.href}" target="_blank" rel="noopener" style="--panel-color:${colorVar}">${l.label}</a>`).join('')}
+        </span>
+      </div>`;
+  }
+  return `
+    <a class="panel-row" style="--panel-color:${colorVar}" href="${it.href}" target="_blank" rel="noopener">
+      <span class="panel-icon">${it.e}</span>
+      <span class="panel-body">
+        <span class="panel-row-title">${it.t}</span>
+        ${it.d ? `<span class="panel-row-desc">${it.d}</span>` : ''}
+      </span>
+      <span class="panel-arrow">↗</span>
+    </a>`;
+}
+
+function openPanel(id) {
+  const s = DATA.find(x => x.id === id);
+  if (!s) return;
+  const colorVar = catVar(id);
+  panelTitle.textContent = s.title;
+  panelCount.textContent = `${s.linkCount} links`;
+  panelSwatch.style.background = colorVar;
+  panelList.innerHTML = s.items.map(it => renderPanelItem(it, colorVar)).join('');
+  overlay.classList.add('open');
+  document.body.style.overflow = 'hidden';
+}
+
+function closePanel() {
+  overlay.classList.remove('open');
+  document.body.style.overflow = '';
+}
+panelClose.addEventListener('click', closePanel);
+overlay.addEventListener('click', e => { if (e.target === overlay) closePanel(); });
+document.addEventListener('keydown', e => { if (e.key === 'Escape') closePanel(); });
+
+function renderResults(query) {
+  const q = normalise(query.trim());
+  const matches = [];
+  DATA.forEach(s => {
+    s.items.forEach(it => {
+      if (it.type === 'divider') return;
+      const hay = normalise(`${it.t} ${it.d || ''} ${s.title}`);
+      if (hay.includes(q)) matches.push({ ...it, cat: s.title, color: catVar(s.id) });
     });
+  });
+  results.innerHTML = matches.map(it => `
+    <a class="result-row" style="--row-color:${it.color}" href="${it.type === 'repo' ? it.links[0].href : it.href}" target="_blank" rel="noopener">
+      <span class="result-icon">${it.e}</span>
+      <span class="result-body">
+        <span class="result-title">${it.t}</span>
+        <span class="result-cat">${it.cat}</span>
+      </span>
+    </a>
+  `).join('');
+  return matches.length;
+}
 
-    clearBtn.addEventListener('click', () => {
-      input.value = '';
-      input.dispatchEvent(new Event('input'));
-      input.focus();
-    });
+searchInput.addEventListener('input', () => {
+  const q = searchInput.value;
+  searchClear.classList.toggle('visible', q.length > 0);
+  if (q.trim() === '') {
+    grid.style.display = '';
+    results.classList.remove('visible');
+    empty.classList.remove('visible');
+    return;
+  }
+  grid.style.display = 'none';
+  const n = renderResults(q);
+  results.classList.toggle('visible', n > 0);
+  empty.classList.toggle('visible', n === 0);
+});
 
-    // ── Back to top ──
-    const backTop = document.getElementById('backTop');
-    window.addEventListener('scroll', () => {
-      backTop.classList.toggle('visible', window.scrollY > 300);
-    }, { passive: true });
-  </script>
+searchClear.addEventListener('click', () => {
+  searchInput.value = '';
+  searchInput.dispatchEvent(new Event('input'));
+  searchInput.focus();
+});
 
+renderGrid();
+</script>
 </body>
 </html>
