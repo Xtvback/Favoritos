@@ -466,6 +466,20 @@ const CATALOG = [
     install:'claude mcp add aws',
     steps:['Configura as credenciais AWS: <code>aws configure</code> no terminal','Introduz a Access Key ID e Secret Access Key da tua conta AWS','Executa o comando de instalação do MCP','Reinicia o Claude — consegue ver e gerir recursos AWS'] },
 
+  { id:'mcp-claudemem', emoji:'🧠', name:'Claude-Mem', type:'mcp', cat:'Memória',
+    desc:'Dá memória persistente ao Claude Code entre sessões — comprime o que aconteceu e injeta o contexto relevante na conversa seguinte.',
+    tags:['memória','contexto','persistência','sessões'],
+    use:'Memória automática em todas as sessões do Claude Code',
+    install:'npx claude-mem install',
+    steps:['Abre o terminal na tua máquina','Executa: <code>npx claude-mem install</code>','Segue as instruções para autorizar o plugin (usa ChromaDB para pesquisa semântica)','A partir daí, cada nova sessão do Claude Code arranca já com o contexto das anteriores'] },
+
+  { id:'mcp-omniroute', emoji:'🚀', name:'OmniRoute', type:'mcp', cat:'Infraestrutura',
+    desc:'Gateway de IA local e gratuito — um único endpoint que liga a mais de 160 fornecedores (incluindo camadas gratuitas) para esticar o uso do Claude Code sem tocar nos limites pagos.',
+    tags:['gateway','limites','routing','self-hosted'],
+    use:'Configura o Claude Code para usar o endpoint local do OmniRoute',
+    install:'https://github.com/brwarashidpour/omniroute',
+    steps:['Abre o repositório oficial no GitHub e segue as instruções de instalação','Corre o OmniRoute localmente (cria o teu endpoint próprio, sem faturação)','Liga as tuas próprias contas/API keys dos fornecedores que quiseres usar','Aponta o Claude Code (ou outra ferramenta) para o endpoint local do OmniRoute'] },
+
   /* ── PLUGINS (Channels) ─────────────────────────────────── */
   { id:'plugin-telegram', emoji:'✈️', name:'Telegram Channel', type:'plugin', cat:'Comunicação',
     desc:'Envia mensagens do Telegram para o Claude Code em execução no teu computador. Claude responde e executa tarefas reais.',
