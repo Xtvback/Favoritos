@@ -515,6 +515,13 @@ const CATALOG = [
     use:'claude --channels plugin:fakechat@claude-plugins-official',
     install:'/plugin install fakechat@claude-plugins-official',
     steps:['No Claude Code: <code>/plugin install fakechat@claude-plugins-official</code>','Executa: <code>/reload-plugins</code>','Reinicia: <code>claude --channels plugin:fakechat@claude-plugins-official</code>','Abre o browser em <code>http://localhost:8787</code>','Escreve uma mensagem na interface — chega ao Claude Code instantaneamente'] },
+
+  { id:'plugin-frontend-design', emoji:'🎨', name:'Frontend Design', type:'plugin', cat:'Design',
+    desc:'Plugin/skill oficial da Anthropic para o Claude Code — injeta direção estética (paleta, tipografia, layout, composição, animação) antes de escrever código, para fugir ao visual genérico de IA (gradientes roxos, Inter, cards previsíveis).',
+    tags:['design','layout','UI','frontend','estética'],
+    use:'claude (ativa-se sozinho quando pedes uma interface, landing page ou site)',
+    install:'/plugin install frontend-design@claude-plugins-official',
+    steps:['No Claude Code: <code>/plugin install frontend-design@claude-plugins-official</code>','Pede normalmente uma interface, landing page ou site','O skill carrega automaticamente e sugere paleta, tipografia e composição','Itera pedindo ajustes a uma dimensão de cada vez (cor, tipo de letra, movimento)'] },
 ];
 
 /* ── State ─────────────────────────────────────────────────── */
