@@ -474,8 +474,8 @@ const CATALOG = [
     steps:['Abre o terminal na tua máquina','Executa: <code>npx claude-mem install</code>','Segue as instruções para autorizar o plugin (usa ChromaDB para pesquisa semântica)','A partir daí, cada nova sessão do Claude Code arranca já com o contexto das anteriores'] },
 
   { id:'mcp-omniroute', emoji:'🚀', name:'OmniRoute', type:'mcp', cat:'Infraestrutura',
-    desc:'Gateway de IA local e gratuito — um único endpoint que liga a mais de 160 fornecedores (incluindo camadas gratuitas) para esticar o uso do Claude Code sem tocar nos limites pagos.',
-    tags:['gateway','limites','routing','self-hosted'],
+    desc:'Gateway de IA local e gratuito — um único endpoint que liga a mais de 160 fornecedores (incluindo camadas gratuitas) para esticar o uso do Claude Code sem tocar nos limites pagos. ⚠️ Agregar várias contas/camadas gratuitas para contornar limites de uma conta paga pode violar os termos de serviço de alguns fornecedores — usa por tua conta e risco.',
+    tags:['gateway','limites','routing','self-hosted','atenção-ToS'],
     use:'Configura o Claude Code para usar o endpoint local do OmniRoute',
     install:'https://github.com/brwarashidpour/omniroute',
     steps:['Abre o repositório oficial no GitHub e segue as instruções de instalação','Corre o OmniRoute localmente (cria o teu endpoint próprio, sem faturação)','Liga as tuas próprias contas/API keys dos fornecedores que quiseres usar','Aponta o Claude Code (ou outra ferramenta) para o endpoint local do OmniRoute'] },
