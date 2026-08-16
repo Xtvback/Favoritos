@@ -1,0 +1,573 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ChatGPT Extras — Centro de Descoberta</title>
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --bg: #0f0f13;
+    --bg2: #16161e;
+    --bg3: #1e1e2a;
+    --border: #2a2a38;
+    --accent: #12b48a;
+    --accent2: #0d8a6c;
+    --text: #e8e8f0;
+    --muted: #8888a8;
+    --green: #4ade80;
+    --orange: #fb923c;
+    --pink: #f472b6;
+    --blue: #60a5fa;
+    --yellow: #facc15;
+  }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    min-height: 100vh;
+  }
+
+  /* ── Header ── */
+  header {
+    background: var(--bg2);
+    border-bottom: 1px solid var(--border);
+    padding: 16px 20px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    position: sticky;
+    top: 0;
+    z-index: 100;
+  }
+  header .logo { font-size: 22px; }
+  header h1 { font-size: 16px; font-weight: 600; }
+  header p  { font-size: 12px; color: var(--muted); }
+  .search-wrap {
+    flex: 1;
+    max-width: 340px;
+    margin-left: auto;
+    position: relative;
+  }
+  .search-wrap input {
+    width: 100%;
+    background: var(--bg3);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    color: var(--text);
+    padding: 8px 12px 8px 34px;
+    font-size: 14px;
+    outline: none;
+    transition: border-color .2s;
+  }
+  .search-wrap input:focus { border-color: var(--accent); }
+  .search-wrap .icon {
+    position: absolute; left: 10px; top: 50%;
+    transform: translateY(-50%);
+    color: var(--muted); font-size: 14px;
+  }
+
+  /* ── Main ── */
+  main { max-width: 900px; margin: 0 auto; padding: 24px 16px; }
+
+  /* ── Discover button ── */
+  .discover-section { text-align: center; margin-bottom: 32px; }
+  .discover-section p { color: var(--muted); font-size: 13px; margin-bottom: 14px; }
+  .btn-discover {
+    background: linear-gradient(135deg, var(--accent), var(--accent2));
+    color: #fff;
+    border: none;
+    border-radius: 14px;
+    padding: 16px 40px;
+    font-size: 17px;
+    font-weight: 600;
+    cursor: pointer;
+    box-shadow: 0 4px 24px #12b48a40;
+    transition: transform .15s, box-shadow .15s;
+    letter-spacing: .3px;
+  }
+  .btn-discover:hover { transform: translateY(-2px); box-shadow: 0 6px 32px #12b48a60; }
+  .btn-discover:active { transform: scale(.97); }
+
+  /* ── Spotlight card ── */
+  #spotlight { margin-bottom: 32px; display: none; }
+  .spotlight-card {
+    background: var(--bg2);
+    border: 1px solid var(--accent);
+    border-radius: 16px;
+    padding: 24px;
+    position: relative;
+    animation: fadeIn .3s ease;
+  }
+  @keyframes fadeIn { from { opacity:0; transform:translateY(8px) } to { opacity:1; transform:none } }
+  .spotlight-card .label {
+    font-size: 11px; font-weight: 700; text-transform: uppercase;
+    letter-spacing: 1px; color: var(--accent); margin-bottom: 6px;
+  }
+  .spotlight-card h2 { font-size: 22px; margin-bottom: 8px; }
+  .spotlight-card .desc { color: var(--muted); line-height: 1.6; margin-bottom: 16px; }
+  .spotlight-card .tags { display: flex; gap: 6px; flex-wrap: wrap; margin-bottom: 16px; }
+  .tag {
+    background: var(--bg3); border: 1px solid var(--border);
+    border-radius: 20px; padding: 3px 10px; font-size: 12px; color: var(--muted);
+  }
+  .spotlight-card .actions { display: flex; gap: 10px; flex-wrap: wrap; }
+  .btn {
+    border: none; border-radius: 8px; padding: 9px 18px;
+    font-size: 13px; font-weight: 600; cursor: pointer; transition: opacity .15s;
+  }
+  .btn:hover { opacity: .85; }
+  .btn-primary { background: var(--accent); color: #fff; }
+  .btn-save    { background: var(--bg3); color: var(--text); border: 1px solid var(--border); }
+  .btn-copy    { background: var(--bg3); color: var(--green); border: 1px solid var(--border); }
+  .btn-open    { background: linear-gradient(135deg,#12b48a,#0d8a6c); color: #fff; }
+  .install-block {
+    background: var(--bg3); border-radius: 8px;
+    padding: 10px 14px; font-family: monospace; font-size: 13px;
+    color: var(--green); margin-bottom: 16px;
+    border: 1px solid var(--border);
+    word-break: break-all;
+  }
+  .steps-section { margin-bottom: 16px; }
+  .steps-title {
+    font-size: 11px; font-weight: 700; text-transform: uppercase;
+    letter-spacing: 1px; color: var(--muted); margin-bottom: 10px;
+  }
+  .steps-list { display: flex; flex-direction: column; gap: 8px; }
+  .step {
+    display: flex; gap: 10px; align-items: flex-start;
+  }
+  .step-num {
+    min-width: 22px; height: 22px; border-radius: 50%;
+    background: var(--accent); color: #fff;
+    font-size: 11px; font-weight: 700;
+    display: flex; align-items: center; justify-content: center;
+    flex-shrink: 0; margin-top: 1px;
+  }
+  .step-text { font-size: 13px; color: var(--text); line-height: 1.5; }
+  .step-text code {
+    background: var(--bg3); border: 1px solid var(--border);
+    border-radius: 4px; padding: 1px 6px;
+    font-family: monospace; font-size: 12px; color: var(--green);
+  }
+  .type-badge {
+    position: absolute; top: 20px; right: 20px;
+    border-radius: 20px; padding: 4px 12px; font-size: 11px; font-weight: 700;
+  }
+  .type-gpt    { background: #12b48a20; color: var(--accent); border: 1px solid #12b48a50; }
+  .type-app    { background: #60a5fa20; color: var(--blue);   border: 1px solid #60a5fa50; }
+  .type-action { background: #fb923c20; color: var(--orange); border: 1px solid #fb923c50; }
+
+  /* ── Tabs ── */
+  .tabs { display: flex; gap: 4px; margin-bottom: 20px; overflow-x: auto; padding-bottom: 2px; }
+  .tab {
+    background: none; border: 1px solid transparent;
+    color: var(--muted); padding: 7px 16px; border-radius: 8px;
+    font-size: 13px; cursor: pointer; white-space: nowrap; transition: all .15s;
+  }
+  .tab:hover { color: var(--text); }
+  .tab.active { background: var(--bg3); border-color: var(--border); color: var(--text); font-weight: 600; }
+  .count-badge {
+    display: inline-block; background: var(--bg3);
+    border-radius: 10px; padding: 1px 7px; font-size: 11px;
+    color: var(--muted); margin-left: 5px;
+  }
+
+  /* ── Grid ── */
+  .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(260px,1fr)); gap: 14px; }
+  .card {
+    background: var(--bg2); border: 1px solid var(--border);
+    border-radius: 12px; padding: 18px; cursor: pointer;
+    transition: border-color .2s, transform .15s;
+    position: relative;
+  }
+  .card:hover { border-color: var(--accent); transform: translateY(-2px); }
+  .card .card-top { display: flex; align-items: flex-start; gap: 10px; margin-bottom: 8px; }
+  .card .emoji { font-size: 24px; line-height: 1; }
+  .card h3 { font-size: 14px; font-weight: 600; line-height: 1.3; }
+  .card .card-type { font-size: 11px; color: var(--muted); }
+  .card p  { font-size: 13px; color: var(--muted); line-height: 1.5; }
+  .card .card-badge {
+    position: absolute; top: 14px; right: 14px;
+    border-radius: 10px; padding: 2px 8px; font-size: 10px; font-weight: 700;
+  }
+  .saved-star {
+    position: absolute; top: 14px; right: 14px;
+    font-size: 16px; color: var(--yellow);
+  }
+
+  /* ── History & Saved ── */
+  .list { display: flex; flex-direction: column; gap: 10px; }
+  .list-item {
+    background: var(--bg2); border: 1px solid var(--border);
+    border-radius: 10px; padding: 14px 16px;
+    display: flex; align-items: center; gap: 12px; cursor: pointer;
+    transition: border-color .2s;
+  }
+  .list-item:hover { border-color: var(--accent); }
+  .list-item .emoji { font-size: 20px; }
+  .list-item .info { flex: 1; }
+  .list-item h4 { font-size: 14px; font-weight: 600; }
+  .list-item .meta { font-size: 12px; color: var(--muted); }
+  .list-item .remove {
+    background: none; border: none; color: var(--muted);
+    cursor: pointer; font-size: 16px; padding: 4px;
+    transition: color .15s;
+  }
+  .list-item .remove:hover { color: #f87171; }
+
+  .empty {
+    text-align: center; padding: 60px 20px;
+    color: var(--muted); font-size: 14px; line-height: 1.8;
+  }
+  .empty .icon { font-size: 40px; margin-bottom: 12px; }
+
+  .toast {
+    position: fixed; bottom: 24px; left: 50%; transform: translateX(-50%);
+    background: var(--bg3); border: 1px solid var(--border);
+    color: var(--text); padding: 10px 20px; border-radius: 10px;
+    font-size: 13px; z-index: 999; opacity: 0;
+    transition: opacity .3s; pointer-events: none;
+  }
+  .toast.show { opacity: 1; }
+
+  @media (max-width: 500px) {
+    header { flex-wrap: wrap; }
+    .search-wrap { max-width: 100%; width: 100%; margin-left: 0; }
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <span class="logo">💬</span>
+  <div>
+    <h1>ChatGPT Extras</h1>
+    <p>Centro de descoberta</p>
+  </div>
+  <div class="search-wrap">
+    <span class="icon">⌕</span>
+    <input type="text" id="searchInput" placeholder="Pesquisar GPTs, Apps, Actions...">
+  </div>
+</header>
+
+<main>
+  <div class="discover-section">
+    <p>Clica para descobrir algo novo — cada clique mostra um extra diferente</p>
+    <button class="btn-discover" onclick="discover()">✦ Descobrir</button>
+  </div>
+
+  <div id="spotlight"></div>
+
+  <div class="tabs">
+    <button class="tab active" onclick="setTab('todos')">Todos <span class="count-badge" id="countTodos">0</span></button>
+    <button class="tab" onclick="setTab('gpt')">GPTs <span class="count-badge" id="countGpt">0</span></button>
+    <button class="tab" onclick="setTab('app')">Apps <span class="count-badge" id="countApp">0</span></button>
+    <button class="tab" onclick="setTab('action')">Actions <span class="count-badge" id="countAction">0</span></button>
+    <button class="tab" onclick="setTab('saved')">⭐ Guardados <span class="count-badge" id="countSaved">0</span></button>
+    <button class="tab" onclick="setTab('history')">🕑 Histórico <span class="count-badge" id="countHistory">0</span></button>
+  </div>
+
+  <div id="content"></div>
+</main>
+
+<div class="toast" id="toast"></div>
+
+<script>
+const CATALOG = [
+  /* ── GPTs ───────────────────────────────────────────────── */
+  { id:'gpt-canva', emoji:'🎨', name:'Canva', type:'gpt', cat:'Design',
+    desc:'Cria designs, apresentações, posts para redes sociais e vídeos curtos diretamente numa conversa do ChatGPT.',
+    tags:['design','canva','apresentações','social media'],
+    use:'Pesquisa "Canva" em chatgpt.com/gpts ou abre o link direto', install:'https://chatgpt.com/g/g-xgfNjMjM9-canva',
+    steps:['Abre o link do GPT Canva (ou pesquisa "Canva" em chatgpt.com/gpts)','Clica em "Start chat"','Descreve o design que queres (ex: "post de Instagram sobre o lançamento de um livro")','O GPT gera o design e dá-te um link para abrir e editar no Canva'] },
+
+  { id:'gpt-consensus', emoji:'🎓', name:'Consensus', type:'gpt', cat:'Investigação',
+    desc:'Pesquisa e cita mais de 200 milhões de artigos científicos, com respostas fundamentadas em papers peer-reviewed.',
+    tags:['investigação','académico','citações','ciência'],
+    use:'Pesquisa "Consensus" em chatgpt.com/gpts', install:'https://help.consensus.app/en/articles/10059020-consensus-in-chatgpt',
+    steps:['Abre o artigo de ajuda oficial da Consensus sobre a integração com o ChatGPT','Segue a ligação para o GPT (precisas de conta ChatGPT Plus)','Faz uma pergunta de investigação (ex: "o café reduz o risco de Parkinson?")','Recebes um resumo com citações diretas de papers científicos'] },
+
+  { id:'gpt-wolfram', emoji:'🧮', name:'Wolfram', type:'gpt', cat:'Matemática',
+    desc:'Cálculo simbólico, matemática avançada, química, física e dados em tempo real via Wolfram|Alpha.',
+    tags:['matemática','cálculo','ciência','dados'],
+    use:'Pesquisa "Wolfram" em chatgpt.com/gpts', install:'https://gpt.wolfram.com',
+    steps:['Abre gpt.wolfram.com para veres a apresentação oficial','No ChatGPT, pesquisa "Wolfram" em chatgpt.com/gpts e inicia o chat','Pede um cálculo, gráfico ou pesquisa de dados (ex: "resolve esta equação diferencial")','O GPT usa o motor Wolfram|Alpha para dar uma resposta exata'] },
+
+  { id:'gpt-whimsical', emoji:'📊', name:'Whimsical Diagrams', type:'gpt', cat:'Visualização',
+    desc:'Gera flowcharts, mapas mentais e diagramas de sequência a partir de descrições em linguagem natural.',
+    tags:['diagramas','flowcharts','mapas mentais','visualização'],
+    use:'Pesquisa "Whimsical Diagrams" em chatgpt.com/gpts', install:'https://help.whimsical.com/integrations/chatgpt',
+    steps:['Abre a página oficial de integração da Whimsical com o ChatGPT','Segue a ligação para o GPT "Whimsical Diagrams"','Descreve o processo ou ideia que queres visualizar','Recebes um diagrama (flowchart, mapa mental ou sequência) pronto a exportar'] },
+
+  /* ── APPS (Apps SDK — dentro do ChatGPT) ───────────────── */
+  { id:'app-spotify', emoji:'🎵', name:'Spotify', type:'app', cat:'Música',
+    desc:'Pede playlists, controla reprodução e descobre música diretamente numa conversa do ChatGPT.',
+    tags:['música','streaming','playlists'],
+    use:'Abre o diretório de Apps e procura "Spotify"', install:'https://chatgpt.com/apps',
+    steps:['Abre chatgpt.com/apps (ou o menu de ferramentas dentro de uma conversa)','Pesquisa "Spotify" e abre a app','Liga a tua conta Spotify quando pedido','Pede para criar uma playlist ou tocar uma música — tudo dentro da conversa'] },
+
+  { id:'app-booking', emoji:'🏨', name:'Booking.com', type:'app', cat:'Viagens',
+    desc:'Pesquisa e reserva alojamento diretamente dentro do ChatGPT — um dos parceiros oficiais de lançamento das Apps.',
+    tags:['viagens','alojamento','reservas'],
+    use:'Abre o diretório de Apps e procura "Booking.com"', install:'https://chatgpt.com/apps',
+    steps:['Abre chatgpt.com/apps e pesquisa "Booking.com"','Abre a app e liga a tua conta (opcional)','Descreve a viagem: destino, datas, número de pessoas','Recebes sugestões de alojamento e podes reservar sem sair da conversa'] },
+
+  { id:'app-figma', emoji:'🎯', name:'Figma', type:'app', cat:'Design',
+    desc:'Consulta e trabalha com ficheiros Figma diretamente numa conversa do ChatGPT.',
+    tags:['design','figma','ui','prototipagem'],
+    use:'Abre o diretório de Apps e procura "Figma"', install:'https://chatgpt.com/apps',
+    steps:['Abre chatgpt.com/apps e pesquisa "Figma"','Liga a tua conta Figma quando pedido','Partilha ou pede para consultar um ficheiro/projeto Figma','Interage com o design diretamente na conversa'] },
+
+  { id:'app-zillow', emoji:'🏠', name:'Zillow', type:'app', cat:'Imobiliário',
+    desc:'Pesquisa casas e apartamentos à venda ou arrendamento diretamente no ChatGPT.',
+    tags:['imobiliário','casas','pesquisa'],
+    use:'Abre o diretório de Apps e procura "Zillow"', install:'https://chatgpt.com/apps',
+    steps:['Abre chatgpt.com/apps e pesquisa "Zillow"','Abre a app dentro da conversa','Descreve o que procuras: zona, preço, tipologia','Recebes uma seleção de imóveis com fotos e detalhes'] },
+
+  { id:'app-coursera', emoji:'📚', name:'Coursera', type:'app', cat:'Educação',
+    desc:'Explora e recomenda cursos online da Coursera de acordo com os teus objetivos, sem sair do ChatGPT.',
+    tags:['educação','cursos','aprendizagem'],
+    use:'Abre o diretório de Apps e procura "Coursera"', install:'https://chatgpt.com/apps',
+    steps:['Abre chatgpt.com/apps e pesquisa "Coursera"','Abre a app dentro da conversa','Descreve o que queres aprender (ex: "quero aprender SQL do zero")','Recebes recomendações de cursos e podes inscrever-te diretamente'] },
+
+  { id:'app-instacart', emoji:'🛒', name:'Instacart', type:'app', cat:'Compras',
+    desc:'Compras de supermercado com checkout instantâneo — primeira marca a lançar Instant Checkout no ChatGPT.',
+    tags:['compras','supermercado','checkout'],
+    use:'Abre o diretório de Apps e procura "Instacart"', install:'https://openai.com/index/instacart-partnership/',
+    steps:['Lê o anúncio oficial da parceria Instacart + OpenAI','No ChatGPT, escreve "Instacart, ajuda-me a comprar..." ou abre a app em chatgpt.com/apps','Planeia a refeição ou lista de compras','Finaliza a compra com checkout instantâneo, sem sair da conversa'] },
+
+  /* ── ACTIONS (liga o teu GPT a APIs externas) ──────────── */
+  { id:'action-zapier', emoji:'⚡', name:'Zapier AI Actions', type:'action', cat:'Automação',
+    desc:'Liga o teu GPT a mais de 7000 apps (Gmail, Sheets, Slack…) via Actions da Zapier — sem escrever código.',
+    tags:['automação','integrações','zapier','apps'],
+    use:'Configura a Action dentro do GPT Builder', install:'https://actions.zapier.com/gpt/start',
+    steps:['Abre actions.zapier.com/gpt/start e cria conta Zapier (grátis)','Escolhe as apps que queres ligar ao teu GPT (ex: Gmail, Google Sheets)','Copia o schema/URL da Action gerado pela Zapier','No GPT Builder (chatgpt.com/gpts/editor), vai a "Actions" e cola a configuração'] },
+
+  { id:'action-docs', emoji:'📄', name:'GPT Actions — Documentação', type:'action', cat:'Documentação',
+    desc:'Guia oficial da OpenAI para criar as tuas próprias Actions: autenticação, schema OpenAPI e boas práticas.',
+    tags:['documentação','actions','API','oficial'],
+    use:'Consulta antes de criar uma Action nova', install:'https://platform.openai.com/docs/actions/introduction',
+    steps:['Abre a documentação oficial em platform.openai.com/docs/actions','Define o schema OpenAPI da tua API','Escolhe o método de autenticação (None, API Key ou OAuth)','No GPT Builder, adiciona a Action e testa a chamada'] },
+
+  { id:'action-library', emoji:'📚', name:'GPT Actions Library', type:'action', cat:'Documentação',
+    desc:'Biblioteca oficial de exemplos prontos a usar para ligar o teu GPT a apps populares (Confluence, Box, Google Drive…).',
+    tags:['actions','biblioteca','exemplos','integrações'],
+    use:'Copia um exemplo pronto em vez de começar do zero', install:'https://platform.openai.com/docs/actions/actions-library',
+    steps:['Abre a GPT Actions Library da OpenAI','Escolhe a app que já tem um exemplo pronto (ex: Confluence, Box)','Copia o schema OpenAPI de exemplo','Adapta as credenciais e cola no GPT Builder em "Actions"'] },
+];
+
+/* ── State ─────────────────────────────────────────────────── */
+let currentTab = 'todos';
+let searchQuery = '';
+let saved   = JSON.parse(localStorage.getItem('cgpt_saved')   || '[]');
+let history = JSON.parse(localStorage.getItem('cgpt_history') || '[]');
+let lastDiscovered = null;
+
+/* ── Storage helpers ── */
+function saveSaved()   { localStorage.setItem('cgpt_saved',   JSON.stringify(saved));   }
+function saveHistory() { localStorage.setItem('cgpt_history', JSON.stringify(history)); }
+
+function addToHistory(item) {
+  history = history.filter(h => h.id !== item.id);
+  history.unshift({ id: item.id, ts: new Date().toLocaleString('pt-PT') });
+  if (history.length > 100) history = history.slice(0, 100);
+  saveHistory();
+  updateCounts();
+}
+
+function toggleSave(id) {
+  if (saved.includes(id)) {
+    saved = saved.filter(s => s !== id);
+    toast('Removido dos guardados');
+  } else {
+    saved.push(id);
+    toast('Guardado ⭐');
+  }
+  saveSaved();
+  updateCounts();
+  render();
+}
+
+/* ── Discover ── */
+function discover() {
+  const pool = CATALOG.filter(i => i.id !== (lastDiscovered && lastDiscovered.id));
+  const item = pool[Math.floor(Math.random() * pool.length)];
+  lastDiscovered = item;
+  addToHistory(item);
+  showSpotlight(item);
+  render();
+}
+
+function showSpotlight(item) {
+  const el = document.getElementById('spotlight');
+  const isSaved = saved.includes(item.id);
+  el.style.display = 'block';
+  el.innerHTML = `
+    <div class="spotlight-card">
+      <span class="type-badge type-${item.type}">${typeLabel(item.type)}</span>
+      <div class="label">✦ Descoberta</div>
+      <h2>${item.emoji} ${item.name}</h2>
+      <p class="desc">${item.desc}</p>
+      <div class="tags">${item.tags.map(t => `<span class="tag">#${t}</span>`).join('')}</div>
+      ${item.steps ? `
+        <div class="steps-section">
+          <div class="steps-title">Como usar</div>
+          <div class="steps-list">
+            ${item.steps.map((s,i) => `
+              <div class="step">
+                <span class="step-num">${i+1}</span>
+                <span class="step-text">${s}</span>
+              </div>`).join('')}
+          </div>
+        </div>` : ''}
+      ${item.install ? `<div class="install-block">${item.install}</div>` : ''}
+      <div class="actions">
+        ${item.install ? `
+          <button class="btn btn-open" onclick="openLink('${item.id}')">🔗 Abrir</button>
+          <button class="btn btn-copy" onclick="copyCmd('${item.id}')">📋 Copiar link</button>
+        ` : ''}
+        <button class="btn btn-save" onclick="toggleSave('${item.id}')">${isSaved ? '⭐ Guardado' : '☆ Guardar'}</button>
+      </div>
+    </div>`;
+}
+
+/* ── Copy ── */
+function copyCmd(id) {
+  const item = CATALOG.find(i => i.id === id);
+  if (!item || !item.install) return;
+  navigator.clipboard.writeText(item.install).then(() => toast('Link copiado! ✓'));
+}
+
+/* ── Open ── */
+function openLink(id) {
+  const item = CATALOG.find(i => i.id === id);
+  if (!item || !item.install) return;
+  window.open(item.install, '_blank');
+}
+
+/* ── Tabs ── */
+function setTab(tab) {
+  currentTab = tab;
+  document.querySelectorAll('.tab').forEach((t, i) => {
+    t.classList.toggle('active', ['todos','gpt','app','action','saved','history'][i] === tab);
+  });
+  render();
+}
+
+/* ── Counts ── */
+function updateCounts() {
+  document.getElementById('countTodos').textContent   = CATALOG.length;
+  document.getElementById('countGpt').textContent     = CATALOG.filter(i=>i.type==='gpt').length;
+  document.getElementById('countApp').textContent     = CATALOG.filter(i=>i.type==='app').length;
+  document.getElementById('countAction').textContent  = CATALOG.filter(i=>i.type==='action').length;
+  document.getElementById('countSaved').textContent   = saved.length;
+  document.getElementById('countHistory').textContent = history.length;
+}
+
+/* ── Render ── */
+function render() {
+  const el = document.getElementById('content');
+  const q  = searchQuery.toLowerCase();
+
+  if (currentTab === 'saved') {
+    const items = CATALOG.filter(i => saved.includes(i.id) && matches(i, q));
+    if (!items.length) { el.innerHTML = empty('⭐','Ainda não guardaste nada','Clica em "Descobrir" e guarda os extras que te interessam.'); return; }
+    el.innerHTML = `<div class="grid">${items.map(card).join('')}</div>`;
+    return;
+  }
+
+  if (currentTab === 'history') {
+    const hItems = history
+      .map(h => { const it = CATALOG.find(i=>i.id===h.id); return it ? { ...it, ts: h.ts } : null; })
+      .filter(Boolean)
+      .filter(i => matches(i, q));
+    if (!hItems.length) { el.innerHTML = empty('🕑','Histórico vazio','Cada vez que clicares em "Descobrir" ou num card, aparece aqui.'); return; }
+    el.innerHTML = `<div class="list">${hItems.map(historyItem).join('')}</div>`;
+    return;
+  }
+
+  const items = CATALOG.filter(i => {
+    if (currentTab !== 'todos' && i.type !== currentTab) return false;
+    return matches(i, q);
+  });
+  if (!items.length) { el.innerHTML = empty('🔍','Sem resultados','Tenta outra pesquisa.'); return; }
+  el.innerHTML = `<div class="grid">${items.map(card).join('')}</div>`;
+}
+
+function matches(item, q) {
+  if (!q) return true;
+  return (item.name+item.desc+item.tags.join(' ')+item.cat).toLowerCase().includes(q);
+}
+
+function card(item) {
+  const isSaved = saved.includes(item.id);
+  return `
+    <div class="card" onclick="openCard('${item.id}')">
+      ${isSaved ? '<span class="saved-star">⭐</span>' : `<span class="card-badge type-${item.type}">${typeLabel(item.type)}</span>`}
+      <div class="card-top">
+        <span class="emoji">${item.emoji}</span>
+        <div><h3>${item.name}</h3><div class="card-type">${item.cat}</div></div>
+      </div>
+      <p>${item.desc.slice(0, 90)}…</p>
+    </div>`;
+}
+
+function historyItem(item) {
+  return `
+    <div class="list-item" onclick="openCard('${item.id}')">
+      <span class="emoji">${item.emoji}</span>
+      <div class="info">
+        <h4>${item.name}</h4>
+        <div class="meta">${typeLabel(item.type)} · ${item.ts}</div>
+      </div>
+      <button class="remove" onclick="removeHistory(event,'${item.id}')">✕</button>
+    </div>`;
+}
+
+function removeHistory(e, id) {
+  e.stopPropagation();
+  history = history.filter(h => h.id !== id);
+  saveHistory();
+  updateCounts();
+  render();
+}
+
+function openCard(id) {
+  const item = CATALOG.find(i => i.id === id);
+  if (!item) return;
+  addToHistory(item);
+  showSpotlight(item);
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+function typeLabel(t) {
+  return { gpt: 'GPT', app: 'App', action: 'Action' }[t] || t;
+}
+
+function empty(icon, title, sub) {
+  return `<div class="empty"><div class="icon">${icon}</div><strong>${title}</strong><br>${sub}</div>`;
+}
+
+/* ── Toast ── */
+function toast(msg) {
+  const el = document.getElementById('toast');
+  el.textContent = msg;
+  el.classList.add('show');
+  setTimeout(() => el.classList.remove('show'), 2000);
+}
+
+/* ── Search ── */
+document.getElementById('searchInput').addEventListener('input', e => {
+  searchQuery = e.target.value;
+  render();
+});
+
+/* ── Init ── */
+updateCounts();
+render();
+</script>
+</body>
+</html>
