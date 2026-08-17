@@ -339,6 +339,12 @@ const CATALOG = [
     use:'Abre o diretório de Apps e procura "Instacart"', install:'https://openai.com/index/instacart-partnership/',
     steps:['Lê o anúncio oficial da parceria Instacart + OpenAI','No ChatGPT, escreve "Instacart, ajuda-me a comprar..." ou abre a app em chatgpt.com/apps','Planeia a refeição ou lista de compras','Finaliza a compra com checkout instantâneo, sem sair da conversa'] },
 
+  { id:'app-alltrails', emoji:'🥾', name:'AllTrails', type:'app', cat:'Desporto & Ar Livre',
+    desc:'Pesquisa e descobre trilhos de caminhada, com mais de 500 mil trilhos verificados, diretamente numa conversa do ChatGPT.',
+    tags:['trilhos','caminhadas','outdoor','ar livre'],
+    use:'Abre o diretório de Apps e procura "AllTrails"', install:'https://www.alltrails.com/press/introducing-alltrails-in-chatgpt',
+    steps:['Lê o anúncio oficial da AllTrails sobre a integração com o ChatGPT','No ChatGPT, abre chatgpt.com/apps e pesquisa "AllTrails"','Descreve o tipo de trilho que procuras (ex: "trilho fácil perto de Lisboa com vista para o mar")','Recebes sugestões de trilhos verificados, com mapas e avaliações, sem sair da conversa'] },
+
   /* ── ACTIONS (liga o teu GPT a APIs externas) ──────────── */
   { id:'action-zapier', emoji:'⚡', name:'Zapier AI Actions', type:'action', cat:'Automação',
     desc:'Liga o teu GPT a mais de 7000 apps (Gmail, Sheets, Slack…) via Actions da Zapier — sem escrever código.',
@@ -357,6 +363,12 @@ const CATALOG = [
     tags:['actions','biblioteca','exemplos','integrações'],
     use:'Copia um exemplo pronto em vez de começar do zero', install:'https://platform.openai.com/docs/actions/actions-library',
     steps:['Abre a GPT Actions Library da OpenAI','Escolhe a app que já tem um exemplo pronto (ex: Confluence, Box)','Copia o schema OpenAPI de exemplo','Adapta as credenciais e cola no GPT Builder em "Actions"'] },
+
+  { id:'action-github', emoji:'🐙', name:'GPT Action — GitHub', type:'action', cat:'Programação',
+    desc:'Exemplo oficial da OpenAI Cookbook para ligar um GPT ao GitHub e avaliar a qualidade e segurança de um Pull Request.',
+    tags:['github','programação','code review','actions'],
+    use:'Copia o exemplo pronto da OpenAI Cookbook', install:'https://github.com/openai/openai-cookbook/blob/main/examples/chatgpt/gpt_actions_library/gpt_action_github.md',
+    steps:['Abre o exemplo "GPT Action — GitHub" na OpenAI Cookbook','Copia o schema OpenAPI e as instruções do GPT fornecidas','No GPT Builder, cria uma nova Action e cola o schema','Autentica com um token do GitHub e pede para o GPT avaliar um Pull Request'] },
 ];
 
 /* ── State ─────────────────────────────────────────────────── */
