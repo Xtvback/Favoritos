@@ -302,6 +302,12 @@ const CATALOG = [
     use:'Pesquisa "Whimsical Diagrams" em chatgpt.com/gpts', install:'https://help.whimsical.com/integrations/chatgpt',
     steps:['Abre a página oficial de integração da Whimsical com o ChatGPT','Segue a ligação para o GPT "Whimsical Diagrams"','Descreve o processo ou ideia que queres visualizar','Recebes um diagrama (flowchart, mapa mental ou sequência) pronto a exportar'] },
 
+  { id:'gpt-data-analyst', emoji:'📈', name:'Data Analyst', type:'gpt', cat:'Dados',
+    desc:'GPT oficial "Made by OpenAI" que analisa ficheiros, escreve e corre código Python e gera gráficos a partir dos teus dados.',
+    tags:['dados','python','análise','gráficos'],
+    use:'Pesquisa "Data Analyst" na secção "Made by OpenAI" em chatgpt.com/gpts', install:'https://help.openai.com/en/articles/8437071-data-analysis-with-chatgpt',
+    steps:['Abre o artigo oficial da OpenAI sobre análise de dados no ChatGPT (precisas de conta Plus ou Enterprise)','No ChatGPT, pesquisa "Data Analyst" em chatgpt.com/gpts, na secção "Made by OpenAI"','Faz upload de um ficheiro (CSV, Excel, etc.)','Pede uma análise ou gráfico — o GPT escreve e corre o código Python por ti'] },
+
   /* ── APPS (Apps SDK — dentro do ChatGPT) ───────────────── */
   { id:'app-spotify', emoji:'🎵', name:'Spotify', type:'app', cat:'Música',
     desc:'Pede playlists, controla reprodução e descobre música diretamente numa conversa do ChatGPT.',
@@ -345,6 +351,12 @@ const CATALOG = [
     use:'Abre o diretório de Apps e procura "AllTrails"', install:'https://www.alltrails.com/press/introducing-alltrails-in-chatgpt',
     steps:['Lê o anúncio oficial da AllTrails sobre a integração com o ChatGPT','No ChatGPT, abre chatgpt.com/apps e pesquisa "AllTrails"','Descreve o tipo de trilho que procuras (ex: "trilho fácil perto de Lisboa com vista para o mar")','Recebes sugestões de trilhos verificados, com mapas e avaliações, sem sair da conversa'] },
 
+  { id:'app-target', emoji:'🎯', name:'Target', type:'app', cat:'Compras',
+    desc:'Compra produtos da Target (incluindo alimentação fresca) com cesto multi-artigo e escolha de entrega, direto no ChatGPT.',
+    tags:['compras','retalho','supermercado'],
+    use:'Abre o diretório de Apps e procura "Target"', install:'https://corporate.target.com/press/release/2025/11/target-to-launch-first-of-its-kind-conversational,-curated-shopping-experience-in-chatgpt',
+    steps:['Lê o comunicado oficial da Target sobre o lançamento da app em ChatGPT','No ChatGPT, abre chatgpt.com/apps e pesquisa "Target"','Descreve o que precisas comprar (ex: "preciso de ideias de prendas e mantimentos para o fim de semana")','Monta o cesto com vários artigos e escolhe drive up, pickup ou envio, sem sair da conversa'] },
+
   /* ── ACTIONS (liga o teu GPT a APIs externas) ──────────── */
   { id:'action-zapier', emoji:'⚡', name:'Zapier AI Actions', type:'action', cat:'Automação',
     desc:'Liga o teu GPT a mais de 7000 apps (Gmail, Sheets, Slack…) via Actions da Zapier — sem escrever código.',
@@ -369,6 +381,12 @@ const CATALOG = [
     tags:['github','programação','code review','actions'],
     use:'Copia o exemplo pronto da OpenAI Cookbook', install:'https://github.com/openai/openai-cookbook/blob/main/examples/chatgpt/gpt_actions_library/gpt_action_github.md',
     steps:['Abre o exemplo "GPT Action — GitHub" na OpenAI Cookbook','Copia o schema OpenAPI e as instruções do GPT fornecidas','No GPT Builder, cria uma nova Action e cola o schema','Autentica com um token do GitHub e pede para o GPT avaliar um Pull Request'] },
+
+  { id:'action-notion', emoji:'📝', name:'GPT Action — Notion', type:'action', cat:'Produtividade',
+    desc:'Exemplo oficial da OpenAI Cookbook para ligar um GPT ao Notion: pesquisa páginas e devolve informação diretamente no chat.',
+    tags:['notion','produtividade','pesquisa','actions'],
+    use:'Copia o exemplo pronto da OpenAI Cookbook', install:'https://cookbook.openai.com/examples/chatgpt/gpt_actions_library/gpt_action_notion',
+    steps:['Abre o exemplo "GPT Action — Notion" na OpenAI Cookbook','Na Notion, partilha as páginas/bases de dados com a integração e cria uma chave de API','No GPT Builder, cria uma nova Action, cola o schema e escolhe autenticação "API Key"','Faz uma pergunta ao GPT — ele pesquisa nas tuas páginas Notion e devolve a resposta'] },
 ];
 
 /* ── State ─────────────────────────────────────────────────── */
