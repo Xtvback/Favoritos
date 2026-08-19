@@ -769,6 +769,11 @@
         <span class="nav-label">Eventos/História</span>
         <span class="nav-count" id="count-eventos">0</span>
       </div>
+      <div class="nav-item" data-section="curiosidades">
+        <div class="nav-icon" style="background:rgba(241,196,15,0.12);">&#128161;</div>
+        <span class="nav-label">Curiosidades</span>
+        <span class="nav-count" id="count-curiosidades">0</span>
+      </div>
     </nav>
 
     <!-- Content -->
@@ -2586,6 +2591,15 @@ const DB = {
       "status": "Em curso — Ano 3518",
       "imagem_cor": "#2ecc71"
     }
+  ],
+  "curiosidades": [
+    {
+      "id": "c001",
+      "nome": "Muscmen, Muslords, Uslords — a evolução de um nome",
+      "categoria": "Linguagem & Identidade",
+      "descricao": "Os Muscmen — a espécie dominante do planeta Muscuta, e raça de Rockford — autodenominaram-se \"Muslords\" ao tornarem-se senhores do seu mundo. Mais tarde, ao expandirem a sua influência para além de Muscuta, adotaram o título \"Uslords\": senhores do universo. É por este último nome que acabaram por ficar conhecidos em todo o universo.",
+      "imagem_cor": "#f1c40f"
+    }
   ]
 };
 
@@ -2649,6 +2663,17 @@ const SECTIONS = {
     getBadge: e => e.status ? e.status.split('—')[0].trim() : '',
     getBadgeClass: e => (e.status||'').includes('Concluída') ? 'status-active' : (e.status||'').includes('Recente') ? 'status-neutral' : 'status-unknown',
     renderModal: renderEventoModal
+  },
+  curiosidades: {
+    label: 'Curiosidades',
+    icon: '&#128161;',
+    desc: 'Factos gerais, notas de bastidores e detalhes soltos do universo Uslords que não pertencem a nenhuma raça, personagem ou evento específico.',
+    getSubtitle: e => e.categoria || '',
+    getIcon: () => '&#128161;',
+    getTags: e => e.categoria ? [e.categoria] : [],
+    getBadge: () => '',
+    getBadgeClass: () => 'status-neutral',
+    renderModal: renderCuriosidadeModal
   }
 };
 
@@ -2955,6 +2980,11 @@ function renderFacaoModal(entry, color) {
     + (entry.objetivo ? `<div class="modal-list-title">Objetivo</div><div class="modal-desc" style="display:block;margin-bottom:1rem;font-size:0.85rem;color:var(--text)">${entry.objetivo}</div>` : '')
     + listHtml('Aliancas', entry.aliancas)
     + listHtml('Conflitos', entry.conflitos)
+    + `<div class="modal-id">ID: ${entry.id}</div>`;
+}
+
+function renderCuriosidadeModal(entry, color) {
+  return modalHeader(entry, '&#128161;', entry.categoria, color)
     + `<div class="modal-id">ID: ${entry.id}</div>`;
 }
 
