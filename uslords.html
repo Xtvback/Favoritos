@@ -815,10 +815,16 @@ const DB = {
     {
       "id": "r003",
       "nome": "Muslords",
-      "subtitulo": "",
-      "descricao": "",
-      "habilidades": [],
-      "imagem_cor": "#ff8c00"
+      "subtitulo": "Raça dominante de Muscuta",
+      "descricao": "Espécie Muscmen autodenominada \"Muslords\" ao tornar-se senhora do seu mundo — e mais tarde \"Uslords\" ao expandir-se pelo universo. É a raça tecnologicamente mais evoluída de Muscuta.",
+      "habilidades": [
+        "Olhos com pupilas verticais de aparência felina",
+        "Dois cornos curtos no topo da cabeça",
+        "Sem orelhas e sem nariz",
+        "Raça mais evoluída tecnologicamente de Muscuta"
+      ],
+      "status": "Dominante",
+      "imagem_cor": "#7d3c98"
     },
     {
       "id": "r004",
@@ -1197,9 +1203,12 @@ const DB = {
     {
       "id": "p018",
       "nome": "Rockford",
-      "titulo": "Oficial de Inteligência Muscmen",
-      "raca": "Muscmen",
-      "descricao": "Oficial de inteligência Muscmen. Herói ambíguo que libertou dissidentes Men e tem o dossier da traição de Sept. Protege Omo com táticas de guerrilha militar.",
+      "titulo": "Estratega e Diplomata",
+      "raca": "Muslords",
+      "origem": "Muscuta",
+      "altura": "1,89 m",
+      "tracos": ["Inteligente", "Carismático", "Leal", "Protetor"],
+      "descricao": "Rockford é um Muslords de personalidade amigável e astuta. Combina carisma natural com grande capacidade estratégica, sendo uma peça-chave em missões diplomáticas e alianças entre raças. Antes disso, serviu como oficial de inteligência Muscmen — herói ambíguo que libertou dissidentes Men e tem o dossier da traição de Sept, protegendo Omo com táticas de guerrilha militar.",
       "afiliacao": "Resistência",
       "status": "Ativo",
       "habilidades_chave": [
@@ -1207,8 +1216,23 @@ const DB = {
         "Guerrilha",
         "Espionagem"
       ],
+      "equipamento": [
+        "Colete tático reforçado",
+        "Proteções balísticas",
+        "Pouches de munição",
+        "Coldre tático",
+        "Armamento de fogo",
+        "Faca de combate",
+        "Comunicador avançado",
+        "Kit de sobrevivência"
+      ],
+      "armamento": [
+        "Fuzil M1-R7 — longo alcance",
+        "Pistola M-23 — curta distância",
+        "Lâmina tática — combate corpo a corpo"
+      ],
       "eventos_vida": [],
-      "imagem_cor": "#e74c3c"
+      "imagem_cor": "#7d3c98"
     },
     {
       "id": "p019",
@@ -2947,11 +2971,16 @@ function renderPersonagemModal(entry, color) {
   return modalHeader(entry, icon, entry.titulo, color)
     + `<div class="modal-grid">`
     + fieldHtml('Raça', entry.raca)
+    + fieldHtml('Origem', entry.origem)
+    + fieldHtml('Altura', entry.altura)
     + fieldHtml('Afiliação', entry.afiliacao)
     + fieldHtml('Status', entry.status)
     + fieldHtml('Nascimento', entry.ano_nascimento)
     + `</div>`
+    + listHtml('Traços', entry.tracos)
     + listHtml('Habilidades-Chave', entry.habilidades_chave)
+    + listHtml('Equipamento', entry.equipamento)
+    + listHtml('Armamento', entry.armamento)
     + (entry.historia ? `<div class="modal-list-title">Historia</div><div class="modal-desc" style="display:block;margin-bottom:1rem;font-size:0.85rem;color:var(--text)">${entry.historia}</div>` : '')
     + eventosVida
     + `<div class="modal-id">ID: ${entry.id}</div>`;
