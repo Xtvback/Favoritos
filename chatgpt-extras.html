@@ -357,6 +357,12 @@ const CATALOG = [
     use:'Abre o diretório de Apps e procura "Target"', install:'https://corporate.target.com/press/release/2025/11/target-to-launch-first-of-its-kind-conversational,-curated-shopping-experience-in-chatgpt',
     steps:['Lê o comunicado oficial da Target sobre o lançamento da app em ChatGPT','No ChatGPT, abre chatgpt.com/apps e pesquisa "Target"','Descreve o que precisas comprar (ex: "preciso de ideias de prendas e mantimentos para o fim de semana")','Monta o cesto com vários artigos e escolhe drive up, pickup ou envio, sem sair da conversa'] },
 
+  { id:'app-uber', emoji:'🚗', name:'Uber', type:'app', cat:'Transportes',
+    desc:'Vê opções de viagem, tarifas estimadas e tempos de chegada, e conclui o pedido de boleia diretamente no ChatGPT.',
+    tags:['transportes','viagens','boleias'],
+    use:'Abre o diretório de Apps e procura "Uber"', install:'https://help.uber.com/en/riders/article/chatgpt-integration-for-rides',
+    steps:['Lê o artigo oficial de ajuda da Uber sobre a integração com o ChatGPT','No ChatGPT, abre chatgpt.com/apps e pesquisa "Uber"','Descreve a viagem que queres fazer (origem e destino)','Vê as opções e tarifas, e conclui o pedido e o pagamento na app da Uber'] },
+
   /* ── ACTIONS (liga o teu GPT a APIs externas) ──────────── */
   { id:'action-zapier', emoji:'⚡', name:'Zapier AI Actions', type:'action', cat:'Automação',
     desc:'Liga o teu GPT a mais de 7000 apps (Gmail, Sheets, Slack…) via Actions da Zapier — sem escrever código.',
@@ -387,6 +393,12 @@ const CATALOG = [
     tags:['notion','produtividade','pesquisa','actions'],
     use:'Copia o exemplo pronto da OpenAI Cookbook', install:'https://cookbook.openai.com/examples/chatgpt/gpt_actions_library/gpt_action_notion',
     steps:['Abre o exemplo "GPT Action — Notion" na OpenAI Cookbook','Na Notion, partilha as páginas/bases de dados com a integração e cria uma chave de API','No GPT Builder, cria uma nova Action, cola o schema e escolhe autenticação "API Key"','Faz uma pergunta ao GPT — ele pesquisa nas tuas páginas Notion e devolve a resposta'] },
+
+  { id:'action-google-drive', emoji:'📁', name:'GPT Action — Google Drive', type:'action', cat:'Produtividade',
+    desc:'Exemplo oficial da OpenAI Cookbook para ligar um GPT ao Google Drive: lista ficheiros e usa o conteúdo como contexto no chat.',
+    tags:['google drive','produtividade','ficheiros','actions'],
+    use:'Copia o exemplo pronto da OpenAI Cookbook', install:'https://cookbook.openai.com/examples/chatgpt/gpt_actions_library/gpt_action_google_drive',
+    steps:['Abre o exemplo "GPT Action — Google Drive" na OpenAI Cookbook','Cria as credenciais OAuth na Google Cloud Console conforme indicado','No GPT Builder, cria uma nova Action, cola o schema e configura a autenticação OAuth','Pede ao GPT para listar ou consultar ficheiros do teu Drive diretamente na conversa'] },
 ];
 
 /* ── State ─────────────────────────────────────────────────── */
