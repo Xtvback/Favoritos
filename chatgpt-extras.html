@@ -363,6 +363,12 @@ const CATALOG = [
     use:'Abre o diretório de Apps e procura "Uber"', install:'https://help.uber.com/en/riders/article/chatgpt-integration-for-rides',
     steps:['Lê o artigo oficial de ajuda da Uber sobre a integração com o ChatGPT','No ChatGPT, abre chatgpt.com/apps e pesquisa "Uber"','Descreve a viagem que queres fazer (origem e destino)','Vê as opções e tarifas, e conclui o pedido e o pagamento na app da Uber'] },
 
+  { id:'app-expedia', emoji:'✈️', name:'Expedia', type:'app', cat:'Viagens',
+    desc:'Planeamento de viagens em conversa aberta — recomendações de destinos, alojamento e atividades, direto no ChatGPT.',
+    tags:['viagens','alojamento','voos'],
+    use:'Abre o diretório de Apps e procura "Expedia"', install:'https://www.expedia.com/newsroom/expedia-launched-chatgpt',
+    steps:['Lê o anúncio oficial da Expedia sobre o lançamento em ChatGPT','No ChatGPT, abre chatgpt.com/apps e pesquisa "Expedia"','Descreve a viagem que queres planear (destino, datas, preferências)','Recebes sugestões de alojamento, voos e atividades, guardadas automaticamente numa "trip"'] },
+
   /* ── ACTIONS (liga o teu GPT a APIs externas) ──────────── */
   { id:'action-zapier', emoji:'⚡', name:'Zapier AI Actions', type:'action', cat:'Automação',
     desc:'Liga o teu GPT a mais de 7000 apps (Gmail, Sheets, Slack…) via Actions da Zapier — sem escrever código.',
@@ -399,6 +405,12 @@ const CATALOG = [
     tags:['google drive','produtividade','ficheiros','actions'],
     use:'Copia o exemplo pronto da OpenAI Cookbook', install:'https://cookbook.openai.com/examples/chatgpt/gpt_actions_library/gpt_action_google_drive',
     steps:['Abre o exemplo "GPT Action — Google Drive" na OpenAI Cookbook','Cria as credenciais OAuth na Google Cloud Console conforme indicado','No GPT Builder, cria uma nova Action, cola o schema e configura a autenticação OAuth','Pede ao GPT para listar ou consultar ficheiros do teu Drive diretamente na conversa'] },
+
+  { id:'action-jira', emoji:'🗂️', name:'GPT Action — Jira', type:'action', cat:'Programação',
+    desc:'Exemplo oficial da OpenAI Cookbook para ligar um GPT ao Jira: lê e escreve issues de um projeto diretamente no chat.',
+    tags:['jira','gestão de projetos','atlassian','actions'],
+    use:'Copia o exemplo pronto da OpenAI Cookbook', install:'https://developers.openai.com/cookbook/examples/chatgpt/gpt_actions_library/gpt_action_jira',
+    steps:['Abre o exemplo "GPT Action — Jira" na OpenAI Cookbook','No Jira/Atlassian, cria um token de API para a tua conta','No GPT Builder, cria uma nova Action, cola o schema e configura a autenticação','Pede ao GPT para consultar ou criar issues no teu projeto Jira'] },
 ];
 
 /* ── State ─────────────────────────────────────────────────── */
