@@ -369,6 +369,12 @@ const CATALOG = [
     use:'Abre o diretório de Apps e procura "Expedia"', install:'https://www.expedia.com/newsroom/expedia-launched-chatgpt',
     steps:['Lê o anúncio oficial da Expedia sobre o lançamento em ChatGPT','No ChatGPT, abre chatgpt.com/apps e pesquisa "Expedia"','Descreve a viagem que queres planear (destino, datas, preferências)','Recebes sugestões de alojamento, voos e atividades, guardadas automaticamente numa "trip"'] },
 
+  { id:'app-doordash', emoji:'🛵', name:'DoorDash', type:'app', cat:'Compras',
+    desc:'Transforma ideias de receitas em encomendas de supermercado (Kroger, Safeway, Wegmans e mais) entregues em até uma hora, direto no ChatGPT.',
+    tags:['compras','supermercado','entregas'],
+    use:'Abre o diretório de Apps e procura "DoorDash"', install:'https://about.doordash.com/en-us/news/openai',
+    steps:['Lê o anúncio oficial da DoorDash sobre o lançamento em ChatGPT','No ChatGPT, abre chatgpt.com/apps e pesquisa "DoorDash"','Pede uma receita ou lista de compras (ex: "quero fazer um curry, monta-me a lista")','Escolhe a loja local e finaliza a encomenda sem sair da conversa'] },
+
   /* ── ACTIONS (liga o teu GPT a APIs externas) ──────────── */
   { id:'action-zapier', emoji:'⚡', name:'Zapier AI Actions', type:'action', cat:'Automação',
     desc:'Liga o teu GPT a mais de 7000 apps (Gmail, Sheets, Slack…) via Actions da Zapier — sem escrever código.',
@@ -411,6 +417,12 @@ const CATALOG = [
     tags:['jira','gestão de projetos','atlassian','actions'],
     use:'Copia o exemplo pronto da OpenAI Cookbook', install:'https://developers.openai.com/cookbook/examples/chatgpt/gpt_actions_library/gpt_action_jira',
     steps:['Abre o exemplo "GPT Action — Jira" na OpenAI Cookbook','No Jira/Atlassian, cria um token de API para a tua conta','No GPT Builder, cria uma nova Action, cola o schema e configura a autenticação','Pede ao GPT para consultar ou criar issues no teu projeto Jira'] },
+
+  { id:'action-salesforce', emoji:'☁️', name:'GPT Action — Salesforce', type:'action', cat:'Vendas',
+    desc:'Exemplo oficial da OpenAI Cookbook para ligar um GPT ao Salesforce Service Cloud: consulta e atualiza casos diretamente no chat.',
+    tags:['salesforce','crm','vendas','actions'],
+    use:'Copia o exemplo pronto da OpenAI Cookbook', install:'https://cookbook.openai.com/examples/chatgpt/gpt_actions_library/gpt_action_salesforce',
+    steps:['Abre o exemplo "GPT Action — Salesforce" na OpenAI Cookbook','No Salesforce, cria uma Connected App e obtém as credenciais OAuth','No GPT Builder, cria uma nova Action, cola o schema e configura a autenticação OAuth','Pede ao GPT para consultar ou atualizar um caso Salesforce diretamente na conversa'] },
 ];
 
 /* ── State ─────────────────────────────────────────────────── */
