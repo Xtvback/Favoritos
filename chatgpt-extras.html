@@ -375,6 +375,12 @@ const CATALOG = [
     use:'Abre o diretório de Apps e procura "DoorDash"', install:'https://about.doordash.com/en-us/news/openai',
     steps:['Lê o anúncio oficial da DoorDash sobre o lançamento em ChatGPT','No ChatGPT, abre chatgpt.com/apps e pesquisa "DoorDash"','Pede uma receita ou lista de compras (ex: "quero fazer um curry, monta-me a lista")','Escolhe a loja local e finaliza a encomenda sem sair da conversa'] },
 
+  { id:'app-opentable', emoji:'🍽️', name:'OpenTable', type:'app', cat:'Restaurantes',
+    desc:'Pesquisa e reserva mesa num restaurante diretamente no ChatGPT, com filtros por hora, tamanho do grupo e preferências.',
+    tags:['restaurantes','reservas','reservas de mesa'],
+    use:'Pede a reserva diretamente na conversa ou abre o diretório de Apps', install:'https://help.openai.com/en/articles/6825453-chatgpt-release-notes',
+    steps:['Lê as release notes oficiais da OpenAI sobre reservas de restaurante no ChatGPT','No ChatGPT, pede por exemplo "reserva mesa para 2 esta noite em Lisboa"','Refina por hora, tamanho do grupo e preferências (cozinha, orçamento, ambiente)','Escolhe uma opção e confirma a reserva via OpenTable, sem sair da conversa'] },
+
   /* ── ACTIONS (liga o teu GPT a APIs externas) ──────────── */
   { id:'action-zapier', emoji:'⚡', name:'Zapier AI Actions', type:'action', cat:'Automação',
     desc:'Liga o teu GPT a mais de 7000 apps (Gmail, Sheets, Slack…) via Actions da Zapier — sem escrever código.',
@@ -423,6 +429,12 @@ const CATALOG = [
     tags:['salesforce','crm','vendas','actions'],
     use:'Copia o exemplo pronto da OpenAI Cookbook', install:'https://cookbook.openai.com/examples/chatgpt/gpt_actions_library/gpt_action_salesforce',
     steps:['Abre o exemplo "GPT Action — Salesforce" na OpenAI Cookbook','No Salesforce, cria uma Connected App e obtém as credenciais OAuth','No GPT Builder, cria uma nova Action, cola o schema e configura a autenticação OAuth','Pede ao GPT para consultar ou atualizar um caso Salesforce diretamente na conversa'] },
+
+  { id:'action-confluence', emoji:'📘', name:'GPT Action — Confluence', type:'action', cat:'Produtividade',
+    desc:'Exemplo oficial da OpenAI Cookbook para ligar um GPT ao Confluence: pesquisa espaços e páginas para responder com base no seu conteúdo.',
+    tags:['confluence','atlassian','produtividade','actions'],
+    use:'Copia o exemplo pronto da OpenAI Cookbook', install:'https://cookbook.openai.com/examples/chatgpt/gpt_actions_library/gpt_action_confluence',
+    steps:['Abre o exemplo "GPT Action — Confluence" na OpenAI Cookbook','No Confluence/Atlassian, configura a autenticação OAuth conforme indicado','No GPT Builder, cria uma nova Action e cola o schema fornecido','Faz uma pergunta ao GPT — ele pesquisa nas páginas Confluence e responde com base nelas'] },
 ];
 
 /* ── State ─────────────────────────────────────────────────── */
