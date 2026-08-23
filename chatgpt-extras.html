@@ -381,6 +381,12 @@ const CATALOG = [
     use:'Pede a reserva diretamente na conversa ou abre o diretório de Apps', install:'https://help.openai.com/en/articles/6825453-chatgpt-release-notes',
     steps:['Lê as release notes oficiais da OpenAI sobre reservas de restaurante no ChatGPT','No ChatGPT, pede por exemplo "reserva mesa para 2 esta noite em Lisboa"','Refina por hora, tamanho do grupo e preferências (cozinha, orçamento, ambiente)','Escolhe uma opção e confirma a reserva via OpenTable, sem sair da conversa'] },
 
+  { id:'app-peloton', emoji:'🚴', name:'Peloton', type:'app', cat:'Fitness',
+    desc:'Cria planos de treino e encontra aulas Peloton por instrutor, tipo ou objetivo diretamente numa conversa do ChatGPT.',
+    tags:['fitness','treino','desporto'],
+    use:'Abre o diretório de Apps e procura "Peloton"', install:'https://x.com/OpenAI/status/1993125078436135008',
+    steps:['Lê o anúncio oficial da OpenAI confirmando a app da Peloton em ChatGPT','No ChatGPT, abre chatgpt.com/apps e pesquisa "Peloton"','Descreve o teu objetivo (ex: "quero um plano de treino para uma meia maratona")','Recebes sugestões de aulas por instrutor, duração ou género, sem sair da conversa'] },
+
   /* ── ACTIONS (liga o teu GPT a APIs externas) ──────────── */
   { id:'action-zapier', emoji:'⚡', name:'Zapier AI Actions', type:'action', cat:'Automação',
     desc:'Liga o teu GPT a mais de 7000 apps (Gmail, Sheets, Slack…) via Actions da Zapier — sem escrever código.',
@@ -435,6 +441,12 @@ const CATALOG = [
     tags:['confluence','atlassian','produtividade','actions'],
     use:'Copia o exemplo pronto da OpenAI Cookbook', install:'https://cookbook.openai.com/examples/chatgpt/gpt_actions_library/gpt_action_confluence',
     steps:['Abre o exemplo "GPT Action — Confluence" na OpenAI Cookbook','No Confluence/Atlassian, configura a autenticação OAuth conforme indicado','No GPT Builder, cria uma nova Action e cola o schema fornecido','Faz uma pergunta ao GPT — ele pesquisa nas páginas Confluence e responde com base nelas'] },
+
+  { id:'action-box', emoji:'📦', name:'GPT Action — Box', type:'action', cat:'Produtividade',
+    desc:'Exemplo oficial da OpenAI Cookbook para ligar um GPT ao Box: consulta e descarrega ficheiros diretamente no chat.',
+    tags:['box','armazenamento','ficheiros','actions'],
+    use:'Copia o exemplo pronto da OpenAI Cookbook', install:'https://cookbook.openai.com/examples/chatgpt/gpt_actions_library/gpt_action_box',
+    steps:['Abre o exemplo "GPT Action — Box" na OpenAI Cookbook','No Box, configura a app e as credenciais de acesso conforme indicado','No GPT Builder, cria uma nova Action e cola o schema fornecido (query + download)','Pede ao GPT para procurar ou consultar um ficheiro do teu Box na conversa'] },
 ];
 
 /* ── State ─────────────────────────────────────────────────── */
