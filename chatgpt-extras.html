@@ -447,6 +447,18 @@ const CATALOG = [
     tags:['box','armazenamento','ficheiros','actions'],
     use:'Copia o exemplo pronto da OpenAI Cookbook', install:'https://cookbook.openai.com/examples/chatgpt/gpt_actions_library/gpt_action_box',
     steps:['Abre o exemplo "GPT Action — Box" na OpenAI Cookbook','No Box, configura a app e as credenciais de acesso conforme indicado','No GPT Builder, cria uma nova Action e cola o schema fornecido (query + download)','Pede ao GPT para procurar ou consultar um ficheiro do teu Box na conversa'] },
+
+  { id:'action-gmail', emoji:'📧', name:'GPT Action — Gmail', type:'action', cat:'Produtividade',
+    desc:'Exemplo oficial da OpenAI Cookbook para ligar um GPT ao Gmail: lê, resume, rascunha e envia emails diretamente no chat.',
+    tags:['gmail','email','produtividade','actions'],
+    use:'Copia o exemplo pronto da OpenAI Cookbook', install:'https://cookbook.openai.com/examples/chatgpt/gpt_actions_library/gpt_action_gmail',
+    steps:['Abre o exemplo "GPT Action — Gmail" na OpenAI Cookbook','Cria um projeto na Google Cloud Console e ativa a Gmail API','Gera credenciais OAuth (Client ID e Secret) e regista o callback URL do GPT Builder','No GPT Builder, cria a Action, cola o schema e autentica com OAuth para ler ou enviar emails'] },
+
+  { id:'action-google-calendar', emoji:'📅', name:'GPT Action — Google Calendar', type:'action', cat:'Produtividade',
+    desc:'Exemplo oficial da OpenAI Cookbook para ligar um GPT ao Google Calendar: cria, consulta e atualiza eventos por linguagem natural.',
+    tags:['google calendar','agenda','produtividade','actions'],
+    use:'Copia o exemplo pronto da OpenAI Cookbook', install:'https://cookbook.openai.com/examples/chatgpt/gpt_actions_library/gpt_action_google_calendar',
+    steps:['Abre o exemplo "GPT Action — Google Calendar" na OpenAI Cookbook','Na Google Cloud Console, ativa a Calendar API e configura o ecrã de consentimento OAuth','Gera as credenciais OAuth e adiciona o callback URL do GPT Builder aos redirect URIs autorizados','No GPT Builder, cria a Action, cola o schema e pede ao GPT para consultar ou criar eventos na tua agenda'] },
 ];
 
 /* ── State ─────────────────────────────────────────────────── */
