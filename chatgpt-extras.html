@@ -459,6 +459,18 @@ const CATALOG = [
     tags:['google calendar','agenda','produtividade','actions'],
     use:'Copia o exemplo pronto da OpenAI Cookbook', install:'https://cookbook.openai.com/examples/chatgpt/gpt_actions_library/gpt_action_google_calendar',
     steps:['Abre o exemplo "GPT Action — Google Calendar" na OpenAI Cookbook','Na Google Cloud Console, ativa a Calendar API e configura o ecrã de consentimento OAuth','Gera as credenciais OAuth e adiciona o callback URL do GPT Builder aos redirect URIs autorizados','No GPT Builder, cria a Action, cola o schema e pede ao GPT para consultar ou criar eventos na tua agenda'] },
+
+  { id:'action-outlook', emoji:'📨', name:'GPT Action — Outlook', type:'action', cat:'Produtividade',
+    desc:'Exemplo oficial da OpenAI Cookbook para ligar um GPT ao Microsoft Outlook: envia e consulta emails e eventos de calendário via Microsoft Graph.',
+    tags:['outlook','microsoft','email','produtividade','actions'],
+    use:'Copia o exemplo pronto da OpenAI Cookbook', install:'https://cookbook.openai.com/examples/chatgpt/gpt_actions_library/gpt_action_outlook',
+    steps:['Abre o exemplo "GPT Action — Outlook" na OpenAI Cookbook','No Azure Portal, regista uma app e gera um client secret','Adiciona as permissões delegadas Calendars.ReadWrite, Mail.Read, Mail.Send e User.Read','No GPT Builder, cria a Action com autenticação OAuth (Tenant ID, Client ID e Secret) e regista o callback URL no Azure'] },
+
+  { id:'action-workday', emoji:'🧑‍💼', name:'GPT Action — Workday', type:'action', cat:'Recursos Humanos',
+    desc:'Exemplo oficial da OpenAI Cookbook para ligar um GPT ao Workday: consulta dados de colaborador, benefícios e submete pedidos de férias diretamente no chat.',
+    tags:['workday','rh','recursos humanos','actions'],
+    use:'Copia o exemplo pronto da OpenAI Cookbook', install:'https://cookbook.openai.com/examples/chatgpt/gpt_actions_library/gpt_action_workday',
+    steps:['Abre o exemplo "GPT Action — Workday" na OpenAI Cookbook','No Workday Admin, regista um API client com os scopes de Staffing e Time Off and Leave','Configura as credenciais OAuth (Client ID, Secret e redirect URI) e cria o RAAS report do utilizador atual','No GPT Builder, cria a Action, cola o schema OpenAPI e pede ao GPT para consultar dados ou submeter um pedido de férias'] },
 ];
 
 /* ── State ─────────────────────────────────────────────────── */
