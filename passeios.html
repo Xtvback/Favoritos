@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="default">
+  <meta name="apple-mobile-web-app-title" content="Passeios">
+  <title>Passeios em Família — Lisboa</title>
+  <style>
+    :root {
+      --bg: #faf7f2;
+      --surface: #ffffff;
+      --surface-2: #f2ede4;
+      --line: rgba(30,26,18,.10);
+      --line-strong: rgba(30,26,18,.18);
+      --text: #1e1a12;
+      --text-2: #5c5548;
+      --text-3: #8f887a;
+      --accent: #2f8f5b;
+      --accent-soft: rgba(47,143,91,.14);
+      --paid: #c17a1f;
+      --paid-soft: rgba(193,122,31,.14);
+      --shadow: 0 1px 2px rgba(30,26,18,.05), 0 8px 24px -12px rgba(30,26,18,.20);
+      --safe-t: env(safe-area-inset-top, 0px);
+      --safe-b: env(safe-area-inset-bottom, 0px);
+      --safe-l: env(safe-area-inset-left, 0px);
+      --safe-r: env(safe-area-inset-right, 0px);
+    }
+    @media (prefers-color-scheme: dark) {
+      :root {
+        --bg: #16140f;
+        --surface: #201d17;
+        --surface-2: #29251d;
+        --line: rgba(240,236,228,.09);
+        --line-strong: rgba(240,236,228,.16);
+        --text: #f2efe8;
+        --text-2: #aba396;
+        --text-3: #6b6558;
+        --accent: #4fbf85;
+        --accent-soft: rgba(79,191,133,.16);
+        --paid: #e0a13f;
+        --paid-soft: rgba(224,161,63,.16);
+        --shadow: 0 1px 2px rgba(0,0,0,.3), 0 12px 32px -14px rgba(0,0,0,.55);
+      }
+    }
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body {
+      margin: 0;
+      background: var(--bg);
+      color: var(--text);
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", system-ui, sans-serif;
+      -webkit-font-smoothing: antialiased;
+      min-height: 100dvh;
+    }
+    @media (prefers-reduced-motion: reduce) {
+      * { animation-duration: .001ms !important; transition-duration: .001ms !important; }
+    }
+    a { color: inherit; }
+    .display {
+      font-family: "Avenir Next", "Segoe UI Semibold", "Century Gothic", -apple-system, system-ui, sans-serif;
+      font-weight: 700;
+      letter-spacing: -0.01em;
+    }
+
+    .shell {
+      max-width: 880px;
+      margin: 0 auto;
+      padding: calc(var(--safe-t) + 20px) calc(var(--safe-r) + 20px) calc(var(--safe-b) + 64px) calc(var(--safe-l) + 20px);
+    }
+
+    .topbar {
+      position: sticky;
+      top: 0;
+      z-index: 50;
+      background: color-mix(in srgb, var(--bg) 88%, transparent);
+      backdrop-filter: blur(14px) saturate(140%);
+      -webkit-backdrop-filter: blur(14px) saturate(140%);
+      margin: calc(var(--safe-t) * -1) -20px 24px;
+      padding: calc(var(--safe-t) + 14px) 20px 14px;
+      border-bottom: 1px solid var(--line);
+    }
+    .wordmark { display: flex; align-items: baseline; gap: 10px; font-size: 22px; letter-spacing: -0.02em; }
+    .wordmark-star { color: var(--accent); }
+    .subtitle { font-size: 13.5px; color: var(--text-3); margin-top: 4px; }
+
+    .dia { margin-bottom: 40px; }
+    .dia-data {
+      font-size: 15px;
+      font-weight: 600;
+      color: var(--text-2);
+      text-transform: capitalize;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin: 0 0 14px;
+      padding-bottom: 8px;
+      border-bottom: 1px solid var(--line);
+    }
+    .dia-data::before { content: '📅'; font-size: 14px; }
+
+    .cards {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 14px;
+    }
+    @media (max-width: 640px) {
+      .cards { grid-template-columns: 1fr; }
+    }
+
+    .card {
+      position: relative;
+      background: var(--surface);
+      border: 1px solid var(--line);
+      border-radius: 16px;
+      padding: 16px 16px 14px;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      box-shadow: var(--shadow);
+    }
+    .card::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 16px; right: 16px;
+      height: 3px;
+      border-radius: 0 0 3px 3px;
+      background: var(--card-color);
+    }
+    .card.free { --card-color: var(--accent); }
+    .card.paid { --card-color: var(--paid); }
+
+    .card-title { font-size: 16.5px; line-height: 1.3; text-wrap: balance; }
+    .card-desc { font-size: 13.5px; line-height: 1.5; color: var(--text-2); margin: 0; }
+    .card-foot { margin-top: auto; display: flex; align-items: center; justify-content: space-between; gap: 10px; flex-wrap: wrap; }
+    .price {
+      font-size: 12px;
+      font-weight: 600;
+      padding: 4px 10px;
+      border-radius: 20px;
+      background: var(--paid-soft);
+      color: var(--paid);
+    }
+    .card.free .price { background: var(--accent-soft); color: var(--accent); }
+    .card-link {
+      font-size: 13px;
+      font-weight: 600;
+      text-decoration: none;
+      color: var(--card-color);
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+    }
+    .card-link:hover { text-decoration: underline; }
+
+    footer {
+      margin-top: 24px;
+      padding-top: 16px;
+      border-top: 1px solid var(--line);
+      font-size: 12px;
+      color: var(--text-3);
+      text-align: center;
+    }
+  </style>
+</head>
+<body>
+
+<div class="shell">
+  <div class="topbar">
+    <div class="wordmark display"><span class="wordmark-star">🌳</span> Passeios em Família</div>
+    <div class="subtitle">Ideias de passeios em Lisboa e arredores, para toda a família</div>
+  </div>
+
+  <main>
+
+    <section class="dia" id="dia-2026-08-25">
+      <h2 class="dia-data">Terça-feira, 25 de agosto de 2026</h2>
+      <div class="cards">
+
+        <article class="card paid">
+          <div class="card-title">Pavilhão do Conhecimento — Centro Ciência Viva</div>
+          <p class="card-desc">Museu interativo de ciência no Parque das Nações, com dezenas de exposições para tocar, experimentar e explorar — dos mais pequenos aos mais crescidos. Uma tarde inteira de descobertas em família.</p>
+          <div class="card-foot">
+            <span class="price">€15 adulto · €10 criança · Família €35</span>
+            <a class="card-link" href="https://www.pavconhecimento.pt/pt/visite-nos/bilheteira" target="_blank" rel="noopener">Ver bilhetes →</a>
+          </div>
+        </article>
+
+        <article class="card free">
+          <div class="card-title">Jardim da Estrela</div>
+          <p class="card-desc">Um dos jardins mais queridos de Lisboa, com lago de patos e tartarugas, parque infantil, coreto e muita sombra para um piquenique em família. Ideal para uma manhã tranquila ao ar livre.</p>
+          <div class="card-foot">
+            <span class="price">Grátis</span>
+            <a class="card-link" href="https://www.jf-estrela.pt/comunidade/locais-a-visitar/1-jardim-da-estrela" target="_blank" rel="noopener">Saber mais →</a>
+          </div>
+        </article>
+
+        <article class="card paid">
+          <div class="card-title">Fun Pool — Piscina de Bolas Gigante (Oeiras Parque)</div>
+          <p class="card-desc">Piscina de bolas gigante com escorregas, trampolins e canhão de bolas, disponível até 13 de setembro. Diversão garantida para os mais novos, em sessões de 20 minutos.</p>
+          <div class="card-foot">
+            <span class="price">€4 criança (até 12) · €5 adulto / sessão 20min</span>
+            <a class="card-link" href="https://www.oeirasparque.com/novidades/fun-pool-piscina-bolas/" target="_blank" rel="noopener">Saber mais →</a>
+          </div>
+        </article>
+
+      </div>
+    </section>
+
+  </main>
+
+  <footer>Atualizado todos os dias com novas ideias de passeios em família na zona de Lisboa.</footer>
+</div>
+
+</body>
+</html>
