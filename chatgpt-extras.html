@@ -483,6 +483,18 @@ const CATALOG = [
     tags:['workday','rh','recursos humanos','actions'],
     use:'Copia o exemplo pronto da OpenAI Cookbook', install:'https://cookbook.openai.com/examples/chatgpt/gpt_actions_library/gpt_action_workday',
     steps:['Abre o exemplo "GPT Action — Workday" na OpenAI Cookbook','No Workday Admin, regista um API client com os scopes de Staffing e Time Off and Leave','Configura as credenciais OAuth (Client ID, Secret e redirect URI) e cria o RAAS report do utilizador atual','No GPT Builder, cria a Action, cola o schema OpenAPI e pede ao GPT para consultar dados ou submeter um pedido de férias'] },
+
+  { id:'action-canvas', emoji:'🎓', name:'GPT Action — Canvas LMS', type:'action', cat:'Educação',
+    desc:'Exemplo oficial da OpenAI Cookbook para ligar um GPT ao Canvas LMS: navega cursos, gera exames de prática e apoia o estudo diretamente no chat.',
+    tags:['canvas','educação','lms','actions'],
+    use:'Copia o exemplo pronto da OpenAI Cookbook', install:'https://cookbook.openai.com/examples/chatgpt/gpt_actions_library/gpt_action_canvas',
+    steps:['Abre o exemplo "GPT Action — Canvas LMS" na OpenAI Cookbook','No Canvas, gera um token de acesso pessoal (ou configura OAuth via o administrador para vários utilizadores)','No GPT Builder, cria a Action, cola o schema OpenAPI com os endpoints de cursos e módulos','Pede ao GPT para listar os teus cursos, gerar um exame de prática ou criar um guia de estudo'] },
+
+  { id:'action-bigquery', emoji:'📊', name:'GPT Action — BigQuery', type:'action', cat:'Dados',
+    desc:'Exemplo oficial da OpenAI Cookbook para ligar um GPT ao Google BigQuery: converte perguntas em linguagem natural em queries SQL e devolve os resultados no chat.',
+    tags:['bigquery','dados','sql','google cloud','actions'],
+    use:'Copia o exemplo pronto da OpenAI Cookbook', install:'https://cookbook.openai.com/examples/chatgpt/gpt_actions_library/gpt_action_bigquery',
+    steps:['Abre o exemplo "GPT Action — BigQuery" na OpenAI Cookbook','Na Google Cloud Console, cria um projeto/dataset BigQuery e gera credenciais OAuth','No GPT Builder, cria a Action, cola o schema OpenAPI e configura a autenticação OAuth com o scope bigquery','Faz uma pergunta em linguagem natural — o GPT consulta o INFORMATION_SCHEMA, gera o SQL e devolve os resultados'] },
 ];
 
 /* ── State ─────────────────────────────────────────────────── */
