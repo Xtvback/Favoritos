@@ -507,6 +507,18 @@ const CATALOG = [
     tags:['bigquery','dados','sql','google cloud','actions'],
     use:'Copia o exemplo pronto da OpenAI Cookbook', install:'https://cookbook.openai.com/examples/chatgpt/gpt_actions_library/gpt_action_bigquery',
     steps:['Abre o exemplo "GPT Action — BigQuery" na OpenAI Cookbook','Na Google Cloud Console, cria um projeto/dataset BigQuery e gera credenciais OAuth','No GPT Builder, cria a Action, cola o schema OpenAPI e configura a autenticação OAuth com o scope bigquery','Faz uma pergunta em linguagem natural — o GPT consulta o INFORMATION_SCHEMA, gera o SQL e devolve os resultados'] },
+
+  { id:'action-snowflake', emoji:'❄️', name:'GPT Action — Snowflake', type:'action', cat:'Dados',
+    desc:'Exemplo oficial da OpenAI Cookbook para ligar um GPT ao Snowflake: converte perguntas em linguagem natural em queries SQL sobre o data warehouse.',
+    tags:['snowflake','dados','sql','data warehouse','actions'],
+    use:'Copia o exemplo pronto da OpenAI Cookbook', install:'https://cookbook.openai.com/examples/chatgpt/gpt_actions_library/gpt_action_snowflake_direct',
+    steps:['Abre o exemplo "GPT Action — Snowflake" na OpenAI Cookbook','No Snowflake, cria uma network policy para o IP do ChatGPT e uma Security Integration OAuth','No GPT Builder, cria a Action, cola o schema OpenAPI e configura a autenticação OAuth com o Client ID/Secret do Snowflake','Regista o callback URL do GPT Builder na Security Integration e faz uma pergunta em linguagem natural sobre os teus dados'] },
+
+  { id:'action-retool', emoji:'🔧', name:'GPT Action — Retool Workflow', type:'action', cat:'Automação',
+    desc:'Exemplo oficial da OpenAI Cookbook para ligar um GPT a um Retool Workflow via webhook, permitindo automatizar tarefas internas diretamente no chat.',
+    tags:['retool','automação','workflow','low-code','actions'],
+    use:'Copia o exemplo pronto da OpenAI Cookbook', install:'https://cookbook.openai.com/examples/chatgpt/gpt_actions_library/gpt_action_retool_workflow',
+    steps:['Abre o exemplo "GPT Action — Retool Workflow" na OpenAI Cookbook','No Retool, cria e publica um workflow com um webhook trigger e obtém a API key','No GPT Builder, cria a Action com autenticação API Key (header X-Workflow-Api-Key) e cola o schema com o teu WORKFLOW_ID','Pede ao GPT para executar o workflow — o Retool processa o pedido e devolve o resultado como JSON'] },
 ];
 
 /* ── State ─────────────────────────────────────────────────── */
