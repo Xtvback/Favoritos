@@ -519,6 +519,12 @@ const CATALOG = [
     tags:['retool','automação','workflow','low-code','actions'],
     use:'Copia o exemplo pronto da OpenAI Cookbook', install:'https://cookbook.openai.com/examples/chatgpt/gpt_actions_library/gpt_action_retool_workflow',
     steps:['Abre o exemplo "GPT Action — Retool Workflow" na OpenAI Cookbook','No Retool, cria e publica um workflow com um webhook trigger e obtém a API key','No GPT Builder, cria a Action com autenticação API Key (header X-Workflow-Api-Key) e cola o schema com o teu WORKFLOW_ID','Pede ao GPT para executar o workflow — o Retool processa o pedido e devolve o resultado como JSON'] },
+
+  { id:'action-sign-in', emoji:'🔑', name:'Sign in with ChatGPT', type:'action', cat:'Identidade',
+    desc:'Sistema de identidade multiplataforma da OpenAI (beta) que permite criar ou ligar contas em apps parceiras (Airtable, GitLab, HubSpot, Notion, Supabase, Vercel) em menos passos, com nome, email e foto partilhados a partir do ChatGPT.',
+    tags:['identidade','login','oauth','sso','apps sdk'],
+    use:'Aparece como opção "Sign in with ChatGPT" ao ligar uma app parceira suportada', install:'https://help.openai.com/en/articles/20001410-sign-in-with-chatgpt',
+    steps:['Lê o artigo oficial da OpenAI sobre o Sign in with ChatGPT no Help Center','No diretório de Apps do ChatGPT, abre uma app parceira suportada (ex: Notion, Supabase, Vercel)','Escolhe "Sign in with ChatGPT" em vez de criar uma conta nova ou usar outro método de login','Autoriza a partilha de nome, email e foto de perfil — a conta fica ligada automaticamente, sem preencher formulários'] },
 ];
 
 /* ── State ─────────────────────────────────────────────────── */
