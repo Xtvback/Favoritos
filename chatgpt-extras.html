@@ -417,6 +417,18 @@ const CATALOG = [
     use:'Abre o diretório de Apps e procura "Apple Music"', install:'https://9to5mac.com/2025/12/17/apple-music-chatgpt-howto-use-it/',
     steps:['Lê o artigo oficial confirmando a app da Apple Music em ChatGPT','No ChatGPT (web, Mac ou iOS), abre a secção Apps e liga a tua conta Apple Music (precisa de subscrição)','Pede algo como "cria uma playlist para uma viagem de carro" ou "encontra músicas parecidas com X"','O ChatGPT monta e guarda a playlist diretamente na tua biblioteca do Apple Music'] },
 
+  { id:'app-airtable', emoji:'🗂️', name:'Airtable', type:'app', cat:'Produtividade',
+    desc:'Integração oficial da Airtable com o ChatGPT (assente em MCP) — escolhe as bases/workspaces a expor e usa "/Airtable" numa conversa para consultar registos ou fazer atualizações rápidas, sem exportar/importar CSV.',
+    tags:['airtable','bases de dados','produtividade','mcp'],
+    use:'Abre o diretório de Apps e procura "Airtable"', install:'https://www.airtable.com/integrations/chatgpt',
+    steps:['Lê o comunicado oficial da Airtable sobre a chegada ao ChatGPT','No ChatGPT, abre chatgpt.com/apps e pesquisa "Airtable"','Liga a tua conta Airtable e escolhe as bases/workspaces a expor','Escreve "/Airtable" numa conversa para consultar ou atualizar registos diretamente'] },
+
+  { id:'app-clay', emoji:'🔎', name:'Clay', type:'app', cat:'Vendas',
+    desc:'App oficial da Clay dentro do ChatGPT — pesquisa contas e pessoas-alvo, obtém emails verificados, stack tecnológico e sinais de financiamento/headcount, e gera outreach personalizado, tudo por conversa. ⚠️ A Clay agrega dados de múltiplos fornecedores terceiros para enriquecimento — uso automatizado intensivo pode esbarrar em limites/ToS desses fornecedores.',
+    tags:['clay','vendas','prospecção','enriquecimento de dados','gtm'],
+    use:'Abre o diretório de Apps e procura "Clay"', install:'https://www.clay.com/clay-in-chatgpt',
+    steps:['Lê a página oficial da Clay sobre a integração com o ChatGPT','No ChatGPT, abre chatgpt.com/apps e pesquisa "Clay"','Liga a tua conta Clay (novos utilizadores recebem 500 créditos grátis)','Pede para investigar uma empresa ou contacto e recebe dados enriquecidos + rascunho de outreach'] },
+
   /* ── ACTIONS (liga o teu GPT a APIs externas) ──────────── */
   { id:'action-zapier', emoji:'⚡', name:'Zapier AI Actions', type:'action', cat:'Automação',
     desc:'Liga o teu GPT a mais de 7000 apps (Gmail, Sheets, Slack…) via Actions da Zapier — sem escrever código.',
@@ -543,6 +555,12 @@ const CATALOG = [
     tags:['sql','base de dados','dados','middleware','actions'],
     use:'Copia o exemplo pronto da OpenAI Cookbook', install:'https://cookbook.openai.com/examples/chatgpt/gpt_actions_library/gpt_action_sql_database',
     steps:['Abre o exemplo "GPT Action — Base de Dados SQL" na OpenAI Cookbook','Cria uma API intermediária (middleware) que recebe queries e as reencaminha para a tua base de dados com acesso só de leitura','No GPT Builder, cria a Action com autenticação API Key (header X-Api-Key) e cola o schema fornecido','Pergunta ao GPT em linguagem natural — os dados voltam como ficheiro CSV pronto para análise'] },
+
+  { id:'action-sharepoint', emoji:'📁', name:'GPT Action — SharePoint', type:'action', cat:'Documentos',
+    desc:'Exemplo oficial da OpenAI Cookbook para ligar um GPT ao SharePoint/Office 365 via Microsoft Graph API (com Azure Function como intermediário) — pesquisa e lê ficheiros SharePoint acessíveis ao utilizador como contexto de resposta.',
+    tags:['sharepoint','microsoft','office 365','documentos','actions'],
+    use:'Copia o exemplo pronto da OpenAI Cookbook', install:'https://cookbook.openai.com/examples/chatgpt/gpt_actions_library/gpt_action_sharepoint_text',
+    steps:['Abre o exemplo "GPT Action — SharePoint" na OpenAI Cookbook','Regista uma app no Azure AD com permissões de leitura ao Microsoft Graph API','Publica a Azure Function intermediária que liga o Graph API ao schema OpenAPI da Action','No GPT Builder, cria a Action com autenticação OAuth e cola o schema — o GPT passa a pesquisar ficheiros do SharePoint'] },
 ];
 
 /* ── State ─────────────────────────────────────────────────── */
