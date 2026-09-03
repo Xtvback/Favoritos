@@ -429,6 +429,18 @@ const CATALOG = [
     use:'Abre o diretório de Apps e procura "Clay"', install:'https://www.clay.com/clay-in-chatgpt',
     steps:['Lê a página oficial da Clay sobre a integração com o ChatGPT','No ChatGPT, abre chatgpt.com/apps e pesquisa "Clay"','Liga a tua conta Clay (novos utilizadores recebem 500 créditos grátis)','Pede para investigar uma empresa ou contacto e recebe dados enriquecidos + rascunho de outreach'] },
 
+  { id:'app-replit', emoji:'💻', name:'Replit', type:'app', cat:'Programação',
+    desc:'Cria, atualiza e publica apps de software completas sem sair do ChatGPT — menciona "@Replit" numa conversa, descreve a app pretendida e o Replit Agent constrói e faz deploy diretamente.',
+    tags:['replit','programação','desenvolvimento','deploy','agente'],
+    use:'Abre Definições → Apps e Conectores e liga o Replit', install:'https://replit.com/blog/replit-in-chatgpt',
+    steps:['Lê o comunicado oficial da Replit sobre a integração com o ChatGPT','No ChatGPT, abre Definições → Apps e Conectores, procura "Replit" e liga a tua conta','Numa conversa, menciona "@Replit" e descreve a app que queres criar','O Replit Agent gera, mostra e publica a app — usa créditos de Agent da tua conta Replit'] },
+
+  { id:'app-teams', emoji:'👥', name:'Microsoft Teams', type:'app', cat:'Produtividade',
+    desc:'Liga o ChatGPT à tua conta Microsoft Teams — pesquisa e usa como contexto conversas 1:1, de grupo e de canais; desde agosto de 2026 também pode enviar mensagens e criar chats/canais, quando o workspace ativa essas permissões.',
+    tags:['microsoft teams','produtividade','trabalho','mensagens'],
+    use:'Abre Definições → Apps e Conectores e liga o Microsoft Teams', install:'https://help.openai.com/en/articles/12552368-microsoft-teams-app-for-chatgpt',
+    steps:['Lê o artigo oficial da OpenAI sobre a app do Microsoft Teams','No ChatGPT, abre Definições → Apps e Conectores, procura "Microsoft Teams" e liga a conta profissional/escolar','Aprova os âmbitos do Microsoft Graph pedidos (pode exigir aprovação de administrador Entra)','Pergunta ao ChatGPT sobre conversas ou canais do Teams, ou pede para enviar uma mensagem (se ativado pelo workspace)'] },
+
   /* ── ACTIONS (liga o teu GPT a APIs externas) ──────────── */
   { id:'action-zapier', emoji:'⚡', name:'Zapier AI Actions', type:'action', cat:'Automação',
     desc:'Liga o teu GPT a mais de 7000 apps (Gmail, Sheets, Slack…) via Actions da Zapier — sem escrever código.',
@@ -561,6 +573,12 @@ const CATALOG = [
     tags:['sharepoint','microsoft','office 365','documentos','actions'],
     use:'Copia o exemplo pronto da OpenAI Cookbook', install:'https://cookbook.openai.com/examples/chatgpt/gpt_actions_library/gpt_action_sharepoint_text',
     steps:['Abre o exemplo "GPT Action — SharePoint" na OpenAI Cookbook','Regista uma app no Azure AD com permissões de leitura ao Microsoft Graph API','Publica a Azure Function intermediária que liga o Graph API ao schema OpenAPI da Action','No GPT Builder, cria a Action com autenticação OAuth e cola o schema — o GPT passa a pesquisar ficheiros do SharePoint'] },
+
+  { id:'action-redshift', emoji:'🔴', name:'GPT Action — Amazon Redshift', type:'action', cat:'Dados',
+    desc:'Exemplo oficial da OpenAI Cookbook para ligar um GPT ao Amazon Redshift (data warehouse da AWS) — converte perguntas em linguagem natural em SQL, executa-as via uma camada intermediária AWS Lambda e devolve os resultados como CSV.',
+    tags:['amazon redshift','aws','data warehouse','sql','actions'],
+    use:'Copia o exemplo pronto da OpenAI Cookbook', install:'https://cookbook.openai.com/examples/chatgpt/gpt_actions_library/gpt_action_redshift',
+    steps:['Abre o exemplo "GPT Action — Amazon Redshift" na OpenAI Cookbook','Cria a função AWS Lambda intermediária que recebe queries e as executa no teu cluster Redshift com acesso só de leitura','No GPT Builder, cria a Action com autenticação API Key e cola o schema OpenAPI fornecido','Pergunta ao GPT em linguagem natural — os dados voltam como ficheiro CSV pronto para análise'] },
 ];
 
 /* ── State ─────────────────────────────────────────────────── */
