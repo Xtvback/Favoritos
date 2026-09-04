@@ -441,6 +441,12 @@ const CATALOG = [
     use:'Abre Definições → Apps e Conectores e liga o Microsoft Teams', install:'https://help.openai.com/en/articles/12552368-microsoft-teams-app-for-chatgpt',
     steps:['Lê o artigo oficial da OpenAI sobre a app do Microsoft Teams','No ChatGPT, abre Definições → Apps e Conectores, procura "Microsoft Teams" e liga a conta profissional/escolar','Aprova os âmbitos do Microsoft Graph pedidos (pode exigir aprovação de administrador Entra)','Pergunta ao ChatGPT sobre conversas ou canais do Teams, ou pede para enviar uma mensagem (se ativado pelo workspace)'] },
 
+  { id:'app-starbucks', emoji:'☕', name:'Starbucks', type:'app', cat:'Comida e Bebida',
+    desc:'App oficial (beta) da Starbucks no ChatGPT — descreve o teu "vibe", altura do dia ou até envia uma foto, e recebe sugestões de bebidas personalizadas; a encomenda é finalizada na app ou site da Starbucks.',
+    tags:['starbucks','café','bebidas','descoberta'],
+    use:'Abre o diretório de Apps e procura "Starbucks"', install:'https://about.starbucks.com/stories/2026/meet-the-beta-starbucks-app-in-chatgpt-a-new-way-to-discover-your-next-favorite-drink/',
+    steps:['Lê a página oficial da Starbucks sobre a app beta no ChatGPT','No ChatGPT, abre Definições → Apps e Conectores, procura "Starbucks" e liga a app','Numa conversa, menciona "@Starbucks" e descreve o teu mood, altura do dia ou envia uma foto do look/tempo','Escolhe uma sugestão e personaliza — a encomenda final é feita na app ou site da Starbucks'] },
+
   /* ── ACTIONS (liga o teu GPT a APIs externas) ──────────── */
   { id:'action-zapier', emoji:'⚡', name:'Zapier AI Actions', type:'action', cat:'Automação',
     desc:'Liga o teu GPT a mais de 7000 apps (Gmail, Sheets, Slack…) via Actions da Zapier — sem escrever código.',
@@ -579,6 +585,12 @@ const CATALOG = [
     tags:['amazon redshift','aws','data warehouse','sql','actions'],
     use:'Copia o exemplo pronto da OpenAI Cookbook', install:'https://cookbook.openai.com/examples/chatgpt/gpt_actions_library/gpt_action_redshift',
     steps:['Abre o exemplo "GPT Action — Amazon Redshift" na OpenAI Cookbook','Cria a função AWS Lambda intermediária que recebe queries e as executa no teu cluster Redshift com acesso só de leitura','No GPT Builder, cria a Action com autenticação API Key e cola o schema OpenAPI fornecido','Pergunta ao GPT em linguagem natural — os dados voltam como ficheiro CSV pronto para análise'] },
+
+  { id:'action-salesforce-gong', emoji:'📞', name:'GPT Action — Salesforce + Gong', type:'action', cat:'Vendas',
+    desc:'Exemplo oficial da OpenAI Cookbook para ligar um GPT ao Salesforce e ao Gong em simultâneo — encontra uma conta de cliente no Salesforce, cruza com o histórico de transcrições de chamadas do Gong, e gera preparação para reuniões de vendas (decisores, pontos de dor, concorrência).',
+    tags:['salesforce','gong','vendas','crm','call intelligence','actions'],
+    use:'Copia o exemplo pronto da OpenAI Cookbook', install:'https://cookbook.openai.com/examples/chatgpt/gpt_actions_library/gpt_action_salesforce_gong',
+    steps:['Abre o exemplo "GPT Action — Salesforce + Gong" na OpenAI Cookbook','Configura autenticação OAuth para as APIs do Salesforce e do Gong','No GPT Builder, cria a Action com os dois schemas OpenAPI (Salesforce e Gong) combinados','Pergunta ao GPT sobre uma conta de cliente — recebe um resumo com dados do CRM e insights das chamadas gravadas'] },
 ];
 
 /* ── State ─────────────────────────────────────────────────── */
