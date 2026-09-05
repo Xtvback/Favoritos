@@ -447,6 +447,12 @@ const CATALOG = [
     use:'Abre o diretório de Apps e procura "Starbucks"', install:'https://about.starbucks.com/stories/2026/meet-the-beta-starbucks-app-in-chatgpt-a-new-way-to-discover-your-next-favorite-drink/',
     steps:['Lê a página oficial da Starbucks sobre a app beta no ChatGPT','No ChatGPT, abre Definições → Apps e Conectores, procura "Starbucks" e liga a app','Numa conversa, menciona "@Starbucks" e descreve o teu mood, altura do dia ou envia uma foto do look/tempo','Escolhe uma sugestão e personaliza — a encomenda final é feita na app ou site da Starbucks'] },
 
+  { id:'app-skyscanner', emoji:'✈️', name:'Skyscanner', type:'app', cat:'Viagens',
+    desc:'App oficial da Skyscanner no ChatGPT — pesquisa e compara preços de voos por conversa (ex: "voo mais barato para Nova Iorque em dezembro") e ajusta datas ou aeroportos em linguagem natural, com resultados ao vivo.',
+    tags:['skyscanner','voos','viagens','comparação de preços'],
+    use:'Abre o diretório de Apps e procura "Skyscanner"', install:'https://chatgpt.com/apps',
+    steps:['No ChatGPT, abre chatgpt.com/apps (ou o menu de ferramentas numa conversa) e pesquisa "Skyscanner"','Liga a app (disponível globalmente para todos os planos do ChatGPT)','Pede algo como "encontra o voo mais barato de Lisboa para Londres em outubro"','Refina por conversa (datas, aeroportos) até encontrares a melhor opção — a reserva é feita fora do ChatGPT'] },
+
   /* ── ACTIONS (liga o teu GPT a APIs externas) ──────────── */
   { id:'action-zapier', emoji:'⚡', name:'Zapier AI Actions', type:'action', cat:'Automação',
     desc:'Liga o teu GPT a mais de 7000 apps (Gmail, Sheets, Slack…) via Actions da Zapier — sem escrever código.',
@@ -591,6 +597,12 @@ const CATALOG = [
     tags:['salesforce','gong','vendas','crm','call intelligence','actions'],
     use:'Copia o exemplo pronto da OpenAI Cookbook', install:'https://cookbook.openai.com/examples/chatgpt/gpt_actions_library/gpt_action_salesforce_gong',
     steps:['Abre o exemplo "GPT Action — Salesforce + Gong" na OpenAI Cookbook','Configura autenticação OAuth para as APIs do Salesforce e do Gong','No GPT Builder, cria a Action com os dois schemas OpenAPI (Salesforce e Gong) combinados','Pergunta ao GPT sobre uma conta de cliente — recebe um resumo com dados do CRM e insights das chamadas gravadas'] },
+
+  { id:'action-trayai-apim', emoji:'🔌', name:'GPT Action — Tray.ai API Management', type:'action', cat:'Integrações',
+    desc:'Exemplo oficial da OpenAI Cookbook para expor operações de API geridas pelo Tray.ai API Management a um GPT — governa acesso e autenticação a APIs de terceiros de forma centralizada em vez de configurar cada Action separadamente.',
+    tags:['tray.ai','api management','integrações','middleware','actions'],
+    use:'Copia o exemplo pronto da OpenAI Cookbook', install:'https://cookbook.openai.com/examples/chatgpt/gpt_actions_library/gpt_action_trayai_apim',
+    steps:['Abre o exemplo "GPT Action — Tray.ai API Management" na OpenAI Cookbook','Configura as operações de API que queres expor dentro do Tray.ai API Management, com autenticação Bearer token','No GPT Builder, importa o schema OpenAPI 3.1 gerado pelo Tray.ai para a Action','Pergunta ao GPT — os pedidos passam pelo Tray.ai, que centraliza a governança de acesso às APIs de terceiros'] },
 ];
 
 /* ── State ─────────────────────────────────────────────────── */
