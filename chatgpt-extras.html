@@ -453,6 +453,12 @@ const CATALOG = [
     use:'Abre o diretório de Apps e procura "Skyscanner"', install:'https://chatgpt.com/apps',
     steps:['No ChatGPT, abre chatgpt.com/apps (ou o menu de ferramentas numa conversa) e pesquisa "Skyscanner"','Liga a app (disponível globalmente para todos os planos do ChatGPT)','Pede algo como "encontra o voo mais barato de Lisboa para Londres em outubro"','Refina por conversa (datas, aeroportos) até encontrares a melhor opção — a reserva é feita fora do ChatGPT'] },
 
+  { id:'app-quizlet', emoji:'🗂️', name:'Quizlet', type:'app', cat:'Educação',
+    desc:'App oficial da Quizlet no ChatGPT — transforma conversas ou documentos em conjuntos de estudo (flashcards) prontos a usar, ligando à tua conta Quizlet.',
+    tags:['quizlet','educação','flashcards','estudo'],
+    use:'Abre o diretório de Apps e procura "Quizlet"', install:'https://quizlet.com/blog/quizlet-comes-to-chat-gpt',
+    steps:['Lê o comunicado oficial da Quizlet sobre a chegada ao ChatGPT','No ChatGPT, abre chatgpt.com/apps e pesquisa "Quizlet"','Liga a tua conta Quizlet quando pedido','Pede para transformar um tema, conversa ou documento num conjunto de flashcards — fica gravado na tua conta Quizlet'] },
+
   /* ── ACTIONS (liga o teu GPT a APIs externas) ──────────── */
   { id:'action-zapier', emoji:'⚡', name:'Zapier AI Actions', type:'action', cat:'Automação',
     desc:'Liga o teu GPT a mais de 7000 apps (Gmail, Sheets, Slack…) via Actions da Zapier — sem escrever código.',
@@ -603,6 +609,12 @@ const CATALOG = [
     tags:['tray.ai','api management','integrações','middleware','actions'],
     use:'Copia o exemplo pronto da OpenAI Cookbook', install:'https://cookbook.openai.com/examples/chatgpt/gpt_actions_library/gpt_action_trayai_apim',
     steps:['Abre o exemplo "GPT Action — Tray.ai API Management" na OpenAI Cookbook','Configura as operações de API que queres expor dentro do Tray.ai API Management, com autenticação Bearer token','No GPT Builder, importa o schema OpenAPI 3.1 gerado pelo Tray.ai para a Action','Pergunta ao GPT — os pedidos passam pelo Tray.ai, que centraliza a governança de acesso às APIs de terceiros'] },
+
+  { id:'action-zendesk', emoji:'🎧', name:'Zendesk', type:'action', cat:'Apoio ao Cliente',
+    desc:'Conector oficial (beta) da OpenAI para o Zendesk — o ChatGPT consulta os teus tickets de suporte e histórico de clientes, sugere artigos da base de conhecimento relevantes e ajuda a redigir respostas, usando a tua própria conta Zendesk ligada.',
+    tags:['zendesk','apoio ao cliente','suporte','tickets'],
+    use:'Liga o conector Zendesk em Definições → Conectores', install:'https://help.openai.com/en/articles/20001512-using-zendesk-in-chatgpt-and-codex',
+    steps:['Lê o artigo oficial da OpenAI sobre o conector Zendesk','No ChatGPT, abre Definições → Conectores, procura "Zendesk" e liga a tua conta','Autoriza o acesso aos teus tickets e base de conhecimento Zendesk','Pergunta ao ChatGPT sobre um ticket específico ou pede um rascunho de resposta baseado no histórico do cliente'] },
 ];
 
 /* ── State ─────────────────────────────────────────────────── */
