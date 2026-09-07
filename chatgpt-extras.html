@@ -459,6 +459,24 @@ const CATALOG = [
     use:'Abre o diretório de Apps e procura "Quizlet"', install:'https://quizlet.com/blog/quizlet-comes-to-chat-gpt',
     steps:['Lê o comunicado oficial da Quizlet sobre a chegada ao ChatGPT','No ChatGPT, abre chatgpt.com/apps e pesquisa "Quizlet"','Liga a tua conta Quizlet quando pedido','Pede para transformar um tema, conversa ou documento num conjunto de flashcards — fica gravado na tua conta Quizlet'] },
 
+  { id:'app-quickbooks', emoji:'📊', name:'Intuit QuickBooks', type:'app', cat:'Finanças',
+    desc:'App oficial da Intuit no ChatGPT — liga a tua conta QuickBooks Online e pergunta sobre rentabilidade, cash flow, benchmarks do setor, ou pede relatórios como um P&L; apenas leitura/análise, não cria faturas nem despoleta ações.',
+    tags:['quickbooks','intuit','finanças','contabilidade','negócio'],
+    use:'Abre o diretório de Apps e procura "QuickBooks"', install:'https://www.intuit.com/chatgpt/',
+    steps:['Lê a página oficial da parceria Intuit + OpenAI','No ChatGPT, abre chatgpt.com/apps e pesquisa "QuickBooks"','Liga a tua conta QuickBooks Online','Pergunta sobre a saúde financeira do teu negócio ou pede um relatório — a resposta usa os teus dados reais do QuickBooks'] },
+
+  { id:'app-turbotax', emoji:'🧾', name:'Intuit TurboTax', type:'app', cat:'Finanças',
+    desc:'App oficial da Intuit no ChatGPT — estimativas de impostos e reembolso em tempo real, checklist fiscal personalizada, upload de documentos e marcação de sessões com especialistas fiscais humanos.',
+    tags:['turbotax','intuit','impostos','finanças pessoais'],
+    use:'Abre o diretório de Apps e procura "TurboTax"', install:'https://www.intuit.com/chatgpt/',
+    steps:['Lê a página oficial da parceria Intuit + OpenAI','No ChatGPT, abre chatgpt.com/apps e pesquisa "TurboTax"','Liga a tua conta TurboTax (ou cria uma)','Pede uma estimativa do teu reembolso ou uma checklist fiscal personalizada'] },
+
+  { id:'app-creditkarma', emoji:'💳', name:'Intuit Credit Karma', type:'app', cat:'Finanças',
+    desc:'App oficial da Intuit no ChatGPT — monitorização de crédito e recomendações personalizadas de cartões de crédito, empréstimos ou hipotecas com base no teu perfil financeiro real.',
+    tags:['credit karma','intuit','crédito','finanças pessoais'],
+    use:'Abre o diretório de Apps e procura "Credit Karma"', install:'https://www.intuit.com/chatgpt/',
+    steps:['Lê a página oficial da parceria Intuit + OpenAI','No ChatGPT, abre chatgpt.com/apps e pesquisa "Credit Karma"','Liga a tua conta Credit Karma quando pedido','Pergunta sobre o teu score de crédito ou pede recomendações de cartões/empréstimos ajustadas ao teu perfil'] },
+
   /* ── ACTIONS (liga o teu GPT a APIs externas) ──────────── */
   { id:'action-zapier', emoji:'⚡', name:'Zapier AI Actions', type:'action', cat:'Automação',
     desc:'Liga o teu GPT a mais de 7000 apps (Gmail, Sheets, Slack…) via Actions da Zapier — sem escrever código.',
