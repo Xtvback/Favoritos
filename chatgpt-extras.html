@@ -477,6 +477,24 @@ const CATALOG = [
     use:'Abre o diretório de Apps e procura "Credit Karma"', install:'https://www.intuit.com/chatgpt/',
     steps:['Lê a página oficial da parceria Intuit + OpenAI','No ChatGPT, abre chatgpt.com/apps e pesquisa "Credit Karma"','Liga a tua conta Credit Karma quando pedido','Pergunta sobre o teu score de crédito ou pede recomendações de cartões/empréstimos ajustadas ao teu perfil'] },
 
+  { id:'app-tripadvisor', emoji:'🦉', name:'Tripadvisor', type:'app', cat:'Viagens',
+    desc:'App oficial da Tripadvisor no ChatGPT — recomenda hotéis com mapas interativos, avaliações, fotos recentes de viajantes e preços em tempo real; a reserva final é feita no site parceiro.',
+    tags:['tripadvisor','viagens','hotéis','avaliações'],
+    use:'Abre o diretório de Apps e procura "Tripadvisor"', install:'https://www.tripadvisor.com/ChatGPT',
+    steps:['No ChatGPT, abre chatgpt.com/apps e pesquisa "Tripadvisor"','Liga a app','Pede recomendações de hotéis para um destino ou datas específicas','Explora o mapa interativo e as avaliações — a reserva é finalizada fora do ChatGPT'] },
+
+  { id:'app-khanacademy', emoji:'📐', name:'Khan Academy', type:'app', cat:'Educação',
+    desc:'App oficial e gratuita da Khan Academy no ChatGPT — dá acesso ao banco de questões de matemática alinhadas por nível escolar, útil para professores criarem exercícios ou alunos praticarem.',
+    tags:['khan academy','educação','matemática','professores'],
+    use:'Abre o diretório de Apps e procura "Khan Academy"', install:'https://blog.khanacademy.org/from-chat-to-classroom-explore-khan-academys-math-questions-in-chatgpt/',
+    steps:['Lê o comunicado oficial da Khan Academy sobre a app no ChatGPT','No ChatGPT, abre chatgpt.com/apps e pesquisa "Khan Academy"','Liga a app (gratuita, sem conta necessária)','Pede um conjunto de questões de matemática por nível escolar ou norma curricular'] },
+
+  { id:'app-thefork', emoji:'🍽️', name:'TheFork', type:'app', cat:'Comida e Bebida',
+    desc:'App oficial da TheFork no ChatGPT — encontra e reserva mesa em restaurantes com fotos, avaliações, ofertas especiais e disponibilidade em tempo real; já disponível em Portugal desde dezembro de 2025.',
+    tags:['thefork','restaurantes','reservas','comida'],
+    use:'Abre chatgpt.com → Definições → Apps → Browse apps e procura "thefork"', install:'https://about.thefork.com/',
+    steps:['No ChatGPT (app móvel ou web), abre Definições → Apps → Browse apps','Pesquisa "thefork" e liga a app','Pede algo como "encontra um restaurante de sushi perto de mim para hoje à noite"','Escolhe entre as opções sugeridas e reserva a mesa diretamente na conversa'] },
+
   /* ── ACTIONS (liga o teu GPT a APIs externas) ──────────── */
   { id:'action-zapier', emoji:'⚡', name:'Zapier AI Actions', type:'action', cat:'Automação',
     desc:'Liga o teu GPT a mais de 7000 apps (Gmail, Sheets, Slack…) via Actions da Zapier — sem escrever código.',
