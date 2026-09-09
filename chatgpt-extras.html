@@ -495,6 +495,24 @@ const CATALOG = [
     use:'Abre chatgpt.com → Definições → Apps → Browse apps e procura "thefork"', install:'https://about.thefork.com/',
     steps:['No ChatGPT (app móvel ou web), abre Definições → Apps → Browse apps','Pesquisa "thefork" e liga a app','Pede algo como "encontra um restaurante de sushi perto de mim para hoje à noite"','Escolhe entre as opções sugeridas e reserva a mesa diretamente na conversa'] },
 
+  { id:'app-etsy', emoji:'🧶', name:'Etsy', type:'app', cat:'Compras',
+    desc:'App oficial (beta) da Etsy no ChatGPT — pesquisa entre mais de 100 milhões de artigos por linguagem natural (ex: "prenda para o Dia da Mãe até 100€ para alguém que gosta de jardinagem") em vez de palavras-chave e filtros.',
+    tags:['etsy','compras','artesanato','presentes'],
+    use:'Numa conversa, menciona "@Etsy"', install:'https://www.etsy.com/news/from-keywords-to-conversation-etsyas-next-steps-into-conversational-search-with-app-in-chatgpt',
+    steps:['Lê o comunicado oficial da Etsy sobre a app em ChatGPT','No ChatGPT, abre chatgpt.com/apps e pesquisa "Etsy" (ou menciona "@Etsy" numa conversa)','Descreve o que procuras em linguagem natural','Os resultados aparecem na conversa com link direto para comprar no site da Etsy'] },
+
+  { id:'app-walmart-sparky', emoji:'🛒', name:'Walmart (Sparky)', type:'app', cat:'Compras',
+    desc:'App oficial da Walmart no ChatGPT, com o agente de compras Sparky — cobre descoberta de produtos, ligação à conta e fidelização, com checkout feito no ambiente da Walmart.',
+    tags:['walmart','sparky','compras','agente de ia'],
+    use:'Abre o diretório de Apps e procura "Walmart"', install:'https://openai.com/index/powering-product-discovery-in-chatgpt/',
+    steps:['Lê o comunicado oficial da OpenAI sobre a integração da Walmart','No ChatGPT, abre chatgpt.com/apps e pesquisa "Walmart"','Liga a tua conta Walmart (opcional, para fidelização e histórico)','Pede recomendações de produtos ou compara opções — a compra é finalizada no ambiente da Walmart'] },
+
+  { id:'app-yelp', emoji:'⭐', name:'Yelp', type:'app', cat:'Comida e Bebida',
+    desc:'App oficial da Yelp no ChatGPT — reserva mesa ou entra numa lista de espera em milhares de restaurantes dos EUA e Canadá através do Yelp Guest Manager, sem sair da conversa.',
+    tags:['yelp','restaurantes','reservas','lista de espera'],
+    use:'Abre o diretório de Apps e procura "Yelp"', install:'https://blog.yelp.com/news/yelp-chatgpt-integration/',
+    steps:['Lê o comunicado oficial da Yelp sobre a integração com o ChatGPT','No ChatGPT, abre chatgpt.com/apps e pesquisa "Yelp"','Pede para reservar mesa ou entrar numa lista de espera num restaurante específico','Gere alterações à reserva diretamente no Yelp'] },
+
   /* ── ACTIONS (liga o teu GPT a APIs externas) ──────────── */
   { id:'action-zapier', emoji:'⚡', name:'Zapier AI Actions', type:'action', cat:'Automação',
     desc:'Liga o teu GPT a mais de 7000 apps (Gmail, Sheets, Slack…) via Actions da Zapier — sem escrever código.',
