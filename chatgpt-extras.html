@@ -513,6 +513,24 @@ const CATALOG = [
     use:'Abre o diretório de Apps e procura "Yelp"', install:'https://blog.yelp.com/news/yelp-chatgpt-integration/',
     steps:['Lê o comunicado oficial da Yelp sobre a integração com o ChatGPT','No ChatGPT, abre chatgpt.com/apps e pesquisa "Yelp"','Pede para reservar mesa ou entrar numa lista de espera num restaurante específico','Gere alterações à reserva diretamente no Yelp'] },
 
+  { id:'app-jotform', emoji:'📝', name:'Jotform', type:'app', cat:'Produtividade',
+    desc:'App oficial da Jotform no ChatGPT — cria e edita formulários completos por linguagem natural e consulta/analisa as respostas recebidas numa tabela organizada, sem sair da conversa.',
+    tags:['jotform','formulários','produtividade','dados'],
+    use:'Abre o diretório de Apps e procura "Jotform"', install:'https://www.jotform.com/chatgpt/',
+    steps:['Lê o comunicado oficial da Jotform sobre a app no ChatGPT','No ChatGPT, abre chatgpt.com/apps e pesquisa "Jotform"','Descreve o formulário que queres criar (ex: "inquérito de satisfação com 5 perguntas")','Consulta e analisa as respostas recebidas diretamente na conversa'] },
+
+  { id:'app-onenote', emoji:'📓', name:'OneNote', type:'app', cat:'Produtividade',
+    desc:'Plugin oficial da Microsoft (OpenAI) que encontra e resume notas do OneNote, junta decisões e tarefas, e cria ou atualiza notas dentro do ChatGPT e do Codex — ⚠️ ainda em fase inicial (adicionado em setembro de 2026) e limitado às permissões Microsoft já existentes na tua conta.',
+    tags:['onenote','microsoft','notas','produtividade'],
+    use:'Abre Plugins no ChatGPT e procura "OneNote"', install:'https://help.openai.com/en/articles/20001511-using-onenote-in-chatgpt-and-codex',
+    steps:['Lê a documentação oficial da OpenAI sobre o plugin OneNote','No ChatGPT ou Codex, abre Plugins e liga o plugin OneNote (developed by OpenAI)','Inicia sessão com a conta Microsoft que tem acesso às notas','Pede para resumir notas, juntar decisões/tarefas ou criar/atualizar uma nota'] },
+
+  { id:'app-readwise', emoji:'📚', name:'Readwise', type:'app', cat:'Produtividade',
+    desc:'App oficial da Readwise no ChatGPT (via MCP) — dá acesso aos teus destaques, notas e artigos guardados no Reader, para o ChatGPT responder com base no teu próprio histórico de leitura e ajudar a organizar a biblioteca.',
+    tags:['readwise','leitura','notas','mcp'],
+    use:'Abre Apps no ChatGPT e procura "Readwise"', install:'https://readwise.io/mcp',
+    steps:['Lê a documentação oficial do Readwise MCP Server','No ChatGPT, abre Apps na barra lateral e pesquisa "Readwise"','Liga a tua conta Readwise (Pro/Team/Enterprise)','Pede para pesquisar destaques antigos ou responder a perguntas com base no que já leste'] },
+
   /* ── ACTIONS (liga o teu GPT a APIs externas) ──────────── */
   { id:'action-zapier', emoji:'⚡', name:'Zapier AI Actions', type:'action', cat:'Automação',
     desc:'Liga o teu GPT a mais de 7000 apps (Gmail, Sheets, Slack…) via Actions da Zapier — sem escrever código.',
