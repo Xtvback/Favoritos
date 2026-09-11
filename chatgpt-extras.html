@@ -531,6 +531,18 @@ const CATALOG = [
     use:'Abre Apps no ChatGPT e procura "Readwise"', install:'https://readwise.io/mcp',
     steps:['Lê a documentação oficial do Readwise MCP Server','No ChatGPT, abre Apps na barra lateral e pesquisa "Readwise"','Liga a tua conta Readwise (Pro/Team/Enterprise)','Pede para pesquisar destaques antigos ou responder a perguntas com base no que já leste'] },
 
+  { id:'app-tubi', emoji:'📺', name:'Tubi', type:'app', cat:'Entretenimento',
+    desc:'App oficial da Tubi no ChatGPT — a primeira grande plataforma de streaming a lançar uma app nativa no ChatGPT; descreve o que te apetece ver em linguagem natural (ex: "um thriller para hoje à noite") e recebe recomendações de entre mais de 300 mil filmes e séries gratuitos.',
+    tags:['tubi','streaming','filmes','séries'],
+    use:'No ChatGPT, menciona "@Tubi" numa conversa', install:'https://corporate.tubitv.com/press/tubi-becomes-first-streamer-to-launch-chatgpt-app/',
+    steps:['Lê o comunicado oficial da Tubi sobre a app no ChatGPT','No ChatGPT, abre chatgpt.com/apps e pesquisa "Tubi" (ou menciona "@Tubi" numa conversa)','Descreve o género ou disposição que procuras (ex: "algo engraçado e leve")','Escolhe entre as recomendações e começa a ver diretamente na Tubi'] },
+
+  { id:'app-docusign', emoji:'📑', name:'Docusign', type:'app', cat:'Produtividade',
+    desc:'App oficial da Docusign no ChatGPT e Codex, alimentada pelo motor de IA Iris — cria, analisa, gere e assina contratos e acordos por linguagem natural; ⚠️ pode agir sobre documentos juridicamente vinculativos em teu nome, por isso confirma sempre as permissões e o que está a ser assinado.',
+    tags:['docusign','contratos','assinaturas','produtividade'],
+    use:'Abre o diretório de Apps e procura "Docusign"', install:'https://investor.docusign.com/news-and-events/press-releases/news-details/2026/Docusign-Brings-Trusted-Agreement-Intelligence-and-Workflows-into-ChatGPT-and-Codex/default.aspx',
+    steps:['Lê o comunicado oficial da Docusign sobre a app no ChatGPT e Codex','No ChatGPT, abre chatgpt.com/apps e pesquisa "Docusign"','Liga a tua conta Docusign','Pede para criar, rever ou consultar o estado de um acordo — confirma sempre antes de enviar ou assinar'] },
+
   /* ── ACTIONS (liga o teu GPT a APIs externas) ──────────── */
   { id:'action-zapier', emoji:'⚡', name:'Zapier AI Actions', type:'action', cat:'Automação',
     desc:'Liga o teu GPT a mais de 7000 apps (Gmail, Sheets, Slack…) via Actions da Zapier — sem escrever código.',
