@@ -543,12 +543,30 @@ const CATALOG = [
     use:'Abre o diretório de Apps e procura "Docusign"', install:'https://investor.docusign.com/news-and-events/press-releases/news-details/2026/Docusign-Brings-Trusted-Agreement-Intelligence-and-Workflows-into-ChatGPT-and-Codex/default.aspx',
     steps:['Lê o comunicado oficial da Docusign sobre a app no ChatGPT e Codex','No ChatGPT, abre chatgpt.com/apps e pesquisa "Docusign"','Liga a tua conta Docusign','Pede para criar, rever ou consultar o estado de um acordo — confirma sempre antes de enviar ou assinar'] },
 
+  { id:'app-lovable', emoji:'💻', name:'Lovable', type:'app', cat:'Programação',
+    desc:'App oficial da Lovable no ChatGPT — menciona "@Lovable" numa conversa e transforma o prompt/contexto do chat no arranque de uma aplicação web real (React/Tailwind/Supabase), com preview ao vivo; continua a editar depois no site da Lovable.',
+    tags:['lovable','desenvolvimento','apps','no-code'],
+    use:'Numa conversa, menciona "@Lovable"', install:'https://lovable.dev/chatgpt-app',
+    steps:['Lê a documentação oficial da Lovable sobre a app no ChatGPT','No ChatGPT, abre chatgpt.com/apps e pesquisa "Lovable" (ou menciona "@Lovable" numa conversa)','Descreve a app ou site que queres construir','Abre o link de preview e continua a editar no site da Lovable'] },
+
+  { id:'app-honeybook', emoji:'🍯', name:'HoneyBook', type:'app', cat:'Produtividade',
+    desc:'App oficial da HoneyBook no ChatGPT, parte da nova "Small Business Collection" da OpenAI — membros ligam a conta e perguntam ao ChatGPT sobre clientes, projetos, agenda, contratos e faturas, e pedem para preparar o trabalho seguinte.',
+    tags:['honeybook','pequenos negócios','faturação','clientes'],
+    use:'Abre o diretório de Apps e procura "HoneyBook"', install:'https://www.honeybook.com/product/chatgpt/integrations',
+    steps:['Lê o comunicado oficial da HoneyBook sobre a app no ChatGPT','No ChatGPT, abre chatgpt.com/apps e pesquisa "HoneyBook"','Liga a tua conta HoneyBook','Pergunta sobre faturas em atraso, agenda da semana ou novos leads a responder'] },
+
   /* ── ACTIONS (liga o teu GPT a APIs externas) ──────────── */
   { id:'action-zapier', emoji:'⚡', name:'Zapier AI Actions', type:'action', cat:'Automação',
     desc:'Liga o teu GPT a mais de 7000 apps (Gmail, Sheets, Slack…) via Actions da Zapier — sem escrever código.',
     tags:['automação','integrações','zapier','apps'],
     use:'Configura a Action dentro do GPT Builder', install:'https://actions.zapier.com/gpt/start',
     steps:['Abre actions.zapier.com/gpt/start e cria conta Zapier (grátis)','Escolhe as apps que queres ligar ao teu GPT (ex: Gmail, Google Sheets)','Copia o schema/URL da Action gerado pela Zapier','No GPT Builder (chatgpt.com/gpts/editor), vai a "Actions" e cola a configuração'] },
+
+  { id:'action-stripe-mcp', emoji:'💳', name:'Stripe MCP Server', type:'action', cat:'Finanças',
+    desc:'Servidor MCP oficial da Stripe (mcp.stripe.com) — liga-o ao ChatGPT como connector personalizado para consultar saldos, clientes e subscrições ou criar faturas e reembolsos diretamente na conversa; ⚠️ pode mover dinheiro real (reembolsos, cobranças) se lhe deres permissões de escrita — usa sempre uma chave de API restrita e confirma cada ação.',
+    tags:['stripe','pagamentos','mcp','finanças'],
+    use:'Adiciona como connector personalizado nas Definições do ChatGPT (plano pago)', install:'https://docs.stripe.com/mcp',
+    steps:['Lê a documentação oficial do Stripe MCP Server','Cria uma chave de API restrita na tua conta Stripe','No ChatGPT, ativa "connectors" personalizados nas Definições (plano pago) e adiciona https://mcp.stripe.com','Autoriza a ligação e pede, por exemplo, para consultar o saldo ou listar faturas em atraso'] },
 
   { id:'action-docs', emoji:'📄', name:'GPT Actions — Documentação', type:'action', cat:'Documentação',
     desc:'Guia oficial da OpenAI para criar as tuas próprias Actions: autenticação, schema OpenAPI e boas práticas.',
