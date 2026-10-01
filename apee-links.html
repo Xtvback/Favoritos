@@ -1,0 +1,231 @@
+<!DOCTYPE html>
+<html lang="pt-PT">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Links · APEE Restelo · Lista A</title>
+<meta name="description" content="Lista A — Atenção, Compromisso e União. Todos os links da candidatura à APEE da Escola do Restelo, Belém, 2026/2027.">
+<link rel="icon" href="img/apee-logo.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,600;1,9..144,600&family=Manrope:wght@700;800&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --navy: #2E1A46;
+    --pink: #E4566E;
+    --paper: #FFFBF0;
+    --peach: #FBE3CE;
+    --peach-line: #F3D1AE;
+    --mint: #CFE8DC;
+    --mint-line: #B7DCC7;
+    --lavender: #D5CCE3;
+    --lavender-line: #C4B7D9;
+    --lightblue: #D6E4F2;
+    --lightblue-line: #BFD6EC;
+    --gold: #F7E7A7;
+    --gold-deep: #D3BA66;
+    --ink-soft: #5B5470;
+    --font-display: "Manrope", "Inter", -apple-system, sans-serif;
+    --font-serif: "Fraunces", Georgia, serif;
+    --font-body: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  }
+
+  * { box-sizing: border-box; }
+
+  body {
+    margin: 0;
+    min-height: 100vh;
+    font-family: var(--font-body);
+    color: var(--navy);
+    background: var(--paper);
+    -webkit-font-smoothing: antialiased;
+    display: flex;
+    justify-content: center;
+    padding: 48px 16px 40px;
+  }
+
+  .tree {
+    width: 100%;
+    max-width: 460px;
+    text-align: center;
+  }
+
+  .logo {
+    width: 104px;
+    height: 104px;
+    object-fit: contain;
+    margin: 0 auto 18px;
+    display: block;
+    background: #fff;
+    border-radius: 50%;
+    padding: 12px;
+    box-shadow: 0 8px 28px rgba(46,26,70,0.12);
+  }
+
+  .kicker {
+    font-family: var(--font-display);
+    font-size: 0.78rem;
+    font-weight: 800;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--pink);
+    margin: 0 0 6px;
+  }
+
+  h1 {
+    font-family: var(--font-display);
+    font-weight: 800;
+    font-size: 1.6rem;
+    line-height: 1.2;
+    margin: 0 0 8px;
+  }
+
+  h1 em {
+    font-family: var(--font-serif);
+    font-style: italic;
+    font-weight: 600;
+    color: var(--pink);
+  }
+
+  .tagline {
+    color: var(--ink-soft);
+    font-size: 0.95rem;
+    margin: 0 0 30px;
+  }
+
+  .links {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: grid;
+    gap: 14px;
+  }
+
+  .link {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    padding: 16px 18px;
+    border-radius: 18px;
+    border: 1.5px solid var(--line-c);
+    background: var(--bg-c);
+    text-decoration: none;
+    color: var(--navy);
+    text-align: left;
+    transition: transform 0.15s ease, box-shadow 0.15s ease;
+  }
+  .link:hover,
+  .link:focus-visible {
+    transform: translateY(-2px);
+    box-shadow: 0 10px 24px rgba(46,26,70,0.12);
+  }
+  .link:focus-visible { outline: 2px solid var(--navy); outline-offset: 3px; }
+
+  .link-icon {
+    flex: none;
+    width: 42px;
+    height: 42px;
+    border-radius: 50%;
+    background: rgba(255,255,255,0.7);
+    display: grid;
+    place-items: center;
+    font-size: 1.25rem;
+  }
+
+  .link-text { flex: 1; min-width: 0; }
+  .link-title {
+    display: block;
+    font-family: var(--font-display);
+    font-weight: 800;
+    font-size: 1rem;
+  }
+  .link-desc {
+    display: block;
+    font-size: 0.85rem;
+    color: var(--ink-soft);
+    margin-top: 2px;
+  }
+  .link-arrow { flex: none; font-weight: 700; opacity: 0.5; }
+
+  .c-peach    { --bg-c: var(--peach);     --line-c: var(--peach-line); }
+  .c-blue     { --bg-c: var(--lightblue); --line-c: var(--lightblue-line); }
+  .c-mint     { --bg-c: var(--mint);      --line-c: var(--mint-line); }
+  .c-lavender { --bg-c: var(--lavender);  --line-c: var(--lavender-line); }
+  .c-gold     { --bg-c: var(--gold);      --line-c: var(--gold-deep); }
+
+  footer {
+    margin-top: 34px;
+    font-size: 0.82rem;
+    color: var(--ink-soft);
+  }
+  footer strong { color: var(--navy); }
+</style>
+</head>
+<body>
+
+<main class="tree">
+  <img src="img/apee-logo.png" alt="APEE Bairro do Restelo" class="logo">
+  <p class="kicker">Lista A · APEE Restelo</p>
+  <h1>Atenção, Compromisso<br>e <em>União</em></h1>
+  <p class="tagline">Unir famílias, construir futuros. 2026/2027</p>
+
+  <ul class="links">
+    <li>
+      <a class="link c-peach" href="https://xtvback.github.io/APEE-Matilde/#manifesto" target="_blank" rel="noopener">
+        <span class="link-icon" aria-hidden="true">📣</span>
+        <span class="link-text">
+          <span class="link-title">Manifesto</span>
+          <span class="link-desc">Quem somos e porque nos candidatamos</span>
+        </span>
+        <span class="link-arrow" aria-hidden="true">→</span>
+      </a>
+    </li>
+    <li>
+      <a class="link c-blue" href="https://xtvback.github.io/APEE-Matilde/#eixos" target="_blank" rel="noopener">
+        <span class="link-icon" aria-hidden="true">🧭</span>
+        <span class="link-text">
+          <span class="link-title">O plano em três eixos</span>
+          <span class="link-desc">Ações concretas, sem conversa fiada</span>
+        </span>
+        <span class="link-arrow" aria-hidden="true">→</span>
+      </a>
+    </li>
+    <li>
+      <a class="link c-mint" href="https://xtvback.github.io/APEE-Matilde/#muda-ja" target="_blank" rel="noopener">
+        <span class="link-icon" aria-hidden="true">⚡</span>
+        <span class="link-text">
+          <span class="link-title">O que muda já</span>
+          <span class="link-desc">Quatro medidas para o primeiro trimestre</span>
+        </span>
+        <span class="link-arrow" aria-hidden="true">→</span>
+      </a>
+    </li>
+    <li>
+      <a class="link c-lavender" href="https://xtvback.github.io/APEE-Matilde/#calendario" target="_blank" rel="noopener">
+        <span class="link-icon" aria-hidden="true">📅</span>
+        <span class="link-text">
+          <span class="link-title">Calendário 2026/2027</span>
+          <span class="link-desc">Nove momentos ao longo do ano letivo</span>
+        </span>
+        <span class="link-arrow" aria-hidden="true">→</span>
+      </a>
+    </li>
+    <li>
+      <a class="link c-gold" href="https://xtvback.github.io/APEE-Matilde/#direcao" target="_blank" rel="noopener">
+        <span class="link-icon" aria-hidden="true">🤝</span>
+        <span class="link-text">
+          <span class="link-title">A nossa direção</span>
+          <span class="link-desc">Treze pais e mães que assinam por baixo</span>
+        </span>
+        <span class="link-arrow" aria-hidden="true">→</span>
+      </a>
+    </li>
+  </ul>
+
+  <footer>
+    <p><strong>Escola do Restelo</strong> · Freguesia de Belém · Lisboa</p>
+  </footer>
+</main>
+
+</body>
+</html>
